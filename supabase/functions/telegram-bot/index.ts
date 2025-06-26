@@ -67,6 +67,16 @@ serve(async (req) => {
 
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
 
+    // Nettoyage automatique des signalements en attente trop anciens
+    try {
+      const { data: cleanupResult, error: cleanupError } = await supabaseClient.rpc('cleanup_old_pending_reports')
+      if (cleanupResult > 0) {
+        console.log(`Cleaned up ${cleanupResult} old pending reports`)
+      }
+    } catch (cleanupError) {
+      console.log('Cleanup warning:', cleanupError)
+    }
+
     // Lecture du body de la requête
     let update: TelegramUpdate
     try {
@@ -130,6 +140,30 @@ serve(async (req) => {
       } catch (error) {
         console.error('Error calling Telegram API:', error)
         throw error
+      }
+    }
+
+    // Fonction pour obtenir l'URL d'un fichier Telegram
+    async function getFileUrl(fileId: string): Promise<string | null> {
+      try {
+        console.log('Getting file URL for file_id:', fileId)
+        
+        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getFile?file_id=${fileId}`)
+        const result = await response.json()
+        
+        console.log('getFile API response:', result)
+        
+        if (result.ok && result.result.file_path) {
+          const fileUrl = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${result.result.file_path}`
+          console.log('File URL:', fileUrl)
+          return fileUrl
+        } else {
+          console.error('Error getting file:', result)
+          return null
+        }
+      } catch (error) {
+        console.error('Error calling getFile API:', error)
+        return null
       }
     }
 
@@ -290,13 +324,27 @@ Utilisez vos points sur la marketplace pour des récompenses ! 🛒`
 
         console.log('Best photo selected:', bestPhoto)
 
-        await sendMessage(`📸 <b>Photo reçue !</b>
+        // Sauvegarder le file_id dans pending_reports
+        const { data: pendingReport, error: pendingError } = await supabaseClient.rpc('upsert_pending_report', {
+          p_telegram_id: telegramId,
+          p_file_id: bestPhoto.file_id
+        })
+
+        console.log('Pending report creation result:', { pendingReport, pendingError })
+
+        if (pendingError) {
+          console.error('Error creating pending report:', pendingError)
+          await sendMessage('❌ Erreur lors de la sauvegarde de la photo. Veuillez réessayer.')
+          return new Response('Error creating pending report', { status: 500 })
+        }
+
+        await sendMessage(`📸 <b>Photo reçue et sauvegardée !</b>
 
 Maintenant, partagez votre localisation pour finaliser le signalement.
 
 <i>💡 Astuce : Utilisez le bouton "📍 Partager la localisation" de Telegram</i>`)
 
-        return new Response('Photo received', { status: 200 })
+        return new Response('Photo saved', { status: 200 })
       } catch (photoError) {
         console.error('Photo processing error:', photoError)
         await sendMessage('❌ Erreur lors du traitement de la photo')
@@ -324,11 +372,38 @@ Maintenant, partagez votre localisation pour finaliser le signalement.
           return new Response('User not found', { status: 404 })
         }
 
-        // Créer le signalement
+        // Récupérer et supprimer le signalement en attente
+        const { data: pendingReport, error: pendingError } = await supabaseClient.rpc('get_and_delete_pending_report', {
+          p_telegram_id: telegramId
+        })
+
+        console.log('Pending report retrieval result:', { pendingReport, pendingError })
+
+        if (pendingError || !pendingReport || !pendingReport.file_id) {
+          console.log('No pending photo found for user')
+          await sendMessage(`❌ <b>Aucune photo en attente trouvée</b>
+
+Veuillez d'abord envoyer une photo du problème environnemental, puis partagez votre localisation.
+
+<i>💡 Processus :</i>
+1. 📸 Envoyez une photo
+2. 📍 Partagez votre localisation`)
+          return new Response('No pending photo found', { status: 400 })
+        }
+
+        // Obtenir l'URL réelle de la photo via l'API Telegram
+        const photoUrl = await getFileUrl(pendingReport.file_id)
+        
+        if (!photoUrl) {
+          await sendMessage('❌ Erreur lors de la récupération de la photo. Veuillez renvoyer votre photo et localisation.')
+          return new Response('Error getting photo URL', { status: 500 })
+        }
+
+        // Créer le signalement avec la vraie URL de la photo
         console.log('Creating report with RPC call')
         const { data: report, error: reportError } = await supabaseClient.rpc('create_report', {
           p_user_telegram_id: telegramId,
-          p_photo_url: `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/photo_placeholder`,
+          p_photo_url: photoUrl,
           p_description: 'Signalement via bot Telegram',
           p_location_lat: latitude,
           p_location_lng: longitude
@@ -354,6 +429,7 @@ Maintenant, partagez votre localisation pour finaliser le signalement.
         const successText = `✅ <b>Signalement créé avec succès !</b>
 
 📍 <b>Localisation :</b> ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
+📸 <b>Photo :</b> Sauvegardée et associée
 🎯 <b>Points gagnés :</b> +10 points Himpact
 ⏰ <b>Statut :</b> En attente de validation
 

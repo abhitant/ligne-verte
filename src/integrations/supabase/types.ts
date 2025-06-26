@@ -9,6 +9,27 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      pending_reports: {
+        Row: {
+          created_at: string | null
+          file_id: string
+          id: string
+          telegram_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          file_id: string
+          id?: string
+          telegram_id: string
+        }
+        Update: {
+          created_at?: string | null
+          file_id?: string
+          id?: string
+          telegram_id?: string
+        }
+        Relationships: []
+      }
       reports: {
         Row: {
           created_at: string | null
@@ -89,6 +110,10 @@ export type Database = {
           telegram_username: string | null
         }
       }
+      cleanup_old_pending_reports: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
       create_report: {
         Args: {
           p_user_telegram_id: string
@@ -122,6 +147,15 @@ export type Database = {
           telegram_username: string | null
         }
       }
+      get_and_delete_pending_report: {
+        Args: { p_telegram_id: string }
+        Returns: {
+          created_at: string | null
+          file_id: string
+          id: string
+          telegram_id: string
+        }
+      }
       get_user_by_telegram_id: {
         Args: { p_telegram_id: string }
         Returns: {
@@ -143,6 +177,15 @@ export type Database = {
           photo_url: string | null
           status: string | null
           user_telegram_id: string
+        }
+      }
+      upsert_pending_report: {
+        Args: { p_telegram_id: string; p_file_id: string }
+        Returns: {
+          created_at: string | null
+          file_id: string
+          id: string
+          telegram_id: string
         }
       }
     }
