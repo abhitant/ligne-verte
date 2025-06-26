@@ -25,11 +25,20 @@ interface MapReport {
 }
 
 const getStatusFromDb = (status: string | null): 'pending' | 'validated' | 'rejected' => {
-  switch (status) {
+  if (!status) return 'pending';
+  
+  const normalizedStatus = status.toLowerCase().trim();
+  console.log('Status from DB:', status, 'Normalized:', normalizedStatus);
+  
+  switch (normalizedStatus) {
     case 'validé':
+    case 'validated':
       return 'validated';
     case 'rejeté':
+    case 'rejected':
       return 'rejected';
+    case 'en attente':
+    case 'pending':
     default:
       return 'pending';
   }
@@ -63,18 +72,38 @@ export const useReports = () => {
         throw error;
       }
 
-      console.log('Reports fetched:', data);
+      console.log('Raw reports data from Supabase:', data);
+      console.log('Number of reports found:', data?.length || 0);
 
-      return data.map((report: Report): MapReport => ({
+      if (!data || data.length === 0) {
+        console.log('No reports found in database');
+        return [];
+      }
+
+      // Log each report for debugging
+      data.forEach((report, index) => {
+        console.log(`Report ${index + 1}:`, {
+          id: report.id,
+          status: report.status,
+          location: { lat: report.location_lat, lng: report.location_lng },
+          created_at: report.created_at
+        });
+      });
+
+      const mappedReports = data.map((report: Report): MapReport => ({
         id: report.id,
-        user: `Utilisateur ${report.user_telegram_id.slice(-4)}`, // Afficher seulement les 4 derniers caractères du telegram_id
+        user: `Utilisateur ${report.user_telegram_id.slice(-4)}`,
         location: `Abidjan (${report.location_lat.toFixed(4)}, ${report.location_lng.toFixed(4)})`,
         coordinates: { lat: report.location_lat, lng: report.location_lng },
-        description: report.description || 'Aucune description',
+        description: report.description || 'Signalement via bot Telegram',
         status: getStatusFromDb(report.status),
         date: report.created_at || new Date().toISOString(),
         type: getTypeFromDescription(report.description)
       }));
-    }
+
+      console.log('Mapped reports for display:', mappedReports);
+      return mappedReports;
+    },
+    refetchInterval: 30000, // Refetch every 30 seconds to get new reports
   });
 };

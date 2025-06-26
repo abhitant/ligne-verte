@@ -23,9 +23,15 @@ const Map = () => {
   
   const { data: reports = [], isLoading, error } = useReports();
 
+  // Log pour debugging
+  console.log('Map component - Reports:', reports);
+  console.log('Map component - Current filter:', filter);
+
   const filteredReports = reports.filter(report => 
     filter === 'all' || report.status === filter
   );
+
+  console.log('Map component - Filtered reports:', filteredReports);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -44,6 +50,7 @@ const Map = () => {
   };
 
   if (error) {
+    console.error('Map component error:', error);
     return (
       <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 p-4">
         <div className="max-w-7xl mx-auto">
@@ -56,6 +63,7 @@ const Map = () => {
               <div className="text-center text-red-600">
                 <p className="text-lg font-semibold mb-2">Erreur lors du chargement des signalements</p>
                 <p className="text-sm">Vérifiez votre connexion internet et réessayez.</p>
+                <p className="text-xs mt-2 text-gray-500">Détails: {error.message}</p>
               </div>
             </CardContent>
           </Card>
@@ -150,6 +158,16 @@ const Map = () => {
                     <p className="text-sm mt-2">
                       {filter !== 'all' ? 'Essayez de changer le filtre.' : 'Les signalements apparaîtront ici.'}
                     </p>
+                    {reports.length > 0 && filter !== 'all' && (
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="mt-2"
+                        onClick={() => setFilter('all')}
+                      >
+                        Voir tous les signalements
+                      </Button>
+                    )}
                   </div>
                 ) : (
                   filteredReports.map((report) => (
