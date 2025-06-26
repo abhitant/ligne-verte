@@ -68,7 +68,7 @@ export const useReports = () => {
     queryFn: async (): Promise<MapReport[]> => {
       console.log('Fetching reports with user details from Supabase...');
       
-      // D'abord récupérer tous les signalements
+      // Récupérer tous les signalements
       const { data: reports, error: reportsError } = await supabase
         .from('reports')
         .select('*')
@@ -91,56 +91,28 @@ export const useReports = () => {
       const uniqueTelegramIds = [...new Set(reports.map(r => r.user_telegram_id))];
       console.log('Unique telegram IDs in reports:', uniqueTelegramIds);
 
-      // Récupérer DIRECTEMENT tous les utilisateurs correspondants
-      const { data: allUsers, error: allUsersError } = await supabase
+      // Récupérer TOUS les utilisateurs directement depuis la table users
+      const { data: users, error: usersError } = await supabase
         .from('users')
         .select('telegram_id, pseudo, telegram_username, points_himpact')
         .in('telegram_id', uniqueTelegramIds);
 
-      if (allUsersError) {
-        console.error('Error fetching users:', allUsersError);
-        throw allUsersError;
+      if (usersError) {
+        console.error('Error fetching users:', usersError);
+        throw usersError;
       }
 
-      console.log('Users fetched from database:', allUsers);
-
-      // Si certains utilisateurs n'existent pas, les créer
-      const existingUserIds = new Set(allUsers?.map(u => u.telegram_id) || []);
-      const missingUserIds = uniqueTelegramIds.filter(id => !existingUserIds.has(id));
-      
-      if (missingUserIds.length > 0) {
-        console.log('Missing users, creating them:', missingUserIds);
-        
-        for (const telegramId of missingUserIds) {
-          try {
-            const { data: newUser, error: createError } = await supabase.rpc('create_user_if_not_exists', {
-              p_telegram_id: telegramId,
-              p_telegram_username: null,
-              p_pseudo: `User ${telegramId.slice(-4)}`
-            });
-
-            if (createError) {
-              console.error(`Error creating user ${telegramId}:`, createError);
-            } else {
-              console.log(`Created user ${telegramId}:`, newUser);
-              // Ajouter le nouvel utilisateur à la liste
-              allUsers?.push({
-                telegram_id: telegramId,
-                pseudo: `User ${telegramId.slice(-4)}`,
-                telegram_username: null,
-                points_himpact: 0
-              });
-            }
-          } catch (error) {
-            console.error(`Failed to create user ${telegramId}:`, error);
-          }
-        }
-      }
+      console.log('Users fetched from database:', users);
 
       // Créer une map pour un accès rapide aux données utilisateur
       const usersMap = new Map();
-      allUsers?.forEach(user => {
+      users?.forEach(user => {
         usersMap.set(user.telegram_id, user);
+        console.log(`User ${user.telegram_id} mapped:`, {
+          telegram_username: user.telegram_username,
+          pseudo: user.pseudo,
+          points: user.points_himpact
+        });
       });
 
       console.log('Final users map:', usersMap);
@@ -150,13 +122,19 @@ export const useReports = () => {
         let displayName = `Utilisateur ${report.user_telegram_id.slice(-4)}`;
         
         if (user) {
+          console.log(`Processing user ${report.user_telegram_id}:`, {
+            telegram_username: user.telegram_username,
+            pseudo: user.pseudo
+          });
+          
           // Prioriser telegram_username, puis pseudo
-          if (user.telegram_username) {
+          if (user.telegram_username && user.telegram_username.trim() !== '') {
             displayName = `@${user.telegram_username}`;
-          } else if (user.pseudo && user.pseudo !== `User ${report.user_telegram_id.slice(-4)}`) {
+          } else if (user.pseudo && user.pseudo.trim() !== '' && user.pseudo !== `User ${report.user_telegram_id.slice(-4)}`) {
             displayName = user.pseudo;
           }
-          console.log(`Display name for ${report.user_telegram_id}: ${displayName} (${user.points_himpact || 0} points)`);
+          
+          console.log(`Final display name for ${report.user_telegram_id}: ${displayName}`);
         } else {
           console.log(`No user found for ${report.user_telegram_id}, using fallback: ${displayName}`);
         }
