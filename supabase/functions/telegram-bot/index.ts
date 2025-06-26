@@ -35,6 +35,9 @@ interface TelegramUpdate {
   }
 }
 
+// Stockage des update_id traités pour éviter les doublons
+const processedUpdates = new Set<number>()
+
 serve(async (req) => {
   console.log('=== TELEGRAM BOT REQUEST ===')
   
@@ -64,7 +67,24 @@ serve(async (req) => {
     const update: TelegramUpdate = JSON.parse(body)
     console.log('Update received:', JSON.stringify(update, null, 2))
 
+    // Vérifier si c'est un update déjà traité
+    if (processedUpdates.has(update.update_id)) {
+      console.log('Update already processed, skipping...')
+      return new Response('Already processed', { status: 200 })
+    }
+
+    // Ajouter l'update_id aux traités
+    processedUpdates.add(update.update_id)
+
+    // Nettoyer les anciens update_id (garder seulement les 100 derniers)
+    if (processedUpdates.size > 100) {
+      const sorted = Array.from(processedUpdates).sort((a, b) => b - a)
+      processedUpdates.clear()
+      sorted.slice(0, 50).forEach(id => processedUpdates.add(id))
+    }
+
     if (!update.message) {
+      console.log('No message in update, skipping...')
       return new Response('No message', { status: 200 })
     }
 
@@ -378,14 +398,22 @@ Vous recevrez +50 points bonus si validé ! 🎉`
       }
     }
 
-    // Message par défaut
-    await sendMessage(`🤖 <b>Message non reconnu</b>
+    // Ignorer les messages vides ou non reconnus SANS répondre
+    if (!message.text && !message.photo && !message.location) {
+      console.log('Empty or unrecognized message type, ignoring silently')
+      return new Response('OK', { status: 200 })
+    }
+
+    // Messages texte non reconnus (seulement si c'est vraiment du texte)
+    if (message.text && !message.text.startsWith('/')) {
+      await sendMessage(`🤖 <b>Message non reconnu</b>
 
 Pour signaler un problème :
 1. 📸 Envoyez une photo
 2. 📍 Partagez votre localisation
 
 Tapez /aide pour plus d'infos.`)
+    }
 
     return new Response('OK', { status: 200 })
 
