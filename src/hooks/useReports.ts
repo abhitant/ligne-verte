@@ -13,6 +13,12 @@ interface Report {
   created_at: string | null;
 }
 
+interface User {
+  telegram_id: string;
+  pseudo: string | null;
+  telegram_username: string | null;
+}
+
 interface MapReport {
   id: string;
   user: string;
@@ -60,11 +66,15 @@ export const useReports = () => {
   return useQuery({
     queryKey: ['reports'],
     queryFn: async (): Promise<MapReport[]> => {
-      console.log('Fetching reports from Supabase...');
+      console.log('Fetching reports with user details from Supabase...');
       
+      // Récupérer les signalements avec les informations utilisateur via une jointure
       const { data, error } = await supabase
         .from('reports')
-        .select('*')
+        .select(`
+          *,
+          users!inner(telegram_id, pseudo, telegram_username)
+        `)
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -72,7 +82,7 @@ export const useReports = () => {
         throw error;
       }
 
-      console.log('Raw reports data from Supabase:', data);
+      console.log('Raw reports data with users from Supabase:', data);
       console.log('Number of reports found:', data?.length || 0);
 
       if (!data || data.length === 0) {
@@ -85,21 +95,27 @@ export const useReports = () => {
         console.log(`Report ${index + 1}:`, {
           id: report.id,
           status: report.status,
+          user: report.users,
           location: { lat: report.location_lat, lng: report.location_lng },
           created_at: report.created_at
         });
       });
 
-      const mappedReports = data.map((report: Report): MapReport => ({
-        id: report.id,
-        user: `Utilisateur ${report.user_telegram_id.slice(-4)}`,
-        location: `Abidjan (${report.location_lat.toFixed(4)}, ${report.location_lng.toFixed(4)})`,
-        coordinates: { lat: report.location_lat, lng: report.location_lng },
-        description: report.description || 'Signalement via bot Telegram',
-        status: getStatusFromDb(report.status),
-        date: report.created_at || new Date().toISOString(),
-        type: getTypeFromDescription(report.description)
-      }));
+      const mappedReports = data.map((report: any): MapReport => {
+        const user = report.users;
+        const displayName = user.pseudo || user.telegram_username || `Utilisateur ${user.telegram_id.slice(-4)}`;
+        
+        return {
+          id: report.id,
+          user: displayName,
+          location: `Abidjan (${report.location_lat.toFixed(4)}, ${report.location_lng.toFixed(4)})`,
+          coordinates: { lat: report.location_lat, lng: report.location_lng },
+          description: report.description || 'Signalement via bot Telegram',
+          status: getStatusFromDb(report.status),
+          date: report.created_at || new Date().toISOString(),
+          type: getTypeFromDescription(report.description)
+        };
+      });
 
       console.log('Mapped reports for display:', mappedReports);
       return mappedReports;
