@@ -68,42 +68,64 @@ export const useReports = () => {
     queryFn: async (): Promise<MapReport[]> => {
       console.log('Fetching reports with user details from Supabase...');
       
-      // Récupérer les signalements avec les informations utilisateur via une jointure
-      const { data, error } = await supabase
+      // D'abord récupérer tous les signalements
+      const { data: reports, error: reportsError } = await supabase
         .from('reports')
-        .select(`
-          *,
-          users!inner(telegram_id, pseudo, telegram_username)
-        `)
+        .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) {
-        console.error('Error fetching reports:', error);
-        throw error;
+      if (reportsError) {
+        console.error('Error fetching reports:', reportsError);
+        throw reportsError;
       }
 
-      console.log('Raw reports data with users from Supabase:', data);
-      console.log('Number of reports found:', data?.length || 0);
+      console.log('Raw reports data from Supabase:', reports);
+      console.log('Number of reports found:', reports?.length || 0);
 
-      if (!data || data.length === 0) {
+      if (!reports || reports.length === 0) {
         console.log('No reports found in database');
         return [];
       }
 
+      // Ensuite récupérer les informations utilisateur pour chaque signalement
+      const reportsWithUsers = await Promise.all(
+        reports.map(async (report) => {
+          const { data: user, error: userError } = await supabase
+            .from('users')
+            .select('telegram_id, pseudo, telegram_username')
+            .eq('telegram_id', report.user_telegram_id)
+            .single();
+
+          if (userError) {
+            console.log(`No user found for telegram_id: ${report.user_telegram_id}`);
+          }
+
+          return {
+            ...report,
+            user: user
+          };
+        })
+      );
+
       // Log each report for debugging
-      data.forEach((report, index) => {
+      reportsWithUsers.forEach((report, index) => {
         console.log(`Report ${index + 1}:`, {
           id: report.id,
           status: report.status,
-          user: report.users,
+          user: report.user,
+          user_telegram_id: report.user_telegram_id,
           location: { lat: report.location_lat, lng: report.location_lng },
           created_at: report.created_at
         });
       });
 
-      const mappedReports = data.map((report: any): MapReport => {
-        const user = report.users;
-        const displayName = user.pseudo || user.telegram_username || `Utilisateur ${user.telegram_id.slice(-4)}`;
+      const mappedReports = reportsWithUsers.map((report): MapReport => {
+        const user = report.user;
+        let displayName = `Utilisateur ${report.user_telegram_id.slice(-4)}`;
+        
+        if (user) {
+          displayName = user.pseudo || user.telegram_username || displayName;
+        }
         
         return {
           id: report.id,
