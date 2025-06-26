@@ -36,62 +36,36 @@ interface TelegramUpdate {
 }
 
 serve(async (req) => {
-  console.log('=== NEW REQUEST ===')
-  console.log('Method:', req.method)
-  console.log('URL:', req.url)
-  console.log('Headers:', Object.fromEntries(req.headers.entries()))
-
+  console.log('=== TELEGRAM BOT REQUEST ===')
+  
   if (req.method === 'OPTIONS') {
-    console.log('Handling CORS preflight request')
     return new Response('ok', { headers: corsHeaders })
   }
 
   try {
-    // Vérification des variables d'environnement
     const SUPABASE_URL = Deno.env.get('SUPABASE_URL')
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
     const TELEGRAM_BOT_TOKEN = Deno.env.get('TELEGRAM_BOT_TOKEN')
 
-    console.log('Environment check:')
-    console.log('SUPABASE_URL:', SUPABASE_URL ? 'SET' : 'MISSING')
-    console.log('SUPABASE_SERVICE_ROLE_KEY:', SUPABASE_SERVICE_ROLE_KEY ? 'SET' : 'MISSING')
-    console.log('TELEGRAM_BOT_TOKEN:', TELEGRAM_BOT_TOKEN ? 'SET' : 'MISSING')
-
-    if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
-      throw new Error('Missing Supabase configuration')
-    }
-
-    if (!TELEGRAM_BOT_TOKEN) {
-      throw new Error('TELEGRAM_BOT_TOKEN is required')
+    if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY || !TELEGRAM_BOT_TOKEN) {
+      throw new Error('Missing required environment variables')
     }
 
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
 
-    // Nettoyage automatique des signalements en attente trop anciens
+    // Nettoyage automatique des signalements expirés
     try {
-      const { data: cleanupResult, error: cleanupError } = await supabaseClient.rpc('cleanup_old_pending_reports')
-      if (cleanupResult > 0) {
-        console.log(`Cleaned up ${cleanupResult} old pending reports`)
-      }
+      await supabaseClient.rpc('cleanup_old_pending_reports')
     } catch (cleanupError) {
       console.log('Cleanup warning:', cleanupError)
     }
 
-    // Lecture du body de la requête
-    let update: TelegramUpdate
-    try {
-      const body = await req.text()
-      console.log('Raw request body:', body)
-      update = JSON.parse(body)
-      console.log('Parsed update:', JSON.stringify(update, null, 2))
-    } catch (parseError) {
-      console.error('Error parsing request body:', parseError)
-      return new Response('Invalid JSON', { status: 400 })
-    }
+    const body = await req.text()
+    const update: TelegramUpdate = JSON.parse(body)
+    console.log('Update received:', JSON.stringify(update, null, 2))
 
     if (!update.message) {
-      console.log('No message in update, ignoring')
-      return new Response('No message in update', { status: 200 })
+      return new Response('No message', { status: 200 })
     }
 
     const { message } = update
@@ -100,18 +74,10 @@ serve(async (req) => {
     const telegramUsername = message.from.username
     const firstName = message.from.first_name
 
-    console.log('Message details:')
-    console.log('Chat ID:', chatId)
-    console.log('Telegram ID:', telegramId)
-    console.log('Username:', telegramUsername)
-    console.log('First Name:', firstName)
-    console.log('Message text:', message.text)
-
-    // Fonction pour envoyer un message Telegram
+    // Fonction pour envoyer un message
     async function sendMessage(text: string, replyMarkup?: any) {
       console.log('Sending message:', text)
-      console.log('Reply markup:', replyMarkup)
-
+      
       const payload = {
         chat_id: chatId,
         text: text,
@@ -119,50 +85,29 @@ serve(async (req) => {
         reply_markup: replyMarkup
       }
 
-      console.log('Telegram API payload:', JSON.stringify(payload, null, 2))
+      const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
 
-      try {
-        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        })
-
-        const result = await response.json()
-        console.log('Telegram API response status:', response.status)
-        console.log('Telegram API response:', result)
-
-        if (!response.ok) {
-          console.error('Telegram API error:', result)
-        }
-
-        return result
-      } catch (error) {
-        console.error('Error calling Telegram API:', error)
-        throw error
-      }
+      const result = await response.json()
+      console.log('Telegram API response:', result)
+      return result
     }
 
-    // Fonction pour obtenir l'URL d'un fichier Telegram
+    // Fonction pour obtenir l'URL d'un fichier
     async function getFileUrl(fileId: string): Promise<string | null> {
       try {
-        console.log('Getting file URL for file_id:', fileId)
-        
         const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getFile?file_id=${fileId}`)
         const result = await response.json()
         
-        console.log('getFile API response:', result)
-        
         if (result.ok && result.result.file_path) {
-          const fileUrl = `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${result.result.file_path}`
-          console.log('File URL:', fileUrl)
-          return fileUrl
-        } else {
-          console.error('Error getting file:', result)
-          return null
+          return `https://api.telegram.org/file/bot${TELEGRAM_BOT_TOKEN}/${result.result.file_path}`
         }
+        return null
       } catch (error) {
-        console.error('Error calling getFile API:', error)
+        console.error('Error getting file URL:', error)
         return null
       }
     }
@@ -172,203 +117,180 @@ serve(async (req) => {
       console.log('Processing /start command')
 
       try {
-        // Créer ou récupérer l'utilisateur
-        console.log('Creating/getting user with RPC call')
         const { data: user, error } = await supabaseClient.rpc('create_user_if_not_exists', {
           p_telegram_id: telegramId,
           p_telegram_username: telegramUsername,
           p_pseudo: firstName
         })
 
-        console.log('RPC result:', { user, error })
-
         if (error) {
           console.error('Error creating user:', error)
           await sendMessage('❌ Erreur lors de l\'inscription. Veuillez réessayer.')
-          return new Response('Error creating user', { status: 500 })
+          return new Response('Error', { status: 500 })
         }
 
         const welcomeText = `🌱 <b>Bienvenue sur La Ligne Verte !</b>
 
-Bonjour ${firstName} ! Vous êtes maintenant inscrit(e) avec <b>${user.points_himpact} points Himpact</b>.
+Bonjour ${firstName} ! Vous êtes inscrit(e) avec <b>${user.points_himpact} points Himpact</b>.
 
-<b>📍 Comment signaler un problème :</b>
-1. Envoyez-moi une photo du problème environnemental
-2. Partagez votre localisation
-3. Ajoutez une description (optionnel)
+<b>📍 Comment signaler :</b>
+1. 📸 Envoyez une photo du problème
+2. 📍 Partagez votre localisation
+3. ✅ C'est tout !
 
-<b>⚡ Commandes disponibles :</b>
-/points - Voir vos points Himpact
-/aide - Afficher cette aide
-
-Votre engagement compte pour l'environnement ! 🌍`
+<b>⚡ Commandes :</b>
+/points - Voir vos points
+/aide - Aide complète`
 
         const keyboard = {
           inline_keyboard: [
             [
-              { text: '🗺️ Voir la carte', url: 'https://ligneverte.xyz/carte' },
+              { text: '🗺️ Carte', url: 'https://ligneverte.xyz/carte' },
               { text: '🛒 Marketplace', url: 'https://ligneverte.xyz/marketplace' }
             ]
           ]
         }
 
         await sendMessage(welcomeText, keyboard)
-        return new Response('Welcome message sent', { status: 200 })
-      } catch (startError) {
-        console.error('/start command error:', startError)
-        await sendMessage('❌ Erreur lors du traitement de la commande /start')
-        return new Response('Start command error', { status: 500 })
+        return new Response('OK', { status: 200 })
+      } catch (error) {
+        console.error('/start error:', error)
+        await sendMessage('❌ Erreur système')
+        return new Response('Error', { status: 500 })
       }
     }
 
     // Commande /points
     if (message.text === '/points') {
-      console.log('Processing /points command')
-
       try {
         const { data: user, error } = await supabaseClient.rpc('get_user_by_telegram_id', {
           p_telegram_id: telegramId
         })
 
-        console.log('Get user result:', { user, error })
-
         if (error || !user) {
-          console.log('User not found for /points')
           await sendMessage('❌ Utilisateur non trouvé. Tapez /start pour vous inscrire.')
           return new Response('User not found', { status: 404 })
         }
 
         const pointsText = `💰 <b>Vos points Himpact</b>
 
-Vous avez actuellement <b>${user.points_himpact} points</b> ! 🎉
+Vous avez <b>${user.points_himpact} points</b> ! 🎉
 
-<b>Comment gagner plus de points :</b>
-• 📸 Signaler un problème environnemental (+10 points)
-• ✅ Signalement validé par un admin (+50 points bonus)
-
-Utilisez vos points sur la marketplace pour des récompenses ! 🛒`
+<b>Comment gagner plus :</b>
+• 📸 Signaler un problème (+10 points)
+• ✅ Signalement validé (+50 points bonus)`
 
         const keyboard = {
           inline_keyboard: [
-            [{ text: '🛒 Accéder à la Marketplace', url: 'https://ligneverte.xyz/marketplace' }]
+            [{ text: '🛒 Marketplace', url: 'https://ligneverte.xyz/marketplace' }]
           ]
         }
 
         await sendMessage(pointsText, keyboard)
-        return new Response('Points info sent', { status: 200 })
-      } catch (pointsError) {
-        console.error('/points command error:', pointsError)
+        return new Response('OK', { status: 200 })
+      } catch (error) {
+        console.error('/points error:', error)
         await sendMessage('❌ Erreur lors de la récupération des points')
-        return new Response('Points command error', { status: 500 })
+        return new Response('Error', { status: 500 })
       }
     }
 
     // Commande /aide
     if (message.text === '/aide' || message.text === '/help') {
-      console.log('Processing /aide command')
-
       const helpText = `🌱 <b>Aide - La Ligne Verte</b>
 
-<b>📍 Pour signaler un problème :</b>
-1. Envoyez une photo du problème
-2. Partagez votre localisation
-3. Ajoutez une description (optionnel)
+<b>📍 Signaler un problème :</b>
+1. 📸 Envoyez une photo
+2. 📍 Partagez votre localisation
 
 <b>⚡ Commandes :</b>
-/start - S'inscrire ou se reconnecter
-/points - Voir vos points Himpact
-/aide - Afficher cette aide
+/start - S'inscrire
+/points - Voir vos points
+/aide - Cette aide
 
 <b>🎯 Récompenses :</b>
 • Signalement : +10 points
-• Signalement validé : +50 points bonus
-
-<b>🔗 Liens utiles :</b>
-• Carte des signalements
-• Marketplace Himpact`
+• Validation : +50 points bonus`
 
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir la carte', url: 'https://ligneverte.xyz/carte' },
+            { text: '🗺️ Carte', url: 'https://ligneverte.xyz/carte' },
             { text: '🛒 Marketplace', url: 'https://ligneverte.xyz/marketplace' }
           ]
         ]
       }
 
       await sendMessage(helpText, keyboard)
-      return new Response('Help sent', { status: 200 })
+      return new Response('OK', { status: 200 })
     }
 
-    // Gestion des photos (signalement)
+    // GESTION DES PHOTOS
     if (message.photo && message.photo.length > 0) {
-      console.log('Processing photo message')
+      console.log('📸 Processing photo message')
 
       try {
-        // Vérifier que l'utilisateur existe
+        // Vérifier l'utilisateur
         const { data: user, error: userError } = await supabaseClient.rpc('get_user_by_telegram_id', {
           p_telegram_id: telegramId
         })
 
-        console.log('User check for photo:', { user, userError })
-
         if (userError || !user) {
-          await sendMessage('❌ Utilisateur non trouvé. Tapez /start pour vous inscrire.')
+          console.error('User not found for photo:', userError)
+          await sendMessage('❌ Tapez /start pour vous inscrire d\'abord.')
           return new Response('User not found', { status: 404 })
         }
 
-        // Prendre la photo de meilleure qualité
+        // Sélectionner la meilleure photo (plus grande taille)
         const bestPhoto = message.photo.reduce((prev, current) => 
-          (prev.file_size || 0) > (current.file_size || 0) ? prev : current
+          (current.file_size || current.width * current.height) > (prev.file_size || prev.width * prev.height) ? current : prev
         )
 
-        console.log('Best photo selected:', bestPhoto)
+        console.log('📸 Best photo selected:', bestPhoto.file_id)
 
-        // Sauvegarder le file_id dans pending_reports
+        // Sauvegarder dans pending_reports
         const { data: pendingReport, error: pendingError } = await supabaseClient.rpc('upsert_pending_report', {
           p_telegram_id: telegramId,
           p_file_id: bestPhoto.file_id
         })
 
-        console.log('Pending report creation result:', { pendingReport, pendingError })
+        console.log('💾 Pending report saved:', pendingReport)
 
         if (pendingError) {
-          console.error('Error creating pending report:', pendingError)
-          await sendMessage('❌ Erreur lors de la sauvegarde de la photo. Veuillez réessayer.')
-          return new Response('Error creating pending report', { status: 500 })
+          console.error('❌ Error saving pending report:', pendingError)
+          await sendMessage('❌ Erreur lors de la sauvegarde de la photo. Réessayez.')
+          return new Response('Error', { status: 500 })
         }
 
         await sendMessage(`📸 <b>Photo reçue et sauvegardée !</b>
 
 Maintenant, partagez votre localisation pour finaliser le signalement.
 
-<i>💡 Astuce : Utilisez le bouton "📍 Partager la localisation" de Telegram</i>`)
+💡 <i>Utilisez le bouton "📍 Partager la localisation" de Telegram</i>`)
 
         return new Response('Photo saved', { status: 200 })
-      } catch (photoError) {
-        console.error('Photo processing error:', photoError)
+      } catch (error) {
+        console.error('❌ Photo processing error:', error)
         await sendMessage('❌ Erreur lors du traitement de la photo')
-        return new Response('Photo processing error', { status: 500 })
+        return new Response('Error', { status: 500 })
       }
     }
 
-    // Gestion de la localisation
+    // GESTION DE LA LOCALISATION
     if (message.location) {
-      console.log('Processing location message')
+      console.log('📍 Processing location message')
 
       try {
         const { latitude, longitude } = message.location
-        console.log('Location:', { latitude, longitude })
+        console.log('📍 Location coordinates:', { latitude, longitude })
 
-        // Vérifier que l'utilisateur existe
+        // Vérifier l'utilisateur
         const { data: user, error: userError } = await supabaseClient.rpc('get_user_by_telegram_id', {
           p_telegram_id: telegramId
         })
 
-        console.log('User check for location:', { user, userError })
-
         if (userError || !user) {
-          await sendMessage('❌ Utilisateur non trouvé. Tapez /start pour vous inscrire.')
+          await sendMessage('❌ Tapez /start pour vous inscrire d\'abord.')
           return new Response('User not found', { status: 404 })
         }
 
@@ -377,30 +299,32 @@ Maintenant, partagez votre localisation pour finaliser le signalement.
           p_telegram_id: telegramId
         })
 
-        console.log('Pending report retrieval result:', { pendingReport, pendingError })
+        console.log('🔍 Pending report lookup:', { pendingReport, pendingError })
 
         if (pendingError || !pendingReport || !pendingReport.file_id) {
-          console.log('No pending photo found for user')
-          await sendMessage(`❌ <b>Aucune photo en attente trouvée</b>
+          console.log('❌ No pending photo found')
+          await sendMessage(`❌ <b>Aucune photo en attente</b>
 
-Veuillez d'abord envoyer une photo du problème environnemental, puis partagez votre localisation.
+Processus à suivre :
+1. 📸 Envoyez d'abord une photo
+2. 📍 Puis partagez votre localisation
 
-<i>💡 Processus :</i>
-1. 📸 Envoyez une photo
-2. 📍 Partagez votre localisation`)
-          return new Response('No pending photo found', { status: 400 })
+Recommencez en envoyant une photo ! 🔄`)
+          return new Response('No pending photo', { status: 400 })
         }
 
-        // Obtenir l'URL réelle de la photo via l'API Telegram
+        // Obtenir l'URL de la photo via l'API Telegram
         const photoUrl = await getFileUrl(pendingReport.file_id)
         
         if (!photoUrl) {
-          await sendMessage('❌ Erreur lors de la récupération de la photo. Veuillez renvoyer votre photo et localisation.')
-          return new Response('Error getting photo URL', { status: 500 })
+          console.error('❌ Failed to get photo URL')
+          await sendMessage('❌ Erreur photo. Renvoyez votre photo et localisation.')
+          return new Response('Photo URL error', { status: 500 })
         }
 
-        // Créer le signalement avec la vraie URL de la photo
-        console.log('Creating report with RPC call')
+        console.log('📸 Photo URL obtained:', photoUrl)
+
+        // Créer le signalement complet
         const { data: report, error: reportError } = await supabaseClient.rpc('create_report', {
           p_user_telegram_id: telegramId,
           p_photo_url: photoUrl,
@@ -409,68 +333,67 @@ Veuillez d'abord envoyer une photo du problème environnemental, puis partagez v
           p_location_lng: longitude
         })
 
-        console.log('Report creation result:', { report, reportError })
-
         if (reportError) {
-          console.error('Error creating report:', reportError)
-          await sendMessage('❌ Erreur lors de la création du signalement. Veuillez réessayer.')
-          return new Response('Error creating report', { status: 500 })
+          console.error('❌ Error creating report:', reportError)
+          await sendMessage('❌ Erreur création signalement. Réessayez.')
+          return new Response('Report error', { status: 500 })
         }
 
-        // Ajouter des points à l'utilisateur
-        console.log('Adding points to user')
-        const { data: updatedUser, error: pointsError } = await supabaseClient.rpc('add_points_to_user', {
+        console.log('✅ Report created successfully:', report.id)
+
+        // Ajouter des points
+        const { error: pointsError } = await supabaseClient.rpc('add_points_to_user', {
           p_telegram_id: telegramId,
           p_points: 10
         })
 
-        console.log('Points addition result:', { updatedUser, pointsError })
+        if (pointsError) {
+          console.log('⚠️ Points addition warning:', pointsError)
+        }
 
         const successText = `✅ <b>Signalement créé avec succès !</b>
 
-📍 <b>Localisation :</b> ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
-📸 <b>Photo :</b> Sauvegardée et associée
-🎯 <b>Points gagnés :</b> +10 points Himpact
+📍 <b>Position :</b> ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
+📸 <b>Photo :</b> Sauvegardée
+🎯 <b>Points :</b> +10 points Himpact
 ⏰ <b>Statut :</b> En attente de validation
 
-Votre signalement sera examiné par nos équipes. Vous recevrez +50 points bonus si il est validé ! 🎉`
+Vous recevrez +50 points bonus si validé ! 🎉`
 
         const keyboard = {
           inline_keyboard: [
             [
-              { text: '🗺️ Voir sur la carte', url: 'https://ligneverte.xyz/carte' },
-              { text: '💰 Mes points', callback_data: 'check_points' }
+              { text: '🗺️ Voir carte', url: 'https://ligneverte.xyz/carte' },
+              { text: '💰 Mes points', callback_data: 'points' }
             ]
           ]
         }
 
         await sendMessage(successText, keyboard)
         return new Response('Report created', { status: 200 })
-      } catch (locationError) {
-        console.error('Location processing error:', locationError)
-        await sendMessage('❌ Erreur lors du traitement de la localisation')
-        return new Response('Location processing error', { status: 500 })
+      } catch (error) {
+        console.error('❌ Location processing error:', error)
+        await sendMessage('❌ Erreur traitement localisation')
+        return new Response('Error', { status: 500 })
       }
     }
 
-    // Message par défaut pour les autres types de messages
-    console.log('Unrecognized message type, sending default response')
+    // Message par défaut
     await sendMessage(`🤖 <b>Message non reconnu</b>
 
 Pour signaler un problème :
 1. 📸 Envoyez une photo
 2. 📍 Partagez votre localisation
 
-Tapez /aide pour plus d'informations.`)
+Tapez /aide pour plus d'infos.`)
 
-    return new Response('Message processed', { status: 200 })
+    return new Response('OK', { status: 200 })
 
   } catch (error) {
     console.error('=== GLOBAL ERROR ===')
-    console.error('Error processing telegram update:', error)
-    console.error('Error stack:', error.stack)
+    console.error('Error:', error)
     
-    return new Response('Internal server error', { 
+    return new Response('Internal error', { 
       status: 500,
       headers: corsHeaders 
     })
