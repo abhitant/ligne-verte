@@ -16,37 +16,31 @@ export class LocationHandler {
     console.log('👤 User info:', { telegramId, telegramUsername, firstName })
 
     try {
-      // Vérifier ou créer l'utilisateur
+      // Vérifier ou créer l'utilisateur avec le bon telegram_username
       console.log('🔍 Checking or creating user with telegram_id:', telegramId)
       
-      let { data: user, error: userError } = await this.supabaseClient.rpc('get_user_by_telegram_id', {
-        p_telegram_id: telegramId
+      // Utiliser le nom d'utilisateur Telegram ou le prénom comme pseudo
+      const pseudo = telegramUsername ? `@${telegramUsername}` : firstName || `User ${telegramId.slice(-4)}`
+      
+      console.log('👤 Creating/updating user with:', {
+        p_telegram_id: telegramId,
+        p_telegram_username: telegramUsername,
+        p_pseudo: pseudo
       })
 
-      console.log('👤 User lookup result:', { user, userError })
+      const { data: user, error: userError } = await this.supabaseClient.rpc('create_user_if_not_exists', {
+        p_telegram_id: telegramId,
+        p_telegram_username: telegramUsername,
+        p_pseudo: pseudo
+      })
 
-      // Si l'utilisateur n'existe pas, le créer
-      if (userError || !user || !user.telegram_id) {
-        console.log('👤 User not found, creating new user...')
-        
-        // Utiliser le nom d'utilisateur Telegram ou le prénom comme pseudo
-        const pseudo = telegramUsername ? `@${telegramUsername}` : firstName || `User ${telegramId.slice(-4)}`
-        
-        const { data: newUser, error: createError } = await this.supabaseClient.rpc('create_user_if_not_exists', {
-          p_telegram_id: telegramId,
-          p_telegram_username: telegramUsername,
-          p_pseudo: pseudo
-        })
-
-        if (createError) {
-          console.error('❌ Error creating user:', createError)
-          await this.telegramAPI.sendMessage(chatId, '❌ Erreur lors de la création du profil utilisateur.')
-          return { success: false, error: createError }
-        }
-
-        user = newUser
-        console.log('✅ User created successfully:', user)
+      if (userError) {
+        console.error('❌ Error creating/updating user:', userError)
+        await this.telegramAPI.sendMessage(chatId, '❌ Erreur lors de la création du profil utilisateur.')
+        return { success: false, error: userError }
       }
+
+      console.log('✅ User created/updated successfully:', user)
 
       // Récupérer et supprimer le signalement en attente
       const { data: pendingReport, error: pendingError } = await this.supabaseClient.rpc('get_and_delete_pending_report', {
@@ -79,7 +73,7 @@ Recommencez en envoyant une photo ! 🔄`)
 
       console.log('📸 Photo URL obtained:', photoUrl)
 
-      // Créer le signalement complet avec les vraies coordonnées
+      // Créer le signalement complet avec les coordonnées reçues
       console.log('📍 Creating report with coordinates:', { latitude, longitude })
       const { data: report, error: reportError } = await this.supabaseClient.rpc('create_report', {
         p_user_telegram_id: telegramId,
