@@ -1,9 +1,9 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MapPin, Filter, Eye } from "lucide-react";
+import OpenStreetMap from "@/components/OpenStreetMap";
 
 interface MapReport {
   id: string;
@@ -82,7 +82,7 @@ const Map = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Map Placeholder */}
+          {/* Map with OpenStreetMap */}
           <div className="lg:col-span-2">
             <Card className="bg-white shadow-lg h-[600px]">
               <CardHeader>
@@ -116,22 +116,13 @@ const Map = () => {
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="h-full">
-                <div className="w-full h-full bg-gray-100 rounded-lg relative overflow-hidden">
-                  {/* Placeholder pour la carte Mapbox */}
-                  <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-green-100 to-blue-100">
-                    <div className="text-center">
-                      <MapPin className="w-16 h-16 text-green-600 mx-auto mb-4" />
-                      <p className="text-lg font-medium text-gray-700 mb-2">Carte Interactive Mapbox</p>
-                      <p className="text-sm text-gray-500">La carte s'affichera ici avec l'intégration Mapbox</p>
-                    </div>
-                  </div>
-                  
-                  {/* Points de signalement simulés */}
-                  <div className="absolute top-20 left-32 w-4 h-4 bg-yellow-500 rounded-full border-2 border-white shadow-lg cursor-pointer hover:scale-110 transition-transform"></div>
-                  <div className="absolute top-40 left-20 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-lg cursor-pointer hover:scale-110 transition-transform"></div>
-                  <div className="absolute bottom-32 right-40 w-4 h-4 bg-yellow-500 rounded-full border-2 border-white shadow-lg cursor-pointer hover:scale-110 transition-transform"></div>
-                </div>
+              <CardContent className="h-full p-2">
+                <OpenStreetMap
+                  reports={reports}
+                  selectedReport={selectedReport}
+                  onReportSelect={setSelectedReport}
+                  filter={filter}
+                />
               </CardContent>
             </Card>
           </div>
