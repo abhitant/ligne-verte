@@ -1,9 +1,10 @@
+
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, Filter, Eye } from "lucide-react";
+import { MapPin, Filter, Eye, Loader2 } from "lucide-react";
 import OpenStreetMap from "@/components/OpenStreetMap";
+import { useReports } from "@/hooks/useReports";
 
 interface MapReport {
   id: string;
@@ -19,39 +20,8 @@ interface MapReport {
 const Map = () => {
   const [selectedReport, setSelectedReport] = useState<MapReport | null>(null);
   const [filter, setFilter] = useState<'all' | 'pending' | 'validated'>('all');
-
-  const reports: MapReport[] = [
-    {
-      id: '1',
-      user: 'Kouame Jean',
-      location: 'Cocody, Abidjan',
-      coordinates: { lat: 5.3478, lng: -4.0267 },
-      description: 'Poubelles sauvages près du marché',
-      status: 'pending',
-      date: '2024-01-15',
-      type: 'waste'
-    },
-    {
-      id: '2',
-      user: 'Aminata Traoré',
-      location: 'Yopougon, Abidjan',
-      coordinates: { lat: 5.3364, lng: -4.0854 },
-      description: 'Caniveau bouché devant école',
-      status: 'validated',
-      date: '2024-01-14',
-      type: 'drain'
-    },
-    {
-      id: '3',
-      user: 'Ibrahim Diallo',
-      location: 'Adjamé, Abidjan',
-      coordinates: { lat: 5.3600, lng: -4.0100 },
-      description: 'Déchets plastiques sur le trottoir',
-      status: 'pending',
-      date: '2024-01-13',
-      type: 'waste'
-    }
-  ];
+  
+  const { data: reports = [], isLoading, error } = useReports();
 
   const filteredReports = reports.filter(report => 
     filter === 'all' || report.status === filter
@@ -72,6 +42,27 @@ const Map = () => {
       default: return '⚠️';
     }
   };
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 p-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold text-green-800 mb-2">🗺️ Carte des Signalements</h1>
+            <p className="text-lg text-gray-600">Visualisez tous les signalements d'Abidjan</p>
+          </div>
+          <Card className="bg-white shadow-lg">
+            <CardContent className="p-6">
+              <div className="text-center text-red-600">
+                <p className="text-lg font-semibold mb-2">Erreur lors du chargement des signalements</p>
+                <p className="text-sm">Vérifiez votre connexion internet et réessayez.</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 p-4">
@@ -97,32 +88,41 @@ const Map = () => {
                       size="sm"
                       onClick={() => setFilter('all')}
                     >
-                      Tous
+                      Tous ({reports.length})
                     </Button>
                     <Button
                       variant={filter === 'pending' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setFilter('pending')}
                     >
-                      En attente
+                      En attente ({reports.filter(r => r.status === 'pending').length})
                     </Button>
                     <Button
                       variant={filter === 'validated' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setFilter('validated')}
                     >
-                      Validés
+                      Validés ({reports.filter(r => r.status === 'validated').length})
                     </Button>
                   </div>
                 </div>
               </CardHeader>
               <CardContent className="h-full p-2">
-                <OpenStreetMap
-                  reports={reports}
-                  selectedReport={selectedReport}
-                  onReportSelect={setSelectedReport}
-                  filter={filter}
-                />
+                {isLoading ? (
+                  <div className="flex items-center justify-center h-full">
+                    <div className="text-center">
+                      <Loader2 className="w-8 h-8 animate-spin mx-auto mb-2 text-green-600" />
+                      <p className="text-gray-600">Chargement des signalements...</p>
+                    </div>
+                  </div>
+                ) : (
+                  <OpenStreetMap
+                    reports={reports}
+                    selectedReport={selectedReport}
+                    onReportSelect={setSelectedReport}
+                    filter={filter}
+                  />
+                )}
               </CardContent>
             </Card>
           </div>
@@ -136,37 +136,50 @@ const Map = () => {
                   Signalements ({filteredReports.length})
                 </CardTitle>
                 <CardDescription>
-                  Cliquez pour voir sur la carte
+                  {isLoading ? 'Chargement...' : 'Cliquez pour voir sur la carte'}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3 max-h-[500px] overflow-y-auto">
-                {filteredReports.map((report) => (
-                  <div 
-                    key={report.id}
-                    className={`p-3 border rounded-lg cursor-pointer transition-all hover:shadow-md ${
-                      selectedReport?.id === report.id ? 'ring-2 ring-green-500 bg-green-50' : 'hover:bg-gray-50'
-                    }`}
-                    onClick={() => setSelectedReport(report)}
-                  >
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex items-center gap-2">
-                        <span className="text-lg">{getTypeIcon(report.type)}</span>
-                        <span className="font-medium text-sm">{report.user}</span>
-                      </div>
-                      <div className={`w-3 h-3 rounded-full ${getStatusColor(report.status)}`}></div>
-                    </div>
-                    <p className="text-sm text-gray-600 mb-2">{report.location}</p>
-                    <p className="text-xs text-gray-500 line-clamp-2">{report.description}</p>
-                    <div className="flex items-center justify-between mt-2">
-                      <span className="text-xs text-gray-400">
-                        {new Date(report.date).toLocaleDateString('fr-FR')}
-                      </span>
-                      <Button size="sm" variant="ghost" className="h-6 px-2">
-                        <Eye className="w-3 h-3" />
-                      </Button>
-                    </div>
+                {isLoading ? (
+                  <div className="flex items-center justify-center py-8">
+                    <Loader2 className="w-6 h-6 animate-spin text-green-600" />
                   </div>
-                ))}
+                ) : filteredReports.length === 0 ? (
+                  <div className="text-center py-8 text-gray-500">
+                    <p>Aucun signalement trouvé</p>
+                    <p className="text-sm mt-2">
+                      {filter !== 'all' ? 'Essayez de changer le filtre.' : 'Les signalements apparaîtront ici.'}
+                    </p>
+                  </div>
+                ) : (
+                  filteredReports.map((report) => (
+                    <div 
+                      key={report.id}
+                      className={`p-3 border rounded-lg cursor-pointer transition-all hover:shadow-md ${
+                        selectedReport?.id === report.id ? 'ring-2 ring-green-500 bg-green-50' : 'hover:bg-gray-50'
+                      }`}
+                      onClick={() => setSelectedReport(report)}
+                    >
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <span className="text-lg">{getTypeIcon(report.type)}</span>
+                          <span className="font-medium text-sm">{report.user}</span>
+                        </div>
+                        <div className={`w-3 h-3 rounded-full ${getStatusColor(report.status)}`}></div>
+                      </div>
+                      <p className="text-sm text-gray-600 mb-2">{report.location}</p>
+                      <p className="text-xs text-gray-500 line-clamp-2">{report.description}</p>
+                      <div className="flex items-center justify-between mt-2">
+                        <span className="text-xs text-gray-400">
+                          {new Date(report.date).toLocaleDateString('fr-FR')}
+                        </span>
+                        <Button size="sm" variant="ghost" className="h-6 px-2">
+                          <Eye className="w-3 h-3" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))
+                )}
               </CardContent>
             </Card>
 
@@ -188,6 +201,29 @@ const Map = () => {
                   <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                   <span className="text-sm">Rejeté</span>
                 </div>
+              </CardContent>
+            </Card>
+
+            {/* Call to action */}
+            <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg">
+              <CardContent className="p-4 text-center">
+                <h3 className="font-bold mb-2">Signaler une zone insalubre</h3>
+                <p className="text-sm mb-3 opacity-90">
+                  Utilisez notre bot Telegram pour signaler
+                </p>
+                <Button 
+                  variant="outline" 
+                  className="bg-white text-green-600 hover:bg-gray-100 w-full"
+                >
+                  <a 
+                    href="https://t.me/LigneVerteBot" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center w-full"
+                  >
+                    Ouvrir le Bot
+                  </a>
+                </Button>
               </CardContent>
             </Card>
           </div>
