@@ -91,16 +91,16 @@ serve(async (req) => {
       return new Response('OK', { status: 200 })
     }
 
-    // Traitement des photos
+    // Traitement des photos - passer les infos utilisateur
     if (message.photo && message.photo.length > 0) {
-      const result = await photoHandler.handlePhoto(chatId, telegramId, message.photo)
+      const result = await photoHandler.handlePhoto(chatId, telegramId, message.photo, telegramUsername, firstName)
       return new Response('OK', { status: 200 })
     }
 
-    // Traitement de la localisation
+    // Traitement de la localisation - passer les infos utilisateur
     if (message.location) {
       const { latitude, longitude } = message.location
-      const result = await locationHandler.handleLocation(chatId, telegramId, latitude, longitude)
+      const result = await locationHandler.handleLocation(chatId, telegramId, latitude, longitude, telegramUsername, firstName)
       return new Response('OK', { status: 200 })
     }
 

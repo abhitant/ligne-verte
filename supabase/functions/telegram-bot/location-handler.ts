@@ -10,9 +10,10 @@ export class LocationHandler {
     this.supabaseClient = supabaseClient
   }
 
-  async handleLocation(chatId: number, telegramId: string, latitude: number, longitude: number) {
+  async handleLocation(chatId: number, telegramId: string, latitude: number, longitude: number, telegramUsername?: string, firstName?: string) {
     console.log('📍 Processing location message')
     console.log('📍 Location coordinates:', { latitude, longitude })
+    console.log('👤 User info:', { telegramId, telegramUsername, firstName })
 
     try {
       // Vérifier ou créer l'utilisateur
@@ -27,10 +28,14 @@ export class LocationHandler {
       // Si l'utilisateur n'existe pas, le créer
       if (userError || !user || !user.telegram_id) {
         console.log('👤 User not found, creating new user...')
+        
+        // Utiliser le nom d'utilisateur Telegram ou le prénom comme pseudo
+        const pseudo = telegramUsername ? `@${telegramUsername}` : firstName || `User ${telegramId.slice(-4)}`
+        
         const { data: newUser, error: createError } = await this.supabaseClient.rpc('create_user_if_not_exists', {
           p_telegram_id: telegramId,
-          p_telegram_username: null,
-          p_pseudo: `User ${telegramId.slice(-4)}`
+          p_telegram_username: telegramUsername,
+          p_pseudo: pseudo
         })
 
         if (createError) {
@@ -74,7 +79,8 @@ Recommencez en envoyant une photo ! 🔄`)
 
       console.log('📸 Photo URL obtained:', photoUrl)
 
-      // Créer le signalement complet
+      // Créer le signalement complet avec les vraies coordonnées
+      console.log('📍 Creating report with coordinates:', { latitude, longitude })
       const { data: report, error: reportError } = await this.supabaseClient.rpc('create_report', {
         p_user_telegram_id: telegramId,
         p_photo_url: photoUrl,

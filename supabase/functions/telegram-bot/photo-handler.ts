@@ -11,8 +11,9 @@ export class PhotoHandler {
     this.supabaseClient = supabaseClient
   }
 
-  async handlePhoto(chatId: number, telegramId: string, photos: any[]) {
+  async handlePhoto(chatId: number, telegramId: string, photos: any[], telegramUsername?: string, firstName?: string) {
     console.log('📸 Processing photo message - Photo array:', photos)
+    console.log('👤 User info:', { telegramId, telegramUsername, firstName })
 
     try {
       // Vérifier ou créer l'utilisateur
@@ -27,10 +28,14 @@ export class PhotoHandler {
       // Si l'utilisateur n'existe pas, le créer
       if (userError || !user || !user.telegram_id) {
         console.log('👤 User not found, creating new user...')
+        
+        // Utiliser le nom d'utilisateur Telegram ou le prénom comme pseudo
+        const pseudo = telegramUsername ? `@${telegramUsername}` : firstName || `User ${telegramId.slice(-4)}`
+        
         const { data: newUser, error: createError } = await this.supabaseClient.rpc('create_user_if_not_exists', {
           p_telegram_id: telegramId,
-          p_telegram_username: null,
-          p_pseudo: `User ${telegramId.slice(-4)}`
+          p_telegram_username: telegramUsername,
+          p_pseudo: pseudo
         })
 
         if (createError) {
