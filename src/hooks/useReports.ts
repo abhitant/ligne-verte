@@ -91,54 +91,36 @@ export const useReports = () => {
       const uniqueTelegramIds = [...new Set(reports.map(r => r.user_telegram_id))];
       console.log('Unique telegram IDs in reports:', uniqueTelegramIds);
 
-      // Vérifier quels utilisateurs existent dans la table users
-      const { data: existingUsers, error: existingUsersError } = await supabase
-        .from('users')
-        .select('telegram_id, pseudo, telegram_username')
-        .in('telegram_id', uniqueTelegramIds);
-
-      if (existingUsersError) {
-        console.error('Error fetching existing users:', existingUsersError);
-      } else {
-        console.log('Existing users found in database:', existingUsers);
-      }
-
-      // Identifier les utilisateurs manquants
-      const existingTelegramIds = existingUsers?.map(u => u.telegram_id) || [];
-      const missingTelegramIds = uniqueTelegramIds.filter(id => !existingTelegramIds.includes(id));
-      
-      console.log('Missing users that need to be created:', missingTelegramIds);
-
-      // Créer les utilisateurs manquants
-      for (const telegramId of missingTelegramIds) {
+      // Créer tous les utilisateurs manquants d'abord
+      for (const telegramId of uniqueTelegramIds) {
         try {
-          console.log(`Creating missing user for telegram_id: ${telegramId}`);
-          const { data: newUser, error: createError } = await supabase.rpc('create_user_if_not_exists', {
+          console.log(`Ensuring user exists for telegram_id: ${telegramId}`);
+          const { data: user, error: createError } = await supabase.rpc('create_user_if_not_exists', {
             p_telegram_id: telegramId,
             p_telegram_username: null,
             p_pseudo: `User ${telegramId.slice(-4)}`
           });
 
           if (createError) {
-            console.error(`Error creating user ${telegramId}:`, createError);
+            console.error(`Error ensuring user ${telegramId}:`, createError);
           } else {
-            console.log(`Successfully created user ${telegramId}:`, newUser);
+            console.log(`User ensured for ${telegramId}:`, user);
           }
         } catch (error) {
-          console.error(`Failed to create user ${telegramId}:`, error);
+          console.error(`Failed to ensure user ${telegramId}:`, error);
         }
       }
 
-      // Maintenant récupérer tous les utilisateurs (existants + nouvellement créés)
+      // Maintenant récupérer tous les utilisateurs
       const { data: allUsers, error: allUsersError } = await supabase
         .from('users')
         .select('telegram_id, pseudo, telegram_username, points_himpact')
         .in('telegram_id', uniqueTelegramIds);
 
       if (allUsersError) {
-        console.error('Error fetching all users after creation:', allUsersError);
+        console.error('Error fetching all users:', allUsersError);
       } else {
-        console.log('All users now in database:', allUsers);
+        console.log('All users found in database:', allUsers);
       }
 
       // Créer une map pour un accès rapide aux données utilisateur
@@ -165,7 +147,12 @@ export const useReports = () => {
         let displayName = `Utilisateur ${report.user_telegram_id.slice(-4)}`;
         
         if (user) {
-          displayName = user.pseudo || user.telegram_username || displayName;
+          // Prioriser telegram_username, puis pseudo, puis fallback
+          if (user.telegram_username) {
+            displayName = `@${user.telegram_username}`;
+          } else if (user.pseudo && user.pseudo !== `User ${report.user_telegram_id.slice(-4)}`) {
+            displayName = user.pseudo;
+          }
           console.log(`Display name for ${report.user_telegram_id}: ${displayName} (${user.points_himpact} points)`);
         } else {
           console.log(`Using fallback name for ${report.user_telegram_id}: ${displayName}`);
