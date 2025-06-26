@@ -91,18 +91,28 @@ export const useReports = () => {
       const uniqueTelegramIds = [...new Set(reports.map(r => r.user_telegram_id))];
       console.log('Unique telegram IDs in reports:', uniqueTelegramIds);
 
-      // Récupérer TOUS les utilisateurs directement depuis la table users
+      // Debug: Vérifier d'abord tous les utilisateurs dans la table
+      const { data: allUsers, error: allUsersError } = await supabase
+        .from('users')
+        .select('*');
+      
+      console.log('ALL users in database:', allUsers);
+      console.log('All users error:', allUsersError);
+
+      // Récupérer TOUS les utilisateurs avec les IDs correspondants
       const { data: users, error: usersError } = await supabase
         .from('users')
         .select('telegram_id, pseudo, telegram_username, points_himpact')
         .in('telegram_id', uniqueTelegramIds);
 
+      console.log('Users query with telegram_ids:', uniqueTelegramIds);
+      console.log('Users fetched from database:', users);
+      console.log('Users fetch error:', usersError);
+
       if (usersError) {
         console.error('Error fetching users:', usersError);
         throw usersError;
       }
-
-      console.log('Users fetched from database:', users);
 
       // Créer une map pour un accès rapide aux données utilisateur
       const usersMap = new Map();
