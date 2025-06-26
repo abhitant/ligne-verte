@@ -78,16 +78,12 @@ serve(async (req) => {
     // Traitement des commandes
     if (message.text === '/start') {
       const result = await commandHandler.handleStart(chatId, telegramId, telegramUsername, firstName)
-      return new Response(result.success ? 'OK' : 'Error', { 
-        status: result.success ? 200 : 500 
-      })
+      return new Response('OK', { status: 200 })
     }
 
     if (message.text === '/points') {
       const result = await commandHandler.handlePoints(chatId, telegramId)
-      return new Response(result.success ? 'OK' : 'Error', { 
-        status: result.success ? 200 : (result.error === 'User not found' ? 404 : 500)
-      })
+      return new Response('OK', { status: 200 })
     }
 
     if (message.text === '/aide' || message.text === '/help') {
@@ -98,27 +94,17 @@ serve(async (req) => {
     // Traitement des photos
     if (message.photo && message.photo.length > 0) {
       const result = await photoHandler.handlePhoto(chatId, telegramId, message.photo)
-      return new Response(result.success ? 'Photo saved' : 'Error', { 
-        status: result.success ? 200 : (result.error === 'User not found' ? 404 : 500)
-      })
+      return new Response('OK', { status: 200 })
     }
 
     // Traitement de la localisation
     if (message.location) {
       const { latitude, longitude } = message.location
       const result = await locationHandler.handleLocation(chatId, telegramId, latitude, longitude)
-      return new Response(result.success ? 'Report created' : 'Error', { 
-        status: result.success ? 200 : (result.error === 'User not found' ? 404 : (result.error === 'No pending photo' ? 400 : 500))
-      })
-    }
-
-    // Ignorer les messages vides ou non reconnus SANS répondre
-    if (!message.text && !message.photo && !message.location) {
-      console.log('Empty or unrecognized message type, ignoring silently')
       return new Response('OK', { status: 200 })
     }
 
-    // Messages texte non reconnus (seulement si c'est vraiment du texte)
+    // Messages texte non reconnus (seulement si c'est vraiment du texte non-commande)
     if (message.text && !message.text.startsWith('/')) {
       await telegramAPI.sendMessage(chatId, `🤖 <b>Message non reconnu</b>
 
@@ -127,8 +113,11 @@ Pour signaler un problème :
 2. 📍 Partagez votre localisation
 
 Tapez /aide pour plus d'infos.`)
+      return new Response('OK', { status: 200 })
     }
 
+    // Ignorer silencieusement tous les autres types de messages
+    console.log('Message ignored silently')
     return new Response('OK', { status: 200 })
 
   } catch (error) {

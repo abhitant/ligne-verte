@@ -65,17 +65,7 @@ export class PhotoHandler {
         return { success: false, error: pendingError }
       }
 
-      // Vérifier que l'enregistrement a bien été créé
-      const { data: verification, error: verificationError } = await this.supabaseClient
-        .from('pending_reports')
-        .select('*')
-        .eq('telegram_id', telegramId)
-
-      console.log('🔍 Verification of saved pending report:', {
-        verification,
-        verificationError
-      })
-
+      // Message de succès uniquement si tout s'est bien passé
       await this.telegramAPI.sendMessage(chatId, `📸 <b>Photo reçue et sauvegardée !</b>
 
 Maintenant, partagez votre localisation pour finaliser le signalement.
