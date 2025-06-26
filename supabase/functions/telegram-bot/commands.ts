@@ -42,8 +42,8 @@ Bonjour ${firstName} ! Vous êtes inscrit(e) avec <b>${user.points_himpact} poin
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Carte', url: 'https://ligneverte.xyz/carte' },
-            { text: '🛒 Marketplace', url: 'https://ligneverte.xyz/marketplace' }
+            { text: '🗺️ Carte', url: 'https://ligneverte.lovable.app/map' },
+            { text: '🛒 Marketplace', url: 'https://ligneverte.lovable.app/marketplace' }
           ]
         ]
       }
@@ -78,7 +78,7 @@ Vous avez <b>${user.points_himpact} points</b> ! 🎉
 
       const keyboard = {
         inline_keyboard: [
-          [{ text: '🛒 Marketplace', url: 'https://ligneverte.xyz/marketplace' }]
+          [{ text: '🛒 Marketplace', url: 'https://ligneverte.lovable.app/marketplace' }]
         ]
       }
 
@@ -110,8 +110,8 @@ Vous avez <b>${user.points_himpact} points</b> ! 🎉
     const keyboard = {
       inline_keyboard: [
         [
-          { text: '🗺️ Carte', url: 'https://ligneverte.xyz/carte' },
-          { text: '🛒 Marketplace', url: 'https://ligneverte.xyz/marketplace' }
+          { text: '🗺️ Carte', url: 'https://ligneverte.lovable.app/map' },
+          { text: '🛒 Marketplace', url: 'https://ligneverte.lovable.app/marketplace' }
         ]
       ]
     }
