@@ -1,1 +1,8 @@
+
 project_id = "mpowpfgigzdpebtuohfk"
+
+[functions.telegram-bot]
+verify_jwt = false
+
+[functions.telegram-diagnostic]
+verify_jwt = false
