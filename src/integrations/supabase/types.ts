@@ -9,13 +9,142 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      reports: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          location_lat: number
+          location_lng: number
+          photo_url: string | null
+          status: string | null
+          user_telegram_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          location_lat: number
+          location_lng: number
+          photo_url?: string | null
+          status?: string | null
+          user_telegram_id: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          location_lat?: number
+          location_lng?: number
+          photo_url?: string | null
+          status?: string | null
+          user_telegram_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reports_user_telegram_id_fkey"
+            columns: ["user_telegram_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["telegram_id"]
+          },
+        ]
+      }
+      users: {
+        Row: {
+          created_at: string | null
+          points_himpact: number | null
+          pseudo: string | null
+          telegram_id: string
+          telegram_username: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          points_himpact?: number | null
+          pseudo?: string | null
+          telegram_id: string
+          telegram_username?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          points_himpact?: number | null
+          pseudo?: string | null
+          telegram_id?: string
+          telegram_username?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      add_points_to_user: {
+        Args: { p_telegram_id: string; p_points: number }
+        Returns: {
+          created_at: string | null
+          points_himpact: number | null
+          pseudo: string | null
+          telegram_id: string
+          telegram_username: string | null
+        }
+      }
+      create_report: {
+        Args: {
+          p_user_telegram_id: string
+          p_photo_url: string
+          p_description: string
+          p_location_lat: number
+          p_location_lng: number
+        }
+        Returns: {
+          created_at: string | null
+          description: string | null
+          id: string
+          location_lat: number
+          location_lng: number
+          photo_url: string | null
+          status: string | null
+          user_telegram_id: string
+        }
+      }
+      create_user_if_not_exists: {
+        Args: {
+          p_telegram_id: string
+          p_telegram_username?: string
+          p_pseudo?: string
+        }
+        Returns: {
+          created_at: string | null
+          points_himpact: number | null
+          pseudo: string | null
+          telegram_id: string
+          telegram_username: string | null
+        }
+      }
+      get_user_by_telegram_id: {
+        Args: { p_telegram_id: string }
+        Returns: {
+          created_at: string | null
+          points_himpact: number | null
+          pseudo: string | null
+          telegram_id: string
+          telegram_username: string | null
+        }
+      }
+      update_report_status: {
+        Args: { p_report_id: string; p_status: string }
+        Returns: {
+          created_at: string | null
+          description: string | null
+          id: string
+          location_lat: number
+          location_lng: number
+          photo_url: string | null
+          status: string | null
+          user_telegram_id: string
+        }
+      }
     }
     Enums: {
       [_ in never]: never
