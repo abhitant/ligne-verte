@@ -13,25 +13,24 @@ export class PhotoHandler {
 
   async handlePhoto(chatId: number, telegramId: string, photos: any[], telegramUsername?: string, firstName?: string) {
     console.log('📸 Processing photo message - Photo array:', photos)
-    console.log('👤 User info:', { telegramId, telegramUsername, firstName })
+    console.log('👤 User info received:', { telegramId, telegramUsername, firstName })
 
     try {
-      // Vérifier ou créer l'utilisateur avec le bon telegram_username
-      console.log('🔍 Checking or creating user with telegram_id:', telegramId)
+      // Préparer les données utilisateur avec le bon nom d'utilisateur
+      const actualTelegramUsername = telegramUsername || null;
+      const pseudoToUse = actualTelegramUsername ? actualTelegramUsername : (firstName || `User ${telegramId.slice(-4)}`);
       
-      // Utiliser le nom d'utilisateur Telegram ou le prénom comme pseudo
-      const pseudo = telegramUsername ? `@${telegramUsername}` : firstName || `User ${telegramId.slice(-4)}`
-      
-      console.log('👤 Creating/updating user with:', {
+      console.log('👤 User data to save:', {
         p_telegram_id: telegramId,
-        p_telegram_username: telegramUsername,
-        p_pseudo: pseudo
-      })
+        p_telegram_username: actualTelegramUsername,
+        p_pseudo: pseudoToUse
+      });
 
+      // Vérifier ou créer l'utilisateur avec les bonnes données
       const { data: user, error: userError } = await this.supabaseClient.rpc('create_user_if_not_exists', {
         p_telegram_id: telegramId,
-        p_telegram_username: telegramUsername,
-        p_pseudo: pseudo
+        p_telegram_username: actualTelegramUsername,
+        p_pseudo: pseudoToUse
       })
 
       if (userError) {
@@ -41,6 +40,15 @@ export class PhotoHandler {
       }
 
       console.log('✅ User created/updated successfully:', user)
+
+      // Vérifier que l'utilisateur a bien été créé en le récupérant
+      const { data: verifyUser, error: verifyError } = await this.supabaseClient
+        .from('users')
+        .select('*')
+        .eq('telegram_id', telegramId)
+        .single()
+
+      console.log('🔍 User verification after creation:', { verifyUser, verifyError })
 
       // Sélectionner la meilleure photo (plus grande taille)
       const bestPhoto = photos.reduce((prev, current) => 
