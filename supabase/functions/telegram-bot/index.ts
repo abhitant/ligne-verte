@@ -247,16 +247,19 @@ Vous avez <b>${user.points_himpact} points</b> ! 🎉
 
     // GESTION DES PHOTOS
     if (message.photo && message.photo.length > 0) {
-      console.log('📸 Processing photo message')
+      console.log('📸 Processing photo message - Photo array:', message.photo)
 
       try {
         // Vérifier l'utilisateur
+        console.log('🔍 Checking user with telegram_id:', telegramId)
         const { data: user, error: userError } = await supabaseClient.rpc('get_user_by_telegram_id', {
           p_telegram_id: telegramId
         })
 
+        console.log('👤 User lookup result:', { user, userError })
+
         if (userError || !user) {
-          console.error('User not found for photo:', userError)
+          console.error('❌ User not found for photo:', userError)
           await sendMessage('❌ Tapez /start pour vous inscrire d\'abord.')
           return new Response('User not found', { status: 404 })
         }
@@ -266,21 +269,47 @@ Vous avez <b>${user.points_himpact} points</b> ! 🎉
           (current.file_size || current.width * current.height) > (prev.file_size || prev.width * prev.height) ? current : prev
         )
 
-        console.log('📸 Best photo selected:', bestPhoto.file_id)
+        console.log('📸 Best photo selected:', {
+          file_id: bestPhoto.file_id,
+          width: bestPhoto.width,
+          height: bestPhoto.height,
+          file_size: bestPhoto.file_size
+        })
 
-        // Sauvegarder dans pending_reports
+        // Sauvegarder dans pending_reports avec logs détaillés
+        console.log('💾 Calling upsert_pending_report with:', {
+          p_telegram_id: telegramId,
+          p_file_id: bestPhoto.file_id
+        })
+
         const { data: pendingReport, error: pendingError } = await supabaseClient.rpc('upsert_pending_report', {
           p_telegram_id: telegramId,
           p_file_id: bestPhoto.file_id
         })
 
-        console.log('💾 Pending report saved:', pendingReport)
+        console.log('💾 Pending report upsert result:', {
+          pendingReport,
+          pendingError,
+          errorMessage: pendingError?.message,
+          errorDetails: pendingError?.details
+        })
 
         if (pendingError) {
           console.error('❌ Error saving pending report:', pendingError)
           await sendMessage('❌ Erreur lors de la sauvegarde de la photo. Réessayez.')
           return new Response('Error', { status: 500 })
         }
+
+        // Vérifier que l'enregistrement a bien été créé
+        const { data: verification, error: verificationError } = await supabaseClient
+          .from('pending_reports')
+          .select('*')
+          .eq('telegram_id', telegramId)
+
+        console.log('🔍 Verification of saved pending report:', {
+          verification,
+          verificationError
+        })
 
         await sendMessage(`📸 <b>Photo reçue et sauvegardée !</b>
 
