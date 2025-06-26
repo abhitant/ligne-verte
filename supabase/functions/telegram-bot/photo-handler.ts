@@ -15,18 +15,32 @@ export class PhotoHandler {
     console.log('📸 Processing photo message - Photo array:', photos)
 
     try {
-      // Vérifier l'utilisateur
-      console.log('🔍 Checking user with telegram_id:', telegramId)
-      const { data: user, error: userError } = await this.supabaseClient.rpc('get_user_by_telegram_id', {
+      // Vérifier ou créer l'utilisateur
+      console.log('🔍 Checking or creating user with telegram_id:', telegramId)
+      
+      let { data: user, error: userError } = await this.supabaseClient.rpc('get_user_by_telegram_id', {
         p_telegram_id: telegramId
       })
 
       console.log('👤 User lookup result:', { user, userError })
 
-      if (userError || !user) {
-        console.error('❌ User not found for photo:', userError)
-        await this.telegramAPI.sendMessage(chatId, '❌ Tapez /start pour vous inscrire d\'abord.')
-        return { success: false, error: 'User not found' }
+      // Si l'utilisateur n'existe pas, le créer
+      if (userError || !user || !user.telegram_id) {
+        console.log('👤 User not found, creating new user...')
+        const { data: newUser, error: createError } = await this.supabaseClient.rpc('create_user_if_not_exists', {
+          p_telegram_id: telegramId,
+          p_telegram_username: null,
+          p_pseudo: `User ${telegramId.slice(-4)}`
+        })
+
+        if (createError) {
+          console.error('❌ Error creating user:', createError)
+          await this.telegramAPI.sendMessage(chatId, '❌ Erreur lors de la création du profil utilisateur.')
+          return { success: false, error: createError }
+        }
+
+        user = newUser
+        console.log('✅ User created successfully:', user)
       }
 
       // Sélectionner la meilleure photo (plus grande taille)
