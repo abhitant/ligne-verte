@@ -91,6 +91,11 @@ serve(async (req) => {
       return new Response('OK', { status: 200 })
     }
 
+    if (message.text === '/changenom') {
+      await commandHandler.handleChangeName(chatId, telegramId)
+      return new Response('OK', { status: 200 })
+    }
+
     // Traitement des photos - passer les infos utilisateur
     if (message.photo && message.photo.length > 0) {
       const result = await photoHandler.handlePhoto(chatId, telegramId, message.photo, telegramUsername, firstName)
@@ -104,8 +109,20 @@ serve(async (req) => {
       return new Response('OK', { status: 200 })
     }
 
-    // Messages texte non reconnus (seulement si c'est vraiment du texte non-commande)
+    // Messages texte - vérifier si c'est un choix de nom d'utilisateur
     if (message.text && !message.text.startsWith('/')) {
+      // Vérifier si l'utilisateur existe et n'a pas encore de nom personnalisé
+      const { data: existingUser, error: checkError } = await supabaseClient.rpc('get_user_by_telegram_id', {
+        p_telegram_id: telegramId
+      })
+
+      // Si l'utilisateur n'existe pas OU a un nom par défaut, traiter comme choix de nom
+      if (!existingUser || !existingUser.pseudo || existingUser.pseudo === `User ${telegramId.slice(-4)}` || existingUser.pseudo === firstName) {
+        const result = await commandHandler.handleUsernameChoice(chatId, telegramId, message.text, telegramUsername, firstName)
+        return new Response('OK', { status: 200 })
+      }
+
+      // Sinon, message non reconnu
       await telegramAPI.sendMessage(chatId, `🤖 <b>Message non reconnu</b>
 
 Pour signaler un problème :
