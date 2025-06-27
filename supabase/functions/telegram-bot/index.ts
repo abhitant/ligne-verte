@@ -75,23 +75,27 @@ serve(async (req) => {
     const telegramUsername = message.from.username
     const firstName = message.from.first_name
 
+    // Normaliser le texte des commandes en minuscules pour éviter les problèmes de casse
+    const messageText = message.text?.toLowerCase()
+
     // Traitement des commandes
-    if (message.text === '/start') {
+    if (messageText === '/start') {
+      console.log('Processing /start command')
       const result = await commandHandler.handleStart(chatId, telegramId, telegramUsername, firstName)
       return new Response('OK', { status: 200 })
     }
 
-    if (message.text === '/points') {
+    if (messageText === '/points') {
       const result = await commandHandler.handlePoints(chatId, telegramId)
       return new Response('OK', { status: 200 })
     }
 
-    if (message.text === '/aide' || message.text === '/help') {
+    if (messageText === '/aide' || messageText === '/help') {
       await commandHandler.handleHelp(chatId)
       return new Response('OK', { status: 200 })
     }
 
-    if (message.text === '/changenom') {
+    if (messageText === '/changenom') {
       await commandHandler.handleChangeName(chatId, telegramId)
       return new Response('OK', { status: 200 })
     }
