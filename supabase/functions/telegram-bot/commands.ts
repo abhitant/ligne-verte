@@ -51,19 +51,23 @@ Bonjour <b>${existingUser.pseudo}</b> ! Vous avez <b>${existingUser.points_himpa
         return { success: true }
       }
 
-      // Pour un nouvel utilisateur, demander le nom personnalisé
-      const welcomeText = `🌱 <b>Bienvenue sur La Ligne Verte !</b>
+      // Pour un nouvel utilisateur, présentation du standardiste et demande de nom
+      const welcomeText = `🌱 <b>Bonjour et bienvenue !</b>
 
-Bonjour ${firstName} ! Pour commencer, veuillez choisir un <b>nom d'utilisateur unique</b> qui vous représentera sur la plateforme.
+Je suis le <b>standardiste de La Ligne Verte</b>, votre plateforme citoyenne dédiée à l'amélioration de l'environnement urbain.
 
-📝 <b>Instructions :</b>
-• Entre 3 et 20 caractères
-• Lettres, chiffres et tirets autorisés
-• Pas d'espaces ni de caractères spéciaux
+<b>🎯 Notre mission :</b>
+Ensemble, nous identifions et signalons les problèmes environnementaux de notre ville pour la rendre plus verte et plus agréable à vivre.
 
-💡 <i>Exemple : Jean-Eco, Marie2024, CitoyenVert...</i>
+<b>💡 Comment ça fonctionne :</b>
+• Vous photographiez un problème (déchets, dégradations...)
+• Vous partagez votre localisation
+• Votre signalement apparaît sur notre carte collaborative
+• Vous gagnez des points Himpact pour vos contributions !
 
-✍️ <b>Tapez simplement votre nom d'utilisateur souhaité</b>`
+Pour commencer, <b>par quel nom souhaitez-vous être appelé ?</b>
+
+📝 <i>Votre nom doit contenir entre 3 et 20 caractères (lettres, chiffres et tirets autorisés)</i>`
 
       await this.telegramAPI.sendMessage(chatId, welcomeText)
       return { success: true }
@@ -80,7 +84,7 @@ Bonjour ${firstName} ! Pour commencer, veuillez choisir un <b>nom d'utilisateur 
     try {
       // Valider le format du nom d'utilisateur
       if (!this.isValidUsername(username)) {
-        await this.telegramAPI.sendMessage(chatId, `❌ <b>Nom d'utilisateur invalide</b>
+        await this.telegramAPI.sendMessage(chatId, `❌ <b>Nom invalide</b>
 
 Le nom doit :
 • Contenir entre 3 et 20 caractères
@@ -110,7 +114,7 @@ Le nom "<b>${username}</b>" est déjà utilisé.
 
 💡 <i>Suggestions :</i>
 • ${username}2024
-• ${username}-ci
+• ${username}-eco
 • ${username}123
 
 Veuillez choisir un autre nom.`)
@@ -130,24 +134,26 @@ Veuillez choisir un autre nom.`)
         return { success: false, error }
       }
 
-      const successText = `✅ <b>Inscription réussie !</b>
+      const successText = `✅ <b>Parfait ${username} !</b>
 
-Bienvenue <b>${username}</b> ! Vous êtes inscrit(e) avec <b>${user.points_himpact} points Himpact</b>.
+Votre inscription est terminée. Vous commencez avec <b>${user.points_himpact} points Himpact</b>.
 
-<b>📍 Comment signaler :</b>
-1. 📸 Envoyez une photo du problème
+<b>🚀 Prêt à contribuer ?</b>
+1. 📸 Prenez une photo d'un problème environnemental
 2. 📍 Partagez votre localisation
-3. ✅ C'est tout !
+3. ✅ Votre signalement sera visible sur la carte !
 
-<b>⚡ Commandes :</b>
-/points - Voir vos points
-/aide - Aide complète
-/changenom - Changer votre nom`
+<b>⚡ Commandes utiles :</b>
+/points - Vos points actuels
+/aide - Guide complet
+/changenom - Modifier votre nom
+
+<b>Merci de rejoindre La Ligne Verte !</b> 🌱`
 
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Carte', url: 'https://ligneverte.lovable.app/map' },
+            { text: '🗺️ Voir la carte', url: 'https://ligneverte.lovable.app/map' },
             { text: '🛒 Marketplace', url: 'https://ligneverte.lovable.app/marketplace' }
           ]
         ]
