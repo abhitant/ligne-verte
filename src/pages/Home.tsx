@@ -110,7 +110,7 @@ const Home = () => {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-gray-900">La Ligne Verte</h1>
-                <p className="text-xs text-emerald-700 font-medium">Abidjan Plus Propre</p>
+                <p className="text-xs text-emerald-700 font-medium">Rend ton quartier zo et prend tes points</p>
               </div>
             </div>
             <div className="hidden md:flex items-center space-x-6">
@@ -131,9 +131,9 @@ const Home = () => {
           </div>
           
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-            Le plastique
+            Rend ton quartier
             <br />
-            <span className="text-yellow-400">étouffe</span> nos villes
+            <span className="text-yellow-400">ZO</span> et prend tes points
           </h1>
           
           <p className="text-xl text-emerald-100 mb-8 max-w-3xl mx-auto leading-relaxed">
@@ -322,7 +322,7 @@ const Home = () => {
         {/* CTA Final */}
         <Card className="bg-gradient-to-r from-emerald-600 via-green-600 to-teal-600 text-white text-center shadow-2xl border-0">
           <CardContent className="p-12">
-            <h2 className="text-3xl font-bold mb-4">Prêt à devenir un héros local ?</h2>
+            <h2 className="text-3xl font-bold mb-4">Prêt à rendre ton quartier ZO ?</h2>
             <p className="text-xl mb-8 opacity-90">
               Rejoins les citoyens qui transforment Abidjan, quartier par quartier
             </p>
