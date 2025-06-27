@@ -1,288 +1,241 @@
 
 import { useState } from 'react';
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, MessageCircle, Gift, Users, Leaf, Smartphone, ArrowRight, CheckCircle, Play, TrendingUp, Calendar, Star, BarChart3, Headphones, Monitor } from "lucide-react";
+import { MapPin, Camera, Trophy, Users, Zap, Target, Star, Medal, Smartphone, CheckCircle, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Home = () => {
   const [stats] = useState({
     zonesSignalees: 1250,
-    gardiens: 500,
-    quartiersZo: 85
+    citoyensActifs: 500,
+    quartiersPropres: 85,
+    pointsDistribues: 125000
   });
 
-  const services = [
+  const missions = [
     {
-      icon: Smartphone,
-      title: "Mobile App Development",
-      description: "Créez des applications mobiles qui transforment votre quartier",
-      image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?auto=format&fit=crop&w=400&q=80"
+      icon: Camera,
+      title: "Signaler une zone",
+      description: "Prends une photo d'une zone insalubre",
+      points: "+50 points",
+      difficulty: "Facile",
+      color: "bg-green-500"
     },
     {
-      icon: Monitor,
-      title: "Web App Development", 
-      description: "Développez des plateformes web pour engager votre communauté",
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=400&q=80"
+      icon: CheckCircle,
+      title: "Vérifier un signalement",
+      description: "Confirme l'état d'une zone signalée",
+      points: "+30 points", 
+      difficulty: "Facile",
+      color: "bg-blue-500"
     },
     {
       icon: Users,
-      title: "Internal Tool Development",
-      description: "Construisez des outils internes pour optimiser vos processus",
-      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=400&q=80"
+      title: "Organiser un nettoyage",
+      description: "Mobilise ton quartier pour une action",
+      points: "+200 points",
+      difficulty: "Héroïque",
+      color: "bg-purple-500"
     }
   ];
 
-  const features = [
-    {
-      icon: TrendingUp,
-      title: "Solutions Réactives",
-      description: "Des outils qui s'adaptent rapidement aux besoins de votre communauté"
-    },
-    {
-      icon: Headphones,
-      title: "Support Fiable",
-      description: "Un accompagnement constant pour maximiser votre impact social"
-    },
-    {
-      icon: Monitor,
-      title: "Systèmes Sécurisés",
-      description: "Une infrastructure robuste pour protéger les données de vos utilisateurs"
-    }
-  ];
-
-  const testimonials = [
-    {
-      company: "Brandico Services",
-      text: "La plateforme nous a permis d'engager notre communauté de manière innovante et efficace."
-    },
-    {
-      company: "Geobridge Logistics", 
-      text: "Grâce aux outils développés, nous avons pu optimiser nos processus de signalement."
-    },
-    {
-      company: "Habitat Factory",
-      text: "Une solution qui répond parfaitement aux défis urbains de notre époque."
-    }
+  const achievements = [
+    { name: "Éclaireur", description: "Premier signalement", icon: "🎯" },
+    { name: "Gardien", description: "10 signalements validés", icon: "🛡️" },
+    { name: "Héros Local", description: "Organise 5 actions", icon: "🦸‍♂️" },
+    { name: "Champion", description: "Top 10 de ta commune", icon: "🏆" }
   ];
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Navigation */}
-      <nav className="absolute top-0 left-0 right-0 z-50 py-4">
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-white">LA LIGNE VERTE</span>
-          </div>
-          <div className="hidden md:flex items-center gap-8">
-            <Link to="/" className="text-white hover:text-green-300 transition-colors text-sm">Accueil</Link>
-            <Link to="/map" className="text-white hover:text-green-300 transition-colors text-sm">Carte</Link>
-            <Link to="/marketplace" className="text-white hover:text-green-300 transition-colors text-sm">Marketplace</Link>
-            <Link to="/join" className="text-white hover:text-green-300 transition-colors text-sm">À propos</Link>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-green-100">
+      {/* Header Navigation */}
+      <nav className="bg-white shadow-sm border-b border-green-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                <span className="text-white font-bold text-lg">LV</span>
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-gray-900">La Ligne Verte</h1>
+                <p className="text-xs text-green-600">Abidjan Plus Propre</p>
+              </div>
+            </div>
+            <div className="hidden md:flex items-center space-x-6">
+              <Link to="/map" className="text-gray-700 hover:text-green-600 font-medium">Carte</Link>
+              <Link to="/marketplace" className="text-gray-700 hover:text-green-600 font-medium">Récompenses</Link>
+              <Link to="/user-profile" className="text-gray-700 hover:text-green-600 font-medium">Mon Profil</Link>
+            </div>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <div className="relative min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-20 right-20 w-96 h-96 bg-green-400 rounded-full opacity-20 blur-3xl"></div>
-          <div className="absolute bottom-20 left-20 w-64 h-64 bg-green-500 rounded-full opacity-30 blur-2xl"></div>
-        </div>
-        
-        <div className="relative h-screen flex items-center">
-          <div className="max-w-7xl mx-auto px-6 w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-                  Rends ton quartier
-                  <br />
-                  <span className="text-green-400">Zo</span>
-                </h1>
-                <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                  et prends tes points.
-                </p>
-                
-                <Button size="lg" className="bg-green-500 hover:bg-green-600 text-black font-semibold px-8 py-4 rounded-full">
-                  FAIRE UN SIGNALEMENT
-                </Button>
-              </div>
-              
-              <div className="relative">
-                <div className="bg-white rounded-2xl p-2 shadow-2xl transform rotate-3">
-                  <img 
-                    src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=500&q=80" 
-                    alt="Woman working" 
-                    className="w-full h-80 object-cover rounded-xl"
-                  />
-                </div>
-                <div className="absolute -bottom-4 -right-4 w-16 h-16 bg-green-400 rounded-full flex items-center justify-center">
-                  <Leaf className="w-8 h-8 text-white" />
-                </div>
-              </div>
-            </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
+            <Zap className="w-4 h-4 mr-2" />
+            Plateforme Citoyenne d'Abidjan
           </div>
-        </div>
-      </div>
-
-      {/* Custom Solutions Section */}
-      <div className="py-20 bg-green-400">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <img 
-                src="https://images.unsplash.com/photo-1551836022-deb4988cc6c0?auto=format&fit=crop&w=500&q=80" 
-                alt="Team working" 
-                className="w-full h-96 object-cover rounded-2xl"
-              />
-            </div>
-            <div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                Solutions Personnalisées ?<br />
-                <span className="text-gray-800">Comptez sur nous.</span>
-              </h2>
-              <p className="text-gray-800 mb-8 leading-relaxed">
-                Nous développons des plateformes sur mesure pour transformer l'engagement citoyen. 
-                Que vous ayez besoin d'une application mobile, d'une plateforme web ou d'outils internes, 
-                nous créons des solutions qui génèrent un impact réel dans votre communauté.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Services Section */}
-      <div className="py-20 bg-gray-900">
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-4xl font-bold text-green-400 text-center mb-16">
-            Ce Que Nous Pouvons Faire Pour Vous
-          </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <Card key={index} className="bg-green-400 border-0 overflow-hidden">
-                <div className="h-48 overflow-hidden">
-                  <img 
-                    src={service.image} 
-                    alt={service.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+            Rends ton quartier
+            <br />
+            <span className="text-green-500">ZO</span> !
+          </h1>
+          
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            Deviens un héros local en signalant, vérifiant et nettoyant les zones insalubres d'Abidjan. 
+            Gagne des points Himpact et débloque des récompenses !
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Button size="lg" className="bg-green-500 hover:bg-green-600 text-white px-8 py-4 text-lg font-semibold rounded-xl">
+              <Camera className="w-5 h-5 mr-2" />
+              Commencer une Mission
+            </Button>
+            <Link to="/map">
+              <Button variant="outline" size="lg" className="border-green-500 text-green-600 hover:bg-green-50 px-8 py-4 text-lg rounded-xl">
+                <MapPin className="w-5 h-5 mr-2" />
+                Voir la Carte
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        {/* Stats Section */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
+          <Card className="bg-white shadow-lg border-l-4 border-l-green-500">
+            <CardContent className="p-6 text-center">
+              <div className="text-3xl font-bold text-green-600 mb-2">{stats.zonesSignalees.toLocaleString()}</div>
+              <div className="text-sm text-gray-600">Zones Signalées</div>
+            </CardContent>
+          </Card>
+          <Card className="bg-white shadow-lg border-l-4 border-l-blue-500">
+            <CardContent className="p-6 text-center">
+              <div className="text-3xl font-bold text-blue-600 mb-2">{stats.citoyensActifs}</div>
+              <div className="text-sm text-gray-600">Citoyens Actifs</div>
+            </CardContent>
+          </Card>
+          <Card className="bg-white shadow-lg border-l-4 border-l-purple-500">
+            <CardContent className="p-6 text-center">
+              <div className="text-3xl font-bold text-purple-600 mb-2">{stats.quartiersPropres}</div>
+              <div className="text-sm text-gray-600">Quartiers Améliorés</div>
+            </CardContent>
+          </Card>
+          <Card className="bg-white shadow-lg border-l-4 border-l-yellow-500">
+            <CardContent className="p-6 text-center">
+              <div className="text-3xl font-bold text-yellow-600 mb-2">{stats.pointsDistribues.toLocaleString()}</div>
+              <div className="text-sm text-gray-600">Points Himpact</div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Missions Section */}
+        <div className="mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Missions Disponibles</h2>
+            <p className="text-lg text-gray-600">Choisis ta mission et commence à gagner des points Himpact</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {missions.map((mission, index) => (
+              <Card key={index} className="bg-white shadow-lg hover:shadow-xl transition-shadow border-0 overflow-hidden">
                 <CardContent className="p-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <service.icon className="w-6 h-6 text-gray-900" />
-                    <h3 className="text-xl font-bold text-gray-900">{service.title}</h3>
+                  <div className={`w-12 h-12 ${mission.color} rounded-xl flex items-center justify-center mb-4`}>
+                    <mission.icon className="w-6 h-6 text-white" />
                   </div>
-                  <p className="text-gray-800 leading-relaxed">{service.description}</p>
+                  
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-xl font-bold text-gray-900">{mission.title}</h3>
+                    <Badge variant="secondary" className="text-xs">
+                      {mission.difficulty}
+                    </Badge>
+                  </div>
+                  
+                  <p className="text-gray-600 mb-4">{mission.description}</p>
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-green-600 font-bold">{mission.points}</span>
+                    <Button size="sm" className="bg-gray-900 hover:bg-gray-800 text-white">
+                      Commencer
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ))}
           </div>
         </div>
-      </div>
 
-      {/* Why Us Section */}
-      <div className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-4xl font-bold text-gray-900 text-center mb-16">Pourquoi Nous</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {features.map((feature, index) => (
-              <div key={index} className="text-center">
-                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <feature.icon className="w-10 h-10 text-green-600" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">{feature.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
-              </div>
+        {/* Achievement System */}
+        <div className="mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Système de Badges</h2>
+            <p className="text-lg text-gray-600">Débloque des badges et montre ton impact</p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {achievements.map((achievement, index) => (
+              <Card key={index} className="bg-white shadow-lg text-center">
+                <CardContent className="p-4">
+                  <div className="text-3xl mb-2">{achievement.icon}</div>
+                  <h4 className="font-bold text-gray-900 mb-1">{achievement.name}</h4>
+                  <p className="text-xs text-gray-600">{achievement.description}</p>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
-      </div>
 
-      {/* Quote Section */}
-      <div className="py-20 bg-gray-900">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-green-400 leading-relaxed">
-            Attirez l'attention avec une ligne qui définit la mission, 
-            la vision ou la philosophie de l'entreprise.<br />
-            <span className="text-white">Les mots inspirants du travail des gens marchent aussi !</span>
-          </h2>
-        </div>
-      </div>
-
-      {/* Testimonials Section */}
-      <div className="py-20 bg-green-400">
-        <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-4xl font-bold text-gray-900 mb-16">
-            Retours Clients
-          </h2>
-          
-          <div className="space-y-8">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900">{testimonial.company}</h3>
-                </div>
-                <div className="md:col-span-2">
-                  <p className="text-gray-800 text-lg leading-relaxed">"{testimonial.text}"</p>
-                </div>
-              </div>
-            ))}
+        {/* How it Works */}
+        <div className="mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Comment ça marche ?</h2>
+            <p className="text-lg text-gray-600">3 étapes simples pour devenir un héros local</p>
           </div>
-        </div>
-      </div>
 
-      {/* CTA Section */}
-      <div className="py-20 bg-gray-900">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-4xl font-bold text-green-400 mb-8">
-                Laissez-nous vous aider.
-              </h2>
-              
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-white font-semibold mb-2">TÉLÉPHONE</h3>
-                  <p className="text-gray-300">(225) 345-6789</p>
-                </div>
-                
-                <div>
-                  <h3 className="text-white font-semibold mb-2">E-MAIL</h3>
-                  <p className="text-gray-300">contact@ligneverte.com</p>
-                </div>
-                
-                <div>
-                  <h3 className="text-white font-semibold mb-2">SOCIAL</h3>
-                  <div className="flex gap-4">
-                    <div className="w-8 h-8 bg-gray-700 rounded-full"></div>
-                    <div className="w-8 h-8 bg-gray-700 rounded-full"></div>
-                    <div className="w-8 h-8 bg-gray-700 rounded-full"></div>
-                  </div>
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Camera className="w-8 h-8 text-white" />
               </div>
-              
-              <Button className="bg-green-500 hover:bg-green-600 text-black font-semibold px-8 py-3 rounded-full mt-8">
-                CONTACTEZ-NOUS
-              </Button>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">1. Signale</h3>
+              <p className="text-gray-600">Prends une photo d'une zone insalubre et géolocalise-la</p>
             </div>
             
-            <div className="relative">
-              <div className="bg-white rounded-2xl p-2 shadow-2xl">
-                <img 
-                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=500&q=80" 
-                  alt="Team collaboration" 
-                  className="w-full h-80 object-cover rounded-xl"
-                />
+            <div className="text-center">
+              <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Target className="w-8 h-8 text-white" />
               </div>
-              <div className="absolute -top-4 -right-4 w-16 h-16 bg-green-400 rounded-full flex items-center justify-center">
-                <Star className="w-8 h-8 text-white" />
+              <h3 className="text-xl font-bold text-gray-900 mb-2">2. Agis</h3>
+              <p className="text-gray-600">Participe aux missions de nettoyage dans ton quartier</p>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Trophy className="w-8 h-8 text-white" />
               </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">3. Gagne</h3>
+              <p className="text-gray-600">Collecte des points Himpact et débloque des récompenses</p>
             </div>
           </div>
         </div>
+
+        {/* CTA Final */}
+        <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white text-center">
+          <CardContent className="p-12">
+            <h2 className="text-3xl font-bold mb-4">Prêt à devenir un héros local ?</h2>
+            <p className="text-xl mb-8 opacity-90">
+              Rejoins la communauté des citoyens qui transforment Abidjan
+            </p>
+            <Button size="lg" className="bg-white text-green-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-xl">
+              <Smartphone className="w-5 h-5 mr-2" />
+              Démarrer maintenant
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

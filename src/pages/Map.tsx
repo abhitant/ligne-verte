@@ -2,7 +2,8 @@
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MapPin, Filter, Eye, Loader2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { MapPin, Filter, Eye, Loader2, Camera, Zap, Trophy, Target, Users } from "lucide-react";
 import OpenStreetMap from "@/components/OpenStreetMap";
 import { useReports } from "@/hooks/useReports";
 
@@ -23,7 +24,6 @@ const Map = () => {
   
   const { data: reports = [], isLoading, error } = useReports();
 
-  // Log pour debugging
   console.log('Map component - Reports:', reports);
   console.log('Map component - Current filter:', filter);
 
@@ -55,8 +55,8 @@ const Map = () => {
       <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 p-4">
         <div className="max-w-7xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-4xl font-bold text-green-800 mb-2">🗺️ Carte des Signalements</h1>
-            <p className="text-lg text-gray-600">Visualisez tous les signalements d'Abidjan</p>
+            <h1 className="text-4xl font-bold text-green-800 mb-2">🗺️ Carte des Missions</h1>
+            <p className="text-lg text-gray-600">Découvre les zones à améliorer près de chez toi</p>
           </div>
           <Card className="bg-white shadow-lg">
             <CardContent className="p-6">
@@ -73,15 +73,52 @@ const Map = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 p-4">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-green-800 mb-2">🗺️ Carte des Signalements</h1>
-          <p className="text-lg text-gray-600">Visualisez tous les signalements d'Abidjan</p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
+      {/* Header avec Navigation */}
+      <div className="bg-white shadow-sm border-b border-green-100 p-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h1 className="text-3xl font-bold text-green-800 mb-1">🗺️ Carte des Missions</h1>
+              <p className="text-gray-600">Découvre les zones à améliorer près de chez toi</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <Button className="bg-green-500 hover:bg-green-600 text-white">
+                <Camera className="w-4 h-4 mr-2" />
+                Nouvelle Mission
+              </Button>
+            </div>
+          </div>
 
+          {/* Stats Rapides */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+            <div className="bg-green-100 rounded-lg p-3 text-center">
+              <div className="text-2xl font-bold text-green-600">{reports.length}</div>
+              <div className="text-xs text-green-700">Zones Signalées</div>
+            </div>
+            <div className="bg-yellow-100 rounded-lg p-3 text-center">
+              <div className="text-2xl font-bold text-yellow-600">
+                {reports.filter(r => r.status === 'pending').length}
+              </div>
+              <div className="text-xs text-yellow-700">En Attente</div>
+            </div>
+            <div className="bg-blue-100 rounded-lg p-3 text-center">
+              <div className="text-2xl font-bold text-blue-600">
+                {reports.filter(r => r.status === 'validated').length}
+              </div>
+              <div className="text-xs text-blue-700">Validées</div>
+            </div>
+            <div className="bg-purple-100 rounded-lg p-3 text-center">
+              <div className="text-2xl font-bold text-purple-600">+50</div>
+              <div className="text-xs text-purple-700">Points Possibles</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto p-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Map with OpenStreetMap */}
+          {/* Carte Interactive */}
           <div className="lg:col-span-2">
             <Card className="bg-white shadow-lg h-[600px]">
               <CardHeader>
@@ -95,6 +132,7 @@ const Map = () => {
                       variant={filter === 'all' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setFilter('all')}
+                      className={filter === 'all' ? 'bg-green-600 hover:bg-green-700' : ''}
                     >
                       Tous ({reports.length})
                     </Button>
@@ -102,6 +140,7 @@ const Map = () => {
                       variant={filter === 'pending' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setFilter('pending')}
+                      className={filter === 'pending' ? 'bg-yellow-600 hover:bg-yellow-700' : ''}
                     >
                       En attente ({reports.filter(r => r.status === 'pending').length})
                     </Button>
@@ -109,6 +148,7 @@ const Map = () => {
                       variant={filter === 'validated' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setFilter('validated')}
+                      className={filter === 'validated' ? 'bg-blue-600 hover:bg-blue-700' : ''}
                     >
                       Validés ({reports.filter(r => r.status === 'validated').length})
                     </Button>
@@ -120,7 +160,7 @@ const Map = () => {
                   <div className="flex items-center justify-center h-full">
                     <div className="text-center">
                       <Loader2 className="w-8 h-8 animate-spin mx-auto mb-2 text-green-600" />
-                      <p className="text-gray-600">Chargement des signalements...</p>
+                      <p className="text-gray-600">Chargement des missions...</p>
                     </div>
                   </div>
                 ) : (
@@ -135,8 +175,47 @@ const Map = () => {
             </Card>
           </div>
 
-          {/* Sidebar with reports */}
+          {/* Sidebar */}
           <div className="space-y-4">
+            {/* Missions Disponibles */}
+            <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Target className="w-5 h-5" />
+                  Missions Près de Toi
+                </CardTitle>
+                <CardDescription className="text-green-100">
+                  Gagne des points en participant
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="bg-white/20 rounded-lg p-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-medium">📸 Signaler Zone</span>
+                      <Badge className="bg-white/30 text-white">+50 pts</Badge>
+                    </div>
+                    <p className="text-sm text-green-100">Prends une photo d'une zone insalubre</p>
+                  </div>
+                  <div className="bg-white/20 rounded-lg p-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-medium">✅ Vérifier</span>
+                      <Badge className="bg-white/30 text-white">+30 pts</Badge>
+                    </div>
+                    <p className="text-sm text-green-100">Confirme l'état d'une zone</p>
+                  </div>
+                  <div className="bg-white/20 rounded-lg p-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-medium">🧹 Nettoyer</span>
+                      <Badge className="bg-white/30 text-white">+200 pts</Badge>
+                    </div>
+                    <p className="text-sm text-green-100">Organise une action de nettoyage</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Liste des Signalements */}
             <Card className="bg-white shadow-lg">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -144,10 +223,10 @@ const Map = () => {
                   Signalements ({filteredReports.length})
                 </CardTitle>
                 <CardDescription>
-                  {isLoading ? 'Chargement...' : 'Cliquez pour voir sur la carte'}
+                  {isLoading ? 'Chargement...' : 'Clique pour voir sur la carte'}
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-3 max-h-[500px] overflow-y-auto">
+              <CardContent className="space-y-3 max-h-[400px] overflow-y-auto">
                 {isLoading ? (
                   <div className="flex items-center justify-center py-8">
                     <Loader2 className="w-6 h-6 animate-spin text-green-600" />
@@ -156,7 +235,7 @@ const Map = () => {
                   <div className="text-center py-8 text-gray-500">
                     <p>Aucun signalement trouvé</p>
                     <p className="text-sm mt-2">
-                      {filter !== 'all' ? 'Essayez de changer le filtre.' : 'Les signalements apparaîtront ici.'}
+                      {filter !== 'all' ? 'Essayez de changer le filtre.' : 'Sois le premier à signaler !'}
                     </p>
                     {reports.length > 0 && filter !== 'all' && (
                       <Button 
@@ -183,7 +262,12 @@ const Map = () => {
                           <span className="text-lg">{getTypeIcon(report.type)}</span>
                           <span className="font-medium text-sm">{report.user}</span>
                         </div>
-                        <div className={`w-3 h-3 rounded-full ${getStatusColor(report.status)}`}></div>
+                        <div className="flex items-center gap-2">
+                          <div className={`w-3 h-3 rounded-full ${getStatusColor(report.status)}`}></div>
+                          {report.status === 'pending' && (
+                            <Badge variant="secondary" className="text-xs">+50 pts</Badge>
+                          )}
+                        </div>
                       </div>
                       <p className="text-sm text-gray-600 mb-2">{report.location}</p>
                       <p className="text-xs text-gray-500 line-clamp-2">{report.description}</p>
@@ -201,47 +285,36 @@ const Map = () => {
               </CardContent>
             </Card>
 
-            {/* Legend */}
+            {/* Légende et Classement */}
             <Card className="bg-white shadow-lg">
               <CardHeader>
-                <CardTitle className="text-sm">Légende</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <Trophy className="w-5 h-5 text-yellow-600" />
+                  Top Contributeurs
+                </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                  <span className="text-sm">En attente</span>
+              <CardContent className="space-y-3">
+                <div className="flex items-center justify-between p-2 bg-yellow-50 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">🥇</span>
+                    <span className="font-medium text-sm">Aminata T.</span>
+                  </div>
+                  <span className="text-sm font-bold text-yellow-600">1,250 pts</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  <span className="text-sm">Validé</span>
+                <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">🥈</span>
+                    <span className="font-medium text-sm">Kouassi M.</span>
+                  </div>
+                  <span className="text-sm font-bold text-gray-600">980 pts</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                  <span className="text-sm">Rejeté</span>
+                <div className="flex items-center justify-between p-2 bg-orange-50 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">🥉</span>
+                    <span className="font-medium text-sm">Fatou D.</span>
+                  </div>
+                  <span className="text-sm font-bold text-orange-600">875 pts</span>
                 </div>
-              </CardContent>
-            </Card>
-
-            {/* Call to action */}
-            <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg">
-              <CardContent className="p-4 text-center">
-                <h3 className="font-bold mb-2">Signaler une zone insalubre</h3>
-                <p className="text-sm mb-3 opacity-90">
-                  Utilisez notre bot Telegram pour signaler
-                </p>
-                <Button 
-                  variant="outline" 
-                  className="bg-white text-green-600 hover:bg-gray-100 w-full"
-                >
-                  <a 
-                    href="https://t.me/LigneVerteBot" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center w-full"
-                  >
-                    Ouvrir le Bot
-                  </a>
-                </Button>
               </CardContent>
             </Card>
           </div>
