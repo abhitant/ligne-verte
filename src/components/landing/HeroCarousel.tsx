@@ -58,7 +58,7 @@ const HeroCarousel = () => {
             <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
               Rend ton quartier <span className="text-green-400">Zo</span>
             </h1>
-            <h2 className="text-2xl md:text-4xl font-semibold text-gray-200">
+            <h2 className="text-4xl md:text-6xl font-bold text-gray-200">
               Prend tes points
             </h2>
           </div>
