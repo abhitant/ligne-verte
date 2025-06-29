@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Camera, MapPin } from "lucide-react";
+import { Camera, Info } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const HeroCarousel = () => {
@@ -66,12 +66,12 @@ const HeroCarousel = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <Button size="lg" className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-xl transform hover:scale-105 transition-all">
               <Camera className="w-5 h-5 mr-2" />
-              Signaler maintenant
+              Commencer maintenant
             </Button>
             <Link to="/map">
               <Button variant="outline" size="lg" className="border-2 border-white text-white hover:bg-white hover:text-emerald-600 px-8 py-4 text-lg rounded-xl backdrop-blur-sm">
-                <MapPin className="w-5 h-5 mr-2" />
-                Voir la carte
+                <Info className="w-5 h-5 mr-2" />
+                En apprendre plus
               </Button>
             </Link>
           </div>
