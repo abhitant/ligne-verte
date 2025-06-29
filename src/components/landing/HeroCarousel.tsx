@@ -54,12 +54,7 @@ const HeroCarousel = () => {
       {/* Content Overlay */}
       <div className="relative z-10 flex items-center justify-center h-full">
         <div className="text-center text-white px-4 max-w-4xl">
-          <div className="inline-flex items-center bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-medium mb-8 animate-pulse">
-            <span className="w-2 h-2 bg-red-500 rounded-full mr-2 animate-ping"></span>
-            URGENCE ÉCOLOGIQUE
-          </div>
-          
-          <h1 className="text-5xl md:text-7xl font-bold mb-6">
+          <h1 className="text-3xl md:text-5xl font-bold mb-6">
             Rend ton quartier
             <br />
             <span className="text-yellow-400">ZO</span> et prends tes points
