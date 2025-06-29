@@ -63,13 +63,13 @@ const HeroCarousel = () => {
             </h2>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
+          <div className="flex flex-col sm:flex-row gap-8 justify-center items-center mb-12">
             <Button size="lg" className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-xl transform hover:scale-105 transition-all">
               <Camera className="w-5 h-5 mr-2" />
               Commencer maintenant
             </Button>
             <Link to="/map">
-              <Button variant="outline" size="lg" className="border-2 border-white text-white hover:bg-white hover:text-emerald-600 px-8 py-4 text-lg rounded-xl backdrop-blur-sm shadow-lg">
+              <Button variant="outline" size="lg" className="bg-white/10 border-2 border-white text-white hover:bg-white hover:text-gray-900 px-8 py-4 text-lg font-semibold rounded-xl shadow-2xl backdrop-blur-md z-20 relative">
                 <Info className="w-5 h-5 mr-2" />
                 En apprendre plus
               </Button>
