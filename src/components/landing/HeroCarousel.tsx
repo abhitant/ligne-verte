@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Camera, Info } from "lucide-react";
@@ -6,6 +5,8 @@ import { Link } from "react-router-dom";
 
 const HeroCarousel = () => {
   const [currentImage, setCurrentImage] = useState(0);
+  const [typewriterText, setTypewriterText] = useState('');
+  const fullText = 'Prend tes points';
 
   const images = [
     {
@@ -30,6 +31,20 @@ const HeroCarousel = () => {
       setCurrentImage((prev) => (prev + 1) % images.length);
     }, 4000);
     return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    let currentIndex = 0;
+    const typewriterTimer = setInterval(() => {
+      if (currentIndex <= fullText.length) {
+        setTypewriterText(fullText.slice(0, currentIndex));
+        currentIndex++;
+      } else {
+        clearInterval(typewriterTimer);
+      }
+    }, 100);
+
+    return () => clearInterval(typewriterTimer);
   }, []);
 
   return (
@@ -58,8 +73,8 @@ const HeroCarousel = () => {
             <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
               Rend ton quartier <span className="text-green-400">Zo</span>
             </h1>
-            <h2 className="text-4xl md:text-6xl font-bold text-gray-200 font-serif italic">
-              Prend tes points
+            <h2 className="text-4xl md:text-6xl font-bold text-gray-200">
+              {typewriterText}<span className="animate-pulse">|</span>
             </h2>
           </div>
 
