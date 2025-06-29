@@ -54,9 +54,14 @@ const HeroCarousel = () => {
       {/* Content Overlay */}
       <div className="relative z-10 flex items-center justify-center h-full">
         <div className="text-center text-white px-4 max-w-4xl">
-          <h1 className="text-3xl md:text-5xl font-bold mb-12">
-            Rend ton quartier <span className="text-green-400">Zo</span>, prend tes points
-          </h1>
+          <div className="mb-12">
+            <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+              Rend ton quartier <span className="text-green-400">Zo</span>
+            </h1>
+            <h2 className="text-2xl md:text-4xl font-semibold text-gray-200">
+              Prend tes points
+            </h2>
+          </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <Button size="lg" className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-xl transform hover:scale-105 transition-all">
