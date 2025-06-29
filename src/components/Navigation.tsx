@@ -24,7 +24,7 @@ const Navigation = () => {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex items-center">
+          <div className="flex items-center flex-shrink-0">
             <Link to="/" className="flex items-center space-x-2">
               <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center">
                 <Leaf className="text-white w-6 h-6" />
@@ -36,26 +36,32 @@ const Navigation = () => {
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
-            {navigation.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
-                    isActive(item.href)
-                      ? 'bg-green-100 text-green-800 font-medium'
-                      : 'text-gray-600 hover:text-green-600 hover:bg-green-50'
-                  }`}
-                >
-                  <Icon className="w-5 h-5" />
-                  <span>{item.name}</span>
-                </Link>
-              );
-            })}
-            <Button className="ml-4 bg-green-600 hover:bg-green-700">
+          {/* Desktop Navigation - Centered */}
+          <div className="hidden md:flex items-center justify-center flex-1 px-8">
+            <div className="flex items-center space-x-1">
+              {navigation.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.name}
+                    to={item.href}
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
+                      isActive(item.href)
+                        ? 'bg-green-100 text-green-800 font-medium'
+                        : 'text-gray-600 hover:text-green-600 hover:bg-green-50'
+                    }`}
+                  >
+                    <Icon className="w-5 h-5" />
+                    <span>{item.name}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Right side - Bot Telegram button */}
+          <div className="hidden md:flex items-center flex-shrink-0">
+            <Button className="bg-green-600 hover:bg-green-700">
               <a 
                 href="https://t.me/LigneVerteBot" 
                 target="_blank" 
