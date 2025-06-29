@@ -58,13 +58,13 @@ const HeroCarousel = () => {
             <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
               Rend ton quartier <span className="text-green-400">Zo</span>
             </h1>
-            <h2 className="text-4xl md:text-6xl font-bold text-gray-200">
+            <h2 className="text-4xl md:text-6xl font-bold text-gray-200 font-serif italic">
               Prend tes points
             </h2>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-8 justify-center items-center mb-12">
-            <Button size="lg" className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-xl transform hover:scale-105 transition-all">
+            <Button size="lg" className="bg-emerald-500/20 border-2 border-emerald-400 text-white hover:bg-emerald-500/30 px-8 py-4 text-lg font-semibold rounded-xl shadow-2xl backdrop-blur-md z-20 relative transform hover:scale-105 transition-all">
               <Camera className="w-5 h-5 mr-2" />
               Commencer maintenant
             </Button>
