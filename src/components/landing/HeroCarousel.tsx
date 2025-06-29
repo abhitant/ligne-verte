@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Camera, Info } from "lucide-react";
@@ -72,10 +73,17 @@ const HeroCarousel = () => {
       <div className="relative z-10 flex items-center justify-center h-full">
         <div className="text-center text-white px-4 max-w-4xl">
           <div className="mb-12">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4 leading-tight">
+            {/* Mobile: Une seule ligne avec tailles différentes */}
+            <h1 className="md:hidden text-3xl font-bold mb-4 leading-tight">
+              Rend ton quartier <span className="text-green-400 text-4xl">Zo</span>
+            </h1>
+            
+            {/* Desktop: Deux lignes comme avant */}
+            <h1 className="hidden md:block text-4xl md:text-6xl font-bold mb-4 leading-tight">
               Rend ton quartier <span className="text-green-400">Zo</span>
             </h1>
-            <h2 className="text-4xl md:text-6xl font-bold text-gray-200">
+            
+            <h2 className="text-2xl md:text-4xl lg:text-6xl font-bold text-gray-200">
               {typewriterText}<span className="animate-pulse">|</span>
             </h2>
           </div>
