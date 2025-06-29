@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Camera, Info } from "lucide-react";
@@ -7,7 +6,7 @@ import { Link } from "react-router-dom";
 const HeroCarousel = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [typewriterText, setTypewriterText] = useState('');
-  const fullText = 'Prend tes points';
+  const fullText = 'Et prend tes points';
 
   const images = [
     {
