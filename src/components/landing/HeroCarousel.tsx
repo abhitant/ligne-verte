@@ -11,19 +11,19 @@ const HeroCarousel = () => {
 
   const images = [
     {
-      url: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=1920&h=1080&fit=crop",
-      title: "Zone insalubre à Cocody",
-      description: "Des déchets plastiques polluent nos quartiers"
+      url: "/lovable-uploads/370ea6ab-748e-46d4-8611-0ea0f9a89ce7.png",
+      title: "Nettoyage des plages d'Abidjan",
+      description: "Ensemble, redonnons vie à nos côtes"
     },
     {
-      url: "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?w=1920&h=1080&fit=crop",
-      title: "Caniveaux bouchés à Yopougon", 
-      description: "Les inondations menacent nos familles"
+      url: "/lovable-uploads/9d19adf8-f8c6-419c-aab7-ec7dcd24bd5c.png", 
+      title: "Collecte des déchets plastiques",
+      description: "Chaque geste compte pour notre environnement"
     },
     {
-      url: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=1920&h=1080&fit=crop",
-      title: "Abidjan peut redevenir verte",
-      description: "Ensemble, transformons notre ville"
+      url: "/lovable-uploads/9c272972-f137-4d9e-839c-412d4d138196.png",
+      title: "Citoyens engagés pour un Abidjan propre",
+      description: "L'action citoyenne transforme notre ville"
     }
   ];
 
