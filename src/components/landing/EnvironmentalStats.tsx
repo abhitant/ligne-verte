@@ -112,7 +112,7 @@ const EnvironmentalStats = () => {
           <Card className="bg-gradient-to-r from-red-500 to-red-600 text-white shadow-xl">
             <CardContent className="p-8 text-center">
               <TrendingDown className="w-12 h-12 mx-auto mb-4" />
-              <div className="text-4xl font-bold mb-2">< 5%</div>
+              <div className="text-4xl font-bold mb-2">&lt; 5%</div>
               <div className="text-red-100">Taux de recyclage actuel</div>
             </CardContent>
           </Card>
