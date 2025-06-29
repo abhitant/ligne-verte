@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Camera, Info } from "lucide-react";
@@ -35,6 +36,8 @@ const HeroCarousel = () => {
 
   useEffect(() => {
     let currentIndex = 0;
+    setTypewriterText('');
+    
     const typewriterTimer = setInterval(() => {
       if (currentIndex <= fullText.length) {
         setTypewriterText(fullText.slice(0, currentIndex));
@@ -45,7 +48,7 @@ const HeroCarousel = () => {
     }, 100);
 
     return () => clearInterval(typewriterTimer);
-  }, []);
+  }, [currentImage]);
 
   return (
     <div className="relative h-screen overflow-hidden">
@@ -79,7 +82,7 @@ const HeroCarousel = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-8 justify-center items-center mb-12">
-            <Button size="lg" className="bg-emerald-500/20 border-2 border-emerald-400 text-white hover:bg-emerald-500/30 px-8 py-4 text-lg font-semibold rounded-xl shadow-2xl backdrop-blur-md z-20 relative transform hover:scale-105 transition-all">
+            <Button size="lg" className="bg-green-400/20 border-2 border-green-400 text-white hover:bg-green-400/30 px-8 py-4 text-lg font-semibold rounded-xl shadow-2xl backdrop-blur-md z-20 relative transform hover:scale-105 transition-all">
               <Camera className="w-5 h-5 mr-2" />
               Commencer maintenant
             </Button>
