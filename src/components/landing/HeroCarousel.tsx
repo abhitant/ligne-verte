@@ -93,19 +93,6 @@ const HeroCarousel = () => {
               </Button>
             </Link>
           </div>
-
-          {/* Image Indicators */}
-          <div className="flex justify-center space-x-2">
-            {images.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentImage(index)}
-                className={`w-3 h-3 rounded-full transition-all ${
-                  index === currentImage ? 'bg-white' : 'bg-white/50'
-                }`}
-              />
-            ))}
-          </div>
         </div>
       </div>
     </div>
