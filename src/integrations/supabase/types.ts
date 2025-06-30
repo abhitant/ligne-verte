@@ -14,18 +14,21 @@ export type Database = {
           created_at: string | null
           file_id: string
           id: string
+          photo_url: string | null
           telegram_id: string
         }
         Insert: {
           created_at?: string | null
           file_id: string
           id?: string
+          photo_url?: string | null
           telegram_id: string
         }
         Update: {
           created_at?: string | null
           file_id?: string
           id?: string
+          photo_url?: string | null
           telegram_id?: string
         }
         Relationships: []
@@ -180,6 +183,17 @@ export type Database = {
           created_at: string | null
           file_id: string
           id: string
+          photo_url: string | null
+          telegram_id: string
+        }
+      }
+      get_and_delete_pending_report_with_url: {
+        Args: { p_telegram_id: string }
+        Returns: {
+          created_at: string | null
+          file_id: string
+          id: string
+          photo_url: string | null
           telegram_id: string
         }
       }
@@ -212,6 +226,17 @@ export type Database = {
           created_at: string | null
           file_id: string
           id: string
+          photo_url: string | null
+          telegram_id: string
+        }
+      }
+      upsert_pending_report_with_url: {
+        Args: { p_telegram_id: string; p_photo_url: string }
+        Returns: {
+          created_at: string | null
+          file_id: string
+          id: string
+          photo_url: string | null
           telegram_id: string
         }
       }
