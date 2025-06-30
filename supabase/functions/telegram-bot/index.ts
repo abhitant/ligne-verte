@@ -90,6 +90,11 @@ serve(async (req) => {
       return new Response('OK', { status: 200 })
     }
 
+    if (messageText === '/carte' || messageText === '/map') {
+      await commandHandler.handleMap(chatId)
+      return new Response('OK', { status: 200 })
+    }
+
     if (messageText === '/aide' || messageText === '/help') {
       await commandHandler.handleHelp(chatId)
       return new Response('OK', { status: 200 })
@@ -126,14 +131,18 @@ serve(async (req) => {
         return new Response('OK', { status: 200 })
       }
 
-      // Sinon, message non reconnu
+      // Sinon, message non reconnu avec lien vers la carte
       await telegramAPI.sendMessage(chatId, `🤖 <b>Message non reconnu</b>
 
 Pour signaler un problème :
 1. 📸 Envoyez une photo
 2. 📍 Partagez votre localisation
 
-Tapez /aide pour plus d'infos.`)
+Tapez /aide pour plus d'infos ou /carte pour voir la carte.`, {
+        inline_keyboard: [
+          [{ text: '🗺️ Voir la carte', url: 'https://ligneverte.lovable.app/map' }]
+        ]
+      })
       return new Response('OK', { status: 200 })
     }
 

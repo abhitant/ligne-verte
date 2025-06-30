@@ -1,3 +1,4 @@
+
 import { TelegramAPI } from './telegram-api.ts'
 
 export class CommandHandler {
@@ -35,13 +36,14 @@ Bonjour <b>${existingUser.pseudo}</b> ! Vous avez <b>${existingUser.points_himpa
 
 <b>⚡ Commandes :</b>
 /points - Voir vos points
+/carte - Lien vers la carte
 /aide - Aide complète
 /changenom - Changer votre nom`
 
         const keyboard = {
           inline_keyboard: [
             [
-              { text: '🗺️ Carte', url: 'https://ligneverte.lovable.app/map' },
+              { text: '🗺️ Voir la carte', url: 'https://ligneverte.lovable.app/map' },
               { text: '🛒 Marketplace', url: 'https://ligneverte.lovable.app/marketplace' }
             ]
           ]
@@ -69,7 +71,15 @@ Pour commencer, <b>par quel nom souhaitez-vous être appelé ?</b>
 
 📝 <i>Votre nom doit contenir entre 3 et 20 caractères (lettres, chiffres et tirets autorisés)</i>`
 
-      await this.telegramAPI.sendMessage(chatId, welcomeText)
+      const keyboard = {
+        inline_keyboard: [
+          [
+            { text: '🗺️ Voir la carte', url: 'https://ligneverte.lovable.app/map' }
+          ]
+        ]
+      }
+
+      await this.telegramAPI.sendMessage(chatId, welcomeText, keyboard)
       return { success: true }
     } catch (error) {
       console.error('/start error:', error)
@@ -145,6 +155,7 @@ Votre inscription est terminée. Vous commencez avec <b>${user.points_himpact} p
 
 <b>⚡ Commandes utiles :</b>
 /points - Vos points actuels
+/carte - Lien vers la carte
 /aide - Guide complet
 /changenom - Modifier votre nom
 
@@ -206,17 +217,35 @@ Tapez votre nouveau nom d'utilisateur souhaité.
         return { success: false, error: 'User not found' }
       }
 
+      // Calculer le classement de l'utilisateur
+      const { data: allUsers, error: rankError } = await this.supabaseClient
+        .from('users')
+        .select('points_himpact')
+        .order('points_himpact', { ascending: false })
+
+      let userRank = 1
+      if (!rankError && allUsers) {
+        userRank = allUsers.findIndex(u => u.points_himpact <= user.points_himpact) + 1
+        if (userRank === 0) userRank = allUsers.length + 1
+      }
+
       const pointsText = `💰 <b>Vos points Himpact</b>
 
-Vous avez <b>${user.points_himpact} points</b> ! 🎉
+👤 <b>${user.pseudo}</b>
+🏆 <b>${user.points_himpact} points</b> (Rang #${userRank})
 
 <b>Comment gagner plus :</b>
 • 📸 Signaler un problème (+10 points)
-• ✅ Signalement validé (+50 points bonus)`
+• ✅ Signalement validé (+50 points bonus)
+
+<b>🗺️ Consultez la carte pour voir tous les signalements de la communauté !</b>`
 
       const keyboard = {
         inline_keyboard: [
-          [{ text: '🛒 Marketplace', url: 'https://ligneverte.lovable.app/marketplace' }]
+          [
+            { text: '🗺️ Voir la carte', url: 'https://ligneverte.lovable.app/map' },
+            { text: '🛒 Marketplace', url: 'https://ligneverte.lovable.app/marketplace' }
+          ]
         ]
       }
 
@@ -229,6 +258,35 @@ Vous avez <b>${user.points_himpact} points</b> ! 🎉
     }
   }
 
+  async handleMap(chatId: number) {
+    const mapText = `🗺️ <b>Carte des signalements</b>
+
+Découvrez tous les signalements de la communauté sur notre carte interactive !
+
+<b>Sur la carte vous pouvez :</b>
+• 👀 Voir tous les signalements en temps réel
+• 📊 Filtrer par statut (en attente, validé, rejeté)
+• 📍 Localiser les problèmes près de chez vous
+• 👥 Voir qui a contribué à améliorer l'environnement
+
+<b>Cliquez sur le bouton ci-dessous pour ouvrir la carte :</b>`
+
+    const keyboard = {
+      inline_keyboard: [
+        [
+          { text: '🗺️ Ouvrir la carte', url: 'https://ligneverte.lovable.app/map' }
+        ],
+        [
+          { text: '🏠 Accueil', url: 'https://ligneverte.lovable.app' },
+          { text: '🛒 Marketplace', url: 'https://ligneverte.lovable.app/marketplace' }
+        ]
+      ]
+    }
+
+    await this.telegramAPI.sendMessage(chatId, mapText, keyboard)
+    return { success: true }
+  }
+
   async handleHelp(chatId: number) {
     const helpText = `🌱 <b>Aide - La Ligne Verte</b>
 
@@ -238,17 +296,21 @@ Vous avez <b>${user.points_himpact} points</b> ! 🎉
 
 <b>⚡ Commandes :</b>
 /start - S'inscrire
-/points - Voir vos points
+/points - Voir vos points et classement
+/carte - Lien vers la carte interactive
 /aide - Cette aide
+/changenom - Changer votre nom
 
 <b>🎯 Récompenses :</b>
 • Signalement : +10 points
-• Validation : +50 points bonus`
+• Validation : +50 points bonus
+
+<b>🗺️ N'oubliez pas de consulter la carte pour voir l'impact de la communauté !</b>`
 
     const keyboard = {
       inline_keyboard: [
         [
-          { text: '🗺️ Carte', url: 'https://ligneverte.lovable.app/map' },
+          { text: '🗺️ Voir la carte', url: 'https://ligneverte.lovable.app/map' },
           { text: '🛒 Marketplace', url: 'https://ligneverte.lovable.app/marketplace' }
         ]
       ]
