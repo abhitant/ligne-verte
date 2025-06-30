@@ -91,14 +91,6 @@ export const useReports = () => {
       const uniqueTelegramIds = [...new Set(reports.map(r => r.user_telegram_id))];
       console.log('Unique telegram IDs in reports:', uniqueTelegramIds);
 
-      // Debug: Vérifier d'abord tous les utilisateurs dans la table
-      const { data: allUsers, error: allUsersError } = await supabase
-        .from('users')
-        .select('*');
-      
-      console.log('ALL users in database:', allUsers);
-      console.log('All users error:', allUsersError);
-
       // Récupérer TOUS les utilisateurs avec les IDs correspondants
       const { data: users, error: usersError } = await supabase
         .from('users')
@@ -137,11 +129,11 @@ export const useReports = () => {
             pseudo: user.pseudo
           });
           
-          // Prioriser telegram_username, puis pseudo
-          if (user.telegram_username && user.telegram_username.trim() !== '') {
-            displayName = `@${user.telegram_username}`;
-          } else if (user.pseudo && user.pseudo.trim() !== '' && user.pseudo !== `User ${report.user_telegram_id.slice(-4)}`) {
+          // Prioriser le pseudo (nom choisi par l'utilisateur), puis telegram_username
+          if (user.pseudo && user.pseudo.trim() !== '' && user.pseudo !== `User ${report.user_telegram_id.slice(-4)}`) {
             displayName = user.pseudo;
+          } else if (user.telegram_username && user.telegram_username.trim() !== '') {
+            displayName = `@${user.telegram_username}`;
           }
           
           console.log(`Final display name for ${report.user_telegram_id}: ${displayName}`);
