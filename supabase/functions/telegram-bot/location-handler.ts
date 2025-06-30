@@ -41,23 +41,14 @@ export class LocationHandler {
 
       console.log('✅ User created/updated successfully:', user)
 
-      // Vérifier que l'utilisateur a bien été créé en le récupérant
-      const { data: verifyUser, error: verifyError } = await this.supabaseClient
-        .from('users')
-        .select('*')
-        .eq('telegram_id', telegramId)
-        .single()
-
-      console.log('🔍 User verification after creation:', { verifyUser, verifyError })
-
       // Récupérer et supprimer le signalement en attente
-      const { data: pendingReport, error: pendingError } = await this.supabaseClient.rpc('get_and_delete_pending_report', {
+      const { data: pendingReport, error: pendingError } = await this.supabaseClient.rpc('get_and_delete_pending_report_with_url', {
         p_telegram_id: telegramId
       })
 
       console.log('🔍 Pending report lookup:', { pendingReport, pendingError })
 
-      if (pendingError || !pendingReport || !pendingReport.file_id) {
+      if (pendingError || !pendingReport || !pendingReport.photo_url) {
         console.log('❌ No pending photo found')
         await this.telegramAPI.sendMessage(chatId, `❌ <b>Aucune photo en attente</b>
 
@@ -69,23 +60,13 @@ Recommencez en envoyant une photo ! 🔄`)
         return { success: false, error: 'No pending photo' }
       }
 
-      // Obtenir l'URL de la photo via l'API Telegram
-      const telegramAPI = new TelegramAPI(Deno.env.get('TELEGRAM_BOT_TOKEN')!)
-      const photoUrl = await telegramAPI.getFileUrl(pendingReport.file_id)
-      
-      if (!photoUrl) {
-        console.error('❌ Failed to get photo URL')
-        await this.telegramAPI.sendMessage(chatId, '❌ Erreur photo. Renvoyez votre photo et localisation.')
-        return { success: false, error: 'Photo URL error' }
-      }
+      console.log('📸 Using Supabase photo URL:', pendingReport.photo_url)
 
-      console.log('📸 Photo URL obtained:', photoUrl)
-
-      // Créer le signalement complet avec les coordonnées reçues
-      console.log('📍 Creating report with coordinates:', { latitude, longitude })
+      // Créer le signalement complet avec l'URL Supabase
+      console.log('📍 Creating report with Supabase photo URL:', { latitude, longitude, photo_url: pendingReport.photo_url })
       const { data: report, error: reportError } = await this.supabaseClient.rpc('create_report', {
         p_user_telegram_id: telegramId,
-        p_photo_url: photoUrl,
+        p_photo_url: pendingReport.photo_url,
         p_description: 'Signalement via bot Telegram',
         p_location_lat: latitude,
         p_location_lng: longitude
@@ -112,7 +93,7 @@ Recommencez en envoyant une photo ! 🔄`)
       const successText = `✅ <b>Signalement créé avec succès !</b>
 
 📍 <b>Position :</b> ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
-📸 <b>Photo :</b> Sauvegardée
+📸 <b>Photo :</b> Sauvegardée dans Supabase
 🎯 <b>Points :</b> +10 points Himpact
 ⏰ <b>Statut :</b> En attente de validation
 
