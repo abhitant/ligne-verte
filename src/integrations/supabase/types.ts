@@ -148,7 +148,7 @@ export type Database = {
         }
       }
       get_and_delete_pending_report: {
-        Args: { p_telegram_id: string }
+        Args: Record<PropertyKey, never> | { p_telegram_id: string }
         Returns: {
           created_at: string | null
           file_id: string
