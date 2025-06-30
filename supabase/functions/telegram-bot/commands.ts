@@ -1,4 +1,3 @@
-
 import { TelegramAPI } from './telegram-api.ts'
 
 export class CommandHandler {
@@ -214,7 +213,7 @@ Votre compte Telegram est déjà lié à un compte web.
 <b>🔑 Pour vous connecter :</b>
 1. Allez sur la plateforme web
 2. Cliquez sur "Se connecter"
-3. Utilisez l'email : <code>${telegramId}@telegram.local</code>
+3. Utilisez l'email : <code>${telegramId}@telegram.provider</code>
 4. Demandez un lien de connexion magique
 
 <b>💡 Votre pseudo :</b> ${user.pseudo}
@@ -233,7 +232,7 @@ Votre compte Telegram est déjà lié à un compte web.
       }
 
       // Créer un compte auth en utilisant l'API Supabase Auth Admin
-      const email = `${telegramId}@telegram.local`
+      const email = `${telegramId}@telegram.provider`
       
       const { data: authUser, error: authError } = await this.supabaseClient.auth.admin.createUser({
         email: email,
@@ -241,7 +240,11 @@ Votre compte Telegram est déjà lié à un compte web.
         user_metadata: {
           telegram_id: telegramId,
           pseudo: user.pseudo,
-          provider: 'telegram'
+          provider: 'telegram',
+          telegram_auth: true,
+          primary_auth_method: 'telegram',
+          display_name: user.pseudo,
+          full_name: user.pseudo
         }
       })
 
@@ -269,6 +272,7 @@ Votre compte Telegram est maintenant lié à un compte web !
 
 <b>🔑 Informations de connexion :</b>
 • Email : <code>${email}</code>
+• Nom d'affichage : <b>${user.pseudo}</b>
 • Méthode : Lien magique (sans mot de passe)
 
 <b>📱 Comment vous connecter :</b>

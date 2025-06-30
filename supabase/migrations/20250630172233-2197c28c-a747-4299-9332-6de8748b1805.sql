@@ -1,4 +1,5 @@
 
+
 -- Corriger les comptes Auth existants pour utiliser Telegram comme provider principal
 UPDATE auth.users 
 SET 
@@ -61,7 +62,9 @@ BEGIN
                 'provider', 'telegram',
                 'telegram_auth', true,
                 'primary_auth_method', 'telegram',
-                'telegram_username', NEW.telegram_username
+                'telegram_username', NEW.telegram_username,
+                'display_name', NEW.pseudo,
+                'full_name', NEW.pseudo
             ),
             false,
             '',
@@ -75,3 +78,4 @@ BEGIN
     RETURN NEW;
 END;
 $$;
+
