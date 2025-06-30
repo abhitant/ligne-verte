@@ -1,7 +1,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MapPin, Navigation, Camera, AlertCircle } from "lucide-react";
+import { MapPin, Navigation, Camera, AlertCircle, MessageCircle, Send } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const MapSection = () => {
@@ -97,8 +97,52 @@ const MapSection = () => {
             </Card>
           </div>
 
-          {/* Recent Reports */}
+          {/* Sidebar with Telegram Bot Integration */}
           <div>
+            {/* Bot Telegram Integration */}
+            <Card className="shadow-xl mb-6 bg-gradient-to-r from-blue-500 to-green-500 text-white">
+              <CardContent className="p-6">
+                <h3 className="text-xl font-bold mb-4 flex items-center">
+                  <MessageCircle className="w-5 h-5 mr-2" />
+                  Signaler via Telegram
+                </h3>
+                
+                <div className="space-y-4">
+                  <div className="bg-white/20 rounded-lg p-4">
+                    <h4 className="font-semibold mb-2">📸 Étape 1 : Photo</h4>
+                    <p className="text-sm text-blue-100">
+                      Prends une photo de la zone problématique
+                    </p>
+                  </div>
+                  
+                  <div className="bg-white/20 rounded-lg p-4">
+                    <h4 className="font-semibold mb-2">📍 Étape 2 : Position</h4>
+                    <p className="text-sm text-blue-100">
+                      Partage ta localisation pour géolocaliser le problème
+                    </p>
+                  </div>
+                  
+                  <div className="bg-white/20 rounded-lg p-4">
+                    <h4 className="font-semibold mb-2">🎯 Étape 3 : Points</h4>
+                    <p className="text-sm text-blue-100">
+                      Gagne des points Himpact pour tes signalements
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <Button 
+                    className="w-full bg-white text-blue-600 hover:bg-blue-50" 
+                    onClick={() => window.open('https://t.me/LigneVerteBot', '_blank')}
+                  >
+                    <Send className="w-4 h-4 mr-2" />
+                    Ouvrir le Bot Telegram
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Recent Reports */}
             <Card className="shadow-xl">
               <CardContent className="p-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
@@ -126,9 +170,12 @@ const MapSection = () => {
                 </div>
 
                 <div className="mt-6 pt-6 border-t border-gray-200">
-                  <Button className="w-full bg-emerald-600 hover:bg-emerald-700">
+                  <Button 
+                    className="w-full bg-emerald-600 hover:bg-emerald-700"
+                    onClick={() => window.open('https://t.me/LigneVerteBot', '_blank')}
+                  >
                     <Camera className="w-4 h-4 mr-2" />
-                    Faire un signalement
+                    Signaler via Telegram
                   </Button>
                 </div>
               </CardContent>

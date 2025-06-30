@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Filter, Eye, Loader2, Camera, Zap, Trophy, Target, Users } from "lucide-react";
+import { MapPin, Filter, Eye, Loader2, Camera, Zap, Trophy, Target, Users, MessageCircle, Send, Smartphone } from "lucide-react";
 import OpenStreetMap from "@/components/OpenStreetMap";
 import { useReports } from "@/hooks/useReports";
 
@@ -83,9 +83,12 @@ const Map = () => {
               <p className="text-gray-600">Découvre les zones à améliorer près de chez toi</p>
             </div>
             <div className="flex items-center gap-3">
-              <Button className="bg-green-500 hover:bg-green-600 text-white">
-                <Camera className="w-4 h-4 mr-2" />
-                Nouvelle Mission
+              <Button 
+                className="bg-blue-500 hover:bg-blue-600 text-white"
+                onClick={() => window.open('https://t.me/LigneVerteBot', '_blank')}
+              >
+                <MessageCircle className="w-4 h-4 mr-2" />
+                Bot Telegram
               </Button>
             </div>
           </div>
@@ -148,7 +151,7 @@ const Map = () => {
                       variant={filter === 'validated' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setFilter('validated')}
-                      className={filter === 'validated' ? 'bg-blue-600 hover:bg-blue-700' : ''}
+                      className={filter === 'validated' ? 'bg-blue-600 hover:blue-700' : ''}
                     >
                       Validés ({reports.filter(r => r.status === 'validated').length})
                     </Button>
@@ -177,6 +180,56 @@ const Map = () => {
 
           {/* Sidebar */}
           <div className="space-y-4">
+            {/* Comment signaler via Telegram */}
+            <Card className="bg-gradient-to-r from-blue-500 to-green-500 text-white shadow-lg">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Smartphone className="w-5 h-5" />
+                  Signaler via Telegram
+                </CardTitle>
+                <CardDescription className="text-blue-100">
+                  Utilise notre bot pour faire des signalements
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <div className="bg-white/20 rounded-lg p-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-2xl">📸</span>
+                      <span className="font-medium">1. Prends une Photo</span>
+                    </div>
+                    <p className="text-sm text-blue-100">Capture la zone problématique avec ton téléphone</p>
+                  </div>
+                  
+                  <div className="bg-white/20 rounded-lg p-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-2xl">📍</span>
+                      <span className="font-medium">2. Partage ta Position</span>
+                    </div>
+                    <p className="text-sm text-blue-100">Envoie ta localisation pour géolocaliser le problème</p>
+                  </div>
+                  
+                  <div className="bg-white/20 rounded-lg p-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-2xl">🎯</span>
+                      <span className="font-medium">3. Gagne des Points</span>
+                    </div>
+                    <p className="text-sm text-blue-100">Reçois +10 points immédiatement, +50 si validé !</p>
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <Button 
+                    className="w-full bg-white text-blue-600 hover:bg-blue-50"
+                    onClick={() => window.open('https://t.me/LigneVerteBot', '_blank')}
+                  >
+                    <Send className="w-4 h-4 mr-2" />
+                    Ouvrir le Bot
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Missions Disponibles */}
             <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg">
               <CardHeader>
