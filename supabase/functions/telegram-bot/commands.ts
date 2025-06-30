@@ -213,8 +213,9 @@ Votre compte Telegram est déjà lié à un compte web.
 
 <b>🔑 Pour vous connecter :</b>
 1. Allez sur la plateforme web
-2. Utilisez l'email : <code>${telegramId}@telegram.local</code>
-3. Demandez un lien de connexion magique
+2. Cliquez sur "Se connecter"
+3. Utilisez l'email : <code>${telegramId}@telegram.local</code>
+4. Demandez un lien de connexion magique
 
 <b>💡 Votre pseudo :</b> ${user.pseudo}
 <b>🏆 Vos points :</b> ${user.points_himpact} points Himpact`
@@ -231,9 +232,17 @@ Votre compte Telegram est déjà lié à un compte web.
         return { success: true }
       }
 
-      // Créer un compte auth pour l'utilisateur
-      const { data: authUserId, error: authError } = await this.supabaseClient.rpc('create_auth_user_for_telegram', {
-        p_telegram_id: telegramId
+      // Créer un compte auth en utilisant l'API Supabase Auth Admin
+      const email = `${telegramId}@telegram.local`
+      
+      const { data: authUser, error: authError } = await this.supabaseClient.auth.admin.createUser({
+        email: email,
+        email_confirm: true,
+        user_metadata: {
+          telegram_id: telegramId,
+          pseudo: user.pseudo,
+          provider: 'telegram'
+        }
       })
 
       if (authError) {
@@ -242,18 +251,30 @@ Votre compte Telegram est déjà lié à un compte web.
         return { success: false, error: authError }
       }
 
+      // Lier l'utilisateur Telegram au compte auth
+      const { error: updateError } = await this.supabaseClient
+        .from('users')
+        .update({ auth_user_id: authUser.user.id })
+        .eq('telegram_id', telegramId)
+
+      if (updateError) {
+        console.error('Error linking accounts:', updateError)
+        await this.telegramAPI.sendMessage(chatId, '❌ Erreur lors de la liaison des comptes.')
+        return { success: false, error: updateError }
+      }
+
       const successText = `🎉 <b>Compte web créé avec succès !</b>
 
 Votre compte Telegram est maintenant lié à un compte web !
 
 <b>🔑 Informations de connexion :</b>
-• Email : <code>${telegramId}@telegram.local</code>
+• Email : <code>${email}</code>
 • Méthode : Lien magique (sans mot de passe)
 
 <b>📱 Comment vous connecter :</b>
 1. Allez sur la plateforme web
 2. Cliquez sur "Se connecter"
-3. Entrez votre email
+3. Entrez votre email : <code>${email}</code>
 4. Cliquez sur "Envoyer le lien magique"
 5. Vous recevrez un lien de connexion
 
