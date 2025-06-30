@@ -13,10 +13,11 @@ interface Report {
   created_at: string | null;
 }
 
-interface User {
+interface UserDisplayInfo {
   telegram_id: string;
   pseudo: string | null;
-  telegram_username: string | null;
+  points_himpact: number | null;
+  created_at: string | null;
 }
 
 interface MapReport {
@@ -91,14 +92,14 @@ export const useReports = () => {
       const uniqueTelegramIds = [...new Set(reports.map(r => r.user_telegram_id))];
       console.log('Unique telegram IDs in reports:', uniqueTelegramIds);
 
-      // Récupérer TOUS les utilisateurs avec les IDs correspondants
+      // Récupérer les informations utilisateur via la vue sécurisée
       const { data: users, error: usersError } = await supabase
-        .from('users')
-        .select('telegram_id, pseudo, telegram_username, points_himpact')
+        .from('user_display_info')
+        .select('telegram_id, pseudo, points_himpact, created_at')
         .in('telegram_id', uniqueTelegramIds);
 
       console.log('Users query with telegram_ids:', uniqueTelegramIds);
-      console.log('Users fetched from database:', users);
+      console.log('Users fetched from secure view:', users);
       console.log('Users fetch error:', usersError);
 
       if (usersError) {
@@ -110,14 +111,13 @@ export const useReports = () => {
       const usersMap = new Map();
       users?.forEach(user => {
         usersMap.set(user.telegram_id, user);
-        console.log(`User ${user.telegram_id} mapped:`, {
-          telegram_username: user.telegram_username,
+        console.log(`User ${user.telegram_id} mapped (secure view):`, {
           pseudo: user.pseudo,
           points: user.points_himpact
         });
       });
 
-      console.log('Final users map:', usersMap);
+      console.log('Final users map (secure):', usersMap);
 
       const mappedReports = reports.map((report): MapReport => {
         const user = usersMap.get(report.user_telegram_id);
@@ -125,21 +125,15 @@ export const useReports = () => {
         
         if (user) {
           console.log(`Processing user ${report.user_telegram_id}:`, {
-            telegram_username: user.telegram_username,
             pseudo: user.pseudo
           });
           
-          // Prioriser le pseudo (nom choisi par l'utilisateur), puis telegram_username
+          // Utiliser le pseudo si disponible et non générique
           if (user.pseudo && user.pseudo.trim() !== '') {
-            // Vérifier que le pseudo n'est pas un fallback générique
             const genericPattern = /^User \d{4}$/;
             if (!genericPattern.test(user.pseudo)) {
               displayName = user.pseudo;
-            } else if (user.telegram_username && user.telegram_username.trim() !== '') {
-              displayName = `@${user.telegram_username}`;
             }
-          } else if (user.telegram_username && user.telegram_username.trim() !== '') {
-            displayName = `@${user.telegram_username}`;
           }
           
           console.log(`Final display name for ${report.user_telegram_id}: ${displayName}`);

@@ -66,6 +66,13 @@ export type Database = {
             foreignKeyName: "reports_user_telegram_id_fkey"
             columns: ["user_telegram_id"]
             isOneToOne: false
+            referencedRelation: "user_display_info"
+            referencedColumns: ["telegram_id"]
+          },
+          {
+            foreignKeyName: "reports_user_telegram_id_fkey"
+            columns: ["user_telegram_id"]
+            isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["telegram_id"]
           },
@@ -97,7 +104,27 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      user_display_info: {
+        Row: {
+          created_at: string | null
+          points_himpact: number | null
+          pseudo: string | null
+          telegram_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          points_himpact?: number | null
+          pseudo?: string | null
+          telegram_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          points_himpact?: number | null
+          pseudo?: string | null
+          telegram_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       add_points_to_user: {
