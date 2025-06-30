@@ -3,51 +3,45 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MapPin, Navigation, AlertCircle } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useReports } from "@/hooks/useReports";
 
 const MapSection = () => {
-  // Données simulées des signalements récents
-  const recentReports = [
-    {
-      id: 1,
-      location: "Cocody, Angré",
-      type: "Dépôt sauvage",
-      time: "Il y a 2h",
-      status: "En cours",
-      severity: "high"
-    },
-    {
-      id: 2,
-      location: "Yopougon, Sicogi",
-      type: "Caniveau bouché",
-      time: "Il y a 4h",
-      status: "Validé",
-      severity: "medium"
-    },
-    {
-      id: 3,
-      location: "Abobo, PK18",
-      type: "Plastiques éparpillés",
-      time: "Il y a 6h",
-      status: "Résolu",
-      severity: "low"
-    }
-  ];
+  const { data: reports = [], isLoading } = useReports();
 
-  const getSeverityColor = (severity: string) => {
-    switch (severity) {
-      case 'high': return 'bg-red-100 text-red-800';
-      case 'medium': return 'bg-orange-100 text-orange-800';
-      case 'low': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
+  // Prendre les 3 signalements les plus récents
+  const recentReports = reports.slice(0, 3);
+
+  const getSeverityColor = (type: string) => {
+    switch (type) {
+      case 'waste': return 'bg-red-100 text-red-800';
+      case 'drain': return 'bg-orange-100 text-orange-800';
+      default: return 'bg-green-100 text-green-800';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'En cours': return 'bg-yellow-100 text-yellow-800';
-      case 'Validé': return 'bg-blue-100 text-blue-800';
-      case 'Résolu': return 'bg-green-100 text-green-800';
+      case 'pending': return 'bg-yellow-100 text-yellow-800';
+      case 'validated': return 'bg-blue-100 text-blue-800';
+      case 'rejected': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'pending': return 'En attente';
+      case 'validated': return 'Validé';
+      case 'rejected': return 'Rejeté';
+      default: return 'Inconnu';
+    }
+  };
+
+  const getTypeText = (type: string) => {
+    switch (type) {
+      case 'waste': return 'Déchets';
+      case 'drain': return 'Caniveau';
+      default: return 'Autre';
     }
   };
 
@@ -88,10 +82,20 @@ const MapSection = () => {
                     </div>
                   </div>
 
-                  {/* Simulated map pins */}
-                  <div className="absolute top-1/4 left-1/3 w-4 h-4 bg-red-500 rounded-full animate-ping"></div>
-                  <div className="absolute top-1/2 right-1/3 w-4 h-4 bg-orange-500 rounded-full animate-ping"></div>
-                  <div className="absolute bottom-1/3 left-1/2 w-4 h-4 bg-green-500 rounded-full animate-ping"></div>
+                  {/* Points dynamiques basés sur les vraies données */}
+                  {reports.slice(0, 5).map((report, index) => (
+                    <div 
+                      key={report.id}
+                      className={`absolute w-4 h-4 rounded-full animate-ping ${
+                        report.status === 'validated' ? 'bg-green-500' :
+                        report.status === 'rejected' ? 'bg-red-500' : 'bg-orange-500'
+                      }`}
+                      style={{
+                        top: `${20 + (index * 15)}%`,
+                        left: `${25 + (index * 20)}%`
+                      }}
+                    />
+                  ))}
                 </div>
               </CardContent>
             </Card>
@@ -108,22 +112,36 @@ const MapSection = () => {
                 </h3>
                 
                 <div className="space-y-4">
-                  {recentReports.map((report) => (
-                    <div key={report.id} className="border border-gray-200 rounded-lg p-4">
-                      <div className="flex items-start justify-between mb-2">
-                        <div className="font-medium text-gray-900">{report.location}</div>
-                        <div className={`px-2 py-1 rounded-full text-xs font-medium ${getSeverityColor(report.severity)}`}>
-                          {report.type}
+                  {isLoading ? (
+                    <div className="text-center py-4">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mx-auto"></div>
+                      <p className="text-sm text-gray-500 mt-2">Chargement...</p>
+                    </div>
+                  ) : recentReports.length === 0 ? (
+                    <div className="text-center py-8 text-gray-500">
+                      <p>Aucun signalement pour le moment</p>
+                      <p className="text-sm mt-2">Sois le premier à signaler !</p>
+                    </div>
+                  ) : (
+                    recentReports.map((report) => (
+                      <div key={report.id} className="border border-gray-200 rounded-lg p-4">
+                        <div className="flex items-start justify-between mb-2">
+                          <div className="font-medium text-gray-900">{report.user}</div>
+                          <div className={`px-2 py-1 rounded-full text-xs font-medium ${getSeverityColor(report.type)}`}>
+                            {getTypeText(report.type)}
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-gray-500">
+                            {new Date(report.date).toLocaleDateString('fr-FR')}
+                          </span>
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(report.status)}`}>
+                            {getStatusText(report.status)}
+                          </span>
                         </div>
                       </div>
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-gray-500">{report.time}</span>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(report.status)}`}>
-                          {report.status}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
+                    ))
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -131,19 +149,23 @@ const MapSection = () => {
             {/* Quick Stats */}
             <Card className="shadow-xl mt-6">
               <CardContent className="p-6">
-                <h4 className="font-bold text-gray-900 mb-4">Statistiques du jour</h4>
+                <h4 className="font-bold text-gray-900 mb-4">Statistiques</h4>
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Nouveaux signalements</span>
-                    <span className="font-bold text-emerald-600">24</span>
+                    <span className="text-gray-600">Total signalements</span>
+                    <span className="font-bold text-emerald-600">{reports.length}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Zones nettoyées</span>
-                    <span className="font-bold text-green-600">8</span>
+                    <span className="text-gray-600">En attente</span>
+                    <span className="font-bold text-yellow-600">
+                      {reports.filter(r => r.status === 'pending').length}
+                    </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Citoyens actifs</span>
-                    <span className="font-bold text-blue-600">156</span>
+                    <span className="text-gray-600">Validés</span>
+                    <span className="font-bold text-green-600">
+                      {reports.filter(r => r.status === 'validated').length}
+                    </span>
                   </div>
                 </div>
               </CardContent>

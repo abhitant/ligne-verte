@@ -55,8 +55,8 @@ const Map = () => {
       <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 p-4">
         <div className="max-w-7xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-4xl font-bold text-green-800 mb-2">🗺️ Carte des Missions</h1>
-            <p className="text-lg text-gray-600">Découvre les zones à améliorer près de chez toi</p>
+            <h1 className="text-4xl font-bold text-green-800 mb-2">🗺️ Carte des Signalements</h1>
+            <p className="text-lg text-gray-600">Découvre les zones signalées par la communauté</p>
           </div>
           <Card className="bg-white shadow-lg">
             <CardContent className="p-6">
@@ -79,8 +79,8 @@ const Map = () => {
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-3xl font-bold text-green-800 mb-1">🗺️ Carte des Missions</h1>
-              <p className="text-gray-600">Découvre les zones à améliorer près de chez toi</p>
+              <h1 className="text-3xl font-bold text-green-800 mb-1">🗺️ Carte des Signalements</h1>
+              <p className="text-gray-600">Découvre les zones signalées par la communauté</p>
             </div>
           </div>
 
@@ -88,7 +88,7 @@ const Map = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
             <div className="bg-green-100 rounded-lg p-3 text-center">
               <div className="text-2xl font-bold text-green-600">{reports.length}</div>
-              <div className="text-xs text-green-700">Zones Signalées</div>
+              <div className="text-xs text-green-700">Signalements</div>
             </div>
             <div className="bg-yellow-100 rounded-lg p-3 text-center">
               <div className="text-2xl font-bold text-yellow-600">
@@ -100,11 +100,13 @@ const Map = () => {
               <div className="text-2xl font-bold text-blue-600">
                 {reports.filter(r => r.status === 'validated').length}
               </div>
-              <div className="text-xs text-blue-700">Validées</div>
+              <div className="text-xs text-blue-700">Validés</div>
             </div>
-            <div className="bg-purple-100 rounded-lg p-3 text-center">
-              <div className="text-2xl font-bold text-purple-600">+50</div>
-              <div className="text-xs text-purple-700">Points Possibles</div>
+            <div className="bg-red-100 rounded-lg p-3 text-center">
+              <div className="text-2xl font-bold text-red-600">
+                {reports.filter(r => r.status === 'rejected').length}
+              </div>
+              <div className="text-xs text-red-700">Rejetés</div>
             </div>
           </div>
         </div>
@@ -142,7 +144,7 @@ const Map = () => {
                       variant={filter === 'validated' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setFilter('validated')}
-                      className={filter === 'validated' ? 'bg-blue-600 hover:blue-700' : ''}
+                      className={filter === 'validated' ? 'bg-blue-600 hover:bg-blue-700' : ''}
                     >
                       Validés ({reports.filter(r => r.status === 'validated').length})
                     </Button>
@@ -154,7 +156,7 @@ const Map = () => {
                   <div className="flex items-center justify-center h-full">
                     <div className="text-center">
                       <Loader2 className="w-8 h-8 animate-spin mx-auto mb-2 text-green-600" />
-                      <p className="text-gray-600">Chargement des missions...</p>
+                      <p className="text-gray-600">Chargement des signalements...</p>
                     </div>
                   </div>
                 ) : (
@@ -191,7 +193,7 @@ const Map = () => {
                   <div className="text-center py-8 text-gray-500">
                     <p>Aucun signalement trouvé</p>
                     <p className="text-sm mt-2">
-                      {filter !== 'all' ? 'Essayez de changer le filtre.' : 'Sois le premier à signaler !'}
+                      {filter !== 'all' ? 'Essayez de changer le filtre.' : 'En attente des premiers signalements...'}
                     </p>
                     {reports.length > 0 && filter !== 'all' && (
                       <Button 
@@ -220,9 +222,6 @@ const Map = () => {
                         </div>
                         <div className="flex items-center gap-2">
                           <div className={`w-3 h-3 rounded-full ${getStatusColor(report.status)}`}></div>
-                          {report.status === 'pending' && (
-                            <Badge variant="secondary" className="text-xs">+50 pts</Badge>
-                          )}
                         </div>
                       </div>
                       <p className="text-sm text-gray-600 mb-2">{report.location}</p>
@@ -241,35 +240,30 @@ const Map = () => {
               </CardContent>
             </Card>
 
-            {/* Légende et Classement */}
+            {/* Statistiques */}
             <Card className="bg-white shadow-lg">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Trophy className="w-5 h-5 text-yellow-600" />
-                  Top Contributeurs
+                  <Trophy className="w-5 h-5 text-green-600" />
+                  Statistiques
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
+                <div className="flex items-center justify-between p-2 bg-green-50 rounded-lg">
+                  <span className="text-sm font-medium">Total des signalements</span>
+                  <span className="text-sm font-bold text-green-600">{reports.length}</span>
+                </div>
                 <div className="flex items-center justify-between p-2 bg-yellow-50 rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">🥇</span>
-                    <span className="font-medium text-sm">Aminata T.</span>
-                  </div>
-                  <span className="text-sm font-bold text-yellow-600">1,250 pts</span>
+                  <span className="text-sm font-medium">En attente</span>
+                  <span className="text-sm font-bold text-yellow-600">
+                    {reports.filter(r => r.status === 'pending').length}
+                  </span>
                 </div>
-                <div className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">🥈</span>
-                    <span className="font-medium text-sm">Kouassi M.</span>
-                  </div>
-                  <span className="text-sm font-bold text-gray-600">980 pts</span>
-                </div>
-                <div className="flex items-center justify-between p-2 bg-orange-50 rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">🥉</span>
-                    <span className="font-medium text-sm">Fatou D.</span>
-                  </div>
-                  <span className="text-sm font-bold text-orange-600">875 pts</span>
+                <div className="flex items-center justify-between p-2 bg-blue-50 rounded-lg">
+                  <span className="text-sm font-medium">Validés</span>
+                  <span className="text-sm font-bold text-blue-600">
+                    {reports.filter(r => r.status === 'validated').length}
+                  </span>
                 </div>
               </CardContent>
             </Card>
