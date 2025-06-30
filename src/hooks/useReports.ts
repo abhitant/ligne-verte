@@ -130,8 +130,14 @@ export const useReports = () => {
           });
           
           // Prioriser le pseudo (nom choisi par l'utilisateur), puis telegram_username
-          if (user.pseudo && user.pseudo.trim() !== '' && user.pseudo !== `User ${report.user_telegram_id.slice(-4)}`) {
-            displayName = user.pseudo;
+          if (user.pseudo && user.pseudo.trim() !== '') {
+            // Vérifier que le pseudo n'est pas un fallback générique
+            const genericPattern = /^User \d{4}$/;
+            if (!genericPattern.test(user.pseudo)) {
+              displayName = user.pseudo;
+            } else if (user.telegram_username && user.telegram_username.trim() !== '') {
+              displayName = `@${user.telegram_username}`;
+            }
           } else if (user.telegram_username && user.telegram_username.trim() !== '') {
             displayName = `@${user.telegram_username}`;
           }
