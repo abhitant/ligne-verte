@@ -38,13 +38,20 @@ Bonjour <b>${existingUser.pseudo}</b> ! Vous avez <b>${existingUser.points_himpa
 /points - Voir vos points
 /carte - Lien vers la carte
 /aide - Aide complète
-/changenom - Changer votre nom`
+/changenom - Changer votre nom
+/compte - Créer un compte web
+
+<b>💻 Accès web disponible !</b>
+Vous pouvez maintenant créer un compte pour accéder à la plateforme web avec votre identité Telegram.`
 
         const keyboard = {
           inline_keyboard: [
             [
               { text: '🗺️ Voir la carte', url: 'https://ligneverte.lovable.app/map' },
               { text: '🛒 Marketplace', url: 'https://ligneverte.lovable.app/marketplace' }
+            ],
+            [
+              { text: '💻 Créer compte web', callback_data: 'create_web_account' }
             ]
           ]
         }
@@ -158,6 +165,10 @@ Votre inscription est terminée. Vous commencez avec <b>${user.points_himpact} p
 /carte - Lien vers la carte
 /aide - Guide complet
 /changenom - Modifier votre nom
+/compte - Créer un compte web
+
+<b>💻 Nouveauté !</b>
+Vous pouvez maintenant créer un compte pour accéder à notre plateforme web !
 
 <b>Merci de rejoindre La Ligne Verte !</b> 🌱`
 
@@ -166,6 +177,9 @@ Votre inscription est terminée. Vous commencez avec <b>${user.points_himpact} p
           [
             { text: '🗺️ Voir la carte', url: 'https://ligneverte.lovable.app/map' },
             { text: '🛒 Marketplace', url: 'https://ligneverte.lovable.app/marketplace' }
+          ],
+          [
+            { text: '💻 Créer compte web', callback_data: 'create_web_account' }
           ]
         ]
       }
@@ -175,6 +189,94 @@ Votre inscription est terminée. Vous commencez avec <b>${user.points_himpact} p
     } catch (error) {
       console.error('Username choice error:', error)
       await this.telegramAPI.sendMessage(chatId, '❌ Erreur système')
+      return { success: false, error }
+    }
+  }
+
+  async handleCreateWebAccount(chatId: number, telegramId: string) {
+    try {
+      // Vérifier que l'utilisateur existe
+      const { data: user, error: userError } = await this.supabaseClient.rpc('get_user_by_telegram_id', {
+        p_telegram_id: telegramId
+      })
+
+      if (userError || !user) {
+        await this.telegramAPI.sendMessage(chatId, '❌ Utilisateur non trouvé. Tapez /start pour vous inscrire.')
+        return { success: false, error: 'User not found' }
+      }
+
+      // Si l'utilisateur a déjà un compte auth lié
+      if (user.auth_user_id) {
+        const accountText = `✅ <b>Compte web déjà créé !</b>
+
+Votre compte Telegram est déjà lié à un compte web.
+
+<b>🔑 Pour vous connecter :</b>
+1. Allez sur la plateforme web
+2. Utilisez l'email : <code>${telegramId}@telegram.local</code>
+3. Demandez un lien de connexion magique
+
+<b>💡 Votre pseudo :</b> ${user.pseudo}
+<b>🏆 Vos points :</b> ${user.points_himpact} points Himpact`
+
+        const keyboard = {
+          inline_keyboard: [
+            [
+              { text: '🌐 Aller sur la plateforme', url: 'https://ligneverte.lovable.app' }
+            ]
+          ]
+        }
+
+        await this.telegramAPI.sendMessage(chatId, accountText, keyboard)
+        return { success: true }
+      }
+
+      // Créer un compte auth pour l'utilisateur
+      const { data: authUserId, error: authError } = await this.supabaseClient.rpc('create_auth_user_for_telegram', {
+        p_telegram_id: telegramId
+      })
+
+      if (authError) {
+        console.error('Error creating auth user:', authError)
+        await this.telegramAPI.sendMessage(chatId, '❌ Erreur lors de la création du compte web. Réessayez plus tard.')
+        return { success: false, error: authError }
+      }
+
+      const successText = `🎉 <b>Compte web créé avec succès !</b>
+
+Votre compte Telegram est maintenant lié à un compte web !
+
+<b>🔑 Informations de connexion :</b>
+• Email : <code>${telegramId}@telegram.local</code>
+• Méthode : Lien magique (sans mot de passe)
+
+<b>📱 Comment vous connecter :</b>
+1. Allez sur la plateforme web
+2. Cliquez sur "Se connecter"
+3. Entrez votre email
+4. Cliquez sur "Envoyer le lien magique"
+5. Vous recevrez un lien de connexion
+
+<b>✨ Vos données Telegram :</b>
+• Pseudo : ${user.pseudo}
+• Points : ${user.points_himpact} points Himpact
+• Signalements : Synchronisés automatiquement
+
+<b>Bienvenue sur la plateforme web !</b> 🌐`
+
+      const keyboard = {
+        inline_keyboard: [
+          [
+            { text: '🌐 Aller sur la plateforme', url: 'https://ligneverte.lovable.app' }
+          ]
+        ]
+      }
+
+      await this.telegramAPI.sendMessage(chatId, successText, keyboard)
+      return { success: true }
+    } catch (error) {
+      console.error('Create web account error:', error)
+      await this.telegramAPI.sendMessage(chatId, '❌ Erreur système lors de la création du compte')
       return { success: false, error }
     }
   }
@@ -189,7 +291,7 @@ Tapez votre nouveau nom d'utilisateur souhaité.
 • Lettres, chiffres et tirets autorisés
 • Pas d'espaces ni de caractères spéciaux
 
-💡 <i>Votre nom actuel sera remplacé</i>`
+💡 <i>Votre nom actuel sera remplacé sur Telegram ET sur la plateforme web</i>`
 
     await this.telegramAPI.sendMessage(chatId, text)
     return { success: true }

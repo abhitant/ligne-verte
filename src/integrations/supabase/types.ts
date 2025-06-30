@@ -83,6 +83,7 @@ export type Database = {
       }
       users: {
         Row: {
+          auth_user_id: string | null
           created_at: string | null
           points_himpact: number | null
           pseudo: string | null
@@ -90,6 +91,7 @@ export type Database = {
           telegram_username: string | null
         }
         Insert: {
+          auth_user_id?: string | null
           created_at?: string | null
           points_himpact?: number | null
           pseudo?: string | null
@@ -97,6 +99,7 @@ export type Database = {
           telegram_username?: string | null
         }
         Update: {
+          auth_user_id?: string | null
           created_at?: string | null
           points_himpact?: number | null
           pseudo?: string | null
@@ -133,6 +136,7 @@ export type Database = {
       add_points_to_user: {
         Args: { p_telegram_id: string; p_points: number }
         Returns: {
+          auth_user_id: string | null
           created_at: string | null
           points_himpact: number | null
           pseudo: string | null
@@ -143,6 +147,10 @@ export type Database = {
       cleanup_old_pending_reports: {
         Args: Record<PropertyKey, never>
         Returns: number
+      }
+      create_auth_user_for_telegram: {
+        Args: { p_telegram_id: string; p_email?: string }
+        Returns: string
       }
       create_report: {
         Args: {
@@ -170,6 +178,7 @@ export type Database = {
           p_pseudo?: string
         }
         Returns: {
+          auth_user_id: string | null
           created_at: string | null
           points_himpact: number | null
           pseudo: string | null
@@ -197,9 +206,21 @@ export type Database = {
           telegram_id: string
         }
       }
+      get_user_by_auth_id: {
+        Args: { p_auth_user_id: string }
+        Returns: {
+          auth_user_id: string | null
+          created_at: string | null
+          points_himpact: number | null
+          pseudo: string | null
+          telegram_id: string
+          telegram_username: string | null
+        }
+      }
       get_user_by_telegram_id: {
         Args: { p_telegram_id: string }
         Returns: {
+          auth_user_id: string | null
           created_at: string | null
           points_himpact: number | null
           pseudo: string | null

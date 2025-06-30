@@ -25,6 +25,22 @@ export interface TelegramUpdate {
       longitude: number
     }
   }
+  callback_query?: {
+    id: string
+    from: {
+      id: number
+      first_name: string
+      username?: string
+    }
+    message: {
+      message_id: number
+      chat: {
+        id: number
+        type: string
+      }
+    }
+    data?: string
+  }
 }
 
 export interface TelegramApiResponse {

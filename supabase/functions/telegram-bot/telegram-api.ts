@@ -27,6 +27,23 @@ export class TelegramAPI {
     return result
   }
 
+  async answerCallbackQuery(callbackQueryId: string, text?: string): Promise<any> {
+    const payload = {
+      callback_query_id: callbackQueryId,
+      text: text || ''
+    }
+
+    const response = await fetch(`https://api.telegram.org/bot${this.botToken}/answerCallbackQuery`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+
+    const result = await response.json()
+    console.log('Callback query response:', result)
+    return result
+  }
+
   async getFileUrl(fileId: string): Promise<string | null> {
     try {
       const response = await fetch(`https://api.telegram.org/bot${this.botToken}/getFile?file_id=${fileId}`)

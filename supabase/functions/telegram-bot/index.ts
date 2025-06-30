@@ -64,6 +64,24 @@ serve(async (req) => {
       sorted.slice(0, 50).forEach(id => processedUpdates.add(id))
     }
 
+    // Traitement des callback queries (boutons inline)
+    if (update.callback_query) {
+      const { callback_query } = update
+      const chatId = callback_query.message.chat.id
+      const telegramId = callback_query.from.id.toString()
+      const callbackData = callback_query.data
+
+      if (callbackData === 'create_web_account') {
+        await commandHandler.handleCreateWebAccount(chatId, telegramId)
+        
+        // Répondre au callback query pour supprimer le loading
+        await telegramAPI.answerCallbackQuery(callback_query.id)
+        return new Response('OK', { status: 200 })
+      }
+
+      return new Response('OK', { status: 200 })
+    }
+
     if (!update.message) {
       console.log('No message in update, skipping...')
       return new Response('No message', { status: 200 })
@@ -102,6 +120,11 @@ serve(async (req) => {
 
     if (messageText === '/changenom') {
       await commandHandler.handleChangeName(chatId, telegramId)
+      return new Response('OK', { status: 200 })
+    }
+
+    if (messageText === '/compte') {
+      await commandHandler.handleCreateWebAccount(chatId, telegramId)
       return new Response('OK', { status: 200 })
     }
 
