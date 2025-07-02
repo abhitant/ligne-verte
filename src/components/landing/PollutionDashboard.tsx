@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
-import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, LineChart, Line } from "recharts";
-import { AlertTriangle, Droplet, Wind, Factory } from "lucide-react";
+import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, LineChart, Line, BarChart, Bar, PieChart, Pie, Cell } from "recharts";
+import { AlertTriangle, Droplet, Wind, Factory, Recycle, TrendingDown } from "lucide-react";
 
 const PollutionDashboard = () => {
   // Données réelles basées sur des indices de pollution typiques d'Abidjan
@@ -14,6 +14,21 @@ const PollutionDashboard = () => {
     { month: "Juin", pm25: 58, pm10: 82, ozone: 45 }
   ];
 
+  // Données sur les déchets à Abidjan
+  const wasteData = [
+    { name: "Plastique produit", value: 400000, color: "#ef4444" },
+    { name: "Jeté dans la rue", value: 200000, color: "#f97316" },
+    { name: "Recyclé", value: 12000, color: "#22c55e" }
+  ];
+
+  const districtData = [
+    { district: "Cocody", waste: 45000, recycled: 1350 },
+    { district: "Yopougon", waste: 65000, recycled: 1950 },
+    { district: "Abobo", waste: 55000, recycled: 1650 },
+    { district: "Adjamé", waste: 38000, recycled: 1140 },
+    { district: "Plateau", waste: 25000, recycled: 750 }
+  ];
+
   const waterQualityData = [
     { zone: "Lagune Ébrié", quality: 65, pollution: "Modérée" },
     { zone: "Canal de Vridi", quality: 40, pollution: "Élevée" },
@@ -21,20 +36,119 @@ const PollutionDashboard = () => {
     { zone: "Port d'Abidjan", quality: 25, pollution: "Critique" }
   ];
 
+  const COLORS = ['#ef4444', '#f97316', '#22c55e'];
+
   return (
     <div className="py-16 bg-gradient-to-br from-red-50 via-orange-50 to-amber-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <div className="inline-flex items-center bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
             <AlertTriangle className="w-4 h-4 mr-2" />
-            SURVEILLANCE ENVIRONNEMENTALE
+            ÉTAT D'URGENCE ENVIRONNEMENTAL
           </div>
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            État de la Pollution à Abidjan
+            Abidjan face au défi des déchets et pollution
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Suivi en temps réel de la qualité de l'air et de l'eau dans notre métropole
+            Les chiffres parlent d'eux-mêmes : notre ville étouffe sous les déchets plastiques et la pollution
           </p>
+        </div>
+
+        {/* Section Déchets - Statistiques alarmantes */}
+        <div className="mb-16">
+          <div className="text-center mb-8">
+            <h3 className="text-3xl font-bold text-gray-900 mb-4">Crise des Déchets Plastiques</h3>
+            <p className="text-lg text-gray-600">400 000 tonnes de plastique produites chaque année à Abidjan</p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            {/* Pie Chart - Répartition des déchets */}
+            <Card className="shadow-xl">
+              <CardContent className="p-8">
+                <h4 className="text-xl font-bold text-gray-900 mb-6 text-center">
+                  Répartition des 400 000 tonnes de plastique
+                </h4>
+                <ChartContainer
+                  config={{
+                    value: { label: "Tonnes" },
+                  }}
+                  className="h-[300px]"
+                >
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={wasteData}
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={100}
+                        fill="#8884d8"
+                        dataKey="value"
+                        label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                      >
+                        {wasteData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+
+            {/* Bar Chart - Déchets par commune */}
+            <Card className="shadow-xl">
+              <CardContent className="p-8">
+                <h4 className="text-xl font-bold text-gray-900 mb-6 text-center">
+                  Déchets par commune (en tonnes)
+                </h4>
+                <ChartContainer
+                  config={{
+                    waste: { label: "Déchets produits", color: "#ef4444" },
+                    recycled: { label: "Recyclés", color: "#22c55e" },
+                  }}
+                  className="h-[300px]"
+                >
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={districtData}>
+                      <XAxis dataKey="district" />
+                      <YAxis />
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Bar dataKey="waste" fill="#ef4444" />
+                      <Bar dataKey="recycled" fill="#22c55e" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Impact Stats Déchets */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <Card className="bg-gradient-to-r from-red-500 to-red-600 text-white shadow-xl">
+              <CardContent className="p-6 text-center">
+                <TrendingDown className="w-10 h-10 mx-auto mb-3" />
+                <div className="text-3xl font-bold mb-2">&lt; 5%</div>
+                <div className="text-red-100">Taux de recyclage actuel</div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-xl">
+              <CardContent className="p-6 text-center">
+                <AlertTriangle className="w-10 h-10 mx-auto mb-3" />
+                <div className="text-3xl font-bold mb-2">50%</div>
+                <div className="text-orange-100">Jetés directement dans la rue</div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white shadow-xl">
+              <CardContent className="p-6 text-center">
+                <Recycle className="w-10 h-10 mx-auto mb-3" />
+                <div className="text-3xl font-bold mb-2">280k</div>
+                <div className="text-green-100">Tonnes produites par Abidjan</div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
 
         {/* Métriques principales */}
