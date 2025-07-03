@@ -6,9 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { MapPin, Filter, Eye, Loader2, Trophy, Award, Users } from "lucide-react";
 import OpenStreetMap from "@/components/OpenStreetMap";
 import { useReports } from "@/hooks/useReports";
-import UserProfile from "@/components/gamification/UserProfile";
 import Leaderboard from "@/components/gamification/Leaderboard";
-import { useLeaderboard, useUserStats } from "@/hooks/useGamification";
+import { useLeaderboard } from "@/hooks/useGamification";
 import { wasteTypes } from "@/components/gamification/WasteTypeSelector";
 
 interface MapReport {
@@ -29,8 +28,6 @@ const Map = () => {
   
   const { data: reports = [], isLoading, error } = useReports();
   const { data: leaderboard = [] } = useLeaderboard(10);
-  const sampleUserId = "5962973530"; // Use the actual user ID from console logs
-  const { data: userStats } = useUserStats(sampleUserId);
 
   console.log('Map component - Reports:', reports);
   console.log('Map component - Current filter:', filter);
@@ -181,22 +178,6 @@ const Map = () => {
 
           {/* Sidebar */}
           <div className="space-y-4">
-            {/* User Profile - if user stats are available */}
-            {userStats && (
-              <UserProfile 
-                userStats={{
-                  pseudo: userStats.pseudo || "Utilisateur",
-                  experience_points: userStats.experience_points || 0,
-                  level_current: userStats.level_current || 1,
-                  reports_count: userStats.reports_count || 0,
-                  cleanups_count: userStats.cleanups_count || 0,
-                  streak_days: userStats.streak_days || 0,
-                  badges: Array.isArray(userStats.badges) ? userStats.badges as string[] : [],
-                  rank: leaderboard.find(u => u.telegram_id === sampleUserId)?.rank
-                }}
-              />
-            )}
-
             {/* Navigation Tabs */}
             <Card className="bg-white shadow-lg">
               <CardHeader className="pb-2">
@@ -282,7 +263,7 @@ const Map = () => {
                   <div className="space-y-3">
                     <Leaderboard 
                       users={leaderboard} 
-                      currentUserId={sampleUserId}
+                      currentUserId={undefined}
                       limit={10}
                     />
                   </div>
