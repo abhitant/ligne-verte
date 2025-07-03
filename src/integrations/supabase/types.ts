@@ -272,6 +272,10 @@ export type Database = {
           telegram_username: string | null
         }
       }
+      calculate_user_level: {
+        Args: { exp_points: number }
+        Returns: number
+      }
       cleanup_old_pending_reports: {
         Args: Record<PropertyKey, never>
         Returns: number

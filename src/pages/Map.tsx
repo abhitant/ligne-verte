@@ -3,9 +3,13 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Filter, Eye, Loader2, Trophy } from "lucide-react";
+import { MapPin, Filter, Eye, Loader2, Trophy, Award, Users } from "lucide-react";
 import OpenStreetMap from "@/components/OpenStreetMap";
 import { useReports } from "@/hooks/useReports";
+import UserProfile from "@/components/gamification/UserProfile";
+import Leaderboard from "@/components/gamification/Leaderboard";
+import { useLeaderboard, useUserStats } from "@/hooks/useGamification";
+import { wasteTypes } from "@/components/gamification/WasteTypeSelector";
 
 interface MapReport {
   id: string;
@@ -21,8 +25,12 @@ interface MapReport {
 const Map = () => {
   const [selectedReport, setSelectedReport] = useState<MapReport | null>(null);
   const [filter, setFilter] = useState<'all' | 'pending' | 'validated'>('all');
+  const [activeTab, setActiveTab] = useState<'reports' | 'leaderboard'>('reports');
   
   const { data: reports = [], isLoading, error } = useReports();
+  const { data: leaderboard = [] } = useLeaderboard(10);
+  const sampleUserId = "5962973530"; // Use the actual user ID from console logs
+  const { data: userStats } = useUserStats(sampleUserId);
 
   console.log('Map component - Reports:', reports);
   console.log('Map component - Current filter:', filter);
@@ -173,98 +181,112 @@ const Map = () => {
 
           {/* Sidebar */}
           <div className="space-y-4">
-            {/* Liste des Signalements */}
+            {/* User Profile - if user stats are available */}
+            {userStats && (
+              <UserProfile 
+                userStats={{
+                  pseudo: userStats.pseudo || "Utilisateur",
+                  experience_points: userStats.experience_points || 0,
+                  level_current: userStats.level_current || 1,
+                  reports_count: userStats.reports_count || 0,
+                  cleanups_count: userStats.cleanups_count || 0,
+                  streak_days: userStats.streak_days || 0,
+                  badges: Array.isArray(userStats.badges) ? userStats.badges as string[] : [],
+                  rank: leaderboard.find(u => u.telegram_id === sampleUserId)?.rank
+                }}
+              />
+            )}
+
+            {/* Navigation Tabs */}
             <Card className="bg-white shadow-lg">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Filter className="w-5 h-5 text-blue-600" />
-                  Signalements ({filteredReports.length})
-                </CardTitle>
-                <CardDescription>
-                  {isLoading ? 'Chargement...' : 'Clique pour voir sur la carte'}
-                </CardDescription>
+              <CardHeader className="pb-2">
+                <div className="flex gap-2">
+                  <Button
+                    variant={activeTab === 'reports' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setActiveTab('reports')}
+                    className="flex items-center gap-2"
+                  >
+                    <Filter className="w-4 h-4" />
+                    Signalements ({filteredReports.length})
+                  </Button>
+                  <Button
+                    variant={activeTab === 'leaderboard' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setActiveTab('leaderboard')}
+                    className="flex items-center gap-2"
+                  >
+                    <Users className="w-4 h-4" />
+                    Classement
+                  </Button>
+                </div>
               </CardHeader>
-              <CardContent className="space-y-3 max-h-[400px] overflow-y-auto">
-                {isLoading ? (
-                  <div className="flex items-center justify-center py-8">
-                    <Loader2 className="w-6 h-6 animate-spin text-green-600" />
-                  </div>
-                ) : filteredReports.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500">
-                    <p>Aucun signalement trouvé</p>
-                    <p className="text-sm mt-2">
-                      {filter !== 'all' ? 'Essayez de changer le filtre.' : 'En attente des premiers signalements...'}
-                    </p>
-                    {reports.length > 0 && filter !== 'all' && (
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="mt-2"
-                        onClick={() => setFilter('all')}
-                      >
-                        Voir tous les signalements
-                      </Button>
+              
+              <CardContent className="max-h-[450px] overflow-y-auto">
+                {activeTab === 'reports' ? (
+                  <div className="space-y-3">
+                    {isLoading ? (
+                      <div className="flex items-center justify-center py-8">
+                        <Loader2 className="w-6 h-6 animate-spin text-green-600" />
+                      </div>
+                    ) : filteredReports.length === 0 ? (
+                      <div className="text-center py-8 text-gray-500">
+                        <p>Aucun signalement trouvé</p>
+                        <p className="text-sm mt-2">
+                          {filter !== 'all' ? 'Essayez de changer le filtre.' : 'En attente des premiers signalements...'}
+                        </p>
+                        {reports.length > 0 && filter !== 'all' && (
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="mt-2"
+                            onClick={() => setFilter('all')}
+                          >
+                            Voir tous les signalements
+                          </Button>
+                        )}
+                      </div>
+                    ) : (
+                      filteredReports.map((report) => (
+                        <div 
+                          key={report.id}
+                          className={`p-3 border rounded-lg cursor-pointer transition-all hover:shadow-md ${
+                            selectedReport?.id === report.id ? 'ring-2 ring-green-500 bg-green-50' : 'hover:bg-gray-50'
+                          }`}
+                          onClick={() => setSelectedReport(report)}
+                        >
+                          <div className="flex items-start justify-between mb-2">
+                            <div className="flex items-center gap-2">
+                              <span className="text-lg">{getTypeIcon(report.type)}</span>
+                              <span className="font-medium text-sm">{report.user}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <div className={`w-3 h-3 rounded-full ${getStatusColor(report.status)}`}></div>
+                            </div>
+                          </div>
+                          <p className="text-sm text-gray-600 mb-2">{report.location}</p>
+                          <p className="text-xs text-gray-500 line-clamp-2">{report.description}</p>
+                          <div className="flex items-center justify-between mt-2">
+                            <span className="text-xs text-gray-400">
+                              {new Date(report.date).toLocaleDateString('fr-FR')}
+                            </span>
+                            <Button size="sm" variant="ghost" className="h-6 px-2">
+                              <Eye className="w-3 h-3" />
+                            </Button>
+                          </div>
+                        </div>
+                      ))
                     )}
                   </div>
                 ) : (
-                  filteredReports.map((report) => (
-                    <div 
-                      key={report.id}
-                      className={`p-3 border rounded-lg cursor-pointer transition-all hover:shadow-md ${
-                        selectedReport?.id === report.id ? 'ring-2 ring-green-500 bg-green-50' : 'hover:bg-gray-50'
-                      }`}
-                      onClick={() => setSelectedReport(report)}
-                    >
-                      <div className="flex items-start justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <span className="text-lg">{getTypeIcon(report.type)}</span>
-                          <span className="font-medium text-sm">{report.user}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <div className={`w-3 h-3 rounded-full ${getStatusColor(report.status)}`}></div>
-                        </div>
-                      </div>
-                      <p className="text-sm text-gray-600 mb-2">{report.location}</p>
-                      <p className="text-xs text-gray-500 line-clamp-2">{report.description}</p>
-                      <div className="flex items-center justify-between mt-2">
-                        <span className="text-xs text-gray-400">
-                          {new Date(report.date).toLocaleDateString('fr-FR')}
-                        </span>
-                        <Button size="sm" variant="ghost" className="h-6 px-2">
-                          <Eye className="w-3 h-3" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))
+                  <div className="space-y-3">
+                    <Leaderboard 
+                      users={leaderboard} 
+                      currentUserId={sampleUserId}
+                      limit={10}
+                    />
+                  </div>
                 )}
-              </CardContent>
-            </Card>
-
-            {/* Statistiques */}
-            <Card className="bg-white shadow-lg">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Trophy className="w-5 h-5 text-green-600" />
-                  Statistiques
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex items-center justify-between p-2 bg-green-50 rounded-lg">
-                  <span className="text-sm font-medium">Total des signalements</span>
-                  <span className="text-sm font-bold text-green-600">{reports.length}</span>
-                </div>
-                <div className="flex items-center justify-between p-2 bg-yellow-50 rounded-lg">
-                  <span className="text-sm font-medium">En attente</span>
-                  <span className="text-sm font-bold text-yellow-600">
-                    {reports.filter(r => r.status === 'pending').length}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between p-2 bg-blue-50 rounded-lg">
-                  <span className="text-sm font-medium">Validés</span>
-                  <span className="text-sm font-bold text-blue-600">
-                    {reports.filter(r => r.status === 'validated').length}
-                  </span>
-                </div>
               </CardContent>
             </Card>
           </div>
