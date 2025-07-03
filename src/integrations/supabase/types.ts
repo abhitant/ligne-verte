@@ -35,34 +35,52 @@ export type Database = {
       }
       reports: {
         Row: {
+          brand: string | null
+          cleanup_photo_url: string | null
           created_at: string | null
           description: string | null
           id: string
+          is_cleaned: boolean | null
           location_lat: number
           location_lng: number
           photo_url: string | null
+          points_awarded: number | null
+          severity_level: number | null
           status: string | null
           user_telegram_id: string
+          waste_type: string | null
         }
         Insert: {
+          brand?: string | null
+          cleanup_photo_url?: string | null
           created_at?: string | null
           description?: string | null
           id?: string
+          is_cleaned?: boolean | null
           location_lat: number
           location_lng: number
           photo_url?: string | null
+          points_awarded?: number | null
+          severity_level?: number | null
           status?: string | null
           user_telegram_id: string
+          waste_type?: string | null
         }
         Update: {
+          brand?: string | null
+          cleanup_photo_url?: string | null
           created_at?: string | null
           description?: string | null
           id?: string
+          is_cleaned?: boolean | null
           location_lat?: number
           location_lng?: number
           photo_url?: string | null
+          points_awarded?: number | null
+          severity_level?: number | null
           status?: string | null
           user_telegram_id?: string
+          waste_type?: string | null
         }
         Relationships: [
           {
@@ -161,14 +179,20 @@ export type Database = {
           p_location_lng: number
         }
         Returns: {
+          brand: string | null
+          cleanup_photo_url: string | null
           created_at: string | null
           description: string | null
           id: string
+          is_cleaned: boolean | null
           location_lat: number
           location_lng: number
           photo_url: string | null
+          points_awarded: number | null
+          severity_level: number | null
           status: string | null
           user_telegram_id: string
+          waste_type: string | null
         }
       }
       create_user_if_not_exists: {
@@ -231,14 +255,20 @@ export type Database = {
       update_report_status: {
         Args: { p_report_id: string; p_status: string }
         Returns: {
+          brand: string | null
+          cleanup_photo_url: string | null
           created_at: string | null
           description: string | null
           id: string
+          is_cleaned: boolean | null
           location_lat: number
           location_lng: number
           photo_url: string | null
+          points_awarded: number | null
+          severity_level: number | null
           status: string | null
           user_telegram_id: string
+          waste_type: string | null
         }
       }
       upsert_pending_report: {
