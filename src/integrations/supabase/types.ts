@@ -102,25 +102,46 @@ export type Database = {
       users: {
         Row: {
           auth_user_id: string | null
+          badges: Json | null
+          cleanups_count: number | null
           created_at: string | null
+          experience_points: number | null
+          last_activity_date: string | null
+          level_current: number | null
           points_himpact: number | null
           pseudo: string | null
+          reports_count: number | null
+          streak_days: number | null
           telegram_id: string
           telegram_username: string | null
         }
         Insert: {
           auth_user_id?: string | null
+          badges?: Json | null
+          cleanups_count?: number | null
           created_at?: string | null
+          experience_points?: number | null
+          last_activity_date?: string | null
+          level_current?: number | null
           points_himpact?: number | null
           pseudo?: string | null
+          reports_count?: number | null
+          streak_days?: number | null
           telegram_id: string
           telegram_username?: string | null
         }
         Update: {
           auth_user_id?: string | null
+          badges?: Json | null
+          cleanups_count?: number | null
           created_at?: string | null
+          experience_points?: number | null
+          last_activity_date?: string | null
+          level_current?: number | null
           points_himpact?: number | null
           pseudo?: string | null
+          reports_count?: number | null
+          streak_days?: number | null
           telegram_id?: string
           telegram_username?: string | null
         }
@@ -155,9 +176,16 @@ export type Database = {
         Args: { p_telegram_id: string; p_points: number }
         Returns: {
           auth_user_id: string | null
+          badges: Json | null
+          cleanups_count: number | null
           created_at: string | null
+          experience_points: number | null
+          last_activity_date: string | null
+          level_current: number | null
           points_himpact: number | null
           pseudo: string | null
+          reports_count: number | null
+          streak_days: number | null
           telegram_id: string
           telegram_username: string | null
         }
@@ -203,9 +231,16 @@ export type Database = {
         }
         Returns: {
           auth_user_id: string | null
+          badges: Json | null
+          cleanups_count: number | null
           created_at: string | null
+          experience_points: number | null
+          last_activity_date: string | null
+          level_current: number | null
           points_himpact: number | null
           pseudo: string | null
+          reports_count: number | null
+          streak_days: number | null
           telegram_id: string
           telegram_username: string | null
         }
@@ -234,9 +269,16 @@ export type Database = {
         Args: { p_auth_user_id: string }
         Returns: {
           auth_user_id: string | null
+          badges: Json | null
+          cleanups_count: number | null
           created_at: string | null
+          experience_points: number | null
+          last_activity_date: string | null
+          level_current: number | null
           points_himpact: number | null
           pseudo: string | null
+          reports_count: number | null
+          streak_days: number | null
           telegram_id: string
           telegram_username: string | null
         }
@@ -245,9 +287,16 @@ export type Database = {
         Args: { p_telegram_id: string }
         Returns: {
           auth_user_id: string | null
+          badges: Json | null
+          cleanups_count: number | null
           created_at: string | null
+          experience_points: number | null
+          last_activity_date: string | null
+          level_current: number | null
           points_himpact: number | null
           pseudo: string | null
+          reports_count: number | null
+          streak_days: number | null
           telegram_id: string
           telegram_username: string | null
         }
