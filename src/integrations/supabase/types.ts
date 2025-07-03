@@ -9,6 +9,45 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      achievements: {
+        Row: {
+          badge_type: string | null
+          cleanups_required: number | null
+          created_at: string | null
+          description: string
+          icon: string
+          id: string
+          name: string
+          points_required: number | null
+          reports_required: number | null
+          streak_required: number | null
+        }
+        Insert: {
+          badge_type?: string | null
+          cleanups_required?: number | null
+          created_at?: string | null
+          description: string
+          icon: string
+          id?: string
+          name: string
+          points_required?: number | null
+          reports_required?: number | null
+          streak_required?: number | null
+        }
+        Update: {
+          badge_type?: string | null
+          cleanups_required?: number | null
+          created_at?: string | null
+          description?: string
+          icon?: string
+          id?: string
+          name?: string
+          points_required?: number | null
+          reports_required?: number | null
+          streak_required?: number | null
+        }
+        Relationships: []
+      }
       pending_reports: {
         Row: {
           created_at: string | null
@@ -92,6 +131,49 @@ export type Database = {
           },
           {
             foreignKeyName: "reports_user_telegram_id_fkey"
+            columns: ["user_telegram_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["telegram_id"]
+          },
+        ]
+      }
+      user_achievements: {
+        Row: {
+          achievement_id: string
+          earned_at: string | null
+          id: string
+          user_telegram_id: string
+        }
+        Insert: {
+          achievement_id: string
+          earned_at?: string | null
+          id?: string
+          user_telegram_id: string
+        }
+        Update: {
+          achievement_id?: string
+          earned_at?: string | null
+          id?: string
+          user_telegram_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_achievements_achievement_id_fkey"
+            columns: ["achievement_id"]
+            isOneToOne: false
+            referencedRelation: "achievements"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_achievements_user_telegram_id_fkey"
+            columns: ["user_telegram_id"]
+            isOneToOne: false
+            referencedRelation: "user_display_info"
+            referencedColumns: ["telegram_id"]
+          },
+          {
+            foreignKeyName: "user_achievements_user_telegram_id_fkey"
             columns: ["user_telegram_id"]
             isOneToOne: false
             referencedRelation: "users"
