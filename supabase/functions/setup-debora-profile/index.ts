@@ -21,25 +21,9 @@ serve(async (req) => {
     }
 
     console.log('=== DÉBORA PROFILE SETUP START ===')
-    
-    // URL de l'image de profil de Débora - essayer plusieurs sources
-    let profilePhotoUrl = 'https://images.unsplash.com/photo-1494790108755-2616b612b0e0?w=400&h=400&fit=crop&crop=face'
-    
-    console.log('Using fallback image URL:', profilePhotoUrl)
-
-    // Télécharger l'image pour l'uploader via l'API Telegram
-    console.log('Downloading image...')
-    const imageResponse = await fetch(profilePhotoUrl)
-    
-    if (!imageResponse.ok) {
-      throw new Error(`Failed to download image: ${imageResponse.status} ${imageResponse.statusText}`)
-    }
-
-    console.log('Image downloaded successfully, size:', imageResponse.headers.get('content-length'))
-    const imageBlob = await imageResponse.blob()
-    console.log('Image blob created, size:', imageBlob.size, 'type:', imageBlob.type)
 
     // Configurer le nom du bot
+    console.log('Setting bot name...')
     const namePayload = { name: 'Débora - La Ligne Verte' }
     const nameResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setMyName`, {
       method: 'POST',
@@ -47,8 +31,10 @@ serve(async (req) => {
       body: JSON.stringify(namePayload)
     })
     const nameResult = await nameResponse.json()
+    console.log('Name result:', nameResult)
 
     // Configurer la description du bot
+    console.log('Setting bot description...')
     const descPayload = { 
       description: '🌱 Je suis Débora, votre standardiste de La Ligne Verte ! Ensemble, luttons contre la pollution urbaine en signalant les problèmes environnementaux. Envoyez-moi une photo et votre localisation pour commencer !' 
     }
@@ -58,25 +44,19 @@ serve(async (req) => {
       body: JSON.stringify(descPayload)
     })
     const descResult = await descResponse.json()
+    console.log('Description result:', descResult)
 
-    // Configurer la photo de profil avec FormData
-    const formData = new FormData()
-    formData.append('photo', imageBlob, 'debora-profile.jpg')
-
-    const photoResponse = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/setMyProfilePhoto`, {
-      method: 'POST',
-      body: formData
-    })
-    const photoResult = await photoResponse.json()
+    // Pour l'instant, on skip la photo de profil pour éviter les erreurs
+    console.log('Skipping profile photo for now...')
 
     return new Response(
       JSON.stringify({ 
         success: true, 
-        message: 'Profil de Débora configuré avec succès !',
+        message: 'Nom et description de Débora configurés avec succès !',
         results: {
           name: nameResult,
           description: descResult,
-          photo: photoResult
+          photo: { skipped: true, reason: 'Image upload will be implemented later' }
         }
       }),
       { 
