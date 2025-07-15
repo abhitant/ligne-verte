@@ -117,11 +117,14 @@ const Map = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto p-4">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Carte Interactive */}
-          <div className="lg:col-span-2">
-            <Card className="bg-white shadow-lg h-[600px]">
+      <div className="max-w-full mx-auto p-2">
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-4">
+          {/* Carte Interactive - Prend maintenant beaucoup plus de place */}
+          <div className="xl:col-span-3">
+            <Card className="bg-white shadow-xl h-[calc(100vh-200px)] min-h-[700px] border-2 border-green-200 relative overflow-hidden"
+                  style={{
+                    background: 'linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--accent)) 2%, hsl(var(--background)) 100%)'
+                  }}>
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="flex items-center gap-2">
@@ -176,17 +179,17 @@ const Map = () => {
             </Card>
           </div>
 
-          {/* Sidebar */}
+          {/* Sidebar Compact Gamifié */}
           <div className="space-y-4">
             {/* Navigation Tabs */}
-            <Card className="bg-white shadow-lg">
+            <Card className="bg-white shadow-xl border-2 border-green-200">
               <CardHeader className="pb-2">
-                <div className="flex gap-2">
+                <div className="flex flex-col gap-2">
                   <Button
                     variant={activeTab === 'reports' ? 'default' : 'outline'}
                     size="sm"
                     onClick={() => setActiveTab('reports')}
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 w-full justify-start"
                   >
                     <Filter className="w-4 h-4" />
                     Signalements ({filteredReports.length})
@@ -195,15 +198,15 @@ const Map = () => {
                     variant={activeTab === 'leaderboard' ? 'default' : 'outline'}
                     size="sm"
                     onClick={() => setActiveTab('leaderboard')}
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 w-full justify-start"
                   >
-                    <Users className="w-4 h-4" />
-                    Classement
+                    <Trophy className="w-4 h-4" />
+                    🏆 Classement
                   </Button>
                 </div>
               </CardHeader>
               
-              <CardContent className="max-h-[450px] overflow-y-auto">
+              <CardContent className="max-h-[calc(100vh-350px)] overflow-y-auto">
                 {activeTab === 'reports' ? (
                   <div className="space-y-3">
                     {isLoading ? (
