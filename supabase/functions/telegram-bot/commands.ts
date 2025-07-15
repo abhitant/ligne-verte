@@ -59,10 +59,10 @@ Vous pouvez maintenant créer un compte pour accéder à la plateforme web avec 
         return { success: true }
       }
 
-      // Pour un nouvel utilisateur, présentation du standardiste et demande de nom
+      // Pour un nouvel utilisateur, présentation de Débora et demande de nom
       const welcomeText = `🌱 <b>Bonjour et bienvenue !</b>
 
-Je suis le <b>standardiste de La Ligne Verte</b>, votre plateforme citoyenne dédiée à l'amélioration de l'environnement urbain.
+Je suis <b>Débora</b>, la standardiste de La Ligne Verte, votre plateforme citoyenne dédiée à l'amélioration de l'environnement urbain.
 
 <b>🎯 Notre mission :</b>
 Ensemble, nous identifions et signalons les problèmes environnementaux de notre ville pour la rendre plus verte et plus agréable à vivre.
