@@ -10,6 +10,7 @@ import Map from "./pages/Map";
 import Marketplace from "./pages/Marketplace";
 import Join from "./pages/Join";
 import UserProfile from "./pages/UserProfile";
+import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/rejoindre" element={<Join />} />
             <Route path="/profile" element={<UserProfile />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

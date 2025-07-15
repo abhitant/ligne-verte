@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { MapPin, Home, Gift, Users, Menu, X, Leaf } from "lucide-react";
+import { MapPin, Home, Gift, Users, Menu, X, Leaf, Settings } from "lucide-react";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,6 +13,7 @@ const Navigation = () => {
     { name: 'Carte', href: '/map', icon: MapPin },
     { name: 'Marketplace', href: '/marketplace', icon: Gift },
     { name: 'Rejoindre', href: '/rejoindre', icon: Users },
+    { name: 'Dashboard', href: '/dashboard', icon: Settings },
   ];
 
   const isActive = (href: string) => {
