@@ -3,7 +3,9 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Calendar, User, Camera, CheckCircle, XCircle } from "lucide-react";
+import { MapPin, Calendar, User, Camera, CheckCircle, XCircle, Settings, Bot } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 interface Report {
   id: string;
@@ -75,6 +77,26 @@ const Dashboard = () => {
     }
   };
 
+  const handleSetupDebora = async () => {
+    try {
+      toast.loading("Configuration du profil de Débora en cours...");
+      
+      const { data, error } = await supabase.functions.invoke('setup-debora-profile');
+      
+      if (error) {
+        throw error;
+      }
+      
+      toast.dismiss();
+      toast.success("Profil de Débora configuré avec succès !");
+      console.log('Setup result:', data);
+    } catch (error) {
+      toast.dismiss();
+      toast.error("Erreur lors de la configuration du profil");
+      console.error('Setup error:', error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 p-4">
       <div className="max-w-7xl mx-auto">
@@ -118,6 +140,38 @@ const Dashboard = () => {
             </CardContent>
           </Card>
         </div>
+
+        {/* Bot Configuration */}
+        <Card className="bg-card shadow-lg mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Bot className="w-5 h-5 text-blue-600" />
+              Configuration du Bot Telegram
+            </CardTitle>
+            <CardDescription>
+              Configurez le profil de Débora, votre standardiste Telegram
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-4">
+              <div className="flex-1">
+                <p className="text-sm text-gray-600 mb-2">
+                  Cliquez sur le bouton ci-dessous pour configurer le nom, la description et la photo de profil de Débora sur Telegram.
+                </p>
+                <p className="text-xs text-gray-500">
+                  Note: Les changements peuvent prendre quelques minutes pour apparaître dans Telegram.
+                </p>
+              </div>
+              <Button 
+                onClick={handleSetupDebora}
+                className="bg-blue-600 hover:bg-blue-700"
+              >
+                <Settings className="w-4 h-4 mr-2" />
+                Configurer Débora
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Reports List */}
         <Card className="bg-card shadow-lg">
