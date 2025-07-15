@@ -63,7 +63,7 @@ const Map = () => {
             <h1 className="text-4xl font-bold text-green-800 mb-2">🗺️ Carte des Signalements</h1>
             <p className="text-lg text-gray-600">Découvre les zones signalées par la communauté</p>
           </div>
-          <Card className="bg-white shadow-lg">
+          <Card className="bg-card shadow-lg">
             <CardContent className="p-6">
               <div className="text-center text-red-600">
                 <p className="text-lg font-semibold mb-2">Erreur lors du chargement des signalements</p>
@@ -78,9 +78,9 @@ const Map = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-background to-accent/20">
       {/* Header avec Navigation */}
-      <div className="bg-white shadow-sm border-b border-green-100 p-4">
+      <div className="bg-card shadow-sm border-b border-border p-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-4">
             <div>
@@ -121,9 +121,9 @@ const Map = () => {
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-4">
           {/* Carte Interactive - Prend maintenant beaucoup plus de place */}
           <div className="xl:col-span-3">
-            <Card className="bg-white shadow-xl h-[calc(100vh-200px)] min-h-[700px] border-2 border-green-200 relative overflow-hidden"
+            <Card className="bg-card shadow-xl h-[calc(100vh-200px)] min-h-[700px] border-2 border-accent relative overflow-hidden"
                   style={{
-                    background: 'linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--accent)) 2%, hsl(var(--background)) 100%)'
+                    background: 'linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--accent)) 2%, hsl(var(--card)) 100%)'
                   }}>
               <CardHeader>
                 <div className="flex items-center justify-between">
@@ -182,7 +182,7 @@ const Map = () => {
           {/* Sidebar Compact Gamifié */}
           <div className="space-y-4">
             {/* Navigation Tabs */}
-            <Card className="bg-white shadow-xl border-2 border-green-200">
+            <Card className="bg-card shadow-xl border-2 border-accent">
               <CardHeader className="pb-2">
                 <div className="flex flex-col gap-2">
                   <Button
