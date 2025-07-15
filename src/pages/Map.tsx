@@ -91,9 +91,9 @@ const Map = () => {
 
           {/* Stats Rapides - Seulement le nombre total */}
           <div className="flex justify-center mb-4">
-            <div className="bg-accent rounded-lg p-4 text-center min-w-[200px]">
-              <div className="text-3xl font-bold text-accent-foreground">{reports.length}</div>
-              <div className="text-sm text-accent-foreground/80">Signalements</div>
+            <div className="bg-primary rounded-lg p-4 text-center min-w-[200px]">
+              <div className="text-3xl font-bold text-primary-foreground">{reports.length}</div>
+              <div className="text-sm text-primary-foreground/80">Signalements</div>
             </div>
           </div>
         </div>
