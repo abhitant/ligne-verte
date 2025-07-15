@@ -13,7 +13,6 @@ const Navigation = () => {
     { name: 'Carte', href: '/map', icon: MapPin },
     { name: 'Marketplace', href: '/marketplace', icon: Gift },
     { name: 'Rejoindre', href: '/rejoindre', icon: Users },
-    { name: 'Dashboard', href: '/dashboard', icon: Settings },
   ];
 
   const isActive = (href: string) => {
