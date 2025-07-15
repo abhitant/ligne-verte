@@ -60,12 +60,15 @@ Vous pouvez maintenant créer un compte pour accéder à la plateforme web avec 
       }
 
       // Pour un nouvel utilisateur, présentation de Débora et demande de nom
-      const welcomeText = `🌱 <b>Bonjour et bienvenue !</b>
+      const userName = firstName || "ami(e)"
+      
+      const welcomeText = `🌱 <b>Hello ${userName} !</b>
 
-Je suis <b>Débora</b>, la standardiste de La Ligne Verte, votre plateforme citoyenne dédiée à l'amélioration de l'environnement urbain.
+Je suis <b>Débora</b>, la standardiste de La Ligne Verte. 
 
-<b>🎯 Notre mission :</b>
-Ensemble, nous identifions et signalons les problèmes environnementaux de notre ville pour la rendre plus verte et plus agréable à vivre.
+<b>Êtes-vous prêt(e) à lutter contre la pollution urbaine ? 🌍</b>
+
+Notre plateforme citoyenne est dédiée à l'amélioration de l'environnement urbain. Ensemble, nous identifions et signalons les problèmes environnementaux pour rendre notre ville plus verte !
 
 <b>💡 Comment ça fonctionne :</b>
 • Vous photographiez un problème (déchets, dégradations...)
@@ -73,7 +76,7 @@ Ensemble, nous identifions et signalons les problèmes environnementaux de notre
 • Votre signalement apparaît sur notre carte collaborative
 • Vous gagnez des points Himpact pour vos contributions !
 
-Pour commencer, <b>par quel nom souhaitez-vous être appelé ?</b>
+Pour commencer, <b>par quel nom souhaitez-vous être appelé ${userName} ?</b>
 
 📝 <i>Votre nom doit contenir entre 3 et 20 caractères (lettres, chiffres et tirets autorisés)</i>`
 
