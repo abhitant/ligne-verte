@@ -80,7 +80,7 @@ const Map = () => {
   return (
     <div className="min-h-screen bg-primary">
       {/* Header avec Navigation */}
-      <div className="glassmorphism shadow-sm p-4">
+      <div className="bg-primary shadow-sm p-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-4">
             <div>
@@ -91,7 +91,7 @@ const Map = () => {
 
           {/* Stats Rapides - Seulement le nombre total */}
           <div className="flex justify-center mb-4">
-            <div className="glass-card p-4 text-center min-w-[200px]">
+            <div className="bg-green-600 rounded-lg p-4 text-center min-w-[200px]">
               <div className="text-3xl font-bold text-white">{reports.length}</div>
               <div className="text-sm text-white/80">Signalements</div>
             </div>
@@ -103,7 +103,7 @@ const Map = () => {
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-4">
           {/* Carte Interactive - Prend maintenant beaucoup plus de place */}
           <div className="xl:col-span-3">
-            <Card className="glass-card h-[calc(100vh-200px)] min-h-[700px] relative overflow-hidden"
+            <Card className="bg-primary/90 shadow-xl h-[calc(100vh-200px)] min-h-[700px] border-2 border-primary relative overflow-hidden"
                   style={{
                     background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary)) 100%)'
                   }}>
@@ -121,7 +121,7 @@ const Map = () => {
                         console.log('Clicking pending filter');
                         setFilter('pending');
                       }}
-                      className="glass-button text-white border-white/30"
+                      className="bg-green-400 hover:bg-green-500 text-green-900"
                     >
                       En attente ({reports.filter(r => r.status === 'pending').length})
                     </Button>
@@ -129,7 +129,7 @@ const Map = () => {
                       variant={filter === 'validated' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setFilter('validated')}
-                      className="glass-button text-white border-white/30"
+                      className="bg-green-400 hover:bg-green-500 text-green-900"
                     >
                       Validés ({reports.filter(r => r.status === 'validated').length})
                     </Button>
@@ -159,7 +159,7 @@ const Map = () => {
           {/* Sidebar Compact Gamifié */}
           <div className="space-y-4">
             {/* Navigation Tabs */}
-            <Card className="glass-card shadow-xl">
+            <Card className="bg-primary/80 shadow-xl border-2 border-primary">
               <CardHeader className="pb-2">
                 <div className="flex flex-col gap-2">
                   <Button
