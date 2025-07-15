@@ -78,7 +78,7 @@ const Map = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-accent/20">
+    <div className="min-h-screen bg-primary">
       {/* Header avec Navigation */}
       <div className="bg-primary shadow-sm border-b border-border p-4">
         <div className="max-w-7xl mx-auto">
@@ -103,14 +103,14 @@ const Map = () => {
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-4">
           {/* Carte Interactive - Prend maintenant beaucoup plus de place */}
           <div className="xl:col-span-3">
-            <Card className="bg-card shadow-xl h-[calc(100vh-200px)] min-h-[700px] border-2 border-accent relative overflow-hidden"
+            <Card className="bg-primary/90 shadow-xl h-[calc(100vh-200px)] min-h-[700px] border-2 border-accent relative overflow-hidden"
                   style={{
-                    background: 'linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--accent)) 2%, hsl(var(--card)) 100%)'
+                    background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary)) 100%)'
                   }}>
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle className="flex items-center gap-2">
-                    <MapPin className="w-5 h-5 text-green-600" />
+                  <CardTitle className="flex items-center gap-2 text-primary-foreground">
+                    <MapPin className="w-5 h-5 text-accent" />
                     Carte Interactive
                   </CardTitle>
                   <div className="flex gap-2">
@@ -118,7 +118,7 @@ const Map = () => {
                       variant={filter === 'all' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setFilter('all')}
-                      className={filter === 'all' ? 'bg-green-600 hover:bg-green-700' : ''}
+                      className={filter === 'all' ? 'bg-accent hover:bg-accent/80 text-accent-foreground' : 'border-accent text-primary-foreground hover:bg-accent/20'}
                     >
                       Tous ({reports.length})
                     </Button>
@@ -126,7 +126,7 @@ const Map = () => {
                       variant={filter === 'pending' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setFilter('pending')}
-                      className={filter === 'pending' ? 'bg-yellow-600 hover:bg-yellow-700' : ''}
+                      className={filter === 'pending' ? 'bg-accent hover:bg-accent/80 text-accent-foreground' : 'border-accent text-primary-foreground hover:bg-accent/20'}
                     >
                       En attente ({reports.filter(r => r.status === 'pending').length})
                     </Button>
@@ -134,7 +134,7 @@ const Map = () => {
                       variant={filter === 'validated' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setFilter('validated')}
-                      className={filter === 'validated' ? 'bg-blue-600 hover:bg-blue-700' : ''}
+                      className={filter === 'validated' ? 'bg-accent hover:bg-accent/80 text-accent-foreground' : 'border-accent text-primary-foreground hover:bg-accent/20'}
                     >
                       Validés ({reports.filter(r => r.status === 'validated').length})
                     </Button>
@@ -164,7 +164,7 @@ const Map = () => {
           {/* Sidebar Compact Gamifié */}
           <div className="space-y-4">
             {/* Navigation Tabs */}
-            <Card className="bg-card shadow-xl border-2 border-accent">
+            <Card className="bg-primary/80 shadow-xl border-2 border-accent">
               <CardHeader className="pb-2">
                 <div className="flex flex-col gap-2">
                   <Button
@@ -188,7 +188,7 @@ const Map = () => {
                 </div>
               </CardHeader>
               
-              <CardContent className="max-h-[calc(100vh-350px)] overflow-y-auto">
+              <CardContent className="max-h-[calc(100vh-350px)] overflow-y-auto text-primary-foreground">
                 {activeTab === 'reports' ? (
                   <div className="space-y-3">
                     {isLoading ? (
