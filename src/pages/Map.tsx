@@ -118,7 +118,7 @@ const Map = () => {
                       variant={filter === 'all' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setFilter('all')}
-                      className={filter === 'all' ? 'bg-accent hover:bg-accent/80 text-accent-foreground' : 'border-white text-white hover:bg-white/20'}
+                      className={filter === 'all' ? 'bg-green-400 hover:bg-green-500 text-green-900' : 'border-white text-white hover:bg-white/20'}
                     >
                       Tous ({reports.length})
                     </Button>
@@ -126,7 +126,7 @@ const Map = () => {
                       variant={filter === 'pending' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setFilter('pending')}
-                      className={filter === 'pending' ? 'bg-accent hover:bg-accent/80 text-accent-foreground' : 'border-white text-white hover:bg-white/20'}
+                      className={filter === 'pending' ? 'bg-green-400 hover:bg-green-500 text-green-900' : 'border-white text-white hover:bg-white/20'}
                     >
                       En attente ({reports.filter(r => r.status === 'pending').length})
                     </Button>
@@ -134,7 +134,7 @@ const Map = () => {
                       variant={filter === 'validated' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setFilter('validated')}
-                      className={filter === 'validated' ? 'bg-accent hover:bg-accent/80 text-accent-foreground' : 'border-white text-white hover:bg-white/20'}
+                      className={filter === 'validated' ? 'bg-green-400 hover:bg-green-500 text-green-900' : 'border-white text-white hover:bg-white/20'}
                     >
                       Validés ({reports.filter(r => r.status === 'validated').length})
                     </Button>
