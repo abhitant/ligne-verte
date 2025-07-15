@@ -85,7 +85,7 @@ const Dashboard = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-white shadow-lg border-l-4 border-l-green-500">
+          <Card className="bg-card shadow-lg border-l-4 border-l-accent">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-gray-600">Total Signalements</CardTitle>
             </CardHeader>
@@ -93,7 +93,7 @@ const Dashboard = () => {
               <div className="text-2xl font-bold text-green-600">247</div>
             </CardContent>
           </Card>
-          <Card className="bg-white shadow-lg border-l-4 border-l-blue-500">
+          <Card className="bg-card shadow-lg border-l-4 border-l-primary">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-gray-600">En Attente</CardTitle>
             </CardHeader>
@@ -101,7 +101,7 @@ const Dashboard = () => {
               <div className="text-2xl font-bold text-blue-600">12</div>
             </CardContent>
           </Card>
-          <Card className="bg-white shadow-lg border-l-4 border-l-yellow-500">
+          <Card className="bg-card shadow-lg border-l-4 border-l-secondary">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-gray-600">Validés</CardTitle>
             </CardHeader>
@@ -109,7 +109,7 @@ const Dashboard = () => {
               <div className="text-2xl font-bold text-yellow-600">198</div>
             </CardContent>
           </Card>
-          <Card className="bg-white shadow-lg border-l-4 border-l-purple-500">
+          <Card className="bg-card shadow-lg border-l-4 border-l-muted">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-gray-600">Points Distribués</CardTitle>
             </CardHeader>
@@ -120,7 +120,7 @@ const Dashboard = () => {
         </div>
 
         {/* Reports List */}
-        <Card className="bg-white shadow-lg">
+        <Card className="bg-card shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <MapPin className="w-5 h-5 text-green-600" />

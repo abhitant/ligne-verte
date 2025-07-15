@@ -212,7 +212,7 @@ const ReportsDashboard = () => {
 
         {/* Zone d'encouragement */}
         <div className="mt-12 text-center">
-          <div className="bg-white rounded-2xl shadow-lg p-8 max-w-4xl mx-auto">
+          <div className="bg-card rounded-2xl shadow-lg p-8 max-w-4xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div>
                 <img 

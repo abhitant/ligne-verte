@@ -76,7 +76,7 @@ const Join = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Form */}
-          <Card className="bg-white shadow-lg">
+          <Card className="bg-card shadow-lg">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Users className="w-6 h-6 text-green-600" />
@@ -154,7 +154,7 @@ const Join = () => {
           {/* Info & Benefits */}
           <div className="space-y-6">
             {/* Benefits */}
-            <Card className="bg-white shadow-lg">
+            <Card className="bg-card shadow-lg">
               <CardHeader>
                 <CardTitle className="text-green-800">Pourquoi nous rejoindre ?</CardTitle>
               </CardHeader>
@@ -189,7 +189,7 @@ const Join = () => {
                   Pas besoin d'attendre ! Démarrez immédiatement avec notre bot Telegram.
                 </p>
                 <Button 
-                  className="bg-white text-blue-600 hover:bg-blue-50 w-full" 
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 w-full" 
                   size="lg"
                 >
                   <a 

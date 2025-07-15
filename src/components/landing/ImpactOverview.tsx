@@ -22,28 +22,28 @@ const ImpactOverview = () => {
 
         {/* Impact metrics avec style moderne */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
-          <Card className="bg-white/10 backdrop-blur-sm border border-white/20 text-white shadow-2xl transform hover:scale-105 transition-all duration-300 hover:bg-white/15">
+          <Card className="bg-card/10 backdrop-blur-sm border border-border text-card-foreground shadow-2xl transform hover:scale-105 transition-all duration-300 hover:bg-card/15">
             <CardContent className="p-6 text-center">
               <div className="text-4xl font-bold mb-2 text-lime-400">400k</div>
               <div className="text-gray-300 text-sm font-medium">Tonnes de déchets/an</div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white/10 backdrop-blur-sm border border-white/20 text-white shadow-2xl transform hover:scale-105 transition-all duration-300 hover:bg-white/15">
+          <Card className="bg-card/10 backdrop-blur-sm border border-border text-card-foreground shadow-2xl transform hover:scale-105 transition-all duration-300 hover:bg-card/15">
             <CardContent className="p-6 text-center">
               <div className="text-4xl font-bold mb-2 text-orange-400">&lt; 5%</div>
               <div className="text-gray-300 text-sm font-medium">Taux recyclage</div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white/10 backdrop-blur-sm border border-white/20 text-white shadow-2xl transform hover:scale-105 transition-all duration-300 hover:bg-white/15">
+          <Card className="bg-card/10 backdrop-blur-sm border border-border text-card-foreground shadow-2xl transform hover:scale-105 transition-all duration-300 hover:bg-card/15">
             <CardContent className="p-6 text-center">
               <MapPin className="w-10 h-10 mx-auto mb-2 text-lime-400" />
               <div className="text-gray-300 text-sm font-medium">Signalements actifs</div>
             </CardContent>
           </Card>
 
-          <Card className="bg-white/10 backdrop-blur-sm border border-white/20 text-white shadow-2xl transform hover:scale-105 transition-all duration-300 hover:bg-white/15">
+          <Card className="bg-card/10 backdrop-blur-sm border border-border text-card-foreground shadow-2xl transform hover:scale-105 transition-all duration-300 hover:bg-card/15">
             <CardContent className="p-6 text-center">
               <Users className="w-10 h-10 mx-auto mb-2 text-lime-400" />
               <div className="text-gray-300 text-sm font-medium">Citoyens mobilisés</div>
@@ -74,7 +74,7 @@ const ImpactOverview = () => {
             </div>
             
             {/* Badge 2025 */}
-            <div className="absolute -top-4 -right-4 bg-white text-gray-900 px-6 py-4 rounded-2xl shadow-2xl">
+            <div className="absolute -top-4 -right-4 bg-card text-card-foreground px-6 py-4 rounded-2xl shadow-2xl">
               <div className="text-4xl font-bold">20</div>
               <div className="text-4xl font-bold">25</div>
             </div>

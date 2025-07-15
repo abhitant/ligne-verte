@@ -285,7 +285,7 @@ const PollutionDashboard = () => {
 
         {/* Appel à l'action */}
         <div className="mt-12 text-center">
-          <div className="bg-white rounded-2xl shadow-lg p-8 max-w-2xl mx-auto">
+          <div className="bg-card rounded-2xl shadow-lg p-8 max-w-2xl mx-auto">
             <img 
               src="https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?auto=format&fit=crop&w=400&h=200" 
               alt="Environnement propre"

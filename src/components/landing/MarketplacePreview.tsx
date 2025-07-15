@@ -167,7 +167,7 @@ const MarketplacePreview = () => {
                 <p className="text-green-100 mb-4">
                   Commence à signaler pour gagner tes premiers points !
                 </p>
-                <Button className="bg-white text-green-600 hover:bg-green-50">
+                <Button className="bg-card text-primary hover:bg-card/80">
                   Faire mon premier signalement
                 </Button>
               </CardContent>

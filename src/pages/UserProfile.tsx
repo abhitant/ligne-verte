@@ -202,21 +202,21 @@ const UserProfile = () => {
 
             {/* Statistiques Détaillées */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Card className="bg-white shadow-lg text-center border-l-4 border-l-green-500">
+              <Card className="bg-card shadow-lg text-center border-l-4 border-l-accent">
                 <CardContent className="pt-6">
                   <div className="text-3xl font-bold text-green-600 mb-1">{userStats.reportsCount}</div>
                   <div className="text-sm text-gray-600">Signalements</div>
                   <div className="text-xs text-green-600 mt-1">Total effectués</div>
                 </CardContent>
               </Card>
-              <Card className="bg-white shadow-lg text-center border-l-4 border-l-blue-500">
+              <Card className="bg-card shadow-lg text-center border-l-4 border-l-primary">
                 <CardContent className="pt-6">
                   <div className="text-3xl font-bold text-blue-600 mb-1">{userStats.validatedReports}</div>
                   <div className="text-sm text-gray-600">Validés</div>
                   <div className="text-xs text-blue-600 mt-1">Impact confirmé</div>
                 </CardContent>
               </Card>
-              <Card className="bg-white shadow-lg text-center border-l-4 border-l-purple-500">
+              <Card className="bg-card shadow-lg text-center border-l-4 border-l-muted">
                 <CardContent className="pt-6">
                   <div className="text-3xl font-bold text-purple-600 mb-1">
                     {Math.round((userStats.validatedReports / userStats.reportsCount) * 100)}%
@@ -225,7 +225,7 @@ const UserProfile = () => {
                   <div className="text-xs text-purple-600 mt-1">Taux de réussite</div>
                 </CardContent>
               </Card>
-              <Card className="bg-white shadow-lg text-center border-l-4 border-l-yellow-500">
+              <Card className="bg-card shadow-lg text-center border-l-4 border-l-secondary">
                 <CardContent className="pt-6">
                   <div className="text-3xl font-bold text-yellow-600 mb-1">{unlockedAchievements.length}</div>
                   <div className="text-sm text-gray-600">Badges</div>
@@ -235,7 +235,7 @@ const UserProfile = () => {
             </div>
 
             {/* Activités Récentes */}
-            <Card className="bg-white shadow-lg">
+            <Card className="bg-card shadow-lg">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-green-600" />
@@ -302,7 +302,7 @@ const UserProfile = () => {
             )}
 
             {/* Collection de Badges */}
-            <Card className="bg-white shadow-lg">
+            <Card className="bg-card shadow-lg">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Medal className="w-5 h-5 text-purple-600" />
@@ -344,7 +344,7 @@ const UserProfile = () => {
             </Card>
 
             {/* Classement */}
-            <Card className="bg-white shadow-lg">
+            <Card className="bg-card shadow-lg">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Trophy className="w-5 h-5 text-yellow-600" />

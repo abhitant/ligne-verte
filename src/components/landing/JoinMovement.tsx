@@ -71,7 +71,7 @@ const JoinMovement = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
           {steps.map((step, index) => (
             <div key={index} className="relative">
-              <Card className="bg-white/10 backdrop-blur-sm border-white/20 shadow-xl hover:bg-white/20 transition-all">
+              <Card className="bg-card/10 backdrop-blur-sm border-border shadow-xl hover:bg-card/20 transition-all">
                 <CardContent className="p-8 text-center">
                   <div className={`w-16 h-16 ${step.color} rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg`}>
                     <step.icon className="w-8 h-8 text-white" />
@@ -102,7 +102,7 @@ const JoinMovement = () => {
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="bg-white/10 backdrop-blur-sm border-white/20 shadow-xl">
+              <Card key={index} className="bg-card/10 backdrop-blur-sm border-border shadow-xl">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-4">
                     <div>

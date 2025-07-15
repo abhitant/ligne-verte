@@ -104,16 +104,16 @@ const Marketplace = () => {
   const canAfford = (points: number) => userPoints >= points;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 p-4">
+    <div className="min-h-screen bg-gradient-to-br from-background to-accent/20 p-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-green-800 mb-2">💎 Marketplace Himpact</h1>
-          <p className="text-lg text-gray-600">Échangez vos points contre des récompenses</p>
+          <h1 className="text-4xl font-bold text-foreground mb-2">💎 Marketplace Himpact</h1>
+          <p className="text-lg text-muted-foreground">Échangez vos points contre des récompenses</p>
         </div>
 
         {/* User Points */}
-        <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg mb-8">
+        <Card className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg mb-8">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Zap className="w-6 h-6" />
@@ -122,7 +122,7 @@ const Marketplace = () => {
           </CardHeader>
           <CardContent>
             <div className="text-4xl font-bold mb-2">{userPoints.toLocaleString()} points</div>
-            <p className="text-green-100">Continue à signaler pour gagner plus de points !</p>
+            <p className="text-primary-foreground/80">Continue à signaler pour gagner plus de points !</p>
           </CardContent>
         </Card>
 
@@ -147,7 +147,7 @@ const Marketplace = () => {
         {/* Rewards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredRewards.map((reward) => (
-            <Card key={reward.id} className="bg-white shadow-lg hover:shadow-xl transition-shadow">
+            <Card key={reward.id} className="bg-card shadow-lg hover:shadow-xl transition-shadow">
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="text-4xl mb-2">{reward.image}</div>

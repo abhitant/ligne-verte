@@ -98,7 +98,7 @@ const UserProfile = ({ userStats, className }: UserProfileProps) => {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-white rounded-lg p-3 text-center">
+          <div className="bg-card rounded-lg p-3 text-center">
             <div className="flex items-center justify-center mb-1">
               <Target className="w-4 h-4 text-blue-500 mr-1" />
               <span className="text-2xl font-bold text-blue-600">{userStats.reports_count}</span>
@@ -106,7 +106,7 @@ const UserProfile = ({ userStats, className }: UserProfileProps) => {
             <p className="text-xs text-gray-600">Signalements</p>
           </div>
           
-          <div className="bg-white rounded-lg p-3 text-center">
+          <div className="bg-card rounded-lg p-3 text-center">
             <div className="flex items-center justify-center mb-1">
               <Trophy className="w-4 h-4 text-green-500 mr-1" />
               <span className="text-2xl font-bold text-green-600">{userStats.cleanups_count}</span>
@@ -114,7 +114,7 @@ const UserProfile = ({ userStats, className }: UserProfileProps) => {
             <p className="text-xs text-gray-600">Nettoyages</p>
           </div>
           
-          <div className="bg-white rounded-lg p-3 text-center">
+          <div className="bg-card rounded-lg p-3 text-center">
             <div className="flex items-center justify-center mb-1">
               <Zap className="w-4 h-4 text-orange-500 mr-1" />
               <span className="text-2xl font-bold text-orange-600">{userStats.streak_days}</span>
@@ -122,7 +122,7 @@ const UserProfile = ({ userStats, className }: UserProfileProps) => {
             <p className="text-xs text-gray-600">Série (jours)</p>
           </div>
           
-          <div className="bg-white rounded-lg p-3 text-center">
+          <div className="bg-card rounded-lg p-3 text-center">
             <div className="flex items-center justify-center mb-1">
               <Star className="w-4 h-4 text-purple-500 mr-1" />
               <span className="text-2xl font-bold text-purple-600">{userStats.experience_points}</span>
