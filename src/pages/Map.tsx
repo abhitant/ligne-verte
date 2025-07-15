@@ -125,7 +125,10 @@ const Map = () => {
                     <Button
                       variant={filter === 'pending' ? 'default' : 'outline'}
                       size="sm"
-                      onClick={() => setFilter('pending')}
+                      onClick={() => {
+                        console.log('Clicking pending filter');
+                        setFilter('pending');
+                      }}
                       className={filter === 'pending' ? 'bg-green-400 hover:bg-green-500 text-green-900' : 'border-white text-white hover:bg-white/20'}
                     >
                       En attente ({reports.filter(r => r.status === 'pending').length})
