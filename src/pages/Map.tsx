@@ -103,7 +103,7 @@ const Map = () => {
         <div className="grid grid-cols-1 xl:grid-cols-4 gap-4">
           {/* Carte Interactive - Prend maintenant beaucoup plus de place */}
           <div className="xl:col-span-3">
-            <Card className="bg-primary/90 shadow-xl h-[calc(100vh-200px)] min-h-[700px] border-2 border-accent relative overflow-hidden"
+            <Card className="bg-primary/90 shadow-xl h-[calc(100vh-200px)] min-h-[700px] border-2 border-primary relative overflow-hidden"
                   style={{
                     background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary)) 100%)'
                   }}>
@@ -164,7 +164,7 @@ const Map = () => {
           {/* Sidebar Compact Gamifié */}
           <div className="space-y-4">
             {/* Navigation Tabs */}
-            <Card className="bg-primary/80 shadow-xl border-2 border-accent">
+            <Card className="bg-primary/80 shadow-xl border-2 border-primary">
               <CardHeader className="pb-2">
                 <div className="flex flex-col gap-2">
                   <Button
