@@ -115,14 +115,6 @@ const Map = () => {
                   </CardTitle>
                   <div className="flex gap-2">
                     <Button
-                      variant={filter === 'all' ? 'default' : 'outline'}
-                      size="sm"
-                      onClick={() => setFilter('all')}
-                      className="bg-green-400 hover:bg-green-500 text-green-900"
-                    >
-                      Tous ({reports.length})
-                    </Button>
-                    <Button
                       variant={filter === 'pending' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => {
