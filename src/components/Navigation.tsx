@@ -30,8 +30,8 @@ const Navigation = () => {
                 <Leaf className="text-white w-4 h-4 sm:w-6 sm:h-6" />
               </div>
               <div className="flex flex-col">
-                <span className="text-lg sm:text-xl font-bold text-green-800">La Ligne Verte</span>
-                <span className="text-xs text-gray-500 hidden sm:block">Projet citoyen 🇨🇮</span>
+                <span className="text-lg sm:text-xl font-bold text-primary-foreground">La Ligne Verte</span>
+                <span className="text-xs text-primary-foreground/70 hidden sm:block">Projet citoyen 🇨🇮</span>
               </div>
             </Link>
           </div>
@@ -47,8 +47,8 @@ const Navigation = () => {
                     to={item.href}
                     className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
                       isActive(item.href)
-                        ? 'bg-green-100 text-green-800 font-medium'
-                        : 'text-gray-600 hover:text-green-600 hover:bg-green-50'
+                        ? 'bg-accent text-accent-foreground font-medium'
+                        : 'text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary/80'
                     }`}
                   >
                     <Icon className="w-5 h-5" />
@@ -98,8 +98,8 @@ const Navigation = () => {
                     to={item.href}
                     className={`flex items-center space-x-3 px-3 py-3 rounded-lg transition-colors text-base font-medium ${
                       isActive(item.href)
-                        ? 'bg-green-100 text-green-800'
-                        : 'text-gray-600 hover:text-green-600 hover:bg-green-50'
+                        ? 'bg-accent text-accent-foreground'
+                        : 'text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary/80'
                     }`}
                     onClick={() => setIsOpen(false)}
                   >
