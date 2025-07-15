@@ -58,4 +58,70 @@ export class TelegramAPI {
       return null
     }
   }
+
+  async setBotProfilePhoto(photoUrl: string): Promise<any> {
+    try {
+      // Télécharger l'image depuis l'URL
+      const imageResponse = await fetch(photoUrl)
+      const imageBlob = await imageResponse.blob()
+      
+      // Créer un FormData pour l'upload
+      const formData = new FormData()
+      formData.append('photo', imageBlob, 'profile.jpg')
+
+      const response = await fetch(`https://api.telegram.org/bot${this.botToken}/setMyProfilePhoto`, {
+        method: 'POST',
+        body: formData
+      })
+
+      const result = await response.json()
+      console.log('Profile photo set result:', result)
+      return result
+    } catch (error) {
+      console.error('Error setting bot profile photo:', error)
+      return null
+    }
+  }
+
+  async setBotName(name: string): Promise<any> {
+    try {
+      const payload = {
+        name: name
+      }
+
+      const response = await fetch(`https://api.telegram.org/bot${this.botToken}/setMyName`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+
+      const result = await response.json()
+      console.log('Bot name set result:', result)
+      return result
+    } catch (error) {
+      console.error('Error setting bot name:', error)
+      return null
+    }
+  }
+
+  async setBotDescription(description: string): Promise<any> {
+    try {
+      const payload = {
+        description: description
+      }
+
+      const response = await fetch(`https://api.telegram.org/bot${this.botToken}/setMyDescription`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+
+      const result = await response.json()
+      console.log('Bot description set result:', result)
+      return result
+    } catch (error) {
+      console.error('Error setting bot description:', error)
+      return null
+    }
+  }
 }
