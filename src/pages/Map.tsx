@@ -80,7 +80,7 @@ const Map = () => {
   return (
     <div className="min-h-screen bg-primary">
       {/* Header avec Navigation */}
-      <div className="bg-primary shadow-sm border-b border-border p-4">
+      <div className="bg-primary shadow-sm p-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-4">
             <div>
