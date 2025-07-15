@@ -84,16 +84,16 @@ const Map = () => {
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-3xl font-bold text-primary-foreground mb-1">🗺️ Carte des Signalements</h1>
-              <p className="text-primary-foreground/80">Découvre les zones signalées par la communauté</p>
+              <h1 className="text-3xl font-bold text-white mb-1">🗺️ Carte des Signalements</h1>
+              <p className="text-white/90">Découvre les zones signalées par la communauté</p>
             </div>
           </div>
 
           {/* Stats Rapides - Seulement le nombre total */}
           <div className="flex justify-center mb-4">
-            <div className="bg-primary rounded-lg p-4 text-center min-w-[200px]">
-              <div className="text-3xl font-bold text-primary-foreground">{reports.length}</div>
-              <div className="text-sm text-primary-foreground/80">Signalements</div>
+            <div className="bg-green-600 rounded-lg p-4 text-center min-w-[200px]">
+              <div className="text-3xl font-bold text-white">{reports.length}</div>
+              <div className="text-sm text-white/80">Signalements</div>
             </div>
           </div>
         </div>
