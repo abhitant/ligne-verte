@@ -20,28 +20,24 @@ serve(async (req) => {
       throw new Error('Missing required environment variables')
     }
 
-    // URL de l'image de profil de Débora - essayer plusieurs sources
-    let profilePhotoUrl = 'https://mpowpfgigzdpebtuohfk.supabase.co/storage/v1/object/public/report-photos/lovable-uploads/26cdf1f7-9b92-4694-8069-bc1ea2111078.png'
+    console.log('=== DÉBORA PROFILE SETUP START ===')
     
-    console.log('Trying to fetch image from:', profilePhotoUrl)
+    // URL de l'image de profil de Débora - essayer plusieurs sources
+    let profilePhotoUrl = 'https://images.unsplash.com/photo-1494790108755-2616b612b0e0?w=400&h=400&fit=crop&crop=face'
+    
+    console.log('Using fallback image URL:', profilePhotoUrl)
 
     // Télécharger l'image pour l'uploader via l'API Telegram
-    let imageResponse = await fetch(profilePhotoUrl)
-    
-    // Si l'image n'est pas trouvée dans le storage, essayer une URL alternative
-    if (!imageResponse.ok) {
-      console.log('First URL failed, trying alternative...')
-      profilePhotoUrl = 'https://images.unsplash.com/photo-1494790108755-2616b612b0e0?w=400&h=400&fit=crop&crop=face'
-      imageResponse = await fetch(profilePhotoUrl)
-    }
+    console.log('Downloading image...')
+    const imageResponse = await fetch(profilePhotoUrl)
     
     if (!imageResponse.ok) {
-      throw new Error('Impossible de télécharger l\'image de profil')
+      throw new Error(`Failed to download image: ${imageResponse.status} ${imageResponse.statusText}`)
     }
 
-    console.log('Image downloaded successfully')
+    console.log('Image downloaded successfully, size:', imageResponse.headers.get('content-length'))
     const imageBlob = await imageResponse.blob()
-    console.log('Image blob size:', imageBlob.size)
+    console.log('Image blob created, size:', imageBlob.size, 'type:', imageBlob.type)
 
     // Configurer le nom du bot
     const namePayload = { name: 'Débora - La Ligne Verte' }
