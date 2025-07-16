@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Trash2, MapPin, TrendingDown } from "lucide-react";
 import { useEffect, useState } from "react";
+import ligneVerteLogo from "@/assets/ligne-verte-logo.png";
 
 const WasteProblemSection = () => {
   const [visibleCards, setVisibleCards] = useState<number[]>([]);
@@ -81,6 +82,22 @@ const WasteProblemSection = () => {
                 </Card>
               );
             })}
+          </div>
+        </div>
+
+        {/* Section texte et logo */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div className="text-foreground">
+            <p className="text-lg leading-relaxed">
+              La ligne verte a pour mission de faire disparaitre la polution urbaine due aux déchets, grace à l'action citoyene.
+            </p>
+          </div>
+          <div className="flex justify-center md:justify-end">
+            <img 
+              src={ligneVerteLogo} 
+              alt="Logo de la ligne verte"
+              className="w-48 h-48 object-contain"
+            />
           </div>
         </div>
 
