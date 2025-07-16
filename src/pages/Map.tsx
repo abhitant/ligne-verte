@@ -241,11 +241,24 @@ const Map = () => {
                 {activeTab === 'leaderboard' ? (
                   // Affichage du classement complet
                   <div className="space-y-3">
-                    <Leaderboard 
-                      users={leaderboard} 
-                      currentUserId={undefined}
-                      limit={50}
-                    />
+                    {leaderboard.map((user, index) => (
+                      <div 
+                        key={user.telegram_id} 
+                        className="flex items-center gap-3 p-3 rounded-lg transition-all hover:shadow-md bg-accent text-accent-foreground hover:bg-accent/80"
+                      >
+                        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-accent-foreground text-accent font-bold text-sm">
+                          {index < 3 ? (index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉') : index + 1}
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-semibold text-accent-foreground">{user.pseudo}</p>
+                          <p className="text-sm text-accent-foreground/80">{user.reports_count || 0} signalements</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-accent-foreground text-lg">{user.points_himpact}</p>
+                          <p className="text-xs text-accent-foreground/80">points</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 ) : (
                   // Affichage des signalements
