@@ -79,6 +79,22 @@ serve(async (req) => {
         return new Response('OK', { status: 200 })
       }
 
+      if (callbackData === 'show_leaderboard') {
+        await commandHandler.handleLeaderboard(chatId)
+        
+        // Répondre au callback query pour supprimer le loading
+        await telegramAPI.answerCallbackQuery(callback_query.id)
+        return new Response('OK', { status: 200 })
+      }
+
+      if (callbackData === 'show_points') {
+        await commandHandler.handlePoints(chatId, telegramId)
+        
+        // Répondre au callback query pour supprimer le loading
+        await telegramAPI.answerCallbackQuery(callback_query.id)
+        return new Response('OK', { status: 200 })
+      }
+
       return new Response('OK', { status: 200 })
     }
 

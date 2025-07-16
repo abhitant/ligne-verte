@@ -47,7 +47,7 @@ Vous pouvez maintenant créer un compte pour accéder à la plateforme web avec 
           inline_keyboard: [
             [
               { text: '🗺️ Voir la carte', url: 'https://ligneverte.lovable.app/map' },
-              { text: '🛒 Marketplace', url: 'https://ligneverte.lovable.app/marketplace' }
+              { text: '🏆 Classement', callback_data: 'show_leaderboard' }
             ],
             [
               { text: '💻 Créer compte web', callback_data: 'create_web_account' }
@@ -83,7 +83,8 @@ Pour commencer, <b>par quel nom souhaitez-vous être appelé ${userName} ?</b>
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir la carte', url: 'https://ligneverte.lovable.app/map' }
+            { text: '🗺️ Voir la carte', url: 'https://ligneverte.lovable.app/map' },
+            { text: '🏆 Classement', callback_data: 'show_leaderboard' }
           ]
         ]
       }
@@ -441,12 +442,63 @@ Découvrez tous les signalements de la communauté sur notre carte interactive !
       inline_keyboard: [
         [
           { text: '🗺️ Voir la carte', url: 'https://ligneverte.lovable.app/map' },
-          { text: '🛒 Marketplace', url: 'https://ligneverte.lovable.app/marketplace' }
+          { text: '🏆 Classement', callback_data: 'show_leaderboard' }
         ]
       ]
     }
 
     await this.telegramAPI.sendMessage(chatId, helpText, keyboard)
     return { success: true }
+  }
+
+  async handleLeaderboard(chatId: number) {
+    try {
+      // Récupérer les 10 meilleurs utilisateurs
+      const { data: topUsers, error } = await this.supabaseClient
+        .from('users')
+        .select('pseudo, points_himpact, reports_count')
+        .order('points_himpact', { ascending: false })
+        .limit(10)
+
+      if (error) {
+        console.error('Error fetching leaderboard:', error)
+        await this.telegramAPI.sendMessage(chatId, '❌ Erreur lors de la récupération du classement')
+        return { success: false, error }
+      }
+
+      let leaderboardText = `🏆 <b>Classement - Top 10</b>\n\n`
+      
+      if (topUsers && topUsers.length > 0) {
+        topUsers.forEach((user, index) => {
+          const position = index + 1
+          const medal = position === 1 ? '🥇' : position === 2 ? '🥈' : position === 3 ? '🥉' : `${position}.`
+          leaderboardText += `${medal} <b>${user.pseudo}</b>\n`
+          leaderboardText += `   💰 ${user.points_himpact} points • 📊 ${user.reports_count || 0} signalements\n\n`
+        })
+      } else {
+        leaderboardText += `<i>Aucun utilisateur trouvé</i>\n\n`
+      }
+
+      leaderboardText += `<b>💡 Montez dans le classement :</b>\n`
+      leaderboardText += `• 📸 Signaler un problème (+10 points)\n`
+      leaderboardText += `• ✅ Signalement validé (+50 points bonus)\n\n`
+      leaderboardText += `<b>🗺️ Consultez la carte pour contribuer !</b>`
+
+      const keyboard = {
+        inline_keyboard: [
+          [
+            { text: '🗺️ Voir la carte', url: 'https://ligneverte.lovable.app/map' },
+            { text: '📊 Mes points', callback_data: 'show_points' }
+          ]
+        ]
+      }
+
+      await this.telegramAPI.sendMessage(chatId, leaderboardText, keyboard)
+      return { success: true }
+    } catch (error) {
+      console.error('Leaderboard error:', error)
+      await this.telegramAPI.sendMessage(chatId, '❌ Erreur système')
+      return { success: false, error }
+    }
   }
 }
