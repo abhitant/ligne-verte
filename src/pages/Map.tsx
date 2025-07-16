@@ -79,129 +79,155 @@ const Map = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header Simplifié */}
-      <div className="bg-primary shadow-lg p-4 border-b-2 border-primary/20">
+      {/* Header */}
+      <div className="bg-primary shadow-lg p-4 border-b border-primary/20">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-primary-foreground mb-1">🗺️ Carte Interactive</h1>
-              <p className="text-primary-foreground/90">Visualise et explore les signalements de la communauté</p>
+              <h1 className="text-2xl sm:text-3xl font-bold text-primary-foreground mb-1">🗺️ Carte Interactive</h1>
+              <p className="text-primary-foreground/90 text-sm sm:text-base">Visualise et explore les signalements de la communauté</p>
             </div>
-            <div className="bg-accent rounded-lg p-3 text-center">
-              <div className="text-2xl font-bold text-accent-foreground">{reports.length}</div>
-              <div className="text-sm text-accent-foreground/80">Signalements</div>
+            <div className="bg-accent rounded-lg p-3 text-center self-start sm:self-auto">
+              <div className="text-xl sm:text-2xl font-bold text-accent-foreground">{reports.length}</div>
+              <div className="text-xs sm:text-sm text-accent-foreground/80">Signalements</div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Contenu Principal */}
       <div className="max-w-7xl mx-auto p-4">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[calc(100vh-180px)]">
-          {/* Carte - 2/3 de l'espace */}
-          <div className="lg:col-span-2 relative">
-            <Card className="h-full bg-primary text-primary-foreground border-0 shadow-lg">
+        {/* Layout responsive */}
+        <div className="flex flex-col lg:flex-row gap-6">
+          
+          {/* Carte principale */}
+          <div className="flex-1 lg:w-2/3">
+            <Card className="bg-primary text-primary-foreground border-0 shadow-lg h-[50vh] sm:h-[60vh] lg:h-[calc(100vh-200px)]">
               <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="flex items-center gap-2 text-primary-foreground">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <CardTitle className="flex items-center gap-2 text-primary-foreground text-lg">
                     <MapPin className="w-5 h-5 text-accent" />
                     Carte des Signalements
                   </CardTitle>
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     <Button
                       size="sm"
                       onClick={() => setFilter('all')}
-                      className={`text-sm bg-accent text-accent-foreground hover:bg-accent/80 ${filter === 'all' ? 'ring-2 ring-accent-foreground' : ''}`}
+                      className={`text-xs sm:text-sm bg-accent text-accent-foreground hover:bg-accent/80 ${filter === 'all' ? 'ring-2 ring-accent-foreground' : ''}`}
                     >
                       Tous ({reports.length})
                     </Button>
                     <Button
                       size="sm"
                       onClick={() => setFilter('pending')}
-                      className={`text-sm bg-accent text-accent-foreground hover:bg-accent/80 ${filter === 'pending' ? 'ring-2 ring-accent-foreground' : ''}`}
+                      className={`text-xs sm:text-sm bg-accent text-accent-foreground hover:bg-accent/80 ${filter === 'pending' ? 'ring-2 ring-accent-foreground' : ''}`}
                     >
                       En attente ({reports.filter(r => r.status === 'pending').length})
                     </Button>
                     <Button
                       size="sm"
                       onClick={() => setFilter('validated')}
-                      className={`text-sm bg-accent text-accent-foreground hover:bg-accent/80 ${filter === 'validated' ? 'ring-2 ring-accent-foreground' : ''}`}
+                      className={`text-xs sm:text-sm bg-accent text-accent-foreground hover:bg-accent/80 ${filter === 'validated' ? 'ring-2 ring-accent-foreground' : ''}`}
                     >
                       Validés ({reports.filter(r => r.status === 'validated').length})
                     </Button>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="h-[calc(100%-80px)] p-0">
+              <CardContent className="h-[calc(100%-80px)] p-2">
                 {isLoading ? (
                   <div className="flex items-center justify-center h-full">
                     <div className="text-center">
-                      <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-primary" />
-                      <p className="text-muted-foreground text-lg">Chargement de la carte...</p>
+                      <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-accent" />
+                      <p className="text-primary-foreground">Chargement de la carte...</p>
                     </div>
                   </div>
                 ) : (
-                  <div className="h-full rounded-lg overflow-hidden">
+                  <div className="h-full rounded-lg overflow-hidden relative">
                     <OpenStreetMap
                       reports={reports}
                       selectedReport={selectedReport}
                       onReportSelect={setSelectedReport}
                       filter={filter}
                     />
+                    
+                    {/* Mini leaderboard overlay sur mobile uniquement */}
+                    <div className="absolute top-4 left-4 lg:hidden bg-accent/95 backdrop-blur-sm rounded-lg shadow-lg p-3 w-44">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Trophy className="w-4 h-4 text-accent-foreground" />
+                        <h4 className="text-sm font-bold text-accent-foreground">🏆 Top 3</h4>
+                      </div>
+                      {leaderboard.slice(0, 3).map((user, index) => (
+                        <div key={user.telegram_id} className="flex items-center gap-2 mb-1">
+                          <span className="text-xs">
+                            {index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}
+                          </span>
+                          <span className="text-xs font-medium text-accent-foreground flex-1 truncate">
+                            {user.pseudo}
+                          </span>
+                          <span className="text-xs text-accent-foreground font-bold">
+                            {user.points_himpact}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
               </CardContent>
             </Card>
           </div>
 
-          {/* Panel Droit - 1/3 de l'espace */}
-          <div className="space-y-6">
-            {/* Classement */}
-            <Card className="bg-primary text-primary-foreground border-0 shadow-lg">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-primary-foreground">
-                  <Trophy className="w-5 h-5 text-accent" />
-                  🏆 Classement
-                </CardTitle>
-                <CardDescription className="text-primary-foreground/80">
-                  Les champions de l'environnement
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3 max-h-[300px] overflow-y-auto">
-                {leaderboard.slice(0, 3).map((user, index) => (
-                  <div 
-                    key={user.telegram_id} 
-                    className="flex items-center gap-3 p-3 rounded-lg transition-all hover:shadow-md bg-accent text-accent-foreground hover:bg-accent/80"
-                  >
-                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-accent-foreground text-accent font-bold text-sm">
-                      {index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}
+          {/* Panel droit */}
+          <div className="lg:w-1/3 space-y-6">
+            
+            {/* Classement - Caché sur mobile, visible sur desktop */}
+            <div className="hidden lg:block">
+              <Card className="bg-primary text-primary-foreground border-0 shadow-lg">
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2 text-primary-foreground">
+                    <Trophy className="w-5 h-5 text-accent" />
+                    🏆 Classement
+                  </CardTitle>
+                  <CardDescription className="text-primary-foreground/80">
+                    Les champions de l'environnement
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3 max-h-[300px] overflow-y-auto">
+                  {leaderboard.slice(0, 5).map((user, index) => (
+                    <div 
+                      key={user.telegram_id} 
+                      className="flex items-center gap-3 p-3 rounded-lg transition-all hover:shadow-md bg-accent text-accent-foreground hover:bg-accent/80"
+                    >
+                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-accent-foreground text-accent font-bold text-sm">
+                        {index < 3 ? (index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉') : index + 1}
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-semibold text-accent-foreground text-sm">{user.pseudo}</p>
+                        <p className="text-xs text-accent-foreground/80">{user.reports_count || 0} signalements</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-accent-foreground">{user.points_himpact}</p>
+                        <p className="text-xs text-accent-foreground/80">pts</p>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <p className="font-semibold text-accent-foreground">{user.pseudo}</p>
-                      <p className="text-sm text-accent-foreground/80">{user.reports_count || 0} signalements</p>
+                  ))}
+                  
+                  {leaderboard.length > 5 && (
+                    <div className="pt-2 border-t border-primary-foreground/20">
+                      <Button 
+                        size="sm" 
+                        variant="ghost" 
+                        className="w-full bg-accent text-accent-foreground hover:bg-accent/80 text-sm"
+                        onClick={() => setActiveTab('leaderboard')}
+                      >
+                        Voir le classement complet
+                      </Button>
                     </div>
-                    <div className="text-right">
-                      <p className="font-bold text-accent-foreground text-lg">{user.points_himpact}</p>
-                      <p className="text-xs text-accent-foreground/80">points</p>
-                    </div>
-                  </div>
-                ))}
-                
-                {/* Bouton Voir Plus */}
-                <div className="pt-3 border-t border-primary-foreground/20">
-                  <Button 
-                    size="sm" 
-                    variant="ghost" 
-                    className="w-full bg-accent text-accent-foreground hover:bg-accent/80"
-                    onClick={() => setActiveTab('leaderboard')}
-                  >
-                    Voir le classement complet
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
 
-            {/* Signalements Récents */}
+            {/* Section responsive pour mobile et desktop */}
             <Card className="bg-primary text-primary-foreground border-0 shadow-lg">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
@@ -215,31 +241,56 @@ const Map = () => {
                       <>
                         <Filter className="w-5 h-5 text-accent" />
                         Signalements
-                        <Badge variant="secondary" className="ml-2 bg-accent text-accent-foreground">
+                        <Badge variant="secondary" className="ml-2 bg-accent text-accent-foreground text-xs">
                           {filteredReports.length}
                         </Badge>
                       </>
                     )}
                   </CardTitle>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => setActiveTab(activeTab === 'leaderboard' ? 'reports' : 'leaderboard')}
-                    className="text-primary-foreground hover:bg-primary/20"
-                  >
-                    {activeTab === 'leaderboard' ? 'Voir Signalements' : 'Voir Classement'}
-                  </Button>
+                  
+                  {/* Boutons de navigation - Visibles sur mobile, conditionnels sur desktop */}
+                  <div className="flex gap-2 lg:hidden">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setActiveTab('leaderboard')}
+                      className={`text-xs px-2 ${activeTab === 'leaderboard' ? 'bg-accent text-accent-foreground' : 'text-primary-foreground hover:bg-primary/20'}`}
+                    >
+                      Classement
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setActiveTab('reports')}
+                      className={`text-xs px-2 ${activeTab === 'reports' ? 'bg-accent text-accent-foreground' : 'text-primary-foreground hover:bg-primary/20'}`}
+                    >
+                      Signalements
+                    </Button>
+                  </div>
+                  
+                  {/* Bouton retour sur desktop quand classement complet affiché */}
+                  {activeTab === 'leaderboard' && (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setActiveTab('reports')}
+                      className="hidden lg:flex text-primary-foreground hover:bg-primary/20 text-sm"
+                    >
+                      ← Retour aux signalements
+                    </Button>
+                  )}
                 </div>
-                <CardDescription className="text-primary-foreground/80">
+                <CardDescription className="text-primary-foreground/80 text-sm">
                   {activeTab === 'leaderboard' 
                     ? 'Classement complet de tous les utilisateurs' 
                     : 'Explorez les signalements de la communauté'
                   }
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-3 max-h-[400px] overflow-y-auto">
+              
+              <CardContent className="space-y-3 max-h-[400px] lg:max-h-[500px] overflow-y-auto">
                 {activeTab === 'leaderboard' ? (
-                  // Affichage du classement complet
+                  // Classement complet
                   <div className="space-y-3">
                     {leaderboard.map((user, index) => (
                       <div 
@@ -261,11 +312,11 @@ const Map = () => {
                     ))}
                   </div>
                 ) : (
-                  // Affichage des signalements
+                  // Signalements
                   <>
                     {isLoading ? (
                       <div className="flex items-center justify-center py-8">
-                        <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                        <Loader2 className="w-6 h-6 animate-spin text-accent" />
                       </div>
                     ) : filteredReports.length === 0 ? (
                       <div className="text-center py-8 text-primary-foreground/80">
@@ -300,10 +351,10 @@ const Map = () => {
                         >
                           <div className="flex items-start justify-between mb-3">
                             <div className="flex items-center gap-3">
-                              <span className="text-2xl">{getTypeIcon(report.type)}</span>
+                              <span className="text-xl sm:text-2xl">{getTypeIcon(report.type)}</span>
                               <div>
-                                <p className="font-semibold text-accent-foreground">{report.user}</p>
-                                <p className="text-sm text-accent-foreground/80">{report.location}</p>
+                                <p className="font-semibold text-accent-foreground text-sm sm:text-base">{report.user}</p>
+                                <p className="text-xs sm:text-sm text-accent-foreground/80">{report.location}</p>
                               </div>
                             </div>
                             <div className="flex items-center gap-2">
@@ -324,9 +375,9 @@ const Map = () => {
                                 minute: '2-digit'
                               })}
                             </span>
-                            <Button size="sm" variant="ghost" className="h-8 px-3 hover-scale bg-accent text-accent-foreground hover:bg-accent/80">
+                            <Button size="sm" variant="ghost" className="h-8 px-3 bg-accent-foreground text-accent hover:bg-accent-foreground/80">
                               <Eye className="w-4 h-4 mr-1" />
-                              Voir
+                              <span className="hidden sm:inline">Voir</span>
                             </Button>
                           </div>
                         </div>
