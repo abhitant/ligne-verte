@@ -163,27 +163,17 @@ const Map = () => {
               <CardHeader className="pb-2">
                 <div className="flex flex-col gap-2">
                   <Button
-                    variant={activeTab === 'reports' ? 'default' : 'outline'}
                     size="sm"
                     onClick={() => setActiveTab('reports')}
-                    className={`flex items-center gap-2 w-full justify-start ${
-                      activeTab === 'reports' 
-                        ? 'bg-accent text-accent-foreground hover:bg-accent/80' 
-                        : 'text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary/80'
-                    }`}
+                    className="flex items-center gap-2 w-full justify-start bg-accent text-accent-foreground hover:bg-accent/80"
                   >
                     <Filter className="w-4 h-4" />
                     Signalements ({filteredReports.length})
                   </Button>
                   <Button
-                    variant={activeTab === 'leaderboard' ? 'default' : 'outline'}
                     size="sm"
                     onClick={() => setActiveTab('leaderboard')}
-                    className={`flex items-center gap-2 w-full justify-start ${
-                      activeTab === 'leaderboard' 
-                        ? 'bg-accent text-accent-foreground hover:bg-accent/80' 
-                        : 'text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary/80'
-                    }`}
+                    className="flex items-center gap-2 w-full justify-start bg-accent text-accent-foreground hover:bg-accent/80"
                   >
                     <Trophy className="w-4 h-4" />
                     🏆 Classement
