@@ -84,20 +84,20 @@ const WasteProblemSection = () => {
           </div>
         </div>
 
-        {/* Illustration avec pictogrammes */}
-        <div className="flex justify-center items-center gap-8 text-accent text-6xl">
+        {/* Illustration avec pictogrammes - alignement horizontal */}
+        <div className="flex flex-row justify-center items-center gap-8 md:gap-12 text-accent">
           <div className="text-center">
-            <div className="text-8xl mb-2">🗑️</div>
+            <div className="text-6xl md:text-8xl mb-2">🗑️</div>
             <div className="text-sm text-muted-foreground">Déchets</div>
           </div>
-          <div className="text-4xl">→</div>
+          <div className="text-3xl md:text-4xl text-accent">→</div>
           <div className="text-center">
-            <div className="text-8xl mb-2">🦟</div>
+            <div className="text-6xl md:text-8xl mb-2">🦟</div>
             <div className="text-sm text-muted-foreground">Insalubrité</div>
           </div>
-          <div className="text-4xl">→</div>
+          <div className="text-3xl md:text-4xl text-accent">→</div>
           <div className="text-center">
-            <div className="text-8xl mb-2">🏙️</div>
+            <div className="text-6xl md:text-8xl mb-2">🏙️</div>
             <div className="text-sm text-muted-foreground">Dégradation</div>
           </div>
         </div>
