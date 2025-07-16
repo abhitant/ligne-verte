@@ -31,7 +31,7 @@ const Navigation = () => {
               </div>
               <div className="flex flex-col">
                 <span className="text-lg sm:text-xl font-bold text-primary-foreground">La Ligne Verte</span>
-                <span className="text-xs text-primary-foreground/70 hidden sm:block">Projet citoyen 🇨🇮</span>
+                <span className="text-xs text-primary-foreground/70 hidden sm:block">par Greenpill civ 🇨🇮</span>
               </div>
             </Link>
           </div>
