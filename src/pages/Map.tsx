@@ -112,7 +112,7 @@ const Map = () => {
                       variant={filter === 'all' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setFilter('all')}
-                      className="text-sm"
+                      className={`text-sm ${filter === 'all' ? 'bg-accent text-accent-foreground hover:bg-accent/80' : ''}`}
                     >
                       Tous ({reports.length})
                     </Button>
@@ -120,7 +120,7 @@ const Map = () => {
                       variant={filter === 'pending' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setFilter('pending')}
-                      className="text-sm"
+                      className={`text-sm ${filter === 'pending' ? 'bg-accent text-accent-foreground hover:bg-accent/80' : ''}`}
                     >
                       En attente ({reports.filter(r => r.status === 'pending').length})
                     </Button>
@@ -128,7 +128,7 @@ const Map = () => {
                       variant={filter === 'validated' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setFilter('validated')}
-                      className="text-sm"
+                      className={`text-sm ${filter === 'validated' ? 'bg-accent text-accent-foreground hover:bg-accent/80' : ''}`}
                     >
                       Validés ({reports.filter(r => r.status === 'validated').length})
                     </Button>
@@ -176,11 +176,13 @@ const Map = () => {
                     key={user.telegram_id} 
                     className={`flex items-center gap-3 p-3 rounded-lg transition-all hover:shadow-md ${
                       index < 3 
-                        ? 'bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200' 
+                        ? 'bg-accent text-accent-foreground border border-accent/30' 
                         : 'bg-card hover:bg-accent/10'
                     }`}
                   >
-                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground font-bold text-sm">
+                    <div className={`flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm ${
+                      index < 3 ? 'bg-accent-foreground text-accent' : 'bg-accent text-accent-foreground'
+                    }`}>
                       {index < 3 ? (index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉') : index + 1}
                     </div>
                     <div className="flex-1">
@@ -272,7 +274,7 @@ const Map = () => {
                             minute: '2-digit'
                           })}
                         </span>
-                        <Button size="sm" variant="ghost" className="h-8 px-3 hover-scale">
+                        <Button size="sm" variant="ghost" className="h-8 px-3 hover-scale bg-accent text-accent-foreground hover:bg-accent/80">
                           <Eye className="w-4 h-4 mr-1" />
                           Voir
                         </Button>
