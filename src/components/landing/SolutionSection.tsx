@@ -34,7 +34,7 @@ const SolutionSection = () => {
                   <Camera className="w-6 h-6 text-accent-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-foreground">✅ Prends une photo de l'urgence environnementale</h3>
+                  <h3 className="text-lg font-bold text-foreground">✅ Prend une photo et localise les urgences environemental</h3>
                 </div>
               </div>
 
