@@ -43,16 +43,15 @@ const WasteProblemSection = () => {
   return (
     <div className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header avec layout gauche/droite */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
-          {/* Texte à gauche */}
-          <div className="text-left">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-tight">
-              Les déchets urbains dégradent nos villes et quartiers
-            </h2>
-          </div>
+        {/* Header centré */}
+        <div className="text-center mb-12">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-tight">
+            Les déchets urbains dégradent nos villes et quartiers
+          </h2>
+        </div>
 
-          {/* Graphiques à droite */}
+        {/* Graphiques en dessous */}
+        <div className="max-w-4xl mx-auto mb-16">
           <div className="space-y-4">
             {stats.map((stat, index) => {
               const Icon = stat.icon;
