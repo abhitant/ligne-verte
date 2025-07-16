@@ -87,12 +87,12 @@ const WasteProblemSection = () => {
 
         {/* Section texte et logo */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          <div className="text-foreground">
-            <p className="text-2xl md:text-3xl font-bold leading-relaxed">
-              La ligne verte a pour mission de faire disparaitre la polution urbaine due aux déchets, grace à l'action citoyene.
+          <div className="text-foreground flex items-center">
+            <p className="text-2xl md:text-3xl font-bold leading-relaxed text-center md:text-left">
+              La ligne verte a pour mission de faire disparaitre la pollution urbaine due aux déchets, grâce à l'action citoyenne.
             </p>
           </div>
-          <div className="flex justify-center md:justify-end">
+          <div className="flex justify-center md:justify-end items-center">
             <img 
               src={ligneVerteLogo} 
               alt="Logo de la ligne verte"
