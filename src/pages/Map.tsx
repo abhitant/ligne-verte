@@ -100,20 +100,20 @@ const Map = () => {
       </div>
 
       <div className="max-w-full mx-auto p-2">
-        <div className="grid grid-cols-1 xl:grid-cols-4 gap-4">
-          {/* Carte Interactive - Prend maintenant toute la place quand aucun onglet n'est sélectionné */}
+        <div className="flex flex-col xl:grid xl:grid-cols-4 gap-4">
+          {/* Carte Interactive - Optimisée pour mobile */}
           <div className="xl:col-span-3">
-            <Card className="bg-primary/90 shadow-xl h-[calc(100vh-200px)] min-h-[700px] border-2 border-primary relative overflow-hidden"
+            <Card className="bg-primary/90 shadow-xl h-[60vh] xl:h-[calc(100vh-200px)] xl:min-h-[700px] border-2 border-primary relative overflow-hidden"
                   style={{
                     background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary)) 100%)'
                   }}>
-              <CardHeader>
+              <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="flex items-center gap-2 text-primary-foreground">
-                    <MapPin className="w-5 h-5 text-accent" />
+                  <CardTitle className="flex items-center gap-2 text-primary-foreground text-base xl:text-lg">
+                    <MapPin className="w-4 h-4 xl:w-5 xl:h-5 text-accent" />
                     Carte Interactive
                   </CardTitle>
-                  <div className="flex gap-2">
+                  <div className="flex gap-1 xl:gap-2">
                     <Button
                       variant={filter === 'pending' ? 'default' : 'outline'}
                       size="sm"
@@ -121,17 +121,21 @@ const Map = () => {
                         console.log('Clicking pending filter');
                         setFilter('pending');
                       }}
-                      className="bg-accent text-accent-foreground hover:bg-accent/80"
+                      className="bg-accent text-accent-foreground hover:bg-accent/80 text-xs xl:text-sm px-2 xl:px-3"
                     >
-                      En attente ({reports.filter(r => r.status === 'pending').length})
+                      <span className="hidden sm:inline">En attente</span>
+                      <span className="sm:hidden">Att.</span>
+                      <span className="ml-1">({reports.filter(r => r.status === 'pending').length})</span>
                     </Button>
                     <Button
                       variant={filter === 'validated' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setFilter('validated')}
-                      className="bg-accent text-accent-foreground hover:bg-accent/80"
+                      className="bg-accent text-accent-foreground hover:bg-accent/80 text-xs xl:text-sm px-2 xl:px-3"
                     >
-                      Validés ({reports.filter(r => r.status === 'validated').length})
+                      <span className="hidden sm:inline">Validés</span>
+                      <span className="sm:hidden">Val.</span>
+                      <span className="ml-1">({reports.filter(r => r.status === 'validated').length})</span>
                     </Button>
                   </div>
                 </div>
@@ -154,14 +158,14 @@ const Map = () => {
                 )}
               </CardContent>
               
-              {/* Widget de classement en overlay */}
-              <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg p-3 min-w-[200px] border border-green-200">
-                <div className="flex items-center gap-2 mb-2">
-                  <Trophy className="w-4 h-4 text-yellow-600" />
-                  <h4 className="text-sm font-bold text-gray-800">🏆 Top 3</h4>
+              {/* Widget de classement en overlay - Compact sur mobile */}
+              <div className="absolute top-2 left-2 xl:top-4 xl:left-4 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg p-2 xl:p-3 w-[140px] xl:min-w-[200px] border border-green-200">
+                <div className="flex items-center gap-1 xl:gap-2 mb-1 xl:mb-2">
+                  <Trophy className="w-3 h-3 xl:w-4 xl:h-4 text-yellow-600" />
+                  <h4 className="text-xs xl:text-sm font-bold text-gray-800">🏆 Top 3</h4>
                 </div>
                 {leaderboard.slice(0, 3).map((user, index) => (
-                  <div key={user.telegram_id} className="flex items-center gap-2 mb-1">
+                  <div key={user.telegram_id} className="flex items-center gap-1 xl:gap-2 mb-0.5 xl:mb-1">
                     <span className="text-xs">
                       {index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}
                     </span>
@@ -169,13 +173,13 @@ const Map = () => {
                       {user.pseudo}
                     </span>
                     <span className="text-xs text-green-600 font-bold">
-                      {user.points_himpact}pts
+                      {user.points_himpact}
                     </span>
                   </div>
                 ))}
                 <button 
                   onClick={() => setActiveTab('leaderboard')}
-                  className="text-xs text-blue-600 hover:text-blue-800 underline mt-1"
+                  className="text-xs text-blue-600 hover:text-blue-800 underline mt-1 hidden xl:block"
                 >
                   Voir le classement complet →
                 </button>
@@ -183,8 +187,8 @@ const Map = () => {
             </Card>
           </div>
 
-          {/* Sidebar Compact Gamifié - Toujours visible */}
-          <div className="space-y-4">
+          {/* Sidebar Compact Gamifié - Masquée sur mobile par défaut */}
+          <div className="space-y-4 hidden xl:block">
             {/* Navigation Tabs */}
             <Card className="bg-primary/80 shadow-xl border-2 border-primary">
               <CardHeader className="pb-2">
