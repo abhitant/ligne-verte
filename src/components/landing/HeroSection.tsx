@@ -88,14 +88,14 @@ const HeroSection = () => {
       ))}
       
       {/* Content */}
-      <div className="relative z-10 text-center text-white px-4 max-w-6xl mx-auto">
+      <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
         <div className="mb-16">
-          <p className="text-4xl md:text-5xl lg:text-6xl font-medium mb-12 min-h-[6rem] flex items-center justify-center">
-            <span className="font-bold">
+          <div className="text-2xl md:text-3xl lg:text-4xl font-medium mb-12 min-h-[3rem] flex items-center justify-center leading-relaxed">
+            <span className="font-bold tracking-wide">
               {renderText(typewriterText)}
             </span>
             <span className="animate-pulse ml-1 text-white">|</span>
-          </p>
+          </div>
         </div>
 
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
