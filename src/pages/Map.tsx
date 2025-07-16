@@ -166,7 +166,7 @@ const Map = () => {
                     variant={activeTab === 'reports' ? 'default' : 'outline'}
                     size="sm"
                     onClick={() => setActiveTab('reports')}
-                    className="flex items-center gap-2 w-full justify-start"
+                    className="flex items-center gap-2 w-full justify-start bg-accent text-accent-foreground hover:bg-accent/80"
                   >
                     <Filter className="w-4 h-4" />
                     Signalements ({filteredReports.length})
@@ -175,7 +175,7 @@ const Map = () => {
                     variant={activeTab === 'leaderboard' ? 'default' : 'outline'}
                     size="sm"
                     onClick={() => setActiveTab('leaderboard')}
-                    className="flex items-center gap-2 w-full justify-start"
+                    className="flex items-center gap-2 w-full justify-start bg-accent text-accent-foreground hover:bg-accent/80"
                   >
                     <Trophy className="w-4 h-4" />
                     🏆 Classement
