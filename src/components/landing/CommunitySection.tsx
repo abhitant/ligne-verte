@@ -51,7 +51,7 @@ const CommunitySection = () => {
             <CardHeader className="relative z-10 pb-2">
               <CardTitle className="flex items-center gap-2 text-accent font-bold text-lg tracking-wider">
                 <Trophy className="w-5 h-5 text-accent animate-pulse" />
-                🏆 HALL OF FAME
+                🏆 LES PLUS HIMPACTANTS
               </CardTitle>
             </CardHeader>
             <CardContent className="p-4 relative z-10 border-t-2 border-accent/30">
