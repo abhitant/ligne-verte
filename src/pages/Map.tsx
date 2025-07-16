@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -79,185 +78,212 @@ const Map = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="bg-primary shadow-lg p-4 border-b border-primary/20">
-        <div className="max-w-7xl mx-auto">
+      {/* Header Gaming Style */}
+      <div className="bg-primary shadow-lg p-4 border-b-2 border-accent/50">
+        <div className="max-w-full mx-auto">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-primary-foreground mb-1">🗺️ Carte Interactive</h1>
-              <p className="text-primary-foreground/90 text-sm sm:text-base">Visualise et explore les signalements de la communauté</p>
+              <h1 className="text-2xl sm:text-3xl font-bold text-primary-foreground mb-1 flex items-center gap-2">
+                🗺️ <span className="text-accent">CARTE</span> INTERACTIVE
+              </h1>
+              <p className="text-primary-foreground/90 text-sm sm:text-base">Mission : Explorer et signaler les zones polluées</p>
             </div>
-            <div className="bg-accent rounded-lg p-3 text-center self-start sm:self-auto">
+            <div className="bg-accent rounded-lg p-3 text-center border-2 border-accent-foreground/30 shadow-lg">
               <div className="text-xl sm:text-2xl font-bold text-accent-foreground">{reports.length}</div>
-              <div className="text-xs sm:text-sm text-accent-foreground/80">Signalements</div>
+              <div className="text-xs sm:text-sm text-accent-foreground/80">SIGNALEMENTS</div>
             </div>
           </div>
         </div>
       </div>
 
       <div className="max-w-full mx-auto p-2">
-        {/* Layout avec carte très dominante */}
-        <div className="grid grid-cols-1 xl:grid-cols-6 gap-4">
+        {/* Layout Gaming - Carte plein écran avec HUD flottant */}
+        <div className="relative">
           
-          {/* Carte principale - 5/6 de l'espace sur desktop */}
-          <div className="xl:col-span-5">
-            <Card className="bg-primary text-primary-foreground border-0 shadow-lg h-[70vh] xl:h-[calc(100vh-140px)]">
-              <CardHeader className="pb-2">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                  <CardTitle className="flex items-center gap-2 text-primary-foreground text-lg">
-                    <MapPin className="w-5 h-5 text-accent" />
-                    Carte des Signalements
-                  </CardTitle>
-                  <div className="flex flex-wrap gap-2">
-                    <Button
-                      size="sm"
-                      onClick={() => setFilter('all')}
-                      className={`text-xs sm:text-sm bg-accent text-accent-foreground hover:bg-accent/80 ${filter === 'all' ? 'ring-2 ring-accent-foreground' : ''}`}
-                    >
-                      Tous ({reports.length})
-                    </Button>
-                    <Button
-                      size="sm"
-                      onClick={() => setFilter('pending')}
-                      className={`text-xs sm:text-sm bg-accent text-accent-foreground hover:bg-accent/80 ${filter === 'pending' ? 'ring-2 ring-accent-foreground' : ''}`}
-                    >
-                      En attente ({reports.filter(r => r.status === 'pending').length})
-                    </Button>
-                    <Button
-                      size="sm"
-                      onClick={() => setFilter('validated')}
-                      className={`text-xs sm:text-sm bg-accent text-accent-foreground hover:bg-accent/80 ${filter === 'validated' ? 'ring-2 ring-accent-foreground' : ''}`}
-                    >
-                      Validés ({reports.filter(r => r.status === 'validated').length})
-                    </Button>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="h-[calc(100%-80px)] p-2">
-                {isLoading ? (
-                  <div className="flex items-center justify-center h-full">
-                    <div className="text-center">
-                      <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-accent" />
-                      <p className="text-primary-foreground">Chargement de la carte...</p>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="h-full rounded-lg overflow-hidden">
-                    <OpenStreetMap
-                      reports={reports}
-                      selectedReport={selectedReport}
-                      onReportSelect={setSelectedReport}
-                      filter={filter}
-                    />
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Panel droit très compact - 1/6 de l'espace */}
-          <div className="xl:col-span-1 space-y-3">
-            
-            {/* Top 3 Classement - Version compacte */}
-            <Card className="bg-primary text-primary-foreground border-0 shadow-lg">
-              <CardHeader className="pb-2 py-3">
-                <CardTitle className="flex items-center gap-2 text-primary-foreground text-base">
-                  <Trophy className="w-4 h-4 text-accent" />
-                  🏆 Top 3
+          {/* Carte principale plein écran */}
+          <Card className="bg-primary text-primary-foreground border-2 border-accent/50 shadow-2xl h-[75vh] xl:h-[calc(100vh-140px)] w-full">
+            <CardHeader className="pb-2">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <CardTitle className="flex items-center gap-2 text-primary-foreground text-lg">
+                  <MapPin className="w-5 h-5 text-accent animate-pulse" />
+                  <span className="text-accent">ZONE DE COMBAT</span> ENVIRONNEMENTAL
                 </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                {leaderboard.slice(0, 3).map((user, index) => (
-                  <div 
-                    key={user.telegram_id} 
-                    className="flex items-center gap-2 p-2 rounded-lg transition-all hover:shadow-md bg-accent text-accent-foreground hover:bg-accent/80"
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    size="sm"
+                    onClick={() => setFilter('all')}
+                    className={`text-xs sm:text-sm bg-accent text-accent-foreground hover:bg-accent/80 border border-accent-foreground/30 font-bold ${filter === 'all' ? 'ring-2 ring-accent-foreground shadow-lg' : ''}`}
                   >
-                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-accent-foreground text-accent font-bold text-sm">
-                      {index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-semibold text-accent-foreground text-sm">{user.pseudo}</p>
-                      <p className="text-xs text-accent-foreground/80">{user.points_himpact} pts</p>
-                    </div>
-                  </div>
-                ))}
-                
-                {/* Bouton vers page classement complet */}
-                <div className="pt-3 border-t border-primary-foreground/20">
-                  <Button 
-                    size="sm" 
-                    variant="ghost" 
-                    className="w-full bg-accent text-accent-foreground hover:bg-accent/80"
-                    onClick={() => window.location.href = '/classement'}
+                    TOUS ({reports.length})
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={() => setFilter('pending')}
+                    className={`text-xs sm:text-sm bg-accent text-accent-foreground hover:bg-accent/80 border border-accent-foreground/30 font-bold ${filter === 'pending' ? 'ring-2 ring-accent-foreground shadow-lg' : ''}`}
                   >
-                    Voir le classement complet →
+                    ATTENTE ({reports.filter(r => r.status === 'pending').length})
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={() => setFilter('validated')}
+                    className={`text-xs sm:text-sm bg-accent text-accent-foreground hover:bg-accent/80 border border-accent-foreground/30 font-bold ${filter === 'validated' ? 'ring-2 ring-accent-foreground shadow-lg' : ''}`}
+                  >
+                    VALIDÉS ({reports.filter(r => r.status === 'validated').length})
                   </Button>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </CardHeader>
+            <CardContent className="h-[calc(100%-80px)] p-2 relative">
+              {isLoading ? (
+                <div className="flex items-center justify-center h-full">
+                  <div className="text-center">
+                    <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-accent" />
+                    <p className="text-primary-foreground font-bold">CHARGEMENT DE LA ZONE...</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="h-full rounded-lg overflow-hidden">
+                  <OpenStreetMap
+                    reports={reports}
+                    selectedReport={selectedReport}
+                    onReportSelect={setSelectedReport}
+                    filter={filter}
+                  />
+                </div>
+              )}
 
-            {/* Signalements récents - Version très compacte */}
-            <Card className="bg-primary text-primary-foreground border-0 shadow-lg">
-              <CardHeader className="pb-2 py-3">
-                <CardTitle className="flex items-center gap-2 text-primary-foreground text-base">
-                  <Filter className="w-4 h-4 text-accent" />
-                  📋 Récents
-                </CardTitle>
-              </CardHeader>
-              
-              <CardContent className="space-y-2">
-                {isLoading ? (
-                  <div className="flex items-center justify-center py-4">
-                    <Loader2 className="w-4 h-4 animate-spin text-accent" />
-                  </div>
-                ) : filteredReports.length === 0 ? (
-                  <div className="text-center py-4 text-primary-foreground/80">
-                    <div className="w-8 h-8 mx-auto mb-2 bg-accent rounded-full flex items-center justify-center">
-                      <MapPin className="w-4 h-4 text-accent-foreground" />
+              {/* HUD Gaming - Panels flottants sur la droite */}
+              <div className="absolute top-4 right-4 space-y-4 w-80 hidden lg:block">
+                
+                {/* Leaderboard HUD */}
+                <div className="bg-primary/95 backdrop-blur-sm border-2 border-accent/60 rounded-lg shadow-2xl p-4 relative overflow-hidden">
+                  {/* Effet néon */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-transparent rounded-lg"></div>
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-2 mb-3 border-b border-accent/40 pb-2">
+                      <Trophy className="w-5 h-5 text-accent animate-pulse" />
+                      <h3 className="text-accent font-bold text-lg tracking-wider">🏆 TOP HÉROS</h3>
                     </div>
-                    <p className="font-medium text-xs">Aucun signalement</p>
-                  </div>
-                ) : (
-                  <>
-                    {/* Afficher seulement les 2 plus récents */}
-                    {filteredReports.slice(0, 2).map((report) => (
-                      <div 
-                        key={report.id}
-                        className={`p-2 rounded-lg cursor-pointer transition-all hover:shadow-md bg-accent text-accent-foreground hover:bg-accent/80 ${
-                          selectedReport?.id === report.id 
-                            ? 'ring-2 ring-accent-foreground' 
-                            : ''
-                        }`}
-                        onClick={() => setSelectedReport(report)}
-                      >
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="text-sm">{getTypeIcon(report.type)}</span>
-                          <div className="flex-1">
-                            <p className="font-semibold text-accent-foreground text-xs">{report.user}</p>
-                            <p className="text-xs text-accent-foreground/80 truncate">{report.location}</p>
+                    <div className="space-y-2">
+                      {leaderboard.slice(0, 3).map((user, index) => (
+                        <div 
+                          key={user.telegram_id} 
+                          className="flex items-center gap-3 p-3 rounded-lg bg-accent/20 border border-accent/40 hover:bg-accent/30 transition-all hover:scale-105"
+                        >
+                          <div className="flex items-center justify-center w-10 h-10 rounded-full bg-accent text-accent-foreground font-bold text-lg border-2 border-accent-foreground shadow-lg">
+                            {index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}
                           </div>
-                          <div className={`w-2 h-2 rounded-full ${getStatusColor(report.status)}`}></div>
+                          <div className="flex-1">
+                            <p className="font-bold text-primary-foreground text-sm tracking-wide">{user.pseudo}</p>
+                            <p className="text-xs text-accent font-bold">{user.points_himpact} PTS HIMPACT</p>
+                          </div>
+                          <div className="text-right">
+                            <div className="text-xs text-primary-foreground/80">RANG #{index + 1}</div>
+                            <div className="text-xs text-accent">{user.reports_count || 0} missions</div>
+                          </div>
                         </div>
-                        <p className="text-xs text-accent-foreground/80 line-clamp-1">{report.description}</p>
-                      </div>
-                    ))}
-                    
-                    {/* Bouton compact vers page signalements */}
-                    <div className="pt-2 border-t border-primary-foreground/20">
-                      <Button 
-                        size="sm" 
-                        variant="ghost" 
-                        className="w-full bg-accent text-accent-foreground hover:bg-accent/80 text-xs py-2"
-                        onClick={() => window.location.href = '/signalements'}
-                      >
-                        Voir tous →
-                      </Button>
+                      ))}
                     </div>
-                  </>
-                )}
-              </CardContent>
-            </Card>
-          </div>
+                    <Button 
+                      size="sm" 
+                      className="w-full mt-3 bg-accent text-accent-foreground hover:bg-accent/80 border-2 border-accent-foreground/20 font-bold text-sm tracking-wider hover:scale-105 transition-transform"
+                      onClick={() => window.location.href = '/classement'}
+                    >
+                      ⚡ HALL OF FAME ⚡
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Activité récente HUD */}
+                <div className="bg-primary/95 backdrop-blur-sm border-2 border-accent/60 rounded-lg shadow-2xl p-4 relative overflow-hidden">
+                  {/* Effet néon */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-transparent rounded-lg"></div>
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-2 mb-3 border-b border-accent/40 pb-2">
+                      <Filter className="w-5 h-5 text-accent animate-pulse" />
+                      <h3 className="text-accent font-bold text-lg tracking-wider">📡 ACTIVITÉ LIVE</h3>
+                    </div>
+                    
+                    {isLoading ? (
+                      <div className="flex items-center justify-center py-4">
+                        <Loader2 className="w-5 h-5 animate-spin text-accent" />
+                      </div>
+                    ) : filteredReports.length === 0 ? (
+                      <div className="text-center py-4 text-primary-foreground/80">
+                        <div className="w-12 h-12 mx-auto mb-2 bg-accent/20 rounded-full flex items-center justify-center border-2 border-accent/40">
+                          <MapPin className="w-6 h-6 text-accent" />
+                        </div>
+                        <p className="font-bold text-xs tracking-wider">ZONE CALME</p>
+                        <p className="text-xs text-accent">En attente de missions...</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        {filteredReports.slice(0, 3).map((report) => (
+                          <div 
+                            key={report.id}
+                            className={`p-3 rounded-lg cursor-pointer transition-all bg-accent/20 border border-accent/40 hover:bg-accent/30 hover:scale-105 ${
+                              selectedReport?.id === report.id 
+                                ? 'ring-2 ring-accent bg-accent/40 shadow-lg' 
+                                : ''
+                            }`}
+                            onClick={() => setSelectedReport(report)}
+                          >
+                            <div className="flex items-center gap-2 mb-2">
+                              <span className="text-xl">{getTypeIcon(report.type)}</span>
+                              <div className="flex-1">
+                                <p className="font-bold text-primary-foreground text-sm tracking-wide">{report.user}</p>
+                                <p className="text-xs text-accent truncate">{report.location}</p>
+                              </div>
+                              <div className={`w-3 h-3 rounded-full ${getStatusColor(report.status)} animate-pulse border border-white/50`}></div>
+                            </div>
+                            <p className="text-xs text-primary-foreground/80 line-clamp-2 leading-relaxed">{report.description}</p>
+                            <div className="flex items-center justify-between mt-2 pt-2 border-t border-accent/20">
+                              <div className="text-xs text-accent/80 font-bold">
+                                {new Date(report.date).toLocaleDateString('fr-FR', { 
+                                  day: '2-digit', 
+                                  month: 'short'
+                                })}
+                              </div>
+                              <Badge className="text-xs bg-accent text-accent-foreground border border-accent-foreground/30">
+                                {report.status === 'validated' ? 'COMPLÉTÉ' : 
+                                 report.status === 'rejected' ? 'ÉCHOUÉ' : 'EN COURS'}
+                              </Badge>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    
+                    <Button 
+                      size="sm" 
+                      className="w-full mt-3 bg-accent text-accent-foreground hover:bg-accent/80 border-2 border-accent-foreground/20 font-bold text-sm tracking-wider hover:scale-105 transition-transform"
+                      onClick={() => window.location.href = '/signalements'}
+                    >
+                      🚀 JOURNAL DES MISSIONS 🚀
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Version mobile - Boutons flottants en bas avec style gaming */}
+              <div className="absolute bottom-4 right-4 lg:hidden flex gap-2">
+                <Button 
+                  size="sm" 
+                  className="bg-accent text-accent-foreground hover:bg-accent/80 shadow-xl border-2 border-accent-foreground/30 font-bold"
+                  onClick={() => window.location.href = '/classement'}
+                >
+                  🏆
+                </Button>
+                <Button 
+                  size="sm" 
+                  className="bg-accent text-accent-foreground hover:bg-accent/80 shadow-xl border-2 border-accent-foreground/30 font-bold"
+                  onClick={() => window.location.href = '/signalements'}
+                >
+                  📡
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
