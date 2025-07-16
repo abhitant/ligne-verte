@@ -123,7 +123,7 @@ const Map = () => {
                 />
                 
                 {/* HUD overlay permanent sur la carte */}
-                <div className="absolute top-4 right-4 space-y-4 w-80 hidden lg:block pointer-events-auto z-10">
+                <div className="absolute top-4 right-4 space-y-4 w-80 hidden lg:block pointer-events-auto z-[1000]">
                   
                   {/* Top 3 Classement HUD */}
                   <div className="bg-primary/60 backdrop-blur-sm border-2 border-accent/50 rounded-lg shadow-2xl p-4 relative overflow-hidden transition-all duration-300">
