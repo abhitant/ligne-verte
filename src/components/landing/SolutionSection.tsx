@@ -28,7 +28,7 @@ const SolutionSection = () => {
             {/* Header */}
             <div className="text-left">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 leading-tight">
-                Aide-nous à y mettre fin
+                Contacte Débora pour prendre part au combat
               </h2>
             </div>
 
@@ -39,7 +39,7 @@ const SolutionSection = () => {
                   <Camera className="w-6 h-6 text-accent-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-lg text-foreground">✅ Prend une photo et localise les urgences environemental</h3>
+                  <h3 className="text-lg text-foreground">Prend une photo et localise les urgences environementales</h3>
                 </div>
               </div>
 
@@ -48,7 +48,7 @@ const SolutionSection = () => {
                   <MessageSquare className="w-6 h-6 text-accent-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-lg text-foreground">✅ Envoie-la à Débora notre standardiste</h3>
+                  <h3 className="text-lg text-foreground">Envoie-la à Débora notre standardiste</h3>
                 </div>
               </div>
 
@@ -57,7 +57,7 @@ const SolutionSection = () => {
                   <MapPin className="w-6 h-6 text-accent-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-lg text-foreground">✅ Ton action apparaît sur notre carte publique</h3>
+                  <h3 className="text-lg text-foreground">Ton action apparaît sur notre carte publique</h3>
                 </div>
               </div>
 
@@ -66,19 +66,24 @@ const SolutionSection = () => {
                   <Trophy className="w-6 h-6 text-accent-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-lg text-foreground">✅ Gagne des points et grimpe dans le classement</h3>
+                  <h3 className="text-lg text-foreground">Gagne des points et grimpe dans le classement</h3>
                 </div>
               </div>
             </div>
 
             {/* CTA */}
             <div className="pt-6">
-              <Link to="/rejoindre">
+              <a 
+                href="https://t.me/ligneverte_bot" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-block"
+              >
                 <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground px-12 py-6 text-xl font-bold rounded-xl shadow-xl transform hover:scale-105 transition-all">
                   <MessageSquare className="w-6 h-6 mr-3" />
                   Contacter Débora
                 </Button>
-              </Link>
+              </a>
             </div>
           </div>
         </div>
