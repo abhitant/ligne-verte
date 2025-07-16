@@ -46,7 +46,7 @@ Vous pouvez maintenant créer un compte pour accéder à la plateforme web avec 
         const keyboard = {
           inline_keyboard: [
             [
-              { text: '🗺️ Voir la carte', url: 'https://ligneverte.lovable.app/map' },
+              { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' },
               { text: '🏆 Classement', callback_data: 'show_leaderboard' }
             ],
             [
@@ -83,7 +83,7 @@ Pour commencer, <b>par quel nom souhaitez-vous être appelé ${userName} ?</b>
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir la carte', url: 'https://ligneverte.lovable.app/map' },
+            { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' },
             { text: '🏆 Classement', callback_data: 'show_leaderboard' }
           ]
         ]
@@ -178,8 +178,8 @@ Vous pouvez maintenant créer un compte pour accéder à notre plateforme web !
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir la carte', url: 'https://ligneverte.lovable.app/map' },
-            { text: '🛒 Marketplace', url: 'https://ligneverte.lovable.app/marketplace' }
+            { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' },
+            { text: '🛒 Marketplace', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/marketplace' }
           ],
           [
             { text: '💻 Créer compte web', callback_data: 'create_web_account' }
@@ -226,7 +226,7 @@ Votre compte Telegram est déjà lié à un compte web.
         const keyboard = {
           inline_keyboard: [
             [
-              { text: '🌐 Aller sur la plateforme', url: 'https://ligneverte.lovable.app' }
+              { text: '🌐 Aller sur la plateforme', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com' }
             ]
           ]
         }
@@ -296,7 +296,7 @@ Votre compte Telegram est maintenant lié à un compte web !
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🌐 Aller sur la plateforme', url: 'https://ligneverte.lovable.app' }
+            { text: '🌐 Aller sur la plateforme', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com' }
           ]
         ]
       }
@@ -374,8 +374,8 @@ Tapez votre nouveau nom d'utilisateur souhaité.
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir la carte', url: 'https://ligneverte.lovable.app/map' },
-            { text: '🛒 Marketplace', url: 'https://ligneverte.lovable.app/marketplace' }
+            { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' },
+            { text: '🛒 Marketplace', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/marketplace' }
           ]
         ]
       }
@@ -405,11 +405,11 @@ Découvrez tous les signalements de la communauté sur notre carte interactive !
     const keyboard = {
       inline_keyboard: [
         [
-          { text: '🗺️ Ouvrir la carte', url: 'https://ligneverte.lovable.app/map' }
+          { text: '🗺️ Ouvrir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' }
         ],
         [
-          { text: '🏠 Accueil', url: 'https://ligneverte.lovable.app' },
-          { text: '🛒 Marketplace', url: 'https://ligneverte.lovable.app/marketplace' }
+          { text: '🏠 Accueil', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com' },
+          { text: '🛒 Marketplace', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/marketplace' }
         ]
       ]
     }
@@ -441,7 +441,7 @@ Découvrez tous les signalements de la communauté sur notre carte interactive !
     const keyboard = {
       inline_keyboard: [
         [
-          { text: '🗺️ Voir la carte', url: 'https://ligneverte.lovable.app/map' },
+          { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' },
           { text: '🏆 Classement', callback_data: 'show_leaderboard' }
         ]
       ]
@@ -487,7 +487,7 @@ Découvrez tous les signalements de la communauté sur notre carte interactive !
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir la carte', url: 'https://ligneverte.lovable.app/map' },
+            { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' },
             { text: '📊 Mes points', callback_data: 'show_points' }
           ]
         ]
