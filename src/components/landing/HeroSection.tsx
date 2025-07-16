@@ -102,7 +102,7 @@ const HeroSection = () => {
       {/* Content */}
       <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
         <div className="mb-16">
-          <div className="text-4xl md:text-6xl lg:text-8xl font-medium leading-tight space-y-4 min-h-[12rem] flex flex-col items-center justify-center">
+          <div className="text-3xl md:text-5xl lg:text-6xl font-medium leading-tight space-y-4 min-h-[10rem] flex flex-col items-center justify-center">
             <div className="font-bold tracking-wide">
               {renderText(firstLineText)}
               {firstLineText && <span className="animate-pulse ml-1 text-white">|</span>}
