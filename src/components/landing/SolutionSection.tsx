@@ -23,7 +23,7 @@ const SolutionSection = () => {
             {/* Header */}
             <div className="text-left">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 leading-tight">
-                Aidez-nous à y mettre fin
+                Aide-nous à y mettre fin
               </h2>
             </div>
 
