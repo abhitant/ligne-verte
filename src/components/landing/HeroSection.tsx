@@ -24,20 +24,49 @@ const HeroSection = () => {
     return () => clearInterval(timer);
   }, [images.length]);
 
-  // Effet typewriter
+  // Effet typewriter en continu
   useEffect(() => {
     let index = 0;
-    const timer = setInterval(() => {
-      if (index <= fullText.length) {
-        setTypewriterText(fullText.slice(0, index));
-        index++;
-      } else {
-        clearInterval(timer);
-      }
-    }, 100);
+    let isTyping = true;
+    let pauseTimer: NodeJS.Timeout;
 
-    return () => clearInterval(timer);
+    const typewriterLoop = () => {
+      const timer = setInterval(() => {
+        if (isTyping && index <= fullText.length) {
+          setTypewriterText(fullText.slice(0, index));
+          index++;
+          
+          if (index > fullText.length) {
+            clearInterval(timer);
+            // Pause de 3 secondes avant de recommencer
+            pauseTimer = setTimeout(() => {
+              index = 0;
+              typewriterLoop();
+            }, 3000);
+          }
+        }
+      }, 100);
+      
+      return timer;
+    };
+
+    const initialTimer = typewriterLoop();
+
+    return () => {
+      clearInterval(initialTimer);
+      clearTimeout(pauseTimer);
+    };
   }, []);
+
+  // Fonction pour formater le texte avec "zo" en vert
+  const renderText = (text: string) => {
+    const parts = text.split(/(zo)/);
+    return parts.map((part, index) => (
+      <span key={index} className={part === 'zo' ? 'text-accent' : 'text-white'}>
+        {part}
+      </span>
+    ));
+  };
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -61,9 +90,11 @@ const HeroSection = () => {
       {/* Content */}
       <div className="relative z-10 text-center text-white px-4 max-w-6xl mx-auto">
         <div className="mb-16">
-          <p className="text-2xl md:text-3xl lg:text-4xl font-medium mb-12 min-h-[4rem] flex items-center justify-center">
-            <span className="text-accent font-bold">{typewriterText}</span>
-            <span className="animate-pulse ml-1">|</span>
+          <p className="text-4xl md:text-5xl lg:text-6xl font-medium mb-12 min-h-[6rem] flex items-center justify-center">
+            <span className="font-bold">
+              {renderText(typewriterText)}
+            </span>
+            <span className="animate-pulse ml-1 text-white">|</span>
           </p>
         </div>
 
