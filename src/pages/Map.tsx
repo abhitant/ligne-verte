@@ -171,24 +171,18 @@ const Map = () => {
                 {leaderboard.slice(0, 10).map((user, index) => (
                   <div 
                     key={user.telegram_id} 
-                    className={`flex items-center gap-3 p-3 rounded-lg transition-all hover:shadow-md ${
-                      index < 3 
-                        ? 'bg-accent text-accent-foreground border border-accent/30' 
-                        : 'bg-card hover:bg-accent/10'
-                    }`}
+                    className="flex items-center gap-3 p-3 rounded-lg transition-all hover:shadow-md bg-accent text-accent-foreground hover:bg-accent/80"
                   >
-                    <div className={`flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm ${
-                      index < 3 ? 'bg-accent-foreground text-accent' : 'bg-accent text-accent-foreground'
-                    }`}>
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-accent-foreground text-accent font-bold text-sm">
                       {index < 3 ? (index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉') : index + 1}
                     </div>
                     <div className="flex-1">
-                      <p className="font-semibold text-foreground">{user.pseudo}</p>
-                      <p className="text-sm text-muted-foreground">{user.reports_count || 0} signalements</p>
+                      <p className="font-semibold text-accent-foreground">{user.pseudo}</p>
+                      <p className="text-sm text-accent-foreground/80">{user.reports_count || 0} signalements</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-primary text-lg">{user.points_himpact}</p>
-                      <p className="text-xs text-muted-foreground">points</p>
+                      <p className="font-bold text-accent-foreground text-lg">{user.points_himpact}</p>
+                      <p className="text-xs text-accent-foreground/80">points</p>
                     </div>
                   </div>
                 ))}
