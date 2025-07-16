@@ -86,7 +86,7 @@ const WasteProblemSection = () => {
         </div>
 
         {/* Section texte */}
-        <div className="text-left ml-8 md:ml-16">
+        <div className="text-left ml-16 md:ml-24">
           <h2 className="text-2xl md:text-3xl font-bold leading-none text-foreground">
             Notre solution contre les déchets urbain :<br/>
             <span className="text-accent">La ligne verte</span>
