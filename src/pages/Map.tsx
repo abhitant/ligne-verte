@@ -95,14 +95,14 @@ const Map = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto p-4">
-        {/* Layout avec carte dominante */}
-        <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+      <div className="max-w-full mx-auto p-2">
+        {/* Layout avec carte très dominante */}
+        <div className="grid grid-cols-1 xl:grid-cols-6 gap-4">
           
-          {/* Carte principale - 3/4 de l'espace sur desktop */}
-          <div className="xl:col-span-3">
-            <Card className="bg-primary text-primary-foreground border-0 shadow-lg h-[60vh] xl:h-[calc(100vh-180px)]">
-              <CardHeader className="pb-3">
+          {/* Carte principale - 5/6 de l'espace sur desktop */}
+          <div className="xl:col-span-5">
+            <Card className="bg-primary text-primary-foreground border-0 shadow-lg h-[70vh] xl:h-[calc(100vh-140px)]">
+              <CardHeader className="pb-2">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <CardTitle className="flex items-center gap-2 text-primary-foreground text-lg">
                     <MapPin className="w-5 h-5 text-accent" />
@@ -155,36 +155,29 @@ const Map = () => {
             </Card>
           </div>
 
-          {/* Panel droit compact - 1/4 de l'espace */}
-          <div className="xl:col-span-1 space-y-6">
+          {/* Panel droit très compact - 1/6 de l'espace */}
+          <div className="xl:col-span-1 space-y-3">
             
-            {/* Top 3 Classement */}
+            {/* Top 3 Classement - Version compacte */}
             <Card className="bg-primary text-primary-foreground border-0 shadow-lg">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-primary-foreground text-lg">
-                  <Trophy className="w-5 h-5 text-accent" />
+              <CardHeader className="pb-2 py-3">
+                <CardTitle className="flex items-center gap-2 text-primary-foreground text-base">
+                  <Trophy className="w-4 h-4 text-accent" />
                   🏆 Top 3
                 </CardTitle>
-                <CardDescription className="text-primary-foreground/80">
-                  Les champions de l'environnement
-                </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-2">
                 {leaderboard.slice(0, 3).map((user, index) => (
                   <div 
                     key={user.telegram_id} 
-                    className="flex items-center gap-3 p-3 rounded-lg transition-all hover:shadow-md bg-accent text-accent-foreground hover:bg-accent/80"
+                    className="flex items-center gap-2 p-2 rounded-lg transition-all hover:shadow-md bg-accent text-accent-foreground hover:bg-accent/80"
                   >
-                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-accent-foreground text-accent font-bold text-lg">
+                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-accent-foreground text-accent font-bold text-sm">
                       {index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}
                     </div>
                     <div className="flex-1">
-                      <p className="font-semibold text-accent-foreground">{user.pseudo}</p>
-                      <p className="text-sm text-accent-foreground/80">{user.reports_count || 0} signalements</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold text-accent-foreground text-lg">{user.points_himpact}</p>
-                      <p className="text-xs text-accent-foreground/80">points</p>
+                      <p className="font-semibold text-accent-foreground text-sm">{user.pseudo}</p>
+                      <p className="text-xs text-accent-foreground/80">{user.points_himpact} pts</p>
                     </div>
                   </div>
                 ))}
@@ -203,83 +196,61 @@ const Map = () => {
               </CardContent>
             </Card>
 
-            {/* Signalements récents */}
+            {/* Signalements récents - Version très compacte */}
             <Card className="bg-primary text-primary-foreground border-0 shadow-lg">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-primary-foreground text-lg">
-                  <Filter className="w-5 h-5 text-accent" />
-                  📋 Signalements récents
+              <CardHeader className="pb-2 py-3">
+                <CardTitle className="flex items-center gap-2 text-primary-foreground text-base">
+                  <Filter className="w-4 h-4 text-accent" />
+                  📋 Récents
                 </CardTitle>
-                <CardDescription className="text-primary-foreground/80">
-                  Les derniers signalements
-                </CardDescription>
               </CardHeader>
               
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-2">
                 {isLoading ? (
-                  <div className="flex items-center justify-center py-8">
-                    <Loader2 className="w-6 h-6 animate-spin text-accent" />
+                  <div className="flex items-center justify-center py-4">
+                    <Loader2 className="w-4 h-4 animate-spin text-accent" />
                   </div>
                 ) : filteredReports.length === 0 ? (
-                  <div className="text-center py-8 text-primary-foreground/80">
-                    <div className="w-12 h-12 mx-auto mb-3 bg-accent rounded-full flex items-center justify-center">
-                      <MapPin className="w-6 h-6 text-accent-foreground" />
+                  <div className="text-center py-4 text-primary-foreground/80">
+                    <div className="w-8 h-8 mx-auto mb-2 bg-accent rounded-full flex items-center justify-center">
+                      <MapPin className="w-4 h-4 text-accent-foreground" />
                     </div>
-                    <p className="font-medium text-sm">Aucun signalement récent</p>
-                    <p className="text-xs mt-1">
-                      {filter !== 'all' ? 'Changez le filtre.' : 'En attente...'}
-                    </p>
+                    <p className="font-medium text-xs">Aucun signalement</p>
                   </div>
                 ) : (
                   <>
-                    {/* Afficher seulement les 3 plus récents */}
-                    {filteredReports.slice(0, 3).map((report) => (
+                    {/* Afficher seulement les 2 plus récents */}
+                    {filteredReports.slice(0, 2).map((report) => (
                       <div 
                         key={report.id}
-                        className={`p-3 rounded-lg cursor-pointer transition-all hover:shadow-md bg-accent text-accent-foreground hover:bg-accent/80 ${
+                        className={`p-2 rounded-lg cursor-pointer transition-all hover:shadow-md bg-accent text-accent-foreground hover:bg-accent/80 ${
                           selectedReport?.id === report.id 
                             ? 'ring-2 ring-accent-foreground' 
                             : ''
                         }`}
                         onClick={() => setSelectedReport(report)}
                       >
-                        <div className="flex items-start justify-between mb-2">
-                          <div className="flex items-center gap-2">
-                            <span className="text-lg">{getTypeIcon(report.type)}</span>
-                            <div>
-                              <p className="font-semibold text-accent-foreground text-sm">{report.user}</p>
-                              <p className="text-xs text-accent-foreground/80">{report.location}</p>
-                            </div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-sm">{getTypeIcon(report.type)}</span>
+                          <div className="flex-1">
+                            <p className="font-semibold text-accent-foreground text-xs">{report.user}</p>
+                            <p className="text-xs text-accent-foreground/80 truncate">{report.location}</p>
                           </div>
-                          <div className="flex items-center gap-1">
-                            <div className={`w-2 h-2 rounded-full ${getStatusColor(report.status)}`}></div>
-                          </div>
+                          <div className={`w-2 h-2 rounded-full ${getStatusColor(report.status)}`}></div>
                         </div>
-                        <p className="text-xs text-accent-foreground/80 mb-2 line-clamp-2">{report.description}</p>
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs text-accent-foreground/80">
-                            {new Date(report.date).toLocaleDateString('fr-FR', { 
-                              day: '2-digit', 
-                              month: 'short'
-                            })}
-                          </span>
-                          <Badge variant="secondary" className="text-xs bg-accent-foreground text-accent">
-                            {report.status === 'validated' ? 'Validé' : 
-                             report.status === 'rejected' ? 'Rejeté' : 'En attente'}
-                          </Badge>
-                        </div>
+                        <p className="text-xs text-accent-foreground/80 line-clamp-1">{report.description}</p>
                       </div>
                     ))}
                     
-                    {/* Bouton vers page signalements complets */}
-                    <div className="pt-3 border-t border-primary-foreground/20">
+                    {/* Bouton compact vers page signalements */}
+                    <div className="pt-2 border-t border-primary-foreground/20">
                       <Button 
                         size="sm" 
                         variant="ghost" 
-                        className="w-full bg-accent text-accent-foreground hover:bg-accent/80"
+                        className="w-full bg-accent text-accent-foreground hover:bg-accent/80 text-xs py-2"
                         onClick={() => window.location.href = '/signalements'}
                       >
-                        Voir tous les signalements →
+                        Voir tous →
                       </Button>
                     </div>
                   </>
