@@ -16,6 +16,11 @@ const SolutionSection = () => {
               alt="Jeune femme souriante en t-shirt vert"
               className="w-full h-auto rounded-2xl shadow-2xl"
             />
+            <div className="mt-4 text-center">
+              <p className="text-lg text-muted-foreground italic">
+                "Hello, je suis Débora standardiste pour la ligne verte"
+              </p>
+            </div>
           </div>
 
           {/* Contenu à droite */}
