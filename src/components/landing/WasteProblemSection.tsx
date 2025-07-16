@@ -89,7 +89,7 @@ const WasteProblemSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
           <div className="text-foreground flex items-center">
             <p className="text-2xl md:text-3xl leading-relaxed text-center md:text-left">
-              La ligne verte a pour mission de faire disparaitre la pollution urbaine due aux déchets, grâce à l'action citoyenne.
+              Notre solution la <span className="text-accent">ligne verte</span>.
             </p>
           </div>
           <div className="flex justify-center md:justify-end items-center">
