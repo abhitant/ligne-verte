@@ -86,14 +86,29 @@ const WasteProblemSection = () => {
         </div>
 
 
-        {/* Section texte solution */}
-        <div className="text-left max-w-lg mt-16">
-          <h2 className="text-2xl md:text-3xl font-bold leading-none text-foreground mb-4">
-            Notre solution contre les déchets urbain : <span className="text-accent">La ligne verte</span>
-          </h2>
-          <p className="text-lg text-foreground leading-relaxed text-justify">
-            La ligne verte est une plateforme participative mise en place par Greenpill civ, pour signaler les déchets urbains et les urgences environnementales, afin de mener des actions et lutter contre la pollution urbaine.
-          </p>
+        {/* Section texte solution avec images */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mt-16">
+          <div className="text-left">
+            <h2 className="text-2xl md:text-3xl font-bold leading-none text-foreground mb-4">
+              Notre solution contre les déchets urbain : <span className="text-accent">La ligne verte</span>
+            </h2>
+            <p className="text-lg text-foreground leading-relaxed text-justify">
+              La ligne verte est une plateforme participative mise en place par Greenpill civ, pour signaler les déchets urbains et les urgences environnementales, afin de mener des actions et lutter contre la pollution urbaine.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <img 
+              src="/lovable-uploads/41170097-be04-4adf-98c3-0ba26b5efd3a.png" 
+              alt="Collecte de déchets avec seau bleu"
+              className="w-full h-48 object-cover rounded-lg shadow-md"
+            />
+            <img 
+              src="/lovable-uploads/c3dd5fe0-b292-40f6-8bf8-5d335dafa57a.png" 
+              alt="Personne en tenue verte faisant du nettoyage"
+              className="w-full h-48 object-cover rounded-lg shadow-md"
+            />
+          </div>
         </div>
 
       </div>
