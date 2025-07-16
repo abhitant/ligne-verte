@@ -24,37 +24,30 @@ const HeroSection = () => {
     return () => clearInterval(timer);
   }, [images.length]);
 
-  // Effet typewriter simple
+  // Effet typewriter ultra simple
   useEffect(() => {
-    let currentIndex = 0;
-    let isDeleting = false;
+    let index = 0;
+    let timer: NodeJS.Timeout;
     
-    const typeInterval = setInterval(() => {
-      if (!isDeleting) {
-        // Phase d'écriture
-        if (currentIndex <= fullText.length) {
-          setTypewriterText(fullText.substring(0, currentIndex));
-          currentIndex++;
-        } else {
-          // Pause de 3 secondes puis recommencer
-          setTimeout(() => {
-            isDeleting = true;
-          }, 3000);
-        }
+    const type = () => {
+      if (index <= fullText.length) {
+        setTypewriterText(fullText.slice(0, index));
+        index++;
+        timer = setTimeout(type, 100);
       } else {
-        // Réinitialiser pour recommencer
-        if (currentIndex > 0) {
-          currentIndex--;
-          setTypewriterText(fullText.substring(0, currentIndex));
-        } else {
-          isDeleting = false;
-          currentIndex = 0;
-        }
+        // Pause 3 secondes puis recommencer
+        timer = setTimeout(() => {
+          index = 0;
+          setTypewriterText("");
+          type();
+        }, 3000);
       }
-    }, isDeleting ? 50 : 100);
-
-    return () => clearInterval(typeInterval);
-  }, [fullText]);
+    };
+    
+    type();
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   // Fonction pour formater le texte avec "zo" en vert
   const renderText = (text: string) => {
