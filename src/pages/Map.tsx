@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Filter, Eye, Loader2, Trophy, Award, Users, X, ChevronDown, ChevronUp } from "lucide-react";
+import { MapPin, Filter, Eye, Loader2, Trophy, Award, Users, X, ChevronDown, ChevronUp, User } from "lucide-react";
 import OpenStreetMap from "@/components/OpenStreetMap";
 import { useReports } from "@/hooks/useReports";
 import Leaderboard from "@/components/gamification/Leaderboard";
@@ -166,11 +166,12 @@ const Map = () => {
                           </div>
                           <div className="space-y-1">
                             {leaderboard.slice(0, 3).map((user, index) => (
-                              <div key={user.telegram_id} className="flex items-center gap-2 text-xs">
-                                <span className="text-sm">{index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}</span>
-                                <span className="text-primary-foreground font-medium flex-1 truncate">{user.pseudo}</span>
-                                <span className="text-accent font-bold">{user.points_himpact}</span>
-                              </div>
+                               <div key={user.telegram_id} className="flex items-center gap-2 text-xs">
+                                 <span className="text-sm">{index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}</span>
+                                 <User className="w-3 h-3 text-accent" />
+                                 <span className="text-primary-foreground font-medium flex-1 truncate">{user.pseudo}</span>
+                                 <span className="text-accent font-bold">{user.points_himpact}</span>
+                               </div>
                             ))}
                           </div>
                         </div>
@@ -194,11 +195,12 @@ const Map = () => {
                                   }`}
                                   onClick={() => setSelectedReport(report)}
                                 >
-                                  <div className="flex items-center gap-2">
-                                    <span>{getTypeIcon(report.type)}</span>
-                                    <span className="text-primary-foreground font-medium flex-1 truncate">{report.user}</span>
-                                    <div className={`w-2 h-2 rounded-full ${getStatusColor(report.status)}`}></div>
-                                  </div>
+                                   <div className="flex items-center gap-2">
+                                     <span>{getTypeIcon(report.type)}</span>
+                                     <User className="w-3 h-3 text-accent" />
+                                     <span className="text-primary-foreground font-medium flex-1 truncate">{report.user}</span>
+                                     <div className={`w-2 h-2 rounded-full ${getStatusColor(report.status)}`}></div>
+                                   </div>
                                 </div>
                               ))}
                             </div>
@@ -316,12 +318,13 @@ const Map = () => {
                               >
                                 <div className="flex items-start gap-3">
                                   <span className="text-xl">{getTypeIcon(report.type)}</span>
-                                  <div className="flex-1">
-                                    <div className="flex items-center gap-2 mb-2">
-                                      <p className="font-bold text-primary-foreground text-sm">{report.user}</p>
-                                      <div className={`w-3 h-3 rounded-full ${getStatusColor(report.status)}`}></div>
-                                    </div>
-                                    <p className="text-xs text-accent mb-1">{report.location}</p>
+                                   <div className="flex-1">
+                                     <div className="flex items-center gap-2 mb-2">
+                                       <User className="w-3 h-3 text-accent" />
+                                       <p className="font-bold text-primary-foreground text-sm">{report.user}</p>
+                                       <div className={`w-3 h-3 rounded-full ${getStatusColor(report.status)}`}></div>
+                                     </div>
+                                     <p className="text-xs text-accent mb-1">📍 {report.location.split('(')[0].trim()}</p>
                                     <p className="text-xs text-primary-foreground/80">{report.description}</p>
                                     <p className="text-xs text-accent mt-2">{new Date(report.date).toLocaleString('fr-FR')}</p>
                                   </div>
