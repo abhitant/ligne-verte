@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 
 const HeroSection = () => {
   const [currentImage, setCurrentImage] = useState(0);
-  const [typewriterText, setTypewriterText] = useState("");
+  const [firstLineText, setFirstLineText] = useState("");
+  const [secondLineText, setSecondLineText] = useState("");
   
   const images = [
     "/lovable-uploads/41b3a1b4-03ed-4912-95dd-05f5880046d0.png",
@@ -13,7 +14,8 @@ const HeroSection = () => {
     "/lovable-uploads/d2fefb4c-11b8-457a-a4ac-a09010c75de3.png"
   ];
 
-  const fullText = "Rend ton quartier zo et prends tes points.";
+  const firstLine = "Rend ton quartier zo";
+  const secondLine = "Prend tes points";
 
   // Carrousel d'images
   useEffect(() => {
@@ -24,30 +26,49 @@ const HeroSection = () => {
     return () => clearInterval(timer);
   }, [images.length]);
 
-  // Effet typewriter ultra simple
+  // Effet typewriter séquentiel
   useEffect(() => {
+    let phase = 0; // 0: première ligne, 1: deuxième ligne, 2: pause
     let index = 0;
     let timer: NodeJS.Timeout;
     
     const type = () => {
-      if (index <= fullText.length) {
-        setTypewriterText(fullText.slice(0, index));
-        index++;
-        timer = setTimeout(type, 100);
-      } else {
-        // Pause 3 secondes puis recommencer
-        timer = setTimeout(() => {
+      if (phase === 0) {
+        // Première ligne
+        if (index <= firstLine.length) {
+          setFirstLineText(firstLine.slice(0, index));
+          index++;
+          timer = setTimeout(type, 100);
+        } else {
+          // Passer à la deuxième ligne
+          phase = 1;
           index = 0;
-          setTypewriterText("");
-          type();
-        }, 3000);
+          timer = setTimeout(type, 200);
+        }
+      } else if (phase === 1) {
+        // Deuxième ligne
+        if (index <= secondLine.length) {
+          setSecondLineText(secondLine.slice(0, index));
+          index++;
+          timer = setTimeout(type, 100);
+        } else {
+          // Pause puis recommencer
+          phase = 2;
+          timer = setTimeout(() => {
+            setFirstLineText("");
+            setSecondLineText("");
+            phase = 0;
+            index = 0;
+            type();
+          }, 3000);
+        }
       }
     };
     
     type();
     
     return () => clearTimeout(timer);
-  }, []);
+  }, [firstLine, secondLine]);
 
   // Fonction pour formater le texte avec "zo" en vert
   const renderText = (text: string) => {
@@ -81,11 +102,15 @@ const HeroSection = () => {
       {/* Content */}
       <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
         <div className="mb-16">
-          <div className="text-2xl md:text-3xl lg:text-4xl font-medium mb-12 min-h-[3rem] flex items-center justify-center leading-relaxed">
-            <span className="font-bold tracking-wide">
-              {renderText(typewriterText)}
-            </span>
-            <span className="animate-pulse ml-1 text-white">|</span>
+          <div className="text-2xl md:text-3xl lg:text-4xl font-medium leading-relaxed space-y-2 min-h-[8rem] flex flex-col items-center justify-center">
+            <div className="font-bold tracking-wide">
+              {renderText(firstLineText)}
+              {firstLineText && <span className="animate-pulse ml-1 text-white">|</span>}
+            </div>
+            <div className="font-bold tracking-wide">
+              {renderText(secondLineText)}
+              {secondLineText && !firstLineText.includes(firstLine) && <span className="animate-pulse ml-1 text-white">|</span>}
+            </div>
           </div>
         </div>
 
