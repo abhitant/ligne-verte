@@ -121,7 +121,7 @@ const Map = () => {
                         console.log('Clicking pending filter');
                         setFilter('pending');
                       }}
-                      className="bg-green-400 hover:bg-green-500 text-green-900"
+                      className="bg-accent text-accent-foreground hover:bg-accent/80"
                     >
                       En attente ({reports.filter(r => r.status === 'pending').length})
                     </Button>
@@ -129,7 +129,7 @@ const Map = () => {
                       variant={filter === 'validated' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setFilter('validated')}
-                      className="bg-green-400 hover:bg-green-500 text-green-900"
+                      className="bg-accent text-accent-foreground hover:bg-accent/80"
                     >
                       Validés ({reports.filter(r => r.status === 'validated').length})
                     </Button>
