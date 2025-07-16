@@ -86,12 +86,10 @@ const WasteProblemSection = () => {
         </div>
 
         {/* Section texte */}
-        <div className="flex justify-center items-center">
-          <div className="text-foreground flex items-center justify-center">
-            <p className="text-3xl md:text-4xl font-bold leading-relaxed text-center">
-              Notre solution contre les déchets urbain ; <span className="text-accent">La ligne verte</span>
-            </p>
-          </div>
+        <div className="text-left">
+          <h2 className="text-3xl md:text-4xl font-bold leading-relaxed text-foreground">
+            Notre solution contre les déchets urbain : <span className="text-accent">La ligne verte</span>
+          </h2>
         </div>
 
       </div>
