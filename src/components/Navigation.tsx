@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { MapPin, Home, Gift, Users, Menu, X, Leaf, Settings } from "lucide-react";
+import { MapPin, Home, Users, Menu, X, Leaf, Info } from "lucide-react";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,8 +11,7 @@ const Navigation = () => {
   const navigation = [
     { name: 'Accueil', href: '/', icon: Home },
     { name: 'Carte', href: '/map', icon: MapPin },
-    { name: 'Marketplace', href: '/marketplace', icon: Gift },
-    { name: 'Rejoindre', href: '/rejoindre', icon: Users },
+    { name: 'À propos', href: '/rejoindre', icon: Info },
   ];
 
   const isActive = (href: string) => {
@@ -68,7 +67,7 @@ const Navigation = () => {
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2"
               >
-                <span>Bot Telegram</span>
+                <span>Participer</span>
               </a>
             </Button>
           </div>
@@ -116,7 +115,7 @@ const Navigation = () => {
                     rel="noopener noreferrer"
                     className="w-full"
                   >
-                    Bot Telegram
+                    Participer
                   </a>
                 </Button>
               </div>
