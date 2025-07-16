@@ -1,22 +1,69 @@
 import { Button } from "@/components/ui/button";
 import { Camera, Info } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const HeroSection = () => {
+  const [currentImage, setCurrentImage] = useState(0);
+  const [typewriterText, setTypewriterText] = useState("");
+  
+  const images = [
+    "/lovable-uploads/41b3a1b4-03ed-4912-95dd-05f5880046d0.png",
+    "/lovable-uploads/90ed2c8b-791c-42e2-9957-d9b64eea6202.png",
+    "/lovable-uploads/d2fefb4c-11b8-457a-a4ac-a09010c75de3.png"
+  ];
+
+  const fullText = "Rend ton quartier zo et prends tes points.";
+
+  // Carrousel d'images
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % images.length);
+    }, 4000);
+
+    return () => clearInterval(timer);
+  }, [images.length]);
+
+  // Effet typewriter
+  useEffect(() => {
+    let index = 0;
+    const timer = setInterval(() => {
+      if (index <= fullText.length) {
+        setTypewriterText(fullText.slice(0, index));
+        index++;
+      } else {
+        clearInterval(timer);
+      }
+    }, 100);
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <div className="relative min-h-screen bg-background flex items-center justify-center">
-      {/* Fond avec pattern subtil */}
-      <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-primary/20" />
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Images en arrière-plan */}
+      {images.map((image, index) => (
+        <div
+          key={index}
+          className={`absolute inset-0 transition-opacity duration-1000 ${
+            index === currentImage ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <img
+            src={image}
+            alt={`Action environnementale ${index + 1}`}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-background/70" />
+        </div>
+      ))}
       
       {/* Content */}
-      <div className="relative z-10 text-center text-foreground px-4 max-w-6xl mx-auto">
+      <div className="relative z-10 text-center text-white px-4 max-w-6xl mx-auto">
         <div className="mb-16">
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold mb-6 leading-tight">
-            La Ligne <span className="text-accent">Verte</span>
-          </h1>
-          
-          <p className="text-2xl md:text-3xl lg:text-4xl font-medium text-muted-foreground mb-12">
-            Rend ton quartier <span className="text-accent font-bold">zo</span> et prends tes points.
+          <p className="text-2xl md:text-3xl lg:text-4xl font-medium mb-12 min-h-[4rem] flex items-center justify-center">
+            <span className="text-accent font-bold">{typewriterText}</span>
+            <span className="animate-pulse ml-1">|</span>
           </p>
         </div>
 
