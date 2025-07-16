@@ -92,9 +92,9 @@ export const useReports = () => {
       const uniqueTelegramIds = [...new Set(reports.map(r => r.user_telegram_id))];
       console.log('Unique telegram IDs in reports:', uniqueTelegramIds);
 
-      // Récupérer les informations utilisateur via la vue sécurisée
+      // Récupérer les informations utilisateur directement depuis la table users
       const { data: users, error: usersError } = await supabase
-        .from('user_display_info')
+        .from('users')
         .select('telegram_id, pseudo, points_himpact, created_at')
         .in('telegram_id', uniqueTelegramIds);
 
