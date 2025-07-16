@@ -57,19 +57,14 @@ const CommunitySection = () => {
             <CardContent className="p-4 relative z-10 border-t-2 border-accent/30">
               <div className="h-80 overflow-y-auto">
                 <div className="space-y-3">
-                  {users.slice(0, 10).map((user, index) => (
+                  {users.slice(0, 3).map((user, index) => (
                     <div 
                       key={user.telegram_id} 
                       className="flex items-center gap-3 p-3 rounded-lg bg-accent/20 border border-accent/40 hover:bg-accent/30 transition-all"
                     >
-                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-accent text-accent-foreground font-bold text-sm border-2 border-accent-foreground">
-                        {index + 1}
+                      <div className="flex items-center justify-center w-10 h-10 rounded-full bg-accent text-accent-foreground font-bold text-lg border-2 border-accent-foreground shadow-lg">
+                        {index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}
                       </div>
-                      {index < 3 && (
-                        <span className="text-lg">
-                          {index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}
-                        </span>
-                      )}
                       <div className="flex-1">
                         <p className="font-bold text-primary-foreground text-sm tracking-wide">{user.pseudo}</p>
                         <p className="text-xs text-accent font-bold">{user.points_himpact} PTS</p>
@@ -85,6 +80,18 @@ const CommunitySection = () => {
                       <p className="text-xs text-accent">En attente de recrues...</p>
                     </div>
                   )}
+                  
+                  {/* Bouton Voir Plus */}
+                  <div className="pt-4">
+                    <Link to="/classement">
+                      <Button 
+                        size="sm" 
+                        className="w-full bg-accent text-accent-foreground hover:bg-accent/80 border-2 border-accent-foreground/20 font-bold text-sm tracking-wider hover:scale-105 transition-transform"
+                      >
+                        ⚡ VOIR PLUS ⚡
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </CardContent>
