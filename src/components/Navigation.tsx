@@ -60,7 +60,7 @@ const Navigation = () => {
           </div>
 
           {/* Right side - Bot Telegram button */}
-          <div className="hidden md:flex items-center flex-shrink-0 ml-4">
+          <div className="hidden md:flex items-center flex-shrink-0 ml-2">
             <Button className="bg-accent text-accent-foreground hover:bg-accent/80">
               <a 
                 href="https://t.me/LigneVerteBot" 
@@ -68,7 +68,7 @@ const Navigation = () => {
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2"
               >
-                <span>Participer</span>
+                <span>Participer à la lutte</span>
               </a>
             </Button>
           </div>
@@ -116,7 +116,7 @@ const Navigation = () => {
                     rel="noopener noreferrer"
                     className="w-full"
                   >
-                    Participer
+                    Participer à la lutte
                   </a>
                 </Button>
               </div>
