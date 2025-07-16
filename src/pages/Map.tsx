@@ -133,7 +133,7 @@ const Map = () => {
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="h-[calc(100%-80px)] p-2 relative">
+            <CardContent className="h-[calc(100%-80px)] p-0 relative">
               {isLoading ? (
                 <div className="flex items-center justify-center h-full">
                   <div className="text-center">
@@ -142,7 +142,7 @@ const Map = () => {
                   </div>
                 </div>
               ) : (
-                <div className="h-full rounded-lg overflow-hidden">
+                <div className="h-full w-full">
                   <OpenStreetMap
                     reports={reports}
                     selectedReport={selectedReport}
