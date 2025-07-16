@@ -24,42 +24,36 @@ const HeroSection = () => {
     return () => clearInterval(timer);
   }, [images.length]);
 
-  // Effet typewriter en continu
+  // Effet typewriter simple
   useEffect(() => {
-    let index = 0;
-    let typingTimer: NodeJS.Timeout;
-    let pauseTimer: NodeJS.Timeout;
-    let isMounted = true;
-
-    const startTyping = () => {
-      if (!isMounted) return;
-      
-      typingTimer = setInterval(() => {
-        if (!isMounted) return;
-        
-        if (index <= fullText.length) {
-          setTypewriterText(fullText.slice(0, index));
-          index++;
+    let currentIndex = 0;
+    let isDeleting = false;
+    
+    const typeInterval = setInterval(() => {
+      if (!isDeleting) {
+        // Phase d'écriture
+        if (currentIndex <= fullText.length) {
+          setTypewriterText(fullText.substring(0, currentIndex));
+          currentIndex++;
         } else {
-          clearInterval(typingTimer);
-          // Pause de 3 secondes avant de recommencer
-          pauseTimer = setTimeout(() => {
-            if (isMounted) {
-              index = 0;
-              startTyping();
-            }
+          // Pause de 3 secondes puis recommencer
+          setTimeout(() => {
+            isDeleting = true;
           }, 3000);
         }
-      }, 100);
-    };
+      } else {
+        // Réinitialiser pour recommencer
+        if (currentIndex > 0) {
+          currentIndex--;
+          setTypewriterText(fullText.substring(0, currentIndex));
+        } else {
+          isDeleting = false;
+          currentIndex = 0;
+        }
+      }
+    }, isDeleting ? 50 : 100);
 
-    startTyping();
-
-    return () => {
-      isMounted = false;
-      clearInterval(typingTimer);
-      clearTimeout(pauseTimer);
-    };
+    return () => clearInterval(typeInterval);
   }, [fullText]);
 
   // Fonction pour formater le texte avec "zo" en vert
