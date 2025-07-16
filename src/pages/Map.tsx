@@ -25,6 +25,8 @@ const Map = () => {
   const [filter, setFilter] = useState<'all' | 'pending' | 'validated'>('all');
   const [activeTab, setActiveTab] = useState<'reports' | 'leaderboard' | null>('leaderboard');
   const [isHUDOpen, setIsHUDOpen] = useState(true);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [showReports, setShowReports] = useState(false);
   
   const { data: reports = [], isLoading, error } = useReports();
   const { data: leaderboard = [] } = useLeaderboard(10);
@@ -207,14 +209,14 @@ const Map = () => {
                           <Button 
                             size="sm" 
                             className="flex-1 bg-accent/80 text-accent-foreground hover:bg-accent text-xs py-1 h-7"
-                            onClick={() => window.location.href = '/classement'}
+                            onClick={() => setShowLeaderboard(true)}
                           >
                             Classement
                           </Button>
                           <Button 
                             size="sm" 
                             className="flex-1 bg-accent/80 text-accent-foreground hover:bg-accent text-xs py-1 h-7"
-                            onClick={() => window.location.href = '/signalements'}
+                            onClick={() => setShowReports(true)}
                           >
                             Signalements
                           </Button>
@@ -223,6 +225,115 @@ const Map = () => {
                     )}
                   </div>
                 </div>
+
+                {/* Overlay Classement complet */}
+                {showLeaderboard && (
+                  <div className="absolute inset-0 bg-black/50 backdrop-blur-sm z-[2000] flex items-center justify-center p-4">
+                    <div className="bg-primary/90 backdrop-blur-sm border-2 border-accent/60 rounded-lg shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-transparent rounded-lg"></div>
+                      <div className="relative z-10">
+                        {/* Header */}
+                        <div className="p-4 border-b border-accent/30">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <Trophy className="w-5 h-5 text-accent" />
+                              <h2 className="text-accent font-bold text-lg tracking-wider">🏆 CLASSEMENT COMPLET</h2>
+                            </div>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-8 w-8 p-0 hover:bg-accent/20"
+                              onClick={() => setShowLeaderboard(false)}
+                            >
+                              <X className="w-5 h-5 text-accent" />
+                            </Button>
+                          </div>
+                        </div>
+                        
+                        {/* Contenu */}
+                        <div className="p-4 overflow-y-auto max-h-[60vh]">
+                          <div className="space-y-2">
+                            {leaderboard.map((user, index) => (
+                              <div 
+                                key={user.telegram_id} 
+                                className="flex items-center gap-3 p-3 rounded-lg bg-accent/20 border border-accent/40"
+                              >
+                                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-accent text-accent-foreground font-bold text-sm">
+                                  {index + 1}
+                                </div>
+                                <div className="flex-1">
+                                  <p className="font-bold text-primary-foreground text-sm">{user.pseudo}</p>
+                                  <p className="text-xs text-accent">{user.points_himpact} points</p>
+                                </div>
+                                {index < 3 && (
+                                  <span className="text-lg">
+                                    {index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}
+                                  </span>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Overlay Signalements complet */}
+                {showReports && (
+                  <div className="absolute inset-0 bg-black/50 backdrop-blur-sm z-[2000] flex items-center justify-center p-4">
+                    <div className="bg-primary/90 backdrop-blur-sm border-2 border-accent/60 rounded-lg shadow-2xl w-full max-w-4xl max-h-[80vh] overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-transparent rounded-lg"></div>
+                      <div className="relative z-10">
+                        {/* Header */}
+                        <div className="p-4 border-b border-accent/30">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <Filter className="w-5 h-5 text-accent" />
+                              <h2 className="text-accent font-bold text-lg tracking-wider">📡 TOUS LES SIGNALEMENTS</h2>
+                            </div>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-8 w-8 p-0 hover:bg-accent/20"
+                              onClick={() => setShowReports(false)}
+                            >
+                              <X className="w-5 h-5 text-accent" />
+                            </Button>
+                          </div>
+                        </div>
+                        
+                        {/* Contenu */}
+                        <div className="p-4 overflow-y-auto max-h-[60vh]">
+                          <div className="space-y-3">
+                            {filteredReports.map((report) => (
+                              <div 
+                                key={report.id}
+                                className={`p-4 rounded-lg cursor-pointer transition-all bg-accent/20 border border-accent/40 hover:bg-accent/30 ${
+                                  selectedReport?.id === report.id ? 'ring-2 ring-accent' : ''
+                                }`}
+                                onClick={() => setSelectedReport(report)}
+                              >
+                                <div className="flex items-start gap-3">
+                                  <span className="text-xl">{getTypeIcon(report.type)}</span>
+                                  <div className="flex-1">
+                                    <div className="flex items-center gap-2 mb-2">
+                                      <p className="font-bold text-primary-foreground text-sm">{report.user}</p>
+                                      <div className={`w-3 h-3 rounded-full ${getStatusColor(report.status)}`}></div>
+                                    </div>
+                                    <p className="text-xs text-accent mb-1">{report.location}</p>
+                                    <p className="text-xs text-primary-foreground/80">{report.description}</p>
+                                    <p className="text-xs text-accent mt-2">{new Date(report.date).toLocaleString('fr-FR')}</p>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </CardContent>
