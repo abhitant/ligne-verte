@@ -77,8 +77,8 @@ const Map = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="h-screen">
+    <div className="h-screen bg-background">
+      <div className="h-full">
         {/* Card wrapper gaming style */}
         <Card className="bg-primary text-primary-foreground border-2 border-accent/50 shadow-2xl h-full w-full rounded-none">
           <CardHeader className="pb-2">
