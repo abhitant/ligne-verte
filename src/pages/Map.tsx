@@ -78,25 +78,7 @@ const Map = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header Gaming Style */}
-      <div className="bg-primary shadow-lg p-4 border-b-2 border-accent/50">
-        <div className="max-w-full mx-auto">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-primary-foreground mb-1 flex items-center gap-2">
-                🗺️ <span className="text-accent">CARTE</span> INTERACTIVE
-              </h1>
-              <p className="text-primary-foreground/90 text-sm sm:text-base">Mission : Explorer et signaler les zones polluées</p>
-            </div>
-            <div className="bg-accent rounded-lg p-3 text-center border-2 border-accent-foreground/30 shadow-lg">
-              <div className="text-xl sm:text-2xl font-bold text-accent-foreground">{reports.length}</div>
-              <div className="text-xs sm:text-sm text-accent-foreground/80">SIGNALEMENTS</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="h-[calc(100vh-120px)]">
+      <div className="h-screen">
         {/* Carte plein écran pure - sans header */}
         <div className="h-full w-full">
           {isLoading ? (
