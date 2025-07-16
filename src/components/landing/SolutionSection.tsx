@@ -25,9 +25,6 @@ const SolutionSection = () => {
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 leading-tight">
                 Aidez-nous à y mettre fin
               </h2>
-              <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-                Avec La Ligne Verte, tu peux rendre ta ville plus propre tout en gagnant des points.
-              </p>
             </div>
 
             {/* Fonctionnement en liste */}
