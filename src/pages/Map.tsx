@@ -24,7 +24,7 @@ interface MapReport {
 const Map = () => {
   const [selectedReport, setSelectedReport] = useState<MapReport | null>(null);
   const [filter, setFilter] = useState<'all' | 'pending' | 'validated'>('all');
-  const [activeTab, setActiveTab] = useState<'reports' | 'leaderboard' | null>(null);
+  const [activeTab, setActiveTab] = useState<'reports' | 'leaderboard' | null>('leaderboard');
   
   const { data: reports = [], isLoading, error } = useReports();
   const { data: leaderboard = [] } = useLeaderboard(10);
@@ -100,9 +100,9 @@ const Map = () => {
       </div>
 
       <div className="max-w-full mx-auto p-2">
-        <div className={`grid gap-4 ${activeTab === null ? 'grid-cols-1' : 'grid-cols-1 xl:grid-cols-4'}`}>
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-4">
           {/* Carte Interactive - Prend maintenant toute la place quand aucun onglet n'est sélectionné */}
-          <div className={activeTab === null ? 'col-span-1' : 'xl:col-span-3'}>
+          <div className="xl:col-span-3">
             <Card className="bg-primary/90 shadow-xl h-[calc(100vh-200px)] min-h-[700px] border-2 border-primary relative overflow-hidden"
                   style={{
                     background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary)) 100%)'
@@ -154,33 +154,37 @@ const Map = () => {
                 )}
               </CardContent>
               
-              {/* Boutons flottants pour accéder aux fonctionnalités */}
-              {activeTab === null && (
-                <div className="absolute bottom-4 right-4 flex flex-col gap-2">
-                  <Button
-                    onClick={() => setActiveTab('reports')}
-                    className="bg-accent text-accent-foreground hover:bg-accent/80 shadow-lg"
-                    size="sm"
-                  >
-                    <Filter className="w-4 h-4 mr-2" />
-                    Signalements ({filteredReports.length})
-                  </Button>
-                  <Button
-                    onClick={() => setActiveTab('leaderboard')}
-                    className="bg-accent text-accent-foreground hover:bg-accent/80 shadow-lg"
-                    size="sm"
-                  >
-                    <Trophy className="w-4 h-4 mr-2" />
-                    🏆 Classement
-                  </Button>
+              {/* Widget de classement en overlay */}
+              <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg shadow-lg p-3 min-w-[200px] border border-green-200">
+                <div className="flex items-center gap-2 mb-2">
+                  <Trophy className="w-4 h-4 text-yellow-600" />
+                  <h4 className="text-sm font-bold text-gray-800">🏆 Top 3</h4>
                 </div>
-              )}
+                {leaderboard.slice(0, 3).map((user, index) => (
+                  <div key={user.telegram_id} className="flex items-center gap-2 mb-1">
+                    <span className="text-xs">
+                      {index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}
+                    </span>
+                    <span className="text-xs font-medium text-gray-700 flex-1 truncate">
+                      {user.pseudo}
+                    </span>
+                    <span className="text-xs text-green-600 font-bold">
+                      {user.points_himpact}pts
+                    </span>
+                  </div>
+                ))}
+                <button 
+                  onClick={() => setActiveTab('leaderboard')}
+                  className="text-xs text-blue-600 hover:text-blue-800 underline mt-1"
+                >
+                  Voir le classement complet →
+                </button>
+              </div>
             </Card>
           </div>
 
-          {/* Sidebar Compact Gamifié - Ne s'affiche que si un onglet est actif */}
-          {activeTab !== null && (
-            <div className="space-y-4">
+          {/* Sidebar Compact Gamifié - Toujours visible */}
+          <div className="space-y-4">
             {/* Navigation Tabs */}
             <Card className="bg-primary/80 shadow-xl border-2 border-primary">
               <CardHeader className="pb-2">
@@ -287,7 +291,6 @@ const Map = () => {
               </CardContent>
             </Card>
           </div>
-          )}
         </div>
       </div>
     </div>
