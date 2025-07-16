@@ -35,7 +35,7 @@ const SolutionSection = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-foreground mb-1">✅ Prends une photo</h3>
-                  <p className="text-muted-foreground">de ton action environnementale dans ton quartier.</p>
+                  <p className="text-muted-foreground">de l'urgence environnementale.</p>
                 </div>
               </div>
 
@@ -45,7 +45,7 @@ const SolutionSection = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-foreground mb-1">✅ Envoie-la via Telegram</h3>
-                  <p className="text-muted-foreground">à notre standardiste avec ta localisation.</p>
+                  <p className="text-muted-foreground">plus sa localisation à notre Débora notre standardiste.</p>
                 </div>
               </div>
 
