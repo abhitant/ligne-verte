@@ -160,7 +160,7 @@ const Map = () => {
           {/* Panel Droit - 1/3 de l'espace */}
           <div className="space-y-6">
             {/* Classement */}
-            <Card className="shadow-xl border-2 border-primary bg-gradient-to-br from-accent/5 to-background">
+            <Card className="bg-primary text-primary-foreground border-0 shadow-lg">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-foreground">
                   <Trophy className="w-5 h-5 text-yellow-600" />
@@ -199,7 +199,7 @@ const Map = () => {
             </Card>
 
             {/* Signalements Récents */}
-            <Card className="shadow-xl border-2 border-primary bg-gradient-to-br from-background to-accent/5">
+            <Card className="bg-primary text-primary-foreground border-0 shadow-lg">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-foreground">
                   <Filter className="w-5 h-5 text-primary" />
