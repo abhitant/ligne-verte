@@ -135,7 +135,7 @@ const Map = () => {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <Trophy className="w-4 h-4 text-accent" />
-                          <h3 className="text-accent font-bold text-sm tracking-wider">HUD</h3>
+                          <h3 className="text-accent font-bold text-sm tracking-wider">STATS</h3>
                         </div>
                         <Button
                           size="sm"
