@@ -30,7 +30,7 @@ const CommunitySection = () => {
             <CardHeader className="relative z-10 pb-2">
               <CardTitle className="flex items-center gap-2 text-accent font-bold text-lg tracking-wider">
                 <MapPin className="w-5 h-5 text-accent animate-pulse" />
-                🗺️ ZONE D'OPÉRATION
+                ZONE D'OPÉRATION
               </CardTitle>
             </CardHeader>
             <CardContent className="p-0 relative z-10">
@@ -103,7 +103,7 @@ const CommunitySection = () => {
           <Link to="/map">
             <Button className="bg-accent hover:bg-accent/80 text-accent-foreground px-12 py-6 text-xl font-bold rounded-xl shadow-xl transform hover:scale-105 transition-all border-2 border-accent-foreground/20 tracking-wider">
               <MapPin className="w-6 h-6 mr-3" />
-              ⚡ ACCÉDER À LA ZONE ⚡
+              ACCÉDER À LA CARTE
             </Button>
           </Link>
         </div>
