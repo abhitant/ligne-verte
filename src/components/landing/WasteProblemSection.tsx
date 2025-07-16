@@ -87,11 +87,11 @@ const WasteProblemSection = () => {
 
 
         {/* Section texte solution */}
-        <div className="text-left max-w-2xl mt-16">
+        <div className="text-left max-w-lg mt-16">
           <h2 className="text-2xl md:text-3xl font-bold leading-none text-foreground mb-4">
             Notre solution contre les déchets urbain : <span className="text-accent">La ligne verte</span>
           </h2>
-          <p className="text-lg text-foreground leading-relaxed">
+          <p className="text-lg text-foreground leading-relaxed text-justify">
             La ligne verte est une plateforme participative mise en place par Greenpill civ, pour signaler les déchets urbains et les urgences environnementales, afin de mener des actions et lutter contre la pollution urbaine.
           </p>
         </div>
