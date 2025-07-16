@@ -1,4 +1,4 @@
-const Join = () => {
+const Actualite = () => {
   return (
     <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="text-center">
@@ -8,4 +8,4 @@ const Join = () => {
   );
 };
 
-export default Join;
+export default Actualite;

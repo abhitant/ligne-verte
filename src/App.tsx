@@ -8,6 +8,7 @@ import Navigation from "./components/Navigation";
 import Home from "./pages/Home";
 import Map from "./pages/Map";
 import Marketplace from "./pages/Marketplace";
+import Actualite from "./pages/Actualite";
 import Join from "./pages/Join";
 import UserProfile from "./pages/UserProfile";
 import Dashboard from "./pages/Dashboard";
@@ -25,7 +26,7 @@ const App = () => (
           <Navigation />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/map" element={<Map />} />
+            <Route path="/actualite" element={<Actualite />} />
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/rejoindre" element={<Join />} />
             <Route path="/profile" element={<UserProfile />} />
