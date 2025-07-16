@@ -24,7 +24,7 @@ interface MapReport {
 const Map = () => {
   const [selectedReport, setSelectedReport] = useState<MapReport | null>(null);
   const [filter, setFilter] = useState<'all' | 'pending' | 'validated'>('all');
-  const [activeTab, setActiveTab] = useState<'reports' | 'leaderboard'>('reports');
+  const [activeTab, setActiveTab] = useState<'reports' | 'leaderboard'>('leaderboard');
   
   const { data: reports = [], isLoading, error } = useReports();
   const { data: leaderboard = [] } = useLeaderboard(10);
