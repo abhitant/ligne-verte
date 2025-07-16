@@ -50,7 +50,7 @@ const Leaderboard = ({ users, currentUserId, limit = 10 }: LeaderboardProps) => 
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Trophy className="w-6 h-6 text-yellow-500" />
-          Classement par Points Himpact
+          Classement des plus Himpactant
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">

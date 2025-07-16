@@ -81,6 +81,7 @@ export const useLeaderboard = (limit: number = 10) => {
           reports_count
         `)
         .not('pseudo', 'is', null)
+        .gt('points_himpact', 0)
         .order('points_himpact', { ascending: false })
         .limit(limit);
 
