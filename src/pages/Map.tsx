@@ -238,10 +238,10 @@ const Map = () => {
                   filteredReports.map((report) => (
                     <div 
                       key={report.id}
-                      className={`p-4 border rounded-lg cursor-pointer transition-all hover:shadow-md animate-fade-in ${
+                      className={`p-4 rounded-lg cursor-pointer transition-all hover:shadow-md animate-fade-in bg-accent text-accent-foreground hover:bg-accent/80 ${
                         selectedReport?.id === report.id 
-                          ? 'ring-2 ring-primary bg-primary/5 border-primary' 
-                          : 'bg-card hover:bg-accent/10 border-border'
+                          ? 'ring-2 ring-accent-foreground' 
+                          : ''
                       }`}
                       onClick={() => setSelectedReport(report)}
                     >
@@ -249,21 +249,21 @@ const Map = () => {
                         <div className="flex items-center gap-3">
                           <span className="text-2xl">{getTypeIcon(report.type)}</span>
                           <div>
-                            <p className="font-semibold text-foreground">{report.user}</p>
-                            <p className="text-sm text-muted-foreground">{report.location}</p>
+                            <p className="font-semibold text-accent-foreground">{report.user}</p>
+                            <p className="text-sm text-accent-foreground/80">{report.location}</p>
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
                           <div className={`w-3 h-3 rounded-full ${getStatusColor(report.status)}`}></div>
-                          <Badge variant={report.status === 'validated' ? 'default' : 'secondary'} className="text-xs">
+                          <Badge variant="secondary" className="text-xs bg-accent-foreground text-accent">
                             {report.status === 'validated' ? 'Validé' : 
                              report.status === 'rejected' ? 'Rejeté' : 'En attente'}
                           </Badge>
                         </div>
                       </div>
-                      <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{report.description}</p>
+                      <p className="text-sm text-accent-foreground/80 mb-3 line-clamp-2">{report.description}</p>
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-muted-foreground">
+                        <span className="text-xs text-accent-foreground/80">
                           {new Date(report.date).toLocaleDateString('fr-FR', { 
                             day: '2-digit', 
                             month: 'short',
