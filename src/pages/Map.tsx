@@ -100,35 +100,32 @@ const Map = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[calc(100vh-180px)]">
           {/* Carte - 2/3 de l'espace */}
           <div className="lg:col-span-2 relative">
-            <Card className="h-full shadow-xl border-2 border-primary/20 bg-gradient-to-br from-background to-accent/5">
+            <Card className="h-full bg-primary text-primary-foreground border-0 shadow-lg">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="flex items-center gap-2 text-foreground">
-                    <MapPin className="w-5 h-5 text-primary" />
+                  <CardTitle className="flex items-center gap-2 text-primary-foreground">
+                    <MapPin className="w-5 h-5 text-accent" />
                     Carte des Signalements
                   </CardTitle>
                   <div className="flex gap-2">
                     <Button
-                      variant={filter === 'all' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setFilter('all')}
-                      className={`text-sm ${filter === 'all' ? 'bg-accent text-accent-foreground hover:bg-accent/80' : ''}`}
+                      className={`text-sm bg-accent text-accent-foreground hover:bg-accent/80 ${filter === 'all' ? 'ring-2 ring-accent-foreground' : ''}`}
                     >
                       Tous ({reports.length})
                     </Button>
                     <Button
-                      variant={filter === 'pending' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setFilter('pending')}
-                      className={`text-sm ${filter === 'pending' ? 'bg-accent text-accent-foreground hover:bg-accent/80' : ''}`}
+                      className={`text-sm bg-accent text-accent-foreground hover:bg-accent/80 ${filter === 'pending' ? 'ring-2 ring-accent-foreground' : ''}`}
                     >
                       En attente ({reports.filter(r => r.status === 'pending').length})
                     </Button>
                     <Button
-                      variant={filter === 'validated' ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => setFilter('validated')}
-                      className={`text-sm ${filter === 'validated' ? 'bg-accent text-accent-foreground hover:bg-accent/80' : ''}`}
+                      className={`text-sm bg-accent text-accent-foreground hover:bg-accent/80 ${filter === 'validated' ? 'ring-2 ring-accent-foreground' : ''}`}
                     >
                       Validés ({reports.filter(r => r.status === 'validated').length})
                     </Button>
@@ -162,11 +159,11 @@ const Map = () => {
             {/* Classement */}
             <Card className="bg-primary text-primary-foreground border-0 shadow-lg">
               <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-foreground">
-                  <Trophy className="w-5 h-5 text-yellow-600" />
+                <CardTitle className="flex items-center gap-2 text-primary-foreground">
+                  <Trophy className="w-5 h-5 text-accent" />
                   🏆 Classement
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-primary-foreground/80">
                   Les champions de l'environnement
                 </CardDescription>
               </CardHeader>
@@ -201,14 +198,14 @@ const Map = () => {
             {/* Signalements Récents */}
             <Card className="bg-primary text-primary-foreground border-0 shadow-lg">
               <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-foreground">
-                  <Filter className="w-5 h-5 text-primary" />
+                <CardTitle className="flex items-center gap-2 text-primary-foreground">
+                  <Filter className="w-5 h-5 text-accent" />
                   Signalements
-                  <Badge variant="secondary" className="ml-2">
+                  <Badge variant="secondary" className="ml-2 bg-accent text-accent-foreground">
                     {filteredReports.length}
                   </Badge>
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-primary-foreground/80">
                   Explorez les signalements de la communauté
                 </CardDescription>
               </CardHeader>
