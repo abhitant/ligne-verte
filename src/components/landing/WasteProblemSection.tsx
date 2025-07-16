@@ -87,12 +87,12 @@ const WasteProblemSection = () => {
 
         {/* Section texte et logo */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
-          <div className="text-foreground flex items-center">
-            <p className="text-2xl md:text-3xl leading-relaxed text-center md:text-left">
+          <div className="text-foreground flex items-center justify-center md:justify-end">
+            <p className="text-3xl md:text-4xl font-bold leading-relaxed text-center">
               Notre solution la <span className="text-accent">ligne verte</span>.
             </p>
           </div>
-          <div className="flex justify-center md:justify-end items-center">
+          <div className="flex justify-center md:justify-start items-center">
             <img 
               src={ligneVerteLogo} 
               alt="Logo de la ligne verte"
