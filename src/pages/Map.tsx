@@ -193,9 +193,9 @@ const Map = () => {
                     size="sm" 
                     variant="ghost" 
                     className="w-full bg-accent text-accent-foreground hover:bg-accent/80"
-                    onClick={() => setActiveTab('reports')}
+                    onClick={() => setActiveTab('leaderboard')}
                   >
-                    Voir tous les signalements
+                    Voir le classement complet
                   </Button>
                 </div>
               </CardContent>
