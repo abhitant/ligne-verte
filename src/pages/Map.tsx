@@ -97,59 +97,24 @@ const Map = () => {
       </div>
 
       <div className="h-[calc(100vh-120px)]">
-        {/* Carte plein écran sans HUD */}
-        <Card className="bg-primary text-primary-foreground border-2 border-accent/50 shadow-2xl h-full w-full">
-          <CardHeader className="pb-2">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <CardTitle className="flex items-center gap-2 text-primary-foreground text-lg">
-                <MapPin className="w-5 h-5 text-accent animate-pulse" />
-                <span className="text-accent">ZONE DE COMBAT</span> ENVIRONNEMENTAL
-              </CardTitle>
-              <div className="flex flex-wrap gap-2">
-                <Button
-                  size="sm"
-                  onClick={() => setFilter('all')}
-                  className={`text-xs sm:text-sm bg-accent text-accent-foreground hover:bg-accent/80 border border-accent-foreground/30 font-bold ${filter === 'all' ? 'ring-2 ring-accent-foreground shadow-lg' : ''}`}
-                >
-                  TOUS ({reports.length})
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={() => setFilter('pending')}
-                  className={`text-xs sm:text-sm bg-accent text-accent-foreground hover:bg-accent/80 border border-accent-foreground/30 font-bold ${filter === 'pending' ? 'ring-2 ring-accent-foreground shadow-lg' : ''}`}
-                >
-                  ATTENTE ({reports.filter(r => r.status === 'pending').length})
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={() => setFilter('validated')}
-                  className={`text-xs sm:text-sm bg-accent text-accent-foreground hover:bg-accent/80 border border-accent-foreground/30 font-bold ${filter === 'validated' ? 'ring-2 ring-accent-foreground shadow-lg' : ''}`}
-                >
-                  VALIDÉS ({reports.filter(r => r.status === 'validated').length})
-                </Button>
+        {/* Carte plein écran pure - sans header */}
+        <div className="h-full w-full">
+          {isLoading ? (
+            <div className="flex items-center justify-center h-full bg-primary text-primary-foreground">
+              <div className="text-center">
+                <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-accent" />
+                <p className="text-primary-foreground font-bold">CHARGEMENT DE LA ZONE...</p>
               </div>
             </div>
-          </CardHeader>
-          <CardContent className="h-[calc(100%-80px)] p-0">
-            {isLoading ? (
-              <div className="flex items-center justify-center h-full">
-                <div className="text-center">
-                  <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-accent" />
-                  <p className="text-primary-foreground font-bold">CHARGEMENT DE LA ZONE...</p>
-                </div>
-              </div>
-            ) : (
-              <div className="h-full w-full">
-                <OpenStreetMap
-                  reports={reports}
-                  selectedReport={selectedReport}
-                  onReportSelect={setSelectedReport}
-                  filter={filter}
-                />
-              </div>
-            )}
-          </CardContent>
-        </Card>
+          ) : (
+            <OpenStreetMap
+              reports={reports}
+              selectedReport={selectedReport}
+              onReportSelect={setSelectedReport}
+              filter={filter}
+            />
+          )}
+        </div>
       </div>
     </div>
   );
