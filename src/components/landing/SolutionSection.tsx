@@ -18,7 +18,7 @@ const SolutionSection = () => {
             />
             <div className="mt-4 text-center">
               <p className="text-lg text-muted-foreground italic">
-                "Hello, je suis Débora standardiste pour la ligne verte"
+                "Hello, je suis Débora standardiste pour la ligne verte. Je serais ravie de recevoir votre aide dans notre lutte contre les déchets urbains"
               </p>
             </div>
           </div>
