@@ -1,48 +1,91 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Trash2, MapPin, TrendingDown } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const WasteProblemSection = () => {
+  const [visibleCards, setVisibleCards] = useState<number[]>([]);
+
+  useEffect(() => {
+    // Animation séquentielle des cartes
+    const timers = [
+      setTimeout(() => setVisibleCards(prev => [...prev, 0]), 500),
+      setTimeout(() => setVisibleCards(prev => [...prev, 1]), 1000),
+      setTimeout(() => setVisibleCards(prev => [...prev, 2]), 1500),
+    ];
+
+    return () => timers.forEach(timer => clearTimeout(timer));
+  }, []);
+
+  const stats = [
+    {
+      icon: Trash2,
+      number: "4 000 000",
+      label: "tonnes de déchets/an",
+      sublabel: "Côte d'Ivoire",
+      color: "text-accent"
+    },
+    {
+      icon: MapPin,
+      number: "2 000 000",
+      label: "tonnes",
+      sublabel: "Ville d'Abidjan",
+      color: "text-accent"
+    },
+    {
+      icon: TrendingDown,
+      number: "50%",
+      label: "finissent dans les rues",
+      sublabel: "Déchets non traités",
+      color: "text-red-500"
+    }
+  ];
+
   return (
     <div className="py-20 bg-background">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-            Les déchets urbains dégradent nos villes et quartiers
-          </h2>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            Chaque jour, des tonnes de déchets s'accumulent dans nos rues, sur nos plages et dans nos caniveaux, rendant notre cadre de vie insalubre.
-          </p>
-        </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header avec layout gauche/droite */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+          {/* Texte à gauche */}
+          <div className="text-left">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-6">
+              Les déchets urbains dégradent nos villes et quartiers
+            </h2>
+            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
+              Chaque jour, des tonnes de déchets s'accumulent dans nos rues, sur nos plages et dans nos caniveaux, rendant notre cadre de vie insalubre.
+            </p>
+          </div>
 
-        {/* Statistiques */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          <Card className="bg-card border-accent/20 hover:border-accent/40 transition-all duration-300 transform hover:scale-105">
-            <CardContent className="p-8 text-center">
-              <Trash2 className="w-16 h-16 mx-auto mb-4 text-accent" />
-              <div className="text-5xl font-bold mb-2 text-accent">4 000 000</div>
-              <div className="text-lg text-card-foreground font-medium">tonnes de déchets/an</div>
-              <div className="text-sm text-muted-foreground mt-2">Côte d'Ivoire</div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-card border-accent/20 hover:border-accent/40 transition-all duration-300 transform hover:scale-105">
-            <CardContent className="p-8 text-center">
-              <MapPin className="w-16 h-16 mx-auto mb-4 text-accent" />
-              <div className="text-5xl font-bold mb-2 text-accent">2 000 000</div>
-              <div className="text-lg text-card-foreground font-medium">tonnes</div>
-              <div className="text-sm text-muted-foreground mt-2">Ville d'Abidjan</div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-card border-accent/20 hover:border-accent/40 transition-all duration-300 transform hover:scale-105">
-            <CardContent className="p-8 text-center">
-              <TrendingDown className="w-16 h-16 mx-auto mb-4 text-red-500" />
-              <div className="text-5xl font-bold mb-2 text-red-500">50%</div>
-              <div className="text-lg text-card-foreground font-medium">finissent dans les rues</div>
-              <div className="text-sm text-muted-foreground mt-2">Déchets non traités</div>
-            </CardContent>
-          </Card>
+          {/* Graphiques à droite */}
+          <div className="space-y-4">
+            {stats.map((stat, index) => {
+              const Icon = stat.icon;
+              return (
+                <Card 
+                  key={index}
+                  className={`bg-primary border-primary/20 transition-all duration-700 transform ${
+                    visibleCards.includes(index) 
+                      ? 'translate-x-0 opacity-100' 
+                      : 'translate-x-8 opacity-0'
+                  }`}
+                >
+                  <CardContent className="p-6 flex items-center space-x-4">
+                    <Icon className={`w-12 h-12 ${stat.color}`} />
+                    <div className="flex-1">
+                      <div className={`text-3xl font-bold ${stat.color}`}>
+                        {stat.number}
+                      </div>
+                      <div className="text-white font-medium">
+                        {stat.label}
+                      </div>
+                      <div className="text-white/70 text-sm">
+                        {stat.sublabel}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
         </div>
 
         {/* Illustration avec pictogrammes */}
