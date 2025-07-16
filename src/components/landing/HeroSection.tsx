@@ -107,8 +107,8 @@ const HeroSection = () => {
               {renderText(firstLineText)}
               {firstLineText && <span className="animate-pulse ml-1 text-white">|</span>}
             </div>
-            <div className="font-bold tracking-wide">
-              {renderText(secondLineText)}
+            <div className="font-bold tracking-wide text-accent">
+              {secondLineText}
               {secondLineText && !firstLineText.includes(firstLine) && <span className="animate-pulse ml-1 text-white">|</span>}
             </div>
           </div>
