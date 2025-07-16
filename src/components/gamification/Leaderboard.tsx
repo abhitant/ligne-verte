@@ -5,10 +5,8 @@ import { Trophy, Medal, Award } from "lucide-react";
 interface LeaderboardUser {
   telegram_id: string;
   pseudo: string;
-  experience_points: number;
-  level_current: number;
+  points_himpact: number;
   reports_count: number;
-  cleanups_count: number;
   rank: number;
 }
 
@@ -52,7 +50,7 @@ const Leaderboard = ({ users, currentUserId, limit = 10 }: LeaderboardProps) => 
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Trophy className="w-6 h-6 text-yellow-500" />
-          Classement des Éco-Champions
+          Classement par Points Himpact
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
@@ -81,10 +79,6 @@ const Leaderboard = ({ users, currentUserId, limit = 10 }: LeaderboardProps) => 
                     </h4>
                     <div className="flex items-center gap-2 text-sm">
                       <span className={user.rank <= 3 ? 'text-white/90' : 'text-gray-600'}>
-                        Niveau {user.level_current}
-                      </span>
-                      <span className={user.rank <= 3 ? 'text-white/70' : 'text-gray-400'}>•</span>
-                      <span className={user.rank <= 3 ? 'text-white/90' : 'text-gray-600'}>
                         {user.reports_count} signalements
                       </span>
                     </div>
@@ -93,16 +87,8 @@ const Leaderboard = ({ users, currentUserId, limit = 10 }: LeaderboardProps) => 
 
                 <div className="text-right">
                   <div className={`text-lg font-bold ${user.rank <= 3 ? 'text-white' : 'text-green-600'}`}>
-                    {user.experience_points} XP
+                    {user.points_himpact} pts Himpact
                   </div>
-                  {user.cleanups_count > 0 && (
-                    <Badge 
-                      variant={user.rank <= 3 ? "secondary" : "outline"} 
-                      className="text-xs mt-1"
-                    >
-                      {user.cleanups_count} nettoyages
-                    </Badge>
-                  )}
                 </div>
               </div>
 

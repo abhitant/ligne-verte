@@ -25,12 +25,8 @@ interface UserAchievement {
 interface LeaderboardUser {
   telegram_id: string;
   pseudo: string;
-  experience_points: number;
-  level_current: number;
+  points_himpact: number;
   reports_count: number;
-  cleanups_count: number;
-  streak_days: number;
-  badges: string[];
   rank: number;
 }
 
@@ -81,15 +77,11 @@ export const useLeaderboard = (limit: number = 10) => {
         .select(`
           telegram_id,
           pseudo,
-          experience_points,
-          level_current,
-          reports_count,
-          cleanups_count,
-          streak_days,
-          badges
+          points_himpact,
+          reports_count
         `)
         .not('pseudo', 'is', null)
-        .order('experience_points', { ascending: false })
+        .order('points_himpact', { ascending: false })
         .limit(limit);
 
       if (error) throw error;
@@ -97,8 +89,7 @@ export const useLeaderboard = (limit: number = 10) => {
       // Add rank to each user
       return (data || []).map((user, index) => ({
         ...user,
-        rank: index + 1,
-        badges: Array.isArray(user.badges) ? user.badges as string[] : []
+        rank: index + 1
       }));
     },
   });
