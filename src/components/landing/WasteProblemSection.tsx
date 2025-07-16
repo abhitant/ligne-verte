@@ -84,21 +84,21 @@ const WasteProblemSection = () => {
           </div>
         </div>
 
-        {/* Illustration avec pictogrammes - alignement horizontal */}
-        <div className="flex flex-row justify-center items-center gap-8 md:gap-12 text-accent">
-          <div className="text-center">
-            <div className="text-6xl md:text-8xl mb-2">🗑️</div>
-            <div className="text-sm text-muted-foreground">Déchets</div>
+        {/* Illustration avec pictogrammes - une seule ligne horizontale */}
+        <div className="flex flex-row justify-center items-center gap-4 md:gap-8 text-accent">
+          <div className="text-center flex-shrink-0">
+            <div className="text-4xl md:text-6xl mb-1">🗑️</div>
+            <div className="text-xs md:text-sm text-muted-foreground">Déchets</div>
           </div>
-          <div className="text-3xl md:text-4xl text-accent">→</div>
-          <div className="text-center">
-            <div className="text-6xl md:text-8xl mb-2">🦟</div>
-            <div className="text-sm text-muted-foreground">Insalubrité</div>
+          <div className="text-2xl md:text-3xl text-accent flex-shrink-0">→</div>
+          <div className="text-center flex-shrink-0">
+            <div className="text-4xl md:text-6xl mb-1">🦟</div>
+            <div className="text-xs md:text-sm text-muted-foreground">Insalubrité</div>
           </div>
-          <div className="text-3xl md:text-4xl text-accent">→</div>
-          <div className="text-center">
-            <div className="text-6xl md:text-8xl mb-2">🏙️</div>
-            <div className="text-sm text-muted-foreground">Dégradation</div>
+          <div className="text-2xl md:text-3xl text-accent flex-shrink-0">→</div>
+          <div className="text-center flex-shrink-0">
+            <div className="text-4xl md:text-6xl mb-1">🏙️</div>
+            <div className="text-xs md:text-sm text-muted-foreground">Dégradation</div>
           </div>
         </div>
       </div>
