@@ -193,7 +193,7 @@ const Map = () => {
                         <Loader2 className="w-6 h-6 animate-spin text-green-600" />
                       </div>
                     ) : filteredReports.length === 0 ? (
-                      <div className="text-center py-8 text-gray-500">
+                      <div className="text-center py-8 text-muted-foreground">
                         <p>Aucun signalement trouvé</p>
                         <p className="text-sm mt-2">
                           {filter !== 'all' ? 'Essayez de changer le filtre.' : 'En attente des premiers signalements...'}
@@ -213,24 +213,24 @@ const Map = () => {
                       filteredReports.map((report) => (
                         <div 
                           key={report.id}
-                          className={`p-3 border rounded-lg cursor-pointer transition-all hover:shadow-md ${
-                            selectedReport?.id === report.id ? 'ring-2 ring-green-500 bg-green-50' : 'hover:bg-gray-50'
+                          className={`p-3 border rounded-lg cursor-pointer transition-all hover:shadow-md bg-card ${
+                            selectedReport?.id === report.id ? 'ring-2 ring-green-500 bg-green-50' : 'hover:bg-card/80'
                           }`}
                           onClick={() => setSelectedReport(report)}
                         >
                           <div className="flex items-start justify-between mb-2">
                             <div className="flex items-center gap-2">
                               <span className="text-lg">{getTypeIcon(report.type)}</span>
-                              <span className="font-medium text-sm">{report.user}</span>
+                              <span className="font-medium text-sm text-card-foreground">{report.user}</span>
                             </div>
                             <div className="flex items-center gap-2">
                               <div className={`w-3 h-3 rounded-full ${getStatusColor(report.status)}`}></div>
                             </div>
                           </div>
-                          <p className="text-sm text-gray-600 mb-2">{report.location}</p>
-                          <p className="text-xs text-gray-500 line-clamp-2">{report.description}</p>
+                          <p className="text-sm text-muted-foreground mb-2">{report.location}</p>
+                          <p className="text-xs text-muted-foreground line-clamp-2">{report.description}</p>
                           <div className="flex items-center justify-between mt-2">
-                            <span className="text-xs text-gray-400">
+                            <span className="text-xs text-muted-foreground">
                               {new Date(report.date).toLocaleDateString('fr-FR')}
                             </span>
                             <Button size="sm" variant="ghost" className="h-6 px-2">
