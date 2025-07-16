@@ -27,7 +27,7 @@ const SolutionSection = () => {
           <div className="space-y-8">
             {/* Header */}
             <div className="text-left">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 leading-tight">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-6 leading-tight">
                 Comment ça marche ?
               </h2>
             </div>
