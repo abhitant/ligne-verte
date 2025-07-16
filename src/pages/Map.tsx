@@ -79,24 +79,52 @@ const Map = () => {
   return (
     <div className="min-h-screen bg-background">
       <div className="h-screen">
-        {/* Carte plein écran pure - sans header */}
-        <div className="h-full w-full">
-          {isLoading ? (
-            <div className="flex items-center justify-center h-full bg-primary text-primary-foreground">
-              <div className="text-center">
-                <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-accent" />
-                <p className="text-primary-foreground font-bold">CHARGEMENT DE LA ZONE...</p>
+        {/* Card wrapper gaming style */}
+        <Card className="bg-primary text-primary-foreground border-2 border-accent/50 shadow-2xl h-full w-full rounded-none">
+          <CardHeader className="pb-2">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <CardTitle className="flex items-center gap-2 text-primary-foreground text-lg">
+                <MapPin className="w-5 h-5 text-accent animate-pulse" />
+                <span className="text-accent font-bold tracking-wider">URGENCE ENVIRONNEMENTALE SIGNALÉ</span>
+              </CardTitle>
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  size="sm"
+                  onClick={() => setFilter('pending')}
+                  className={`text-xs sm:text-sm bg-accent text-accent-foreground hover:bg-accent/80 border border-accent-foreground/30 font-bold tracking-wide ${filter === 'pending' ? 'ring-2 ring-accent-foreground shadow-lg' : ''}`}
+                >
+                  ATTENTE ({reports.filter(r => r.status === 'pending').length})
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => setFilter('validated')}
+                  className={`text-xs sm:text-sm bg-accent text-accent-foreground hover:bg-accent/80 border border-accent-foreground/30 font-bold tracking-wide ${filter === 'validated' ? 'ring-2 ring-accent-foreground shadow-lg' : ''}`}
+                >
+                  VALIDÉS ({reports.filter(r => r.status === 'validated').length})
+                </Button>
               </div>
             </div>
-          ) : (
-            <OpenStreetMap
-              reports={reports}
-              selectedReport={selectedReport}
-              onReportSelect={setSelectedReport}
-              filter={filter}
-            />
-          )}
-        </div>
+          </CardHeader>
+          <CardContent className="h-[calc(100%-80px)] p-0">
+            {isLoading ? (
+              <div className="flex items-center justify-center h-full">
+                <div className="text-center">
+                  <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-accent" />
+                  <p className="text-primary-foreground font-bold">CHARGEMENT DE LA ZONE...</p>
+                </div>
+              </div>
+            ) : (
+              <div className="h-full w-full">
+                <OpenStreetMap
+                  reports={reports}
+                  selectedReport={selectedReport}
+                  onReportSelect={setSelectedReport}
+                  filter={filter}
+                />
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
