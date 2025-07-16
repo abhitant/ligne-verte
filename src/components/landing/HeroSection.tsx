@@ -27,36 +27,40 @@ const HeroSection = () => {
   // Effet typewriter en continu
   useEffect(() => {
     let index = 0;
-    let isTyping = true;
+    let typingTimer: NodeJS.Timeout;
     let pauseTimer: NodeJS.Timeout;
+    let isMounted = true;
 
-    const typewriterLoop = () => {
-      const timer = setInterval(() => {
-        if (isTyping && index <= fullText.length) {
+    const startTyping = () => {
+      if (!isMounted) return;
+      
+      typingTimer = setInterval(() => {
+        if (!isMounted) return;
+        
+        if (index <= fullText.length) {
           setTypewriterText(fullText.slice(0, index));
           index++;
-          
-          if (index > fullText.length) {
-            clearInterval(timer);
-            // Pause de 3 secondes avant de recommencer
-            pauseTimer = setTimeout(() => {
+        } else {
+          clearInterval(typingTimer);
+          // Pause de 3 secondes avant de recommencer
+          pauseTimer = setTimeout(() => {
+            if (isMounted) {
               index = 0;
-              typewriterLoop();
-            }, 3000);
-          }
+              startTyping();
+            }
+          }, 3000);
         }
       }, 100);
-      
-      return timer;
     };
 
-    const initialTimer = typewriterLoop();
+    startTyping();
 
     return () => {
-      clearInterval(initialTimer);
+      isMounted = false;
+      clearInterval(typingTimer);
       clearTimeout(pauseTimer);
     };
-  }, []);
+  }, [fullText]);
 
   // Fonction pour formater le texte avec "zo" en vert
   const renderText = (text: string) => {
