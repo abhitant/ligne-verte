@@ -44,13 +44,13 @@ const WasteProblemSection = () => {
     <div className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header avec layout gauche/droite */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start mb-16">
           {/* Texte à gauche */}
-          <div className="text-left">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-6">
+          <div className="text-left space-y-6">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
               Les déchets urbains dégradent nos villes et quartiers
             </h2>
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
+            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl">
               Chaque jour, des tonnes de déchets s'accumulent dans nos rues, sur nos plages et dans nos caniveaux, rendant notre cadre de vie insalubre.
             </p>
           </div>
