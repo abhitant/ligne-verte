@@ -2,7 +2,7 @@ import { MessageSquare } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="bg-card py-12 border-t border-accent/20">
+    <footer className="bg-background py-12 border-t border-accent/20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center gap-8">
           {/* Copyright */}
