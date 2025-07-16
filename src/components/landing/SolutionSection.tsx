@@ -34,8 +34,7 @@ const SolutionSection = () => {
                   <Camera className="w-6 h-6 text-accent-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-foreground mb-1">✅ Prends une photo</h3>
-                  <p className="text-muted-foreground">de l'urgence environnementale.</p>
+                  <h3 className="text-lg font-bold text-foreground">✅ Prends une photo de l'urgence environnementale</h3>
                 </div>
               </div>
 
@@ -44,8 +43,7 @@ const SolutionSection = () => {
                   <MessageSquare className="w-6 h-6 text-accent-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-foreground mb-1">✅ Envoie-la via Telegram</h3>
-                  <p className="text-muted-foreground">plus sa localisation à notre Débora notre standardiste.</p>
+                  <h3 className="text-lg font-bold text-foreground">✅ Envoie-la à Débora notre standardiste</h3>
                 </div>
               </div>
 
@@ -54,8 +52,7 @@ const SolutionSection = () => {
                   <MapPin className="w-6 h-6 text-accent-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-foreground mb-1">✅ Ton action</h3>
-                  <p className="text-muted-foreground">apparaît sur notre carte publique.</p>
+                  <h3 className="text-lg font-bold text-foreground">✅ Ton action apparaît sur notre carte publique</h3>
                 </div>
               </div>
 
@@ -64,8 +61,7 @@ const SolutionSection = () => {
                   <Trophy className="w-6 h-6 text-accent-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-foreground mb-1">✅ Gagne des points</h3>
-                  <p className="text-muted-foreground">et grimpe dans le classement.</p>
+                  <h3 className="text-lg font-bold text-foreground">✅ Gagne des points et grimpe dans le classement</h3>
                 </div>
               </div>
             </div>
