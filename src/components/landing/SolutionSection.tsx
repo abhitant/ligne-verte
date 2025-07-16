@@ -8,7 +8,7 @@ const SolutionSection = () => {
     <div className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Titre et description */}
-        <div className="mb-8">
+        <div className="mb-4">
           <div className="text-left max-w-2xl">
             <h2 className="text-2xl md:text-3xl font-bold leading-none text-foreground mb-4">
               Notre solution contre les déchets urbain : <span className="text-accent">La ligne verte</span>
