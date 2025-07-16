@@ -48,7 +48,7 @@ const Leaderboard = ({ users, currentUserId, limit = 10 }: LeaderboardProps) => 
   const topUsers = users.slice(0, limit);
 
   return (
-    <Card className="bg-white shadow-lg">
+    <Card className="bg-card border-none shadow-none">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Trophy className="w-6 h-6 text-yellow-500" />

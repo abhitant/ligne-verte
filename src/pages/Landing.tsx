@@ -1,18 +1,18 @@
 
-import HeroCarousel from "@/components/landing/HeroCarousel";
-import ImpactOverview from "@/components/landing/ImpactOverview";
-import MapSection from "@/components/landing/MapSection";
-import JoinMovement from "@/components/landing/JoinMovement";
-import MarketplacePreview from "@/components/landing/MarketplacePreview";
+import HeroSection from "@/components/landing/HeroSection";
+import WasteProblemSection from "@/components/landing/WasteProblemSection";
+import SolutionSection from "@/components/landing/SolutionSection";
+import CommunitySection from "@/components/landing/CommunitySection";
+import Footer from "@/components/landing/Footer";
 
 const Landing = () => {
   return (
     <div className="min-h-screen">
-      <HeroCarousel />
-      <ImpactOverview />
-      <MapSection />
-      <JoinMovement />
-      <MarketplacePreview />
+      <HeroSection />
+      <WasteProblemSection />
+      <SolutionSection />
+      <CommunitySection />
+      <Footer />
     </div>
   );
 };

@@ -6,30 +6,30 @@
 
 @layer base {
   :root {
-    /* Couleurs inspirées de "La ligne verte" */
-    --background: 0 0% 98%;
-    --foreground: 120 15% 15%;
+    /* Couleurs La Ligne Verte - style urbain Gen Z */
+    --background: 141 40% 11%; /* #1B3925 - Vert foncé principal */
+    --foreground: 0 0% 98%;
 
     --card: 0 0% 100%;
-    --card-foreground: 120 15% 15%;
+    --card-foreground: 141 40% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 120 15% 15%;
+    --popover-foreground: 141 40% 11%;
 
-    /* Vert foncé principal inspiré de l'image */
-    --primary: 150 60% 25%;
+    /* Vert foncé principal #1B3925 */
+    --primary: 141 40% 11%;
     --primary-foreground: 0 0% 98%;
 
-    /* Vert lime pour les accents */
-    --secondary: 85 90% 85%;
-    --secondary-foreground: 120 15% 15%;
+    /* Vert clair accent #C3FF5D */
+    --secondary: 75 100% 68%;
+    --secondary-foreground: 141 40% 11%;
 
-    --muted: 120 15% 92%;
-    --muted-foreground: 120 8% 45%;
+    --muted: 141 20% 20%;
+    --muted-foreground: 0 0% 70%;
 
-    /* Vert lime vif pour les éléments accentués */
-    --accent: 85 85% 70%;
-    --accent-foreground: 120 15% 15%;
+    /* Vert clair vif #A3FF3F pour les éléments accentués */
+    --accent: 75 100% 62%;
+    --accent-foreground: 141 40% 11%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -52,27 +52,27 @@
   }
 
   .dark {
-    /* Mode sombre avec fond vert très foncé comme dans l'image */
-    --background: 150 70% 8%;
+    /* Mode sombre identique au clair pour cohérence */
+    --background: 141 40% 11%;
     --foreground: 0 0% 95%;
 
-    --card: 150 60% 12%;
-    --card-foreground: 0 0% 95%;
+    --card: 0 0% 100%;
+    --card-foreground: 141 40% 11%;
 
-    --popover: 150 60% 12%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 141 40% 11%;
 
-    --primary: 85 85% 70%;
-    --primary-foreground: 120 15% 15%;
+    --primary: 141 40% 11%;
+    --primary-foreground: 0 0% 95%;
 
-    --secondary: 150 45% 20%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 75 100% 68%;
+    --secondary-foreground: 141 40% 11%;
 
-    --muted: 150 40% 15%;
-    --muted-foreground: 120 15% 70%;
+    --muted: 141 20% 20%;
+    --muted-foreground: 0 0% 70%;
 
-    --accent: 85 85% 70%;
-    --accent-foreground: 120 15% 15%;
+    --accent: 75 100% 62%;
+    --accent-foreground: 141 40% 11%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 95%;
