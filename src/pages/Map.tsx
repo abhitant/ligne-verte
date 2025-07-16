@@ -96,12 +96,12 @@ const Map = () => {
         </div>
       </div>
 
-      <div className="max-w-full mx-auto p-2">
+      <div className="max-w-full mx-auto h-[calc(100vh-120px)]">
         {/* Layout Gaming - Carte plein écran avec HUD flottant */}
-        <div className="relative">
+        <div className="relative h-full">
           
           {/* Carte principale plein écran */}
-          <Card className="bg-primary text-primary-foreground border-2 border-accent/50 shadow-2xl h-[75vh] xl:h-[calc(100vh-140px)] w-full">
+          <Card className="bg-primary text-primary-foreground border-2 border-accent/50 shadow-2xl h-full w-full">
             <CardHeader className="pb-2">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <CardTitle className="flex items-center gap-2 text-primary-foreground text-lg">
