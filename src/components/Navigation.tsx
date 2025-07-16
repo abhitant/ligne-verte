@@ -11,6 +11,7 @@ const Navigation = () => {
   const navigation = [
     { name: 'Accueil', href: '/', icon: Home },
     { name: 'Carte', href: '/map', icon: MapPin },
+    { name: 'Actualité', href: '/actualite', icon: Users },
     { name: 'À propos', href: '/rejoindre', icon: Info },
   ];
 
@@ -36,7 +37,7 @@ const Navigation = () => {
           </div>
 
           {/* Desktop Navigation - Centered */}
-          <div className="hidden md:flex items-center justify-center flex-1 px-8">
+          <div className="hidden md:flex items-center justify-center flex-1 px-4">
             <div className="flex items-center space-x-1">
               {navigation.map((item) => {
                 const Icon = item.icon;
@@ -59,7 +60,7 @@ const Navigation = () => {
           </div>
 
           {/* Right side - Bot Telegram button */}
-          <div className="hidden md:flex items-center flex-shrink-0">
+          <div className="hidden md:flex items-center flex-shrink-0 ml-4">
             <Button className="bg-green-600 hover:bg-green-700">
               <a 
                 href="https://t.me/LigneVerteBot" 
