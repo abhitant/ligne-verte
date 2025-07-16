@@ -61,7 +61,7 @@ const Navigation = () => {
 
           {/* Right side - Bot Telegram button */}
           <div className="hidden md:flex items-center flex-shrink-0 ml-4">
-            <Button className="bg-green-600 hover:bg-green-700">
+            <Button variant="ghost" className="text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary/80">
               <a 
                 href="https://t.me/LigneVerteBot" 
                 target="_blank" 
@@ -109,7 +109,7 @@ const Navigation = () => {
                 );
               })}
               <div className="pt-4 pb-2">
-                <Button className="w-full bg-green-600 hover:bg-green-700 py-3 text-base font-medium">
+                <Button variant="ghost" className="w-full text-primary-foreground/80 hover:text-primary-foreground hover:bg-primary/80 py-3 text-base font-medium">
                   <a 
                     href="https://t.me/LigneVerteBot" 
                     target="_blank" 
