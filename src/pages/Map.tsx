@@ -77,8 +77,8 @@ const Map = () => {
   }
 
   return (
-    <div className="h-screen bg-background">
-      <div className="h-full">
+    <div className="h-screen bg-background overflow-hidden">
+      <div className="h-full flex flex-col">
         {/* Card wrapper gaming style */}
         <Card className="bg-primary text-primary-foreground border-2 border-accent/50 shadow-2xl h-full w-full rounded-none flex flex-col">
           <CardHeader className="pb-2">
@@ -105,7 +105,7 @@ const Map = () => {
               </div>
             </div>
           </CardHeader>
-          <CardContent className="h-[calc(100%-80px)] p-0 relative flex-1">
+          <CardContent className="flex-1 p-0 relative overflow-hidden">
             {isLoading ? (
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
