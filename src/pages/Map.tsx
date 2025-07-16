@@ -24,7 +24,7 @@ interface MapReport {
 const Map = () => {
   const [selectedReport, setSelectedReport] = useState<MapReport | null>(null);
   const [filter, setFilter] = useState<'all' | 'pending' | 'validated'>('all');
-  const [activeTab, setActiveTab] = useState<'reports' | 'leaderboard'>('leaderboard');
+  const [activeTab, setActiveTab] = useState<'reports' | 'leaderboard' | null>('leaderboard');
   
   const { data: reports = [], isLoading, error } = useReports();
   const { data: leaderboard = [] } = useLeaderboard(10);
@@ -164,7 +164,7 @@ const Map = () => {
                 <div className="flex flex-col gap-2">
                   <Button
                     size="sm"
-                    onClick={() => setActiveTab('reports')}
+                    onClick={() => setActiveTab(activeTab === 'reports' ? null : 'reports')}
                     className="flex items-center gap-2 w-full justify-start bg-accent text-accent-foreground hover:bg-accent/80"
                   >
                     <Filter className="w-4 h-4" />
@@ -172,7 +172,7 @@ const Map = () => {
                   </Button>
                   <Button
                     size="sm"
-                    onClick={() => setActiveTab('leaderboard')}
+                    onClick={() => setActiveTab(activeTab === 'leaderboard' ? null : 'leaderboard')}
                     className="flex items-center gap-2 w-full justify-start bg-accent text-accent-foreground hover:bg-accent/80"
                   >
                     <Trophy className="w-4 h-4" />
@@ -182,7 +182,11 @@ const Map = () => {
               </CardHeader>
               
               <CardContent className="max-h-[calc(100vh-350px)] overflow-y-auto text-primary-foreground">
-                {activeTab === 'reports' ? (
+                {activeTab === null ? (
+                  <div className="text-center py-8 text-gray-500">
+                    <p>Sélectionnez une section ci-dessus</p>
+                  </div>
+                ) : activeTab === 'reports' ? (
                   <div className="space-y-3">
                     {isLoading ? (
                       <div className="flex items-center justify-center py-8">
