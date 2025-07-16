@@ -22,18 +22,19 @@ const CommunitySection = () => {
           </p>
         </div>
 
-        {/* Éléments visuels */}
+        {/* Éléments visuels - Style Gaming */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-          {/* Carte */}
-          <Card className="bg-card border-accent/20">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-card-foreground">
-                <MapPin className="w-6 h-6 text-accent" />
-                🗺️ Carte Ligne Verte
+          {/* Carte - Style Gaming */}
+          <Card className="bg-primary text-primary-foreground border-2 border-accent/50 shadow-2xl relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-transparent"></div>
+            <CardHeader className="relative z-10 pb-2">
+              <CardTitle className="flex items-center gap-2 text-accent font-bold text-lg tracking-wider">
+                <MapPin className="w-5 h-5 text-accent animate-pulse" />
+                🗺️ ZONE D'OPÉRATION
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-0">
-              <div className="h-96 rounded-b-lg overflow-hidden">
+            <CardContent className="p-0 relative z-10">
+              <div className="h-96 rounded-b-lg overflow-hidden border-t-2 border-accent/30">
                 <OpenStreetMap 
                   reports={[]}
                   selectedReport={null}
@@ -44,28 +45,58 @@ const CommunitySection = () => {
             </CardContent>
           </Card>
 
-          {/* Leaderboard */}
-          <Card className="bg-card border-accent/20">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-card-foreground">
-                <Trophy className="w-6 h-6 text-accent" />
-                🏆 Top Contributeurs
+          {/* Leaderboard - Style Gaming */}
+          <Card className="bg-primary text-primary-foreground border-2 border-accent/50 shadow-2xl relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-transparent"></div>
+            <CardHeader className="relative z-10 pb-2">
+              <CardTitle className="flex items-center gap-2 text-accent font-bold text-lg tracking-wider">
+                <Trophy className="w-5 h-5 text-accent animate-pulse" />
+                🏆 HALL OF FAME
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-0">
-              <div className="h-96 overflow-y-auto">
-                <Leaderboard users={users} limit={10} />
+            <CardContent className="p-4 relative z-10 border-t-2 border-accent/30">
+              <div className="h-80 overflow-y-auto">
+                <div className="space-y-3">
+                  {users.slice(0, 10).map((user, index) => (
+                    <div 
+                      key={user.telegram_id} 
+                      className="flex items-center gap-3 p-3 rounded-lg bg-accent/20 border border-accent/40 hover:bg-accent/30 transition-all"
+                    >
+                      <div className="flex items-center justify-center w-8 h-8 rounded-full bg-accent text-accent-foreground font-bold text-sm border-2 border-accent-foreground">
+                        {index + 1}
+                      </div>
+                      {index < 3 && (
+                        <span className="text-lg">
+                          {index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}
+                        </span>
+                      )}
+                      <div className="flex-1">
+                        <p className="font-bold text-primary-foreground text-sm tracking-wide">{user.pseudo}</p>
+                        <p className="text-xs text-accent font-bold">{user.points_himpact} PTS</p>
+                      </div>
+                    </div>
+                  ))}
+                  {users.length === 0 && (
+                    <div className="text-center py-8 text-primary-foreground/80">
+                      <div className="w-12 h-12 mx-auto mb-2 bg-accent/20 rounded-full flex items-center justify-center border-2 border-accent/40">
+                        <Trophy className="w-6 h-6 text-accent" />
+                      </div>
+                      <p className="font-bold text-sm tracking-wider">AUCUN HÉROS</p>
+                      <p className="text-xs text-accent">En attente de recrues...</p>
+                    </div>
+                  )}
+                </div>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* CTA */}
+        {/* CTA - Style Gaming */}
         <div className="text-center">
           <Link to="/map">
-            <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground px-12 py-6 text-xl font-bold rounded-xl shadow-xl transform hover:scale-105 transition-all">
+            <Button className="bg-accent hover:bg-accent/80 text-accent-foreground px-12 py-6 text-xl font-bold rounded-xl shadow-xl transform hover:scale-105 transition-all border-2 border-accent-foreground/20 tracking-wider">
               <MapPin className="w-6 h-6 mr-3" />
-              Voir la carte
+              ⚡ ACCÉDER À LA ZONE ⚡
             </Button>
           </Link>
         </div>
