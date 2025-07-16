@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Filter, Eye, Loader2, Trophy, Award, Users } from "lucide-react";
+import { MapPin, Filter, Eye, Loader2, Trophy, Award, Users, X } from "lucide-react";
 import OpenStreetMap from "@/components/OpenStreetMap";
 import { useReports } from "@/hooks/useReports";
 import Leaderboard from "@/components/gamification/Leaderboard";
@@ -100,9 +100,9 @@ const Map = () => {
       </div>
 
       <div className="max-w-full mx-auto p-2">
-        <div className="grid grid-cols-1 xl:grid-cols-4 gap-4">
-          {/* Carte Interactive - Prend maintenant beaucoup plus de place */}
-          <div className="xl:col-span-3">
+        <div className={`grid gap-4 ${activeTab === null ? 'grid-cols-1' : 'grid-cols-1 xl:grid-cols-4'}`}>
+          {/* Carte Interactive - Prend maintenant toute la place quand aucun onglet n'est sélectionné */}
+          <div className={activeTab === null ? 'col-span-1' : 'xl:col-span-3'}>
             <Card className="bg-primary/90 shadow-xl h-[calc(100vh-200px)] min-h-[700px] border-2 border-primary relative overflow-hidden"
                   style={{
                     background: 'linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary)) 100%)'
@@ -153,14 +153,48 @@ const Map = () => {
                   />
                 )}
               </CardContent>
+              
+              {/* Boutons flottants pour accéder aux fonctionnalités */}
+              {activeTab === null && (
+                <div className="absolute bottom-4 right-4 flex flex-col gap-2">
+                  <Button
+                    onClick={() => setActiveTab('reports')}
+                    className="bg-accent text-accent-foreground hover:bg-accent/80 shadow-lg"
+                    size="sm"
+                  >
+                    <Filter className="w-4 h-4 mr-2" />
+                    Signalements ({filteredReports.length})
+                  </Button>
+                  <Button
+                    onClick={() => setActiveTab('leaderboard')}
+                    className="bg-accent text-accent-foreground hover:bg-accent/80 shadow-lg"
+                    size="sm"
+                  >
+                    <Trophy className="w-4 h-4 mr-2" />
+                    🏆 Classement
+                  </Button>
+                </div>
+              )}
             </Card>
           </div>
 
-          {/* Sidebar Compact Gamifié */}
-          <div className="space-y-4">
+          {/* Sidebar Compact Gamifié - Ne s'affiche que si un onglet est actif */}
+          {activeTab !== null && (
+            <div className="space-y-4">
             {/* Navigation Tabs */}
             <Card className="bg-primary/80 shadow-xl border-2 border-primary">
               <CardHeader className="pb-2">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-primary-foreground font-semibold">Options</h3>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => setActiveTab(null)}
+                    className="text-primary-foreground hover:bg-primary/20"
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
                 <div className="flex flex-col gap-2">
                   <Button
                     size="sm"
@@ -253,6 +287,7 @@ const Map = () => {
               </CardContent>
             </Card>
           </div>
+          )}
         </div>
       </div>
     </div>
