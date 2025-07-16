@@ -92,14 +92,14 @@ export const useReports = () => {
       const uniqueTelegramIds = [...new Set(reports.map(r => r.user_telegram_id))];
       console.log('Unique telegram IDs in reports:', uniqueTelegramIds);
 
-      // Récupérer les informations utilisateur via la vue sécurisée
+      // Récupérer les informations utilisateur directement de la table users (qui a des politiques RLS)
       const { data: users, error: usersError } = await supabase
-        .from('user_display_info')
+        .from('users')
         .select('telegram_id, pseudo, points_himpact, created_at')
         .in('telegram_id', uniqueTelegramIds);
 
       console.log('Users query with telegram_ids:', uniqueTelegramIds);
-      console.log('Users fetched from secure view:', users);
+      console.log('Users fetched from users table:', users);
       console.log('Users fetch error:', usersError);
 
       if (usersError) {
@@ -111,13 +111,13 @@ export const useReports = () => {
       const usersMap = new Map();
       users?.forEach(user => {
         usersMap.set(user.telegram_id, user);
-        console.log(`User ${user.telegram_id} mapped (secure view):`, {
+        console.log(`User ${user.telegram_id} mapped (users table):`, {
           pseudo: user.pseudo,
           points: user.points_himpact
         });
       });
 
-      console.log('Final users map (secure):', usersMap);
+      console.log('Final users map (users table):', usersMap);
 
       const mappedReports = reports.map((report): MapReport => {
         const user = usersMap.get(report.user_telegram_id);
