@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Filter, Eye, Loader2, Trophy, Award, Users, X } from "lucide-react";
+import { MapPin, Filter, Eye, Loader2, Trophy, Award, Users, X, ChevronDown, ChevronUp } from "lucide-react";
 import OpenStreetMap from "@/components/OpenStreetMap";
 import { useReports } from "@/hooks/useReports";
 import Leaderboard from "@/components/gamification/Leaderboard";
@@ -24,6 +24,7 @@ const Map = () => {
   const [selectedReport, setSelectedReport] = useState<MapReport | null>(null);
   const [filter, setFilter] = useState<'all' | 'pending' | 'validated'>('all');
   const [activeTab, setActiveTab] = useState<'reports' | 'leaderboard' | null>('leaderboard');
+  const [isHUDOpen, setIsHUDOpen] = useState(true);
   
   const { data: reports = [], isLoading, error } = useReports();
   const { data: leaderboard = [] } = useLeaderboard(10);
@@ -126,74 +127,100 @@ const Map = () => {
                 <div className="absolute top-2 right-2 lg:top-4 lg:right-4 space-y-3 w-60 lg:w-72 pointer-events-auto z-[1000]">
                   
                   {/* Statistiques compactes HUD */}
-                  <div className="bg-primary/80 backdrop-blur-sm border-2 border-accent/60 rounded-lg shadow-2xl p-3 relative overflow-hidden">
+                  <div className="bg-primary/80 backdrop-blur-sm border-2 border-accent/60 rounded-lg shadow-2xl relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-transparent rounded-lg"></div>
-                    <div className="relative z-10 space-y-3">
-                      
-                      {/* Top 3 Compact */}
-                      <div>
-                        <div className="flex items-center gap-2 mb-2">
+                    
+                    {/* Header avec bouton toggle */}
+                    <div className="relative z-10 p-3 border-b border-accent/30">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
                           <Trophy className="w-4 h-4 text-accent" />
-                          <h3 className="text-accent font-bold text-sm tracking-wider">TOP 3</h3>
+                          <h3 className="text-accent font-bold text-sm tracking-wider">HUD</h3>
                         </div>
-                        <div className="space-y-1">
-                          {leaderboard.slice(0, 3).map((user, index) => (
-                            <div key={user.telegram_id} className="flex items-center gap-2 text-xs">
-                              <span className="text-sm">{index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}</span>
-                              <span className="text-primary-foreground font-medium flex-1 truncate">{user.pseudo}</span>
-                              <span className="text-accent font-bold">{user.points_himpact}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="border-t border-accent/30 pt-3">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Filter className="w-4 h-4 text-accent" />
-                          <h3 className="text-accent font-bold text-sm tracking-wider">RÉCENTS</h3>
-                        </div>
-                        {filteredReports.length === 0 ? (
-                          <div className="text-center py-2">
-                            <p className="text-xs text-primary-foreground/80">Zone calme</p>
-                          </div>
-                        ) : (
-                          <div className="space-y-1">
-                            {filteredReports.slice(0, 2).map((report) => (
-                              <div 
-                                key={report.id}
-                                className={`p-2 rounded cursor-pointer text-xs transition-all bg-accent/10 hover:bg-accent/20 ${
-                                  selectedReport?.id === report.id ? 'ring-1 ring-accent' : ''
-                                }`}
-                                onClick={() => setSelectedReport(report)}
-                              >
-                                <div className="flex items-center gap-2">
-                                  <span>{getTypeIcon(report.type)}</span>
-                                  <span className="text-primary-foreground font-medium flex-1 truncate">{report.user}</span>
-                                  <div className={`w-2 h-2 rounded-full ${getStatusColor(report.status)}`}></div>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="flex gap-2">
-                        <Button 
-                          size="sm" 
-                          className="flex-1 bg-accent/80 text-accent-foreground hover:bg-accent text-xs py-1 h-7"
-                          onClick={() => window.location.href = '/classement'}
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="h-6 w-6 p-0 hover:bg-accent/20"
+                          onClick={() => setIsHUDOpen(!isHUDOpen)}
                         >
-                          Classement
-                        </Button>
-                        <Button 
-                          size="sm" 
-                          className="flex-1 bg-accent/80 text-accent-foreground hover:bg-accent text-xs py-1 h-7"
-                          onClick={() => window.location.href = '/signalements'}
-                        >
-                          Signalements
+                          {isHUDOpen ? (
+                            <ChevronUp className="w-4 h-4 text-accent" />
+                          ) : (
+                            <ChevronDown className="w-4 h-4 text-accent" />
+                          )}
                         </Button>
                       </div>
                     </div>
+
+                    {/* Contenu pliable */}
+                    {isHUDOpen && (
+                      <div className="relative z-10 p-3 space-y-3">
+                        
+                        {/* Top 3 Compact */}
+                        <div>
+                          <div className="flex items-center gap-2 mb-2">
+                            <Trophy className="w-4 h-4 text-accent" />
+                            <h3 className="text-accent font-bold text-sm tracking-wider">TOP 3</h3>
+                          </div>
+                          <div className="space-y-1">
+                            {leaderboard.slice(0, 3).map((user, index) => (
+                              <div key={user.telegram_id} className="flex items-center gap-2 text-xs">
+                                <span className="text-sm">{index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}</span>
+                                <span className="text-primary-foreground font-medium flex-1 truncate">{user.pseudo}</span>
+                                <span className="text-accent font-bold">{user.points_himpact}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="border-t border-accent/30 pt-3">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Filter className="w-4 h-4 text-accent" />
+                            <h3 className="text-accent font-bold text-sm tracking-wider">RÉCENTS</h3>
+                          </div>
+                          {filteredReports.length === 0 ? (
+                            <div className="text-center py-2">
+                              <p className="text-xs text-primary-foreground/80">Zone calme</p>
+                            </div>
+                          ) : (
+                            <div className="space-y-1">
+                              {filteredReports.slice(0, 2).map((report) => (
+                                <div 
+                                  key={report.id}
+                                  className={`p-2 rounded cursor-pointer text-xs transition-all bg-accent/10 hover:bg-accent/20 ${
+                                    selectedReport?.id === report.id ? 'ring-1 ring-accent' : ''
+                                  }`}
+                                  onClick={() => setSelectedReport(report)}
+                                >
+                                  <div className="flex items-center gap-2">
+                                    <span>{getTypeIcon(report.type)}</span>
+                                    <span className="text-primary-foreground font-medium flex-1 truncate">{report.user}</span>
+                                    <div className={`w-2 h-2 rounded-full ${getStatusColor(report.status)}`}></div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="flex gap-2">
+                          <Button 
+                            size="sm" 
+                            className="flex-1 bg-accent/80 text-accent-foreground hover:bg-accent text-xs py-1 h-7"
+                            onClick={() => window.location.href = '/classement'}
+                          >
+                            Classement
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            className="flex-1 bg-accent/80 text-accent-foreground hover:bg-accent text-xs py-1 h-7"
+                            onClick={() => window.location.href = '/signalements'}
+                          >
+                            Signalements
+                          </Button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
