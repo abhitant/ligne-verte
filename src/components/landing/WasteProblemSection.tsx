@@ -85,19 +85,12 @@ const WasteProblemSection = () => {
           </div>
         </div>
 
-        {/* Section texte et logo */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
-          <div className="text-foreground flex items-center justify-center md:justify-end">
+        {/* Section texte */}
+        <div className="flex justify-center items-center">
+          <div className="text-foreground flex items-center justify-center">
             <p className="text-3xl md:text-4xl font-bold leading-relaxed text-center">
-              Notre solution la <span className="text-accent">ligne verte</span>.
+              Notre solution contre les déchets urbain ; <span className="text-accent">La ligne verte</span>
             </p>
-          </div>
-          <div className="flex justify-center md:justify-start items-center">
-            <img 
-              src={ligneVerteLogo} 
-              alt="Logo de la ligne verte"
-              className="w-48 h-48 md:w-56 md:h-56 object-contain filter drop-shadow-lg"
-            />
           </div>
         </div>
 
