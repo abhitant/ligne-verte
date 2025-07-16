@@ -80,7 +80,7 @@ const Map = () => {
     <div className="h-screen bg-background">
       <div className="h-full">
         {/* Card wrapper gaming style */}
-        <Card className="bg-primary text-primary-foreground border-2 border-accent/50 shadow-2xl h-full w-full rounded-none">
+        <Card className="bg-primary text-primary-foreground border-2 border-accent/50 shadow-2xl h-full w-full rounded-none flex flex-col">
           <CardHeader className="pb-2">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <CardTitle className="flex items-center gap-2 text-primary-foreground text-lg">
@@ -105,7 +105,7 @@ const Map = () => {
               </div>
             </div>
           </CardHeader>
-          <CardContent className="h-[calc(100%-80px)] p-0 relative">
+          <CardContent className="h-[calc(100%-80px)] p-0 relative flex-1">
             {isLoading ? (
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
