@@ -39,7 +39,7 @@ const SolutionSection = () => {
                   <Camera className="w-6 h-6 text-accent-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-foreground">✅ Prend une photo et localise les urgences environemental</h3>
+                  <h3 className="text-lg text-foreground">✅ Prend une photo et localise les urgences environemental</h3>
                 </div>
               </div>
 
@@ -48,7 +48,7 @@ const SolutionSection = () => {
                   <MessageSquare className="w-6 h-6 text-accent-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-foreground">✅ Envoie-la à Débora notre standardiste</h3>
+                  <h3 className="text-lg text-foreground">✅ Envoie-la à Débora notre standardiste</h3>
                 </div>
               </div>
 
@@ -57,7 +57,7 @@ const SolutionSection = () => {
                   <MapPin className="w-6 h-6 text-accent-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-foreground">✅ Ton action apparaît sur notre carte publique</h3>
+                  <h3 className="text-lg text-foreground">✅ Ton action apparaît sur notre carte publique</h3>
                 </div>
               </div>
 
@@ -66,7 +66,7 @@ const SolutionSection = () => {
                   <Trophy className="w-6 h-6 text-accent-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-foreground">✅ Gagne des points et grimpe dans le classement</h3>
+                  <h3 className="text-lg text-foreground">✅ Gagne des points et grimpe dans le classement</h3>
                 </div>
               </div>
             </div>
