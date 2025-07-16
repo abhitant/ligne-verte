@@ -204,86 +204,122 @@ const Map = () => {
             {/* Signalements Récents */}
             <Card className="bg-primary text-primary-foreground border-0 shadow-lg">
               <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-primary-foreground">
-                  <Filter className="w-5 h-5 text-accent" />
-                  Signalements
-                  <Badge variant="secondary" className="ml-2 bg-accent text-accent-foreground">
-                    {filteredReports.length}
-                  </Badge>
-                </CardTitle>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="flex items-center gap-2 text-primary-foreground">
+                    {activeTab === 'leaderboard' ? (
+                      <>
+                        <Trophy className="w-5 h-5 text-accent" />
+                        🏆 Classement Complet
+                      </>
+                    ) : (
+                      <>
+                        <Filter className="w-5 h-5 text-accent" />
+                        Signalements
+                        <Badge variant="secondary" className="ml-2 bg-accent text-accent-foreground">
+                          {filteredReports.length}
+                        </Badge>
+                      </>
+                    )}
+                  </CardTitle>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => setActiveTab(activeTab === 'leaderboard' ? 'reports' : 'leaderboard')}
+                    className="text-primary-foreground hover:bg-primary/20"
+                  >
+                    {activeTab === 'leaderboard' ? 'Voir Signalements' : 'Voir Classement'}
+                  </Button>
+                </div>
                 <CardDescription className="text-primary-foreground/80">
-                  Explorez les signalements de la communauté
+                  {activeTab === 'leaderboard' 
+                    ? 'Classement complet de tous les utilisateurs' 
+                    : 'Explorez les signalements de la communauté'
+                  }
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3 max-h-[400px] overflow-y-auto">
-                {isLoading ? (
-                  <div className="flex items-center justify-center py-8">
-                    <Loader2 className="w-6 h-6 animate-spin text-primary" />
-                  </div>
-                ) : filteredReports.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">
-                    <div className="w-16 h-16 mx-auto mb-4 bg-accent rounded-full flex items-center justify-center">
-                      <MapPin className="w-8 h-8 text-muted-foreground" />
-                    </div>
-                    <p className="font-medium">Aucun signalement trouvé</p>
-                    <p className="text-sm mt-2">
-                      {filter !== 'all' ? 'Essayez de changer le filtre.' : 'En attente des premiers signalements...'}
-                    </p>
-                    {reports.length > 0 && filter !== 'all' && (
-                      <Button 
-                        variant="outline" 
-                        size="sm" 
-                        className="mt-4"
-                        onClick={() => setFilter('all')}
-                      >
-                        Voir tous les signalements
-                      </Button>
-                    )}
+                {activeTab === 'leaderboard' ? (
+                  // Affichage du classement complet
+                  <div className="space-y-3">
+                    <Leaderboard 
+                      users={leaderboard} 
+                      currentUserId={undefined}
+                      limit={50}
+                    />
                   </div>
                 ) : (
-                  filteredReports.map((report) => (
-                    <div 
-                      key={report.id}
-                      className={`p-4 rounded-lg cursor-pointer transition-all hover:shadow-md animate-fade-in bg-accent text-accent-foreground hover:bg-accent/80 ${
-                        selectedReport?.id === report.id 
-                          ? 'ring-2 ring-accent-foreground' 
-                          : ''
-                      }`}
-                      onClick={() => setSelectedReport(report)}
-                    >
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          <span className="text-2xl">{getTypeIcon(report.type)}</span>
-                          <div>
-                            <p className="font-semibold text-accent-foreground">{report.user}</p>
-                            <p className="text-sm text-accent-foreground/80">{report.location}</p>
+                  // Affichage des signalements
+                  <>
+                    {isLoading ? (
+                      <div className="flex items-center justify-center py-8">
+                        <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                      </div>
+                    ) : filteredReports.length === 0 ? (
+                      <div className="text-center py-8 text-primary-foreground/80">
+                        <div className="w-16 h-16 mx-auto mb-4 bg-accent rounded-full flex items-center justify-center">
+                          <MapPin className="w-8 h-8 text-accent-foreground" />
+                        </div>
+                        <p className="font-medium">Aucun signalement trouvé</p>
+                        <p className="text-sm mt-2">
+                          {filter !== 'all' ? 'Essayez de changer le filtre.' : 'En attente des premiers signalements...'}
+                        </p>
+                        {reports.length > 0 && filter !== 'all' && (
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="mt-4 bg-accent text-accent-foreground hover:bg-accent/80"
+                            onClick={() => setFilter('all')}
+                          >
+                            Voir tous les signalements
+                          </Button>
+                        )}
+                      </div>
+                    ) : (
+                      filteredReports.map((report) => (
+                        <div 
+                          key={report.id}
+                          className={`p-4 rounded-lg cursor-pointer transition-all hover:shadow-md animate-fade-in bg-accent text-accent-foreground hover:bg-accent/80 ${
+                            selectedReport?.id === report.id 
+                              ? 'ring-2 ring-accent-foreground' 
+                              : ''
+                          }`}
+                          onClick={() => setSelectedReport(report)}
+                        >
+                          <div className="flex items-start justify-between mb-3">
+                            <div className="flex items-center gap-3">
+                              <span className="text-2xl">{getTypeIcon(report.type)}</span>
+                              <div>
+                                <p className="font-semibold text-accent-foreground">{report.user}</p>
+                                <p className="text-sm text-accent-foreground/80">{report.location}</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <div className={`w-3 h-3 rounded-full ${getStatusColor(report.status)}`}></div>
+                              <Badge variant="secondary" className="text-xs bg-accent-foreground text-accent">
+                                {report.status === 'validated' ? 'Validé' : 
+                                 report.status === 'rejected' ? 'Rejeté' : 'En attente'}
+                              </Badge>
+                            </div>
+                          </div>
+                          <p className="text-sm text-accent-foreground/80 mb-3 line-clamp-2">{report.description}</p>
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs text-accent-foreground/80">
+                              {new Date(report.date).toLocaleDateString('fr-FR', { 
+                                day: '2-digit', 
+                                month: 'short',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })}
+                            </span>
+                            <Button size="sm" variant="ghost" className="h-8 px-3 hover-scale bg-accent text-accent-foreground hover:bg-accent/80">
+                              <Eye className="w-4 h-4 mr-1" />
+                              Voir
+                            </Button>
                           </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <div className={`w-3 h-3 rounded-full ${getStatusColor(report.status)}`}></div>
-                          <Badge variant="secondary" className="text-xs bg-accent-foreground text-accent">
-                            {report.status === 'validated' ? 'Validé' : 
-                             report.status === 'rejected' ? 'Rejeté' : 'En attente'}
-                          </Badge>
-                        </div>
-                      </div>
-                      <p className="text-sm text-accent-foreground/80 mb-3 line-clamp-2">{report.description}</p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs text-accent-foreground/80">
-                          {new Date(report.date).toLocaleDateString('fr-FR', { 
-                            day: '2-digit', 
-                            month: 'short',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
-                        </span>
-                        <Button size="sm" variant="ghost" className="h-8 px-3 hover-scale bg-accent text-accent-foreground hover:bg-accent/80">
-                          <Eye className="w-4 h-4 mr-1" />
-                          Voir
-                        </Button>
-                      </div>
-                    </div>
-                  ))
+                      ))
+                    )}
+                  </>
                 )}
               </CardContent>
             </Card>
