@@ -47,7 +47,7 @@ const WasteProblemSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
           {/* Texte à gauche */}
           <div className="text-left">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-tight">
               Les déchets urbains dégradent nos villes et quartiers
             </h2>
           </div>
