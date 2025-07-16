@@ -168,13 +168,13 @@ const Map = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3 max-h-[300px] overflow-y-auto">
-                {leaderboard.slice(0, 10).map((user, index) => (
+                {leaderboard.slice(0, 3).map((user, index) => (
                   <div 
                     key={user.telegram_id} 
                     className="flex items-center gap-3 p-3 rounded-lg transition-all hover:shadow-md bg-accent text-accent-foreground hover:bg-accent/80"
                   >
                     <div className="flex items-center justify-center w-8 h-8 rounded-full bg-accent-foreground text-accent font-bold text-sm">
-                      {index < 3 ? (index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉') : index + 1}
+                      {index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}
                     </div>
                     <div className="flex-1">
                       <p className="font-semibold text-accent-foreground">{user.pseudo}</p>
@@ -186,6 +186,18 @@ const Map = () => {
                     </div>
                   </div>
                 ))}
+                
+                {/* Bouton Voir Plus */}
+                <div className="pt-3 border-t border-primary-foreground/20">
+                  <Button 
+                    size="sm" 
+                    variant="ghost" 
+                    className="w-full bg-accent text-accent-foreground hover:bg-accent/80"
+                    onClick={() => setActiveTab('leaderboard')}
+                  >
+                    Voir le classement complet ({leaderboard.length})
+                  </Button>
+                </div>
               </CardContent>
             </Card>
 
