@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -43,6 +43,15 @@ const Map = () => {
   );
 
   console.log('Map component - Filtered reports:', filteredReports);
+
+  // Debug pour l'overlay quand un signalement est sélectionné
+  useEffect(() => {
+    if (selectedReport) {
+      console.log('Selected report data:', selectedReport);
+      console.log('Selected report photo_url:', selectedReport.photo_url);
+      console.log('Photo URL exists:', !!selectedReport.photo_url);
+    }
+  }, [selectedReport]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -325,13 +334,19 @@ const Map = () => {
                         {/* Contenu */}
                         <div className="p-6 overflow-y-auto max-h-[60vh] space-y-4">
                           {/* Photo si disponible */}
-                          {selectedReport.photo_url && (
+                          {selectedReport.photo_url ? (
                             <div className="w-full">
                               <img 
                                 src={selectedReport.photo_url} 
                                 alt="Signalement" 
                                 className="w-full h-48 object-cover rounded-lg border border-accent/30"
+                                onLoad={() => console.log('Image loaded successfully:', selectedReport.photo_url)}
+                                onError={(e) => console.log('Image failed to load:', selectedReport.photo_url, e)}
                               />
+                            </div>
+                          ) : (
+                            <div className="w-full h-48 bg-accent/10 rounded-lg border border-accent/30 flex items-center justify-center">
+                              <p className="text-accent text-sm">Aucune photo disponible</p>
                             </div>
                           )}
                           
