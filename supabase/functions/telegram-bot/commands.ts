@@ -33,24 +33,13 @@ Bonjour <b>${existingUser.pseudo}</b> ! Vous avez <b>${existingUser.points_himpa
 2. 📍 Partagez votre localisation
 3. ✅ C'est tout !
 
-<b>⚡ Commandes :</b>
-/points - Voir vos points
-/carte - Lien vers la carte
-/aide - Aide complète
-/changenom - Changer votre nom
-/compte - Créer un compte web
-
-<b>💻 Accès web disponible !</b>
-Vous pouvez maintenant créer un compte pour accéder à la plateforme web avec votre identité Telegram.`
+Gagnez des points pour chaque signalement et contribuez à améliorer notre environnement urbain !`
 
         const keyboard = {
           inline_keyboard: [
             [
               { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' },
-              { text: '🏆 Classement', callback_data: 'show_leaderboard' }
-            ],
-            [
-              { text: '💻 Créer compte web', callback_data: 'create_web_account' }
+              { text: '📊 Mes points', callback_data: 'show_points' }
             ]
           ]
         }
@@ -425,16 +414,20 @@ Découvrez tous les signalements de la communauté sur notre carte interactive !
 1. 📸 Envoyez une photo
 2. 📍 Partagez votre localisation
 
-<b>⚡ Commandes :</b>
+<b>⚡ Commandes disponibles :</b>
 /start - S'inscrire
 /points - Voir vos points et classement
 /carte - Lien vers la carte interactive
 /aide - Cette aide
 /changenom - Changer votre nom
+/compte - Créer un compte web
 
 <b>🎯 Récompenses :</b>
 • Signalement : +10 points
 • Validation : +50 points bonus
+
+<b>💻 Accès web :</b>
+Créez un compte pour accéder à la plateforme web avec votre identité Telegram.
 
 <b>🗺️ N'oubliez pas de consulter la carte pour voir l'impact de la communauté !</b>`
 
