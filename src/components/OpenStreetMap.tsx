@@ -22,6 +22,7 @@ interface MapReport {
   status: 'pending' | 'validated' | 'rejected';
   date: string;
   type: 'waste' | 'drain' | 'other';
+  photo_url?: string;
 }
 
 interface OpenStreetMapProps {
@@ -63,7 +64,6 @@ const MapFallback = ({ reports, selectedReport, onReportSelect, filter }: OpenSt
               }`}
               onClick={() => {
                 onReportSelect(report);
-                navigate(`/signalement/${report.id}`);
               }}
             >
               <div className="flex items-start justify-between mb-2">
@@ -169,7 +169,6 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
             eventHandlers={{
               click: () => {
                 onReportSelect(report);
-                navigate(`/signalement/${report.id}`);
               }
             }}
           >

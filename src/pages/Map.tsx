@@ -19,6 +19,7 @@ interface MapReport {
   status: 'pending' | 'validated' | 'rejected';
   date: string;
   type: 'waste' | 'drain' | 'other';
+  photo_url?: string;
 }
 
 const Map = () => {
@@ -29,6 +30,7 @@ const Map = () => {
   const [isHUDOpen, setIsHUDOpen] = useState(true);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showReports, setShowReports] = useState(false);
+  const [showReportDetails, setShowReportDetails] = useState(false);
   
   const { data: reports = [], isLoading, error } = useReports();
   const { data: leaderboard = [] } = useLeaderboard(10);
@@ -130,7 +132,10 @@ const Map = () => {
                 <OpenStreetMap
                   reports={reports}
                   selectedReport={selectedReport}
-                  onReportSelect={setSelectedReport}
+                  onReportSelect={(report) => {
+                    setSelectedReport(report);
+                    setShowReportDetails(true);
+                  }}
                   filter={filter}
                 />
                 
@@ -202,10 +207,10 @@ const Map = () => {
                                   className={`p-2 rounded cursor-pointer text-xs transition-all bg-accent/10 hover:bg-accent/20 ${
                                     selectedReport?.id === report.id ? 'ring-1 ring-accent' : ''
                                   }`}
-                                  onClick={() => {
-                                    setSelectedReport(report);
-                                    navigate(`/signalement/${report.id}`);
-                                  }}
+                                   onClick={() => {
+                                     setSelectedReport(report);
+                                     setShowReportDetails(true);
+                                   }}
                                 >
                                    <div className="flex items-center gap-2">
                                      <span>{getTypeIcon(report.type)}</span>
@@ -293,6 +298,95 @@ const Map = () => {
                   </div>
                 )}
 
+                {/* Overlay Détails du signalement */}
+                {showReportDetails && selectedReport && (
+                  <div className="absolute inset-0 bg-black/50 backdrop-blur-sm z-[2000] flex items-center justify-center p-4">
+                    <div className="bg-primary/90 backdrop-blur-sm border-2 border-accent/60 rounded-lg shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-transparent rounded-lg"></div>
+                      <div className="relative z-10">
+                        {/* Header */}
+                        <div className="p-4 border-b border-accent/30">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <span className="text-xl">{getTypeIcon(selectedReport.type)}</span>
+                              <h2 className="text-accent font-bold text-lg tracking-wider">DÉTAILS SIGNALEMENT</h2>
+                            </div>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="h-8 w-8 p-0 hover:bg-accent/20"
+                              onClick={() => setShowReportDetails(false)}
+                            >
+                              <X className="w-5 h-5 text-accent" />
+                            </Button>
+                          </div>
+                        </div>
+                        
+                        {/* Contenu */}
+                        <div className="p-6 overflow-y-auto max-h-[60vh] space-y-4">
+                          {/* Photo si disponible */}
+                          {selectedReport.photo_url && (
+                            <div className="w-full">
+                              <img 
+                                src={selectedReport.photo_url} 
+                                alt="Signalement" 
+                                className="w-full h-48 object-cover rounded-lg border border-accent/30"
+                              />
+                            </div>
+                          )}
+                          
+                          {/* Informations principales */}
+                          <div className="space-y-3">
+                            <div className="flex items-center gap-3">
+                              <User className="w-4 h-4 text-accent" />
+                              <span className="text-primary-foreground font-bold">{selectedReport.user}</span>
+                              <div className={`w-3 h-3 rounded-full ${getStatusColor(selectedReport.status)}`}></div>
+                              <span className={`text-xs px-2 py-1 rounded ${
+                                selectedReport.status === 'validated' ? 'bg-green-500/20 text-green-300' :
+                                selectedReport.status === 'rejected' ? 'bg-red-500/20 text-red-300' :
+                                'bg-yellow-500/20 text-yellow-300'
+                              }`}>
+                                {selectedReport.status === 'validated' ? 'Validé' : 
+                                 selectedReport.status === 'rejected' ? 'Rejeté' : 'En attente'}
+                              </span>
+                            </div>
+                            
+                            <div className="space-y-2">
+                              <div className="flex items-start gap-2">
+                                <MapPin className="w-4 h-4 text-accent mt-0.5" />
+                                <div>
+                                  <p className="text-primary-foreground font-medium">{selectedReport.location}</p>
+                                  <p className="text-xs text-accent">
+                                    {selectedReport.coordinates.lat.toFixed(6)}, {selectedReport.coordinates.lng.toFixed(6)}
+                                  </p>
+                                </div>
+                              </div>
+                              
+                              {selectedReport.description && (
+                                <div className="bg-accent/10 p-3 rounded-lg border border-accent/30">
+                                  <p className="text-primary-foreground text-sm">{selectedReport.description}</p>
+                                </div>
+                              )}
+                              
+                              <div className="flex items-center gap-2 text-xs text-accent">
+                                <span>📅</span>
+                                <span>{new Date(selectedReport.date).toLocaleDateString('fr-FR', {
+                                  weekday: 'long',
+                                  year: 'numeric',
+                                  month: 'long',
+                                  day: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit'
+                                })}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 {/* Overlay Signalements complet */}
                 {showReports && (
                   <div className="absolute inset-0 bg-black/50 backdrop-blur-sm z-[2000] flex items-center justify-center p-4">
@@ -326,10 +420,11 @@ const Map = () => {
                                 className={`p-4 rounded-lg cursor-pointer transition-all bg-accent/20 border border-accent/40 hover:bg-accent/30 ${
                                   selectedReport?.id === report.id ? 'ring-2 ring-accent' : ''
                                 }`}
-                                onClick={() => {
-                                  setSelectedReport(report);
-                                  navigate(`/signalement/${report.id}`);
-                                }}
+                                 onClick={() => {
+                                   setSelectedReport(report);
+                                   setShowReports(false);
+                                   setShowReportDetails(true);
+                                 }}
                               >
                                 <div className="flex items-start gap-3">
                                   <span className="text-xl">{getTypeIcon(report.type)}</span>
