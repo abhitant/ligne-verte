@@ -10,94 +10,101 @@ export class LocationHandler {
     this.supabaseClient = supabaseClient
   }
 
-  async handleLocation(chatId: number, telegramId: string, latitude: number, longitude: number, telegramUsername?: string, firstName?: string) {
-    console.log('📍 Processing location message')
-    console.log('📍 Location coordinates:', { latitude, longitude })
-    console.log('👤 User info received:', { telegramId, telegramUsername, firstName })
+  async handleLocation(chatId: number, telegramId: string, latitude: number, longitude: number, telegramUsername: string | undefined, firstName: string) {
+    console.log('Processing location:', latitude, longitude, 'for telegram ID:', telegramId)
 
     try {
-      // Préparer les données utilisateur avec le bon nom d'utilisateur
-      const actualTelegramUsername = telegramUsername || null;
-      const pseudoToUse = actualTelegramUsername ? actualTelegramUsername : (firstName || `User ${telegramId.slice(-4)}`);
-      
-      console.log('👤 User data to save:', {
-        p_telegram_id: telegramId,
-        p_telegram_username: actualTelegramUsername,
-        p_pseudo: pseudoToUse
-      });
-
-      // Vérifier ou créer l'utilisateur avec les bonnes données
-      const { data: user, error: userError } = await this.supabaseClient.rpc('create_user_if_not_exists', {
-        p_telegram_id: telegramId,
-        p_telegram_username: actualTelegramUsername,
-        p_pseudo: pseudoToUse
+      // Vérifier si l'utilisateur existe
+      const { data: user, error: userError } = await this.supabaseClient.rpc('get_user_by_telegram_id', {
+        p_telegram_id: telegramId
       })
 
       if (userError) {
-        console.error('❌ Error creating/updating user:', userError)
-        await this.telegramAPI.sendMessage(chatId, '❌ Erreur lors de la création du profil utilisateur.')
+        console.error('Error getting user:', userError)
+        await this.telegramAPI.sendMessage(chatId, '❌ Erreur utilisateur. Tapez /start pour vous inscrire.')
         return { success: false, error: userError }
       }
 
-      console.log('✅ User created/updated successfully:', user)
+      // Si l'utilisateur n'existe pas, le créer avec un nom par défaut
+      if (!user) {
+        const defaultPseudo = firstName || `User ${telegramId.slice(-4)}`
+        const { data: newUser, error: createError } = await this.supabaseClient.rpc('create_user_if_not_exists', {
+          p_telegram_id: telegramId,
+          p_telegram_username: telegramUsername,
+          p_pseudo: defaultPseudo
+        })
 
-      // Récupérer et supprimer le signalement en attente
+        if (createError) {
+          console.error('Error creating user:', createError)
+          await this.telegramAPI.sendMessage(chatId, '❌ Erreur lors de la création du compte')
+          return { success: false, error: createError }
+        }
+        console.log('Created new user:', newUser)
+      }
+
+      // Récupérer le signalement en attente avec l'URL de la photo
       const { data: pendingReport, error: pendingError } = await this.supabaseClient.rpc('get_and_delete_pending_report_with_url', {
         p_telegram_id: telegramId
       })
 
-      console.log('🔍 Pending report lookup:', { pendingReport, pendingError })
+      if (pendingError) {
+        console.error('Error getting pending report:', pendingError)
+        await this.telegramAPI.sendMessage(chatId, '❌ Erreur lors de la récupération du signalement')
+        return { success: false, error: pendingError }
+      }
 
-      if (pendingError || !pendingReport || !pendingReport.photo_url) {
-        console.log('❌ No pending photo found')
-        await this.telegramAPI.sendMessage(chatId, `❌ <b>Aucune photo en attente</b>
+      if (!pendingReport || !pendingReport.photo_url) {
+        await this.telegramAPI.sendMessage(chatId, `📍 <b>Localisation reçue !</b>
 
-Processus à suivre :
+Mais je n'ai pas trouvé de photo associée. 
+
+<b>Pour signaler un problème :</b>
 1. 📸 Envoyez d'abord une photo
 2. 📍 Puis partagez votre localisation
 
-Recommencez en envoyant une photo ! 🔄`)
-        return { success: false, error: 'No pending photo' }
+Les deux sont nécessaires pour créer un signalement complet.`)
+        return { success: false, error: 'No pending photo found' }
       }
 
-      console.log('📸 Using Supabase photo URL:', pendingReport.photo_url)
-
-      // Créer le signalement complet avec l'URL Supabase
-      console.log('📍 Creating report with Supabase photo URL:', { latitude, longitude, photo_url: pendingReport.photo_url })
+      // Créer le signalement avec la photo en attente
       const { data: report, error: reportError } = await this.supabaseClient.rpc('create_report', {
         p_user_telegram_id: telegramId,
         p_photo_url: pendingReport.photo_url,
-        p_description: 'Signalement via bot Telegram',
+        p_description: 'Signalement via Telegram',
         p_location_lat: latitude,
         p_location_lng: longitude
       })
 
       if (reportError) {
-        console.error('❌ Error creating report:', reportError)
-        await this.telegramAPI.sendMessage(chatId, '❌ Erreur création signalement. Réessayez.')
+        console.error('Error creating report:', reportError)
+        await this.telegramAPI.sendMessage(chatId, '❌ Erreur lors de la création du signalement')
         return { success: false, error: reportError }
       }
 
-      console.log('✅ Report created successfully:', report.id)
-
-      // Ajouter des points
-      const { error: pointsError } = await this.supabaseClient.rpc('add_points_to_user', {
+      // Ajouter des points à l'utilisateur
+      const { data: updatedUser, error: pointsError } = await this.supabaseClient.rpc('add_points_to_user', {
         p_telegram_id: telegramId,
         p_points: 10
       })
 
       if (pointsError) {
-        console.log('⚠️ Points addition warning:', pointsError)
+        console.error('Error adding points:', pointsError)
       }
+
+      const currentPoints = updatedUser?.points_himpact || (user?.points_himpact || 0) + 10
+      const userPseudo = updatedUser?.pseudo || user?.pseudo || firstName || `User ${telegramId.slice(-4)}`
 
       const successText = `✅ <b>Signalement créé avec succès !</b>
 
-📍 <b>Position :</b> ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
-📸 <b>Photo :</b> Sauvegardée dans Supabase
-🎯 <b>Points :</b> +10 points Himpact
-⏰ <b>Statut :</b> En attente de validation
+🎯 <b>+10 points Himpact</b> gagnés !
+💰 Vous avez maintenant <b>${currentPoints} points</b>
 
-Vous recevrez +50 points bonus si validé ! 🎉`
+📍 <b>Localisation :</b> ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
+👤 <b>Signalé par :</b> ${userPseudo}
+
+Votre signalement est maintenant visible sur la carte et sera examiné par nos équipes.
+
+<b>Continuez à contribuer pour améliorer notre environnement !</b> 🌱`
 
       const keyboard = {
         inline_keyboard: [
@@ -109,10 +116,11 @@ Vous recevrez +50 points bonus si validé ! 🎉`
       }
 
       await this.telegramAPI.sendMessage(chatId, successText, keyboard)
-      return { success: true }
+      return { success: true, report_id: report.id }
+
     } catch (error) {
-      console.error('❌ Location processing error:', error)
-      await this.telegramAPI.sendMessage(chatId, '❌ Erreur traitement localisation')
+      console.error('Location handling error:', error)
+      await this.telegramAPI.sendMessage(chatId, '❌ Erreur système')
       return { success: false, error }
     }
   }

@@ -103,7 +103,7 @@ serve(async (req) => {
         return new Response('OK', { status: 200 })
       }
 
-      if (callbackData === 'show_points') {
+      if (callbackData === 'show_points' || callbackData === 'points') {
         await commandHandler.handlePoints(chatId, telegramId)
         
         // Répondre au callback query pour supprimer le loading
