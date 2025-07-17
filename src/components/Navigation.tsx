@@ -63,7 +63,7 @@ const Navigation = () => {
           <div className="hidden md:flex items-center flex-shrink-0 ml-2">
             <Button className="bg-accent text-accent-foreground hover:bg-accent/80">
               <a 
-                href="tg://resolve?domain=LigneverteBot&start=web" 
+                href="https://t.me/LigneverteBot?start=web" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center space-x-2"
@@ -111,7 +111,7 @@ const Navigation = () => {
               <div className="pt-4 pb-2">
                 <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/80 py-3 text-base font-medium">
                   <a 
-                    href="tg://resolve?domain=LigneverteBot&start=web" 
+                    href="https://t.me/LigneverteBot?start=web" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="w-full"
