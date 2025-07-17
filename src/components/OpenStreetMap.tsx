@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
@@ -183,9 +182,6 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
           whenReady={() => {
             console.log('Map ready successfully');
             setMapLoaded(true);
-          }}
-          whenCreated={(mapInstance) => {
-            console.log('Map created successfully');
           }}
         >
           <TileLayer
