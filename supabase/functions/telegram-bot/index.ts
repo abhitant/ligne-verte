@@ -16,7 +16,7 @@ const corsHeaders = {
 const processedUpdates = new Set<number>()
 
 serve(async (req) => {
-  console.log('=== TELEGRAM BOT REQUEST ===')
+  console.log('=== TELEGRAM BOT REQUEST ===', new Date().toISOString())
   
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
