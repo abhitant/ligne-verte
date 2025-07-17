@@ -36,13 +36,14 @@ Bonjour <b>${existingUser.pseudo}</b> ! Vous avez <b>${existingUser.points_himpa
 <b>🆘 Aide et commandes supplémentaires :</b>
 Tapez /aide pour voir toutes les commandes disponibles et obtenir de l'aide complète.
 
+🌐 <b>Découvrez notre plateforme :</b> https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com
+
 Gagnez des points pour chaque signalement et contribuez à améliorer notre environnement urbain !`
 
         const keyboard = {
           inline_keyboard: [
             [
-              { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' },
-              { text: '🌱 La Ligne Verte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com' }
+              { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' }
             ]
           ]
         }
