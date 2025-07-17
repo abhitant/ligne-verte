@@ -1,12 +1,14 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MapPin, Navigation, AlertCircle } from "lucide-react";
+import { MapPin, Navigation, AlertCircle, RefreshCw } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useReports } from "@/hooks/useReports";
 
 const MapSection = () => {
-  const { data: reports = [], isLoading } = useReports();
+  const { data: reports = [], isLoading, error, refetch } = useReports();
+
+  console.log('MapSection render - reports:', reports?.length, 'loading:', isLoading, 'error:', error);
 
   // Prendre les 3 signalements les plus récents
   const recentReports = reports.slice(0, 3);
@@ -106,16 +108,43 @@ const MapSection = () => {
             {/* Recent Reports */}
             <Card className="shadow-xl">
               <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
-                  <AlertCircle className="w-5 h-5 mr-2 text-emerald-600" />
-                  Signalements récents
-                </h3>
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-xl font-bold text-gray-900 flex items-center">
+                    <AlertCircle className="w-5 h-5 mr-2 text-emerald-600" />
+                    Signalements récents
+                  </h3>
+                  {error && (
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => refetch()}
+                      className="text-xs"
+                    >
+                      <RefreshCw className="w-3 h-3 mr-1" />
+                      Recharger
+                    </Button>
+                  )}
+                </div>
                 
                 <div className="space-y-4">
                   {isLoading ? (
                     <div className="text-center py-4">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mx-auto"></div>
                       <p className="text-sm text-gray-500 mt-2">Chargement...</p>
+                    </div>
+                  ) : error ? (
+                    <div className="text-center py-8 text-red-500">
+                      <p className="text-sm">Erreur de chargement</p>
+                      <p className="text-xs mt-1">Impossible de récupérer les signalements</p>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        onClick={() => refetch()}
+                        className="mt-2"
+                      >
+                        <RefreshCw className="w-3 h-3 mr-1" />
+                        Réessayer
+                      </Button>
                     </div>
                   ) : recentReports.length === 0 ? (
                     <div className="text-center py-8 text-gray-500">

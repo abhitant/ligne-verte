@@ -68,96 +68,111 @@ export const useReports = () => {
   return useQuery({
     queryKey: ['reports'],
     queryFn: async (): Promise<MapReport[]> => {
-      console.log('Fetching reports with user details from Supabase...');
+      console.log('Starting reports fetch from Supabase...');
       
-      // Récupérer tous les signalements
-      const { data: reports, error: reportsError } = await supabase
-        .from('reports')
-        .select('*')
-        .order('created_at', { ascending: false });
+      try {
+        // Récupérer tous les signalements
+        const { data: reports, error: reportsError } = await supabase
+          .from('reports')
+          .select('*')
+          .order('created_at', { ascending: false });
 
-      if (reportsError) {
-        console.error('Error fetching reports:', reportsError);
-        throw reportsError;
-      }
+        if (reportsError) {
+          console.error('Error fetching reports:', reportsError);
+          throw reportsError;
+        }
 
-      console.log('Raw reports data from Supabase:', reports);
-      console.log('Number of reports found:', reports?.length || 0);
+        console.log('Raw reports data from Supabase:', reports);
+        console.log('Number of reports found:', reports?.length || 0);
 
-      if (!reports || reports.length === 0) {
-        console.log('No reports found in database');
-        return [];
-      }
+        if (!reports || reports.length === 0) {
+          console.log('No reports found in database');
+          return [];
+        }
 
-      // Récupérer les IDs Telegram uniques
-      const uniqueTelegramIds = [...new Set(reports.map(r => r.user_telegram_id))];
-      console.log('Unique telegram IDs in reports:', uniqueTelegramIds);
+        // Récupérer les IDs Telegram uniques
+        const uniqueTelegramIds = [...new Set(reports.map(r => r.user_telegram_id))];
+        console.log('Unique telegram IDs in reports:', uniqueTelegramIds);
 
-      // Récupérer les informations utilisateur directement de la table users (qui a des politiques RLS)
-      const { data: users, error: usersError } = await supabase
-        .from('users')
-        .select('telegram_id, pseudo, points_himpact, created_at')
-        .in('telegram_id', uniqueTelegramIds);
+        // Récupérer les informations utilisateur avec gestion d'erreur
+        let users: UserDisplayInfo[] = [];
+        try {
+          const { data: usersData, error: usersError } = await supabase
+            .from('users')
+            .select('telegram_id, pseudo, points_himpact, created_at')
+            .in('telegram_id', uniqueTelegramIds);
 
-      console.log('Users query with telegram_ids:', uniqueTelegramIds);
-      console.log('Users fetched from users table:', users);
-      console.log('Users fetch error:', usersError);
+          if (usersError) {
+            console.warn('Warning fetching users (using fallback):', usersError);
+            users = [];
+          } else {
+            users = usersData || [];
+          }
+        } catch (error) {
+          console.warn('Exception fetching users (using fallback):', error);
+          users = [];
+        }
 
-      if (usersError) {
-        console.error('Error fetching users:', usersError);
-        throw usersError;
-      }
+        console.log('Users fetched from users table:', users);
 
-      // Créer une map pour un accès rapide aux données utilisateur
-      const usersMap = new Map();
-      users?.forEach(user => {
-        usersMap.set(user.telegram_id, user);
-        console.log(`User ${user.telegram_id} mapped (users table):`, {
-          pseudo: user.pseudo,
-          points: user.points_himpact
-        });
-      });
-
-      console.log('Final users map (users table):', usersMap);
-
-      const mappedReports = reports.map((report): MapReport => {
-        const user = usersMap.get(report.user_telegram_id);
-        let displayName = `Utilisateur ${report.user_telegram_id.slice(-4)}`;
-        
-        if (user) {
-          console.log(`Processing user ${report.user_telegram_id}:`, {
-            pseudo: user.pseudo
+        // Créer une map pour un accès rapide aux données utilisateur
+        const usersMap = new Map();
+        users.forEach(user => {
+          usersMap.set(user.telegram_id, user);
+          console.log(`User ${user.telegram_id} mapped (users table):`, {
+            pseudo: user.pseudo,
+            points: user.points_himpact
           });
+        });
+
+        console.log('Final users map (users table):', usersMap);
+
+        const mappedReports = reports.map((report): MapReport => {
+          const user = usersMap.get(report.user_telegram_id);
+          let displayName = `Utilisateur ${report.user_telegram_id.slice(-4)}`;
           
-          // Utiliser le pseudo si disponible et non générique
-          if (user.pseudo && user.pseudo.trim() !== '') {
-            const genericPattern = /^User \d{4}$/;
-            if (!genericPattern.test(user.pseudo)) {
-              displayName = user.pseudo;
+          if (user) {
+            console.log(`Processing user ${report.user_telegram_id}:`, {
+              pseudo: user.pseudo
+            });
+            
+            // Utiliser le pseudo si disponible et non générique
+            if (user.pseudo && user.pseudo.trim() !== '') {
+              const genericPattern = /^User \d{4}$/;
+              if (!genericPattern.test(user.pseudo)) {
+                displayName = user.pseudo;
+              }
             }
+            
+            console.log(`Final display name for ${report.user_telegram_id}: ${displayName}`);
+          } else {
+            console.log(`No user found for ${report.user_telegram_id}, using fallback: ${displayName}`);
           }
           
-          console.log(`Final display name for ${report.user_telegram_id}: ${displayName}`);
-        } else {
-          console.log(`No user found for ${report.user_telegram_id}, using fallback: ${displayName}`);
-        }
-        
-        return {
-          id: report.id,
-          user: displayName,
-          location: `Abidjan (${report.location_lat.toFixed(4)}, ${report.location_lng.toFixed(4)})`,
-          coordinates: { lat: report.location_lat, lng: report.location_lng },
-          description: report.description || 'Signalement via bot Telegram',
-          status: getStatusFromDb(report.status),
-          date: report.created_at || new Date().toISOString(),
-          type: getTypeFromDescription(report.description),
-          photo_url: report.photo_url
-        };
-      });
+          return {
+            id: report.id,
+            user: displayName,
+            location: `Abidjan (${report.location_lat.toFixed(4)}, ${report.location_lng.toFixed(4)})`,
+            coordinates: { lat: report.location_lat, lng: report.location_lng },
+            description: report.description || 'Signalement via bot Telegram',
+            status: getStatusFromDb(report.status),
+            date: report.created_at || new Date().toISOString(),
+            type: getTypeFromDescription(report.description),
+            photo_url: report.photo_url
+          };
+        });
 
-      console.log('Final mapped reports for display:', mappedReports);
-      return mappedReports;
+        console.log('Final mapped reports for display:', mappedReports);
+        return mappedReports;
+      } catch (error) {
+        console.error('Critical error in reports fetch:', error);
+        // Return empty array instead of throwing to prevent app crash
+        return [];
+      }
     },
-    refetchInterval: 30000, // Refetch every 30 seconds to get new reports
+    refetchInterval: 30000,
+    retry: 3,
+    retryDelay: 1000,
+    staleTime: 5000, // Consider data fresh for 5 seconds
   });
 };
