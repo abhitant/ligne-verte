@@ -18,31 +18,35 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <div className="min-h-screen bg-background">
-          <Navigation />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/map" element={<Map />} />
-            <Route path="/carte" element={<Map />} />
-            <Route path="/classement" element={<LeaderboardPage />} />
-            <Route path="/signalements" element={<ReportsPage />} />
-            <Route path="/signalement/:id" element={<ReportDetails />} />
-            <Route path="/marketplace" element={<Marketplace />} />
-            <Route path="/rejoindre" element={<Join />} />
-            <Route path="/profile" element={<UserProfile />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  console.log("App component rendered");
+  
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <div className="min-h-screen bg-background">
+            <Navigation />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/map" element={<Map />} />
+              <Route path="/carte" element={<Map />} />
+              <Route path="/classement" element={<LeaderboardPage />} />
+              <Route path="/signalements" element={<ReportsPage />} />
+              <Route path="/signalement/:id" element={<ReportDetails />} />
+              <Route path="/marketplace" element={<Marketplace />} />
+              <Route path="/rejoindre" element={<Join />} />
+              <Route path="/profile" element={<UserProfile />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

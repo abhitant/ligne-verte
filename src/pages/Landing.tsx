@@ -6,6 +6,8 @@ import CommunitySection from "@/components/landing/CommunitySection";
 import Footer from "@/components/landing/Footer";
 
 const Landing = () => {
+  console.log("Landing component rendered");
+  
   return (
     <div className="min-h-screen">
       <HeroSection />
