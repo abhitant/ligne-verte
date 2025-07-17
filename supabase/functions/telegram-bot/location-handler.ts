@@ -102,7 +102,7 @@ Vous recevrez +50 points bonus si validé ! 🎉`
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir carte', url: 'https://ligneverte.xyz/carte' },
+            { text: '🗺️ Voir carte', url: 'https://himpact.app/map' },
             { text: '💰 Mes points', callback_data: 'points' }
           ]
         ]
