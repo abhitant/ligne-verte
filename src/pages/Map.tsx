@@ -88,7 +88,7 @@ const Map = () => {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <CardTitle className="flex items-center gap-2 text-primary-foreground text-lg">
                 <MapPin className="w-5 h-5 text-accent animate-pulse" />
-                <span className="text-accent font-bold tracking-wider">ZONE D'INTERVENTION</span>
+                <span className="text-accent font-bold tracking-wider">ZONES D'INTERVENTION</span>
               </CardTitle>
               <div className="flex flex-wrap gap-2">
                 <Button

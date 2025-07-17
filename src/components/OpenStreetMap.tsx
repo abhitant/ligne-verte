@@ -105,7 +105,7 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
 
   // Créer des icônes personnalisées selon le statut
   const createCustomIcon = (status: string) => {
-    const color = status === 'validated' ? 'green' : status === 'rejected' ? 'red' : 'orange';
+    const color = status === 'validated' ? 'blue' : status === 'rejected' ? 'red' : 'violet';
     return new Icon({
       iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
       shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
