@@ -29,6 +29,7 @@ interface MapReport {
   status: 'pending' | 'validated' | 'rejected';
   date: string;
   type: 'waste' | 'drain' | 'other';
+  photo_url?: string;
 }
 
 const getStatusFromDb = (status: string | null): 'pending' | 'validated' | 'rejected' => {
@@ -149,7 +150,8 @@ export const useReports = () => {
           description: report.description || 'Signalement via bot Telegram',
           status: getStatusFromDb(report.status),
           date: report.created_at || new Date().toISOString(),
-          type: getTypeFromDescription(report.description)
+          type: getTypeFromDescription(report.description),
+          photo_url: report.photo_url
         };
       });
 
