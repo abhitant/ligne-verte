@@ -109,7 +109,7 @@ Votre signalement est maintenant visible sur la carte et sera examiné par nos �
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir carte', url: 'https://himpact.app/map' },
+            { text: '🗺️ Voir carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' },
             { text: '💰 Mes points', callback_data: 'points' }
           ]
         ]

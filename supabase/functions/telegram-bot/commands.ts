@@ -43,7 +43,7 @@ Gagnez des points pour chaque signalement et contribuez à améliorer notre envi
         const keyboard = {
           inline_keyboard: [
             [
-            { text: '🗺️ Voir la carte', url: 'https://himpact.app/map' }
+              { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' }
             ]
           ]
         }
@@ -76,7 +76,7 @@ Pour commencer, <b>par quel nom souhaitez-vous être appelé ${userName} ?</b>
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir la carte', url: 'https://himpact.app/map' },
+            { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' },
             { text: '🏆 Classement', callback_data: 'show_leaderboard' }
           ]
         ]
@@ -167,7 +167,7 @@ Votre inscription est terminée. Vous commencez avec <b>${user.points_himpact} p
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir la carte', url: 'https://himpact.app/map' }
+            { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' }
           ]
         ]
       }
@@ -354,7 +354,7 @@ Envoyez une photo d'un problème environnemental pour gagner vos premiers points
         const keyboard = {
           inline_keyboard: [
             [
-              { text: '🗺️ Voir la carte', url: 'https://himpact.app/map' }
+              { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' }
             ]
           ]
         }
@@ -397,7 +397,7 @@ Envoyez une photo d'un problème environnemental pour gagner vos premiers points
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir la carte', url: 'https://himpact.app/map' },
+            { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' },
             { text: '🏆 Top 10', callback_data: 'show_leaderboard' }
           ]
         ]
@@ -449,7 +449,7 @@ Envoyez une photo d'un problème environnemental pour gagner vos premiers points
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir la carte', url: 'https://himpact.app/map' }
+            { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' }
           ]
         ]
       }
@@ -479,7 +479,7 @@ Découvrez tous les signalements de la communauté sur notre carte interactive !
     const keyboard = {
       inline_keyboard: [
         [
-          { text: '🗺️ Ouvrir la carte', url: 'https://himpact.app/map' }
+          { text: '🗺️ Ouvrir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' }
         ]
       ]
     }
@@ -511,7 +511,7 @@ Découvrez tous les signalements de la communauté sur notre carte interactive !
     const keyboard = {
       inline_keyboard: [
         [
-          { text: '🗺️ Voir la carte', url: 'https://himpact.app/map' },
+          { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' },
           { text: '🏆 Classement', callback_data: 'show_leaderboard' }
         ]
       ]
@@ -557,7 +557,7 @@ Découvrez tous les signalements de la communauté sur notre carte interactive !
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir la carte', url: 'https://himpact.app/map' },
+            { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' },
             { text: '📊 Mes points', callback_data: 'show_points' }
           ]
         ]
