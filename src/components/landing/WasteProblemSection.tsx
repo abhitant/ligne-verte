@@ -5,7 +5,18 @@ import ligneVerteLogo from "@/assets/ligne-verte-logo.png";
 
 const WasteProblemSection = () => {
   const [visibleCards, setVisibleCards] = useState<number[]>([]);
-  const [visibleImages, setVisibleImages] = useState<number[]>([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const images = [
+    {
+      src: "/lovable-uploads/41170097-be04-4adf-98c3-0ba26b5efd3a.png",
+      alt: "Collecte de déchets avec seau bleu"
+    },
+    {
+      src: "/lovable-uploads/c3dd5fe0-b292-40f6-8bf8-5d335dafa57a.png", 
+      alt: "Personne en tenue verte faisant du nettoyage"
+    }
+  ];
 
   useEffect(() => {
     // Animation séquentielle des cartes
@@ -15,17 +26,16 @@ const WasteProblemSection = () => {
       setTimeout(() => setVisibleCards(prev => [...prev, 2]), 1500),
     ];
 
-    // Animation séquentielle des images
-    const imageTimers = [
-      setTimeout(() => setVisibleImages(prev => [...prev, 0]), 2000),
-      setTimeout(() => setVisibleImages(prev => [...prev, 1]), 2500),
-    ];
+    // Animation séquentielle des images - changement d'image
+    const imageInterval = setInterval(() => {
+      setCurrentImageIndex(prev => (prev + 1) % images.length);
+    }, 3000);
 
     return () => {
       timers.forEach(timer => clearTimeout(timer));
-      imageTimers.forEach(timer => clearTimeout(timer));
+      clearInterval(imageInterval);
     };
-  }, []);
+  }, [images.length]);
 
   const stats = [
     {
@@ -107,24 +117,11 @@ const WasteProblemSection = () => {
             </p>
           </div>
           
-          <div className="bg-card rounded-2xl p-6 shadow-2xl space-y-4">
+          <div className="bg-card rounded-2xl p-6 shadow-2xl">
             <img 
-              src="/lovable-uploads/41170097-be04-4adf-98c3-0ba26b5efd3a.png" 
-              alt="Collecte de déchets avec seau bleu"
-              className={`w-full h-auto rounded-xl transition-all duration-700 transform ${
-                visibleImages.includes(0) 
-                  ? 'translate-y-0 opacity-100' 
-                  : 'translate-y-8 opacity-0'
-              }`}
-            />
-            <img 
-              src="/lovable-uploads/c3dd5fe0-b292-40f6-8bf8-5d335dafa57a.png" 
-              alt="Personne en tenue verte faisant du nettoyage"
-              className={`w-full h-auto rounded-xl transition-all duration-700 transform ${
-                visibleImages.includes(1) 
-                  ? 'translate-y-0 opacity-100' 
-                  : 'translate-y-8 opacity-0'
-              }`}
+              src={images[currentImageIndex].src}
+              alt={images[currentImageIndex].alt}
+              className="w-full h-auto rounded-xl transition-all duration-1000 ease-in-out"
             />
           </div>
         </div>
