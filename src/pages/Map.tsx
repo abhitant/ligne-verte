@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Filter, Eye, Loader2, Trophy, Award, Users, X, ChevronDown, ChevronUp, User } from "lucide-react";
+import { MapPin, Filter, Eye, Loader2, Trophy, Award, Users, X, ChevronDown, ChevronUp, User, RefreshCw } from "lucide-react";
 import OpenStreetMap from "@/components/OpenStreetMap";
 import { useReports } from "@/hooks/useReports";
 import Leaderboard from "@/components/gamification/Leaderboard";
@@ -32,11 +32,13 @@ const Map = () => {
   const [showReports, setShowReports] = useState(false);
   const [showReportDetails, setShowReportDetails] = useState(false);
   
-  const { data: reports = [], isLoading, error } = useReports();
+  const { data: reports = [], isLoading, error, refetch } = useReports();
   const { data: leaderboard = [] } = useLeaderboard(10);
 
   console.log('Map component - Reports:', reports);
   console.log('Map component - Current filter:', filter);
+  console.log('Map component - Loading state:', isLoading);
+  console.log('Map component - Error state:', error);
 
   const filteredReports = reports.filter(report => 
     filter === 'all' || report.status === filter
@@ -82,7 +84,17 @@ const Map = () => {
             <CardContent className="p-6">
               <div className="text-center text-red-600">
                 <p className="text-lg font-semibold mb-2">Erreur lors du chargement des signalements</p>
-                <p className="text-sm">Vérifiez votre connexion internet et réessayez.</p>
+                <p className="text-sm mb-4">Vérifiez votre connexion internet et réessayez.</p>
+                <Button 
+                  onClick={() => {
+                    console.log('Retrying reports fetch...');
+                    refetch();
+                  }}
+                  className="bg-green-600 hover:bg-green-700"
+                >
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Réessayer
+                </Button>
                 <p className="text-xs mt-2 text-gray-500">Détails: {error.message}</p>
               </div>
             </CardContent>
@@ -134,6 +146,17 @@ const Map = () => {
                 <div className="text-center">
                   <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-accent" />
                   <p className="text-primary-foreground font-bold">CHARGEMENT DE LA ZONE...</p>
+                  <Button 
+                    onClick={() => {
+                      console.log('Force reload requested...');
+                      window.location.reload();
+                    }}
+                    variant="ghost"
+                    className="mt-4 text-xs text-accent hover:bg-accent/20"
+                  >
+                    <RefreshCw className="w-3 h-3 mr-1" />
+                    Recharger la page
+                  </Button>
                 </div>
               </div>
             ) : (

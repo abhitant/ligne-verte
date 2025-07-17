@@ -97,6 +97,7 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
   const navigate = useNavigate();
   const [mapError, setMapError] = useState(false);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [loadingTimeout, setLoadingTimeout] = useState(false);
   const mapRef = useRef<any>(null);
   
   // Centre sur Abidjan
@@ -108,6 +109,19 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
   );
 
   console.log('OpenStreetMap rendered with', filteredReports.length, 'reports');
+
+  // Timeout pour forcer le fallback si la carte prend trop de temps
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!mapLoaded && !mapError) {
+        console.log('Map loading timeout, switching to fallback');
+        setLoadingTimeout(true);
+        setMapError(true);
+      }
+    }, 10000); // 10 secondes
+
+    return () => clearTimeout(timer);
+  }, [mapLoaded, mapError]);
 
   // Créer des icônes personnalisées selon le statut
   const createCustomIcon = (status: string) => {
@@ -122,82 +136,110 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
     });
   };
 
-  // Si il y a une erreur, afficher le fallback
-  if (mapError) {
+  // Si il y a une erreur ou timeout, afficher le fallback
+  if (mapError || loadingTimeout) {
     return <MapFallback reports={reports} selectedReport={selectedReport} onReportSelect={onReportSelect} filter={filter} />;
   }
+
   return (
     <div className="relative h-full w-full">
-      {/* Indicateur de chargement */}
+      {/* Indicateur de chargement amélioré */}
       {!mapLoaded && (
         <div className="absolute inset-0 bg-green-50 flex items-center justify-center z-10">
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto mb-2"></div>
             <p className="text-green-600 text-sm">Chargement de la carte...</p>
-            <button 
-              onClick={() => setMapError(true)}
-              className="mt-2 text-xs text-blue-600 underline hover:text-blue-800"
-            >
-              Problème ? Cliquez ici pour la version alternative
-            </button>
+            <div className="mt-4 space-y-2">
+              <button 
+                onClick={() => {
+                  console.log('User requested fallback mode');
+                  setMapError(true);
+                }}
+                className="block mx-auto text-xs text-blue-600 underline hover:text-blue-800 bg-white px-3 py-1 rounded"
+              >
+                Problème ? Cliquez ici pour la version alternative
+              </button>
+              <button 
+                onClick={() => {
+                  console.log('User requested page reload');
+                  window.location.reload();
+                }}
+                className="block mx-auto text-xs text-gray-600 underline hover:text-gray-800"
+              >
+                Ou recharger la page
+              </button>
+            </div>
           </div>
         </div>
       )}
       
-      <MapContainer 
-        center={center} 
-        zoom={12} 
-        style={{ height: '100%', width: '100%' }}
-        className="rounded-lg"
-        ref={mapRef}
-        whenReady={() => {
-          console.log('Map ready successfully');
-          setMapLoaded(true);
-        }}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        
-        {/* Marqueurs pour chaque signalement */}
-        {filteredReports.map((report) => (
-          <Marker
-            key={report.id}
-            position={[report.coordinates.lat, report.coordinates.lng]}
-            icon={createCustomIcon(report.status)}
+      <div style={{ height: '100%', width: '100%' }}>
+        <MapContainer 
+          center={center} 
+          zoom={12} 
+          style={{ height: '100%', width: '100%' }}
+          className="rounded-lg"
+          ref={mapRef}
+          whenReady={() => {
+            console.log('Map ready successfully');
+            setMapLoaded(true);
+          }}
+          whenCreated={(mapInstance) => {
+            console.log('Map created successfully');
+          }}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             eventHandlers={{
-              click: () => {
-                onReportSelect(report);
+              loading: () => console.log('Tiles loading...'),
+              load: () => console.log('Tiles loaded successfully'),
+              tileerror: (e) => {
+                console.error('Tile loading error:', e);
+                setTimeout(() => setMapError(true), 2000);
               }
             }}
-          >
-            <Popup>
-              <div className="p-2 max-w-xs">
-                <h3 className="font-bold text-sm mb-1">{report.user}</h3>
-                <p className="text-xs text-gray-600 mb-1">{report.location}</p>
-                <p className="text-xs mb-2">{report.description}</p>
-                <div className="flex items-center justify-between">
-                  <span className={`text-xs px-2 py-1 rounded ${
-                    report.status === 'validated' ? 'bg-green-100 text-green-800' :
-                    report.status === 'rejected' ? 'bg-red-100 text-red-800' :
-                    'bg-yellow-100 text-yellow-800'
-                  }`}>
-                    {report.status === 'validated' ? 'Validé' : 
-                     report.status === 'rejected' ? 'Rejeté' : 'En attente'}
-                  </span>
-                  <span className="text-xs text-gray-500">
-                    {new Date(report.date).toLocaleDateString('fr-FR')}
-                  </span>
+          />
+          
+          {/* Marqueurs pour chaque signalement */}
+          {filteredReports.map((report) => (
+            <Marker
+              key={report.id}
+              position={[report.coordinates.lat, report.coordinates.lng]}
+              icon={createCustomIcon(report.status)}
+              eventHandlers={{
+                click: () => {
+                  onReportSelect(report);
+                }
+              }}
+            >
+              <Popup>
+                <div className="p-2 max-w-xs">
+                  <h3 className="font-bold text-sm mb-1">{report.user}</h3>
+                  <p className="text-xs text-gray-600 mb-1">{report.location}</p>
+                  <p className="text-xs mb-2">{report.description}</p>
+                  <div className="flex items-center justify-between">
+                    <span className={`text-xs px-2 py-1 rounded ${
+                      report.status === 'validated' ? 'bg-green-100 text-green-800' :
+                      report.status === 'rejected' ? 'bg-red-100 text-red-800' :
+                      'bg-yellow-100 text-yellow-800'
+                    }`}>
+                      {report.status === 'validated' ? 'Validé' : 
+                       report.status === 'rejected' ? 'Rejeté' : 'En attente'}
+                    </span>
+                    <span className="text-xs text-gray-500">
+                      {new Date(report.date).toLocaleDateString('fr-FR')}
+                    </span>
+                  </div>
+                  <div className="mt-2 text-xs text-blue-600">
+                    📍 {report.coordinates.lat.toFixed(4)}, {report.coordinates.lng.toFixed(4)}
+                  </div>
                 </div>
-                <div className="mt-2 text-xs text-blue-600">
-                  📍 {report.coordinates.lat.toFixed(4)}, {report.coordinates.lng.toFixed(4)}
-                </div>
-              </div>
-            </Popup>
-          </Marker>
-        ))}
-      </MapContainer>
+              </Popup>
+            </Marker>
+          ))}
+        </MapContainer>
+      </div>
     </div>
   );
 };
