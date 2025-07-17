@@ -161,21 +161,13 @@ Votre inscription est terminée. Vous commencez avec <b>${user.points_himpact} p
 /carte - Lien vers la carte
 /aide - Guide complet
 /changenom - Modifier votre nom
-/compte - Créer un compte web
-
-<b>💻 Nouveauté !</b>
-Vous pouvez maintenant créer un compte pour accéder à notre plateforme web !
 
 <b>Merci de rejoindre La Ligne Verte !</b> 🌱`
 
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' },
-            { text: '🛒 Marketplace', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/marketplace' }
-          ],
-          [
-            { text: '💻 Créer compte web', callback_data: 'create_web_account' }
+            { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' }
           ]
         ]
       }
@@ -457,8 +449,7 @@ Envoyez une photo d'un problème environnemental pour gagner vos premiers points
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' },
-            { text: '🛒 Marketplace', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/marketplace' }
+            { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' }
           ]
         ]
       }
@@ -489,10 +480,6 @@ Découvrez tous les signalements de la communauté sur notre carte interactive !
       inline_keyboard: [
         [
           { text: '🗺️ Ouvrir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' }
-        ],
-        [
-          { text: '🏠 Accueil', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com' },
-          { text: '🛒 Marketplace', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/marketplace' }
         ]
       ]
     }
@@ -514,14 +501,10 @@ Découvrez tous les signalements de la communauté sur notre carte interactive !
 /carte - Lien vers la carte interactive
 /aide - Cette aide
 /changenom - Changer votre nom
-/compte - Créer un compte web
 
 <b>🎯 Récompenses :</b>
 • Signalement : +10 points
 • Validation : +50 points bonus
-
-<b>💻 Accès web :</b>
-Créez un compte pour accéder à la plateforme web avec votre identité Telegram.
 
 <b>🗺️ N'oubliez pas de consulter la carte pour voir l'impact de la communauté !</b>`
 
