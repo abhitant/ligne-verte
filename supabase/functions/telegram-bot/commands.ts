@@ -42,7 +42,7 @@ Gagnez des points pour chaque signalement et contribuez à améliorer notre envi
           inline_keyboard: [
             [
               { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' },
-              { text: '📊 Mes points', callback_data: 'show_points' }
+              { text: '🏆 Mon classement', callback_data: 'show_user_rank' }
             ]
           ]
         }
@@ -327,6 +327,92 @@ Tapez votre nouveau nom d'utilisateur souhaité.
     // Vérifier le format (lettres, chiffres, tirets uniquement)
     const validPattern = /^[a-zA-Z0-9\-]+$/
     return validPattern.test(username)
+  }
+
+  async handleUserRank(chatId: number, telegramId: string) {
+    try {
+      const { data: user, error } = await this.supabaseClient.rpc('get_user_by_telegram_id', {
+        p_telegram_id: telegramId
+      })
+
+      if (error || !user) {
+        await this.telegramAPI.sendMessage(chatId, '❌ Utilisateur non trouvé. Tapez /start pour vous inscrire.')
+        return { success: false, error: 'User not found' }
+      }
+
+      // Si l'utilisateur n'a pas de points, il est non classé
+      if (!user.points_himpact || user.points_himpact === 0) {
+        const unrankedText = `🏆 <b>Votre classement</b>
+
+👤 <b>${user.pseudo}</b>
+📊 <b>Non classé(e)</b> - Aucun point pour le moment
+
+<b>💡 Comment obtenir des points :</b>
+• 📸 Signaler un problème (+10 points)
+• ✅ Signalement validé (+50 points bonus)
+
+<b>🚀 Commencez dès maintenant !</b>
+Envoyez une photo d'un problème environnemental pour gagner vos premiers points !`
+
+        const keyboard = {
+          inline_keyboard: [
+            [
+              { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' }
+            ]
+          ]
+        }
+
+        await this.telegramAPI.sendMessage(chatId, unrankedText, keyboard)
+        return { success: true }
+      }
+
+      // Calculer le classement de l'utilisateur
+      const { data: allUsers, error: rankError } = await this.supabaseClient
+        .from('users')
+        .select('points_himpact')
+        .gt('points_himpact', 0)
+        .order('points_himpact', { ascending: false })
+
+      let userRank = 1
+      let totalUsers = 0
+      if (!rankError && allUsers) {
+        totalUsers = allUsers.length
+        userRank = allUsers.findIndex(u => u.points_himpact <= user.points_himpact) + 1
+        if (userRank === 0) userRank = totalUsers + 1
+      }
+
+      const rankText = `🏆 <b>Votre classement</b>
+
+👤 <b>${user.pseudo}</b>
+📊 <b>Rang #${userRank}</b> sur ${totalUsers} participants
+💰 <b>${user.points_himpact} points Himpact</b>
+
+<b>📈 Statistiques :</b>
+• Signalements effectués : ${user.reports_count || 0}
+• Niveau actuel : ${user.level_current || 1}
+
+<b>💡 Pour progresser :</b>
+• 📸 Signaler un problème (+10 points)
+• ✅ Signalement validé (+50 points bonus)
+
+<b>🗺️ Continuez à contribuer pour améliorer votre classement !</b>`
+
+      const keyboard = {
+        inline_keyboard: [
+          [
+            { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' },
+            { text: '🏆 Top 10', callback_data: 'show_leaderboard' }
+          ]
+        ]
+      }
+
+      await this.telegramAPI.sendMessage(chatId, rankText, keyboard)
+      return { success: true }
+    } catch (error) {
+      console.error('User rank error:', error)
+      await this.telegramAPI.sendMessage(chatId, '❌ Erreur lors de la récupération du classement')
+      return { success: false, error }
+    }
   }
 
   async handlePoints(chatId: number, telegramId: string) {

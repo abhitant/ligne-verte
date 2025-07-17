@@ -87,6 +87,14 @@ serve(async (req) => {
         return new Response('OK', { status: 200 })
       }
 
+      if (callbackData === 'show_user_rank') {
+        await commandHandler.handleUserRank(chatId, telegramId)
+        
+        // Répondre au callback query pour supprimer le loading
+        await telegramAPI.answerCallbackQuery(callback_query.id)
+        return new Response('OK', { status: 200 })
+      }
+
       if (callbackData === 'show_points') {
         await commandHandler.handlePoints(chatId, telegramId)
         
