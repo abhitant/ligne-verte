@@ -66,6 +66,8 @@ serve(async (req) => {
 
     // Traitement des callback queries (boutons inline)
     if (update.callback_query) {
+      console.log('CALLBACK QUERY RECEIVED:', JSON.stringify(update.callback_query, null, 2))
+      
       const { callback_query } = update
       const chatId = callback_query.message.chat.id
       const telegramId = callback_query.from.id.toString()
