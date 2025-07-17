@@ -24,7 +24,7 @@ const SolutionSection = () => {
           </div>
 
           {/* Contenu à droite */}
-          <div className="space-y-8">
+          <div className="flex flex-col justify-center h-full space-y-8">
             {/* Header */}
             <div className="text-left">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground mb-6 leading-tight">
@@ -33,13 +33,13 @@ const SolutionSection = () => {
             </div>
 
             {/* Fonctionnement en liste */}
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div className="flex items-start space-x-4">
                 <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center flex-shrink-0">
                   <Camera className="w-6 h-6 text-accent-foreground" />
                 </div>
-                <div>
-                  <h3 className="text-lg text-foreground">Prend une photo et localise les urgences environementales</h3>
+                <div className="flex-1">
+                  <h3 className="text-lg text-foreground font-medium">Prend une photo et localise les urgences environementales</h3>
                 </div>
               </div>
 
@@ -47,8 +47,8 @@ const SolutionSection = () => {
                 <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center flex-shrink-0">
                   <MessageSquare className="w-6 h-6 text-accent-foreground" />
                 </div>
-                <div>
-                  <h3 className="text-lg text-foreground">Envoie-la à Débora notre standardiste</h3>
+                <div className="flex-1">
+                  <h3 className="text-lg text-foreground font-medium">Envoie-la à Débora notre standardiste</h3>
                 </div>
               </div>
 
@@ -56,8 +56,8 @@ const SolutionSection = () => {
                 <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center flex-shrink-0">
                   <MapPin className="w-6 h-6 text-accent-foreground" />
                 </div>
-                <div>
-                  <h3 className="text-lg text-foreground">Ton action apparaît sur notre carte publique</h3>
+                <div className="flex-1">
+                  <h3 className="text-lg text-foreground font-medium">Ton action apparaît sur notre carte publique</h3>
                 </div>
               </div>
 
@@ -65,8 +65,8 @@ const SolutionSection = () => {
                 <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center flex-shrink-0">
                   <Trophy className="w-6 h-6 text-accent-foreground" />
                 </div>
-                <div>
-                  <h3 className="text-lg text-foreground">Gagne des points et grimpe dans le classement</h3>
+                <div className="flex-1">
+                  <h3 className="text-lg text-foreground font-medium">Gagne des points et grimpe dans le classement</h3>
                 </div>
               </div>
             </div>
