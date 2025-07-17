@@ -29,7 +29,7 @@ const WasteProblemSection = () => {
     // Animation séquentielle des images - changement d'image
     const imageInterval = setInterval(() => {
       setCurrentImageIndex(prev => (prev + 1) % images.length);
-    }, 3000);
+    }, 5000);
 
     return () => {
       timers.forEach(timer => clearTimeout(timer));
@@ -117,7 +117,7 @@ const WasteProblemSection = () => {
             </p>
           </div>
           
-          <div className="bg-card rounded-2xl p-6 shadow-2xl">
+          <div className="bg-card border-2 border-accent rounded-2xl p-6 shadow-2xl">
             <img 
               src={images[currentImageIndex].src}
               alt={images[currentImageIndex].alt}
