@@ -86,9 +86,9 @@ const Map = () => {
         <Card className="bg-primary text-primary-foreground border-2 border-accent/50 shadow-2xl h-full w-full rounded-none flex flex-col">
           <CardHeader className="pb-2">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <CardTitle className="flex items-center gap-2 text-primary-foreground text-lg">
-                <MapPin className="w-5 h-5 text-accent animate-pulse" />
-                <span className="text-accent font-bold tracking-wider">ZONES D'INTERVENTION</span>
+              <CardTitle className="flex items-center gap-2 text-primary-foreground text-base sm:text-lg flex-shrink-0">
+                <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-accent animate-pulse" />
+                <span className="text-accent font-bold tracking-wider text-sm sm:text-base">ZONES D'INTERVENTION</span>
               </CardTitle>
               <div className="flex flex-wrap gap-2">
                 <Button
