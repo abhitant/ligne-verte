@@ -117,7 +117,7 @@ const WasteProblemSection = () => {
             </p>
           </div>
           
-          <div className="bg-card border-4 border-[#A3FF3F] rounded-2xl p-6 shadow-2xl">
+          <div className="bg-[#A3FF3F] border-4 border-[#A3FF3F] rounded-2xl p-6 shadow-2xl">
             <img 
               src={images[currentImageIndex].src}
               alt={images[currentImageIndex].alt}
