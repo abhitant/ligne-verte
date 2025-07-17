@@ -88,6 +88,7 @@ serve(async (req) => {
       }
 
       if (callbackData === 'show_user_rank') {
+        console.log('Processing show_user_rank callback for telegram ID:', telegramId)
         await commandHandler.handleUserRank(chatId, telegramId)
         
         // Répondre au callback query pour supprimer le loading

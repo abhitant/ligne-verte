@@ -330,10 +330,14 @@ Tapez votre nouveau nom d'utilisateur souhaité.
   }
 
   async handleUserRank(chatId: number, telegramId: string) {
+    console.log('handleUserRank called for telegram ID:', telegramId)
     try {
       const { data: user, error } = await this.supabaseClient.rpc('get_user_by_telegram_id', {
         p_telegram_id: telegramId
       })
+
+      console.log('User data from DB:', user)
+      console.log('Error from DB:', error)
 
       if (error || !user) {
         await this.telegramAPI.sendMessage(chatId, '❌ Utilisateur non trouvé. Tapez /start pour vous inscrire.')
