@@ -1,5 +1,6 @@
 
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -32,6 +33,7 @@ interface OpenStreetMapProps {
 
 // Composant de fallback avec vraie liste si la carte ne charge pas
 const MapFallback = ({ reports, selectedReport, onReportSelect, filter }: OpenStreetMapProps) => {
+  const navigate = useNavigate();
   const filteredReports = reports.filter(report => 
     filter === 'all' || report.status === filter
   );
@@ -59,7 +61,10 @@ const MapFallback = ({ reports, selectedReport, onReportSelect, filter }: OpenSt
               className={`p-4 bg-white rounded-lg shadow-sm border cursor-pointer transition-all hover:shadow-md ${
                 selectedReport?.id === report.id ? 'ring-2 ring-green-500 border-green-500' : 'border-gray-200'
               }`}
-              onClick={() => onReportSelect(report)}
+              onClick={() => {
+                onReportSelect(report);
+                navigate(`/signalement/${report.id}`);
+              }}
             >
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center gap-3">
@@ -89,6 +94,7 @@ const MapFallback = ({ reports, selectedReport, onReportSelect, filter }: OpenSt
 };
 
 const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: OpenStreetMapProps) => {
+  const navigate = useNavigate();
   const [mapError, setMapError] = useState(false);
   const [mapLoaded, setMapLoaded] = useState(false);
   const mapRef = useRef<any>(null);
@@ -161,7 +167,10 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
             position={[report.coordinates.lat, report.coordinates.lng]}
             icon={createCustomIcon(report.status)}
             eventHandlers={{
-              click: () => onReportSelect(report)
+              click: () => {
+                onReportSelect(report);
+                navigate(`/signalement/${report.id}`);
+              }
             }}
           >
             <Popup>

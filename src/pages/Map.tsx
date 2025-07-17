@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -21,6 +22,7 @@ interface MapReport {
 }
 
 const Map = () => {
+  const navigate = useNavigate();
   const [selectedReport, setSelectedReport] = useState<MapReport | null>(null);
   const [filter, setFilter] = useState<'all' | 'pending' | 'validated'>('all');
   const [activeTab, setActiveTab] = useState<'reports' | 'leaderboard' | null>('leaderboard');
@@ -200,7 +202,10 @@ const Map = () => {
                                   className={`p-2 rounded cursor-pointer text-xs transition-all bg-accent/10 hover:bg-accent/20 ${
                                     selectedReport?.id === report.id ? 'ring-1 ring-accent' : ''
                                   }`}
-                                  onClick={() => setSelectedReport(report)}
+                                  onClick={() => {
+                                    setSelectedReport(report);
+                                    navigate(`/signalement/${report.id}`);
+                                  }}
                                 >
                                    <div className="flex items-center gap-2">
                                      <span>{getTypeIcon(report.type)}</span>
@@ -321,7 +326,10 @@ const Map = () => {
                                 className={`p-4 rounded-lg cursor-pointer transition-all bg-accent/20 border border-accent/40 hover:bg-accent/30 ${
                                   selectedReport?.id === report.id ? 'ring-2 ring-accent' : ''
                                 }`}
-                                onClick={() => setSelectedReport(report)}
+                                onClick={() => {
+                                  setSelectedReport(report);
+                                  navigate(`/signalement/${report.id}`);
+                                }}
                               >
                                 <div className="flex items-start gap-3">
                                   <span className="text-xl">{getTypeIcon(report.type)}</span>
