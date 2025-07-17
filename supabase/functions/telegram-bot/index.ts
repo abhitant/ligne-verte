@@ -92,11 +92,11 @@ serve(async (req) => {
       if (callbackData === 'show_user_rank') {
         console.log('Processing show_user_rank callback for telegram ID:', telegramId)
         
-        // Répondre au callback query immédiatement pour supprimer le loading
+        // Répondre au callback query immédiatement
         await telegramAPI.answerCallbackQuery(callback_query.id)
         
-        // Puis traiter le classement
-        await commandHandler.handleUserRank(chatId, telegramId)
+        // Test simple : envoyer juste un message basique
+        await telegramAPI.sendMessage(chatId, '🏆 Test classement - fonctionnalité en cours de développement')
         
         return new Response('OK', { status: 200 })
       }
