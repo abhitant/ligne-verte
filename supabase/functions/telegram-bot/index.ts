@@ -71,6 +71,8 @@ serve(async (req) => {
       const telegramId = callback_query.from.id.toString()
       const callbackData = callback_query.data
 
+      console.log('Callback query received:', callbackData, 'from telegram ID:', telegramId)
+
       if (callbackData === 'create_web_account') {
         await commandHandler.handleCreateWebAccount(chatId, telegramId)
         
