@@ -88,9 +88,16 @@ const Map = () => {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <CardTitle className="flex items-center gap-2 text-primary-foreground text-lg">
                 <MapPin className="w-5 h-5 text-accent animate-pulse" />
-                <span className="text-accent font-bold tracking-wider">ZONE D'INTERVENTION ({reports.length})</span>
+                <span className="text-accent font-bold tracking-wider">ZONE D'INTERVENTION</span>
               </CardTitle>
               <div className="flex flex-wrap gap-2">
+                <Button
+                  size="sm"
+                  onClick={() => setFilter('all')}
+                  className={`text-xs sm:text-sm bg-accent text-accent-foreground hover:bg-accent/80 border border-accent-foreground/30 font-bold tracking-wide ${filter === 'all' ? 'ring-2 ring-accent-foreground shadow-lg' : ''}`}
+                >
+                  SIGNALÉS ({reports.length})
+                </Button>
                 <Button
                   size="sm"
                   onClick={() => setFilter('pending')}
