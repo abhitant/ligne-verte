@@ -41,8 +41,7 @@ Gagnez des points pour chaque signalement et contribuez à améliorer notre envi
         const keyboard = {
           inline_keyboard: [
             [
-              { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' },
-              { text: '🏆 Mon classement', callback_data: 'show_user_rank' }
+              { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' }
             ]
           ]
         }
