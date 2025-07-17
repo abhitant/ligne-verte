@@ -33,6 +33,9 @@ Bonjour <b>${existingUser.pseudo}</b> ! Vous avez <b>${existingUser.points_himpa
 2. 📍 Partagez votre localisation
 3. ✅ C'est tout !
 
+<b>🆘 Aide et commandes supplémentaires :</b>
+Tapez /aide pour voir toutes les commandes disponibles et obtenir de l'aide complète.
+
 Gagnez des points pour chaque signalement et contribuez à améliorer notre environnement urbain !`
 
         const keyboard = {
