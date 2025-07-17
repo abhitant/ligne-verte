@@ -1,4 +1,3 @@
-
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import type { TelegramUpdate } from './types.ts'
@@ -195,7 +194,7 @@ Pour signaler un problème :
 
 Tapez /aide pour plus d'infos ou /carte pour voir la carte.`, {
         inline_keyboard: [
-          [{ text: '🗺️ Voir la carte', url: 'https://himpact.app/map' }]
+          [{ text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' }]
         ]
       })
       return new Response('OK', { status: 200 })
