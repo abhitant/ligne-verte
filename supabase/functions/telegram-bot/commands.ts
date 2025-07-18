@@ -36,14 +36,14 @@ Bonjour <b>${existingUser.pseudo}</b> ! Vous avez <b>${existingUser.points_himpa
 <b>🆘 Aide et commandes supplémentaires :</b>
 Tapez /aide pour voir toutes les commandes disponibles et obtenir de l'aide complète.
 
-🌐 <b>Découvrez notre plateforme :</b> https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com
+🌐 <b>Découvrez notre plateforme :</b> https://ligne-verte.fr
 
 Gagnez des points pour chaque signalement et contribuez à améliorer notre environnement urbain !`
 
         const keyboard = {
           inline_keyboard: [
             [
-              { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' }
+            { text: '🗺️ Voir la carte', url: 'https://ligne-verte.fr/map' }
             ]
           ]
         }
@@ -76,7 +76,7 @@ Pour commencer, <b>par quel nom souhaitez-vous être appelé ${userName} ?</b>
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' },
+            { text: '🗺️ Voir la carte', url: 'https://ligne-verte.fr/map' },
             { text: '🏆 Classement', callback_data: 'show_leaderboard' }
           ]
         ]
@@ -167,7 +167,7 @@ Votre inscription est terminée. Vous commencez avec <b>${user.points_himpact} p
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' }
+            { text: '🗺️ Voir la carte', url: 'https://ligne-verte.fr/map' }
           ]
         ]
       }
@@ -211,7 +211,7 @@ Votre compte Telegram est déjà lié à un compte web.
         const keyboard = {
           inline_keyboard: [
             [
-              { text: '🌐 Aller sur la plateforme', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com' }
+              { text: '🌐 Aller sur la plateforme', url: 'https://ligne-verte.fr' }
             ]
           ]
         }
@@ -281,7 +281,7 @@ Votre compte Telegram est maintenant lié à un compte web !
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🌐 Aller sur la plateforme', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com' }
+            { text: '🌐 Aller sur la plateforme', url: 'https://ligne-verte.fr' }
           ]
         ]
       }
@@ -354,7 +354,7 @@ Envoyez une photo d'un problème environnemental pour gagner vos premiers points
         const keyboard = {
           inline_keyboard: [
             [
-              { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' }
+              { text: '🗺️ Voir la carte', url: 'https://ligne-verte.fr/map' }
             ]
           ]
         }
@@ -397,7 +397,7 @@ Envoyez une photo d'un problème environnemental pour gagner vos premiers points
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' },
+            { text: '🗺️ Voir la carte', url: 'https://ligne-verte.fr/map' },
             { text: '🏆 Top 10', callback_data: 'show_leaderboard' }
           ]
         ]
@@ -449,7 +449,7 @@ Envoyez une photo d'un problème environnemental pour gagner vos premiers points
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' }
+            { text: '🗺️ Voir la carte', url: 'https://ligne-verte.fr/map' }
           ]
         ]
       }
@@ -479,7 +479,7 @@ Découvrez tous les signalements de la communauté sur notre carte interactive !
     const keyboard = {
       inline_keyboard: [
         [
-          { text: '🗺️ Ouvrir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' }
+          { text: '🗺️ Ouvrir la carte', url: 'https://ligne-verte.fr/map' }
         ]
       ]
     }
@@ -511,7 +511,7 @@ Découvrez tous les signalements de la communauté sur notre carte interactive !
     const keyboard = {
       inline_keyboard: [
         [
-          { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' },
+            { text: '🗺️ Voir la carte', url: 'https://ligne-verte.fr/map' },
           { text: '🏆 Classement', callback_data: 'show_leaderboard' }
         ]
       ]
@@ -557,7 +557,7 @@ Découvrez tous les signalements de la communauté sur notre carte interactive !
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir la carte', url: 'https://399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9.lovableproject.com/map' },
+            { text: '🗺️ Voir la carte', url: 'https://ligne-verte.fr/map' },
             { text: '📊 Mes points', callback_data: 'show_points' }
           ]
         ]
