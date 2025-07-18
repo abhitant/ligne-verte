@@ -109,7 +109,7 @@ Votre signalement est maintenant visible sur la carte et sera examiné par nos �
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir carte', url: 'https://ligne-verte.fr/map' },
+            { text: '🗺️ Voir carte', url: 'https://ligne-verte.lovable.app/map' },
             { text: '💰 Mes points', callback_data: 'points' }
           ]
         ]

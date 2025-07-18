@@ -194,7 +194,7 @@ Pour signaler un problème :
 
 Tapez /aide pour plus d'infos ou /carte pour voir la carte.`, {
         inline_keyboard: [
-          [{ text: '🗺️ Voir la carte', url: 'https://ligne-verte.fr/map' }]
+          [{ text: '🗺️ Voir la carte', url: 'https://ligne-verte.lovable.app/map' }]
         ]
       })
       return new Response('OK', { status: 200 })
