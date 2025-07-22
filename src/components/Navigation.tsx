@@ -26,9 +26,14 @@ const Navigation = () => {
           {/* Logo */}
           <div className="flex items-center flex-shrink-0">
             <Link to="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center">
-                <Leaf className="text-white w-4 h-4 sm:w-6 sm:h-6" />
-              </div>
+              <img 
+                src="/lovable-uploads/2c2e9604-0734-410b-bfd5-a4068be6ad1c.png" 
+                alt="La Ligne Verte Logo" 
+                className="w-8 h-8 sm:w-10 sm:h-10"
+                style={{
+                  filter: 'hue-rotate(20deg) saturate(1.5) brightness(1.1)'
+                }}
+              />
               <div className="flex flex-col">
                 <span className="text-lg sm:text-xl font-bold text-primary-foreground">La Ligne Verte</span>
                 <span className="text-xs text-primary-foreground/70 hidden sm:block">par Greenpill civ 🇨🇮</span>
