@@ -27,12 +27,9 @@ const Navigation = () => {
           <div className="flex items-center flex-shrink-0">
             <Link to="/" className="flex items-center space-x-2">
               <img 
-                src="/lovable-uploads/2c2e9604-0734-410b-bfd5-a4068be6ad1c.png" 
+                src="/lovable-uploads/82d44cbc-fa64-4191-8240-14779720377a.png" 
                 alt="La Ligne Verte Logo" 
                 className="w-8 h-8 sm:w-10 sm:h-10"
-                style={{
-                  filter: 'hue-rotate(20deg) saturate(1.5) brightness(1.1)'
-                }}
               />
               <div className="flex flex-col">
                 <span className="text-lg sm:text-xl font-bold text-primary-foreground">La Ligne Verte</span>
