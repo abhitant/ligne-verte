@@ -58,6 +58,7 @@ export type Database = {
           created_at: string | null
           file_id: string
           id: string
+          image_hash: string | null
           photo_url: string | null
           telegram_id: string
         }
@@ -65,6 +66,7 @@ export type Database = {
           created_at?: string | null
           file_id: string
           id?: string
+          image_hash?: string | null
           photo_url?: string | null
           telegram_id: string
         }
@@ -72,6 +74,7 @@ export type Database = {
           created_at?: string | null
           file_id?: string
           id?: string
+          image_hash?: string | null
           photo_url?: string | null
           telegram_id?: string
         }
@@ -84,6 +87,7 @@ export type Database = {
           created_at: string | null
           description: string | null
           id: string
+          image_hash: string | null
           is_cleaned: boolean | null
           location_lat: number
           location_lng: number
@@ -100,6 +104,7 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           id?: string
+          image_hash?: string | null
           is_cleaned?: boolean | null
           location_lat: number
           location_lng: number
@@ -116,6 +121,7 @@ export type Database = {
           created_at?: string | null
           description?: string | null
           id?: string
+          image_hash?: string | null
           is_cleaned?: boolean | null
           location_lat?: number
           location_lng?: number
@@ -303,6 +309,7 @@ export type Database = {
           created_at: string | null
           description: string | null
           id: string
+          image_hash: string | null
           is_cleaned: boolean | null
           location_lat: number
           location_lng: number
@@ -342,6 +349,7 @@ export type Database = {
           created_at: string | null
           file_id: string
           id: string
+          image_hash: string | null
           photo_url: string | null
           telegram_id: string
         }
@@ -352,6 +360,7 @@ export type Database = {
           created_at: string | null
           file_id: string
           id: string
+          image_hash: string | null
           photo_url: string | null
           telegram_id: string
         }
@@ -400,6 +409,7 @@ export type Database = {
           created_at: string | null
           description: string | null
           id: string
+          image_hash: string | null
           is_cleaned: boolean | null
           location_lat: number
           location_lng: number
@@ -417,6 +427,23 @@ export type Database = {
           created_at: string | null
           file_id: string
           id: string
+          image_hash: string | null
+          photo_url: string | null
+          telegram_id: string
+        }
+      }
+      upsert_pending_report_with_ai_data: {
+        Args: {
+          p_telegram_id: string
+          p_photo_url: string
+          p_image_hash: string
+          p_ai_validated?: boolean
+        }
+        Returns: {
+          created_at: string | null
+          file_id: string
+          id: string
+          image_hash: string | null
           photo_url: string | null
           telegram_id: string
         }
@@ -427,6 +454,7 @@ export type Database = {
           created_at: string | null
           file_id: string
           id: string
+          image_hash: string | null
           photo_url: string | null
           telegram_id: string
         }
