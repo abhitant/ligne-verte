@@ -1,17 +1,17 @@
 
 import { TelegramAPI } from './telegram-api.ts'
 import type { TelegramUpdate } from './types.ts'
-import { WorkingAnalyzer } from './working-analyzer.ts'
+import { AutomaticAIAnalyzer } from './automatic-ai-analyzer.ts'
 
 export class PhotoHandler {
   private telegramAPI: TelegramAPI
   private supabaseClient: any
-  private analyzer: WorkingAnalyzer
+  private aiAnalyzer: AutomaticAIAnalyzer
 
   constructor(telegramAPI: TelegramAPI, supabaseClient: any) {
     this.telegramAPI = telegramAPI
     this.supabaseClient = supabaseClient
-    this.analyzer = new WorkingAnalyzer()
+    this.aiAnalyzer = new AutomaticAIAnalyzer()
   }
 
   async handlePhoto(chatId: number, telegramId: string, photos: any[], telegramUsername?: string, firstName?: string) {
@@ -79,22 +79,22 @@ export class PhotoHandler {
       const photoUint8Array = new Uint8Array(photoArrayBuffer)
 
       // Message d'analyse en cours
-      await this.telegramAPI.sendMessage(chatId, '🔍 Merci pour votre photo ! Analyse en cours...')
+      await this.telegramAPI.sendMessage(chatId, '🤖 Analyse automatique par IA en cours... Détection des déchets.')
 
-      // Analyser l'image avec le système robuste
-      console.log('🔍 Starting robust image analysis...')
+      // Analyser l'image avec l'IA automatique stricte
+      console.log('🤖 Starting strict automatic AI analysis...')
       let analysisResult
       try {
-        analysisResult = await this.analyzer.analyzeImage(photoUint8Array)
-        console.log('✅ Analysis completed successfully:', analysisResult)
+        analysisResult = await this.aiAnalyzer.analyzeImage(photoUint8Array)
+        console.log('🤖 AI analysis completed:', analysisResult)
       } catch (analysisError) {
-        console.error('❌ Analysis failed completely:', analysisError)
-        await this.telegramAPI.sendMessage(chatId, '⚠️ Problème technique temporaire. Votre photo sera traitée manuellement.')
+        console.error('❌ AI analysis failed completely:', analysisError)
+        await this.telegramAPI.sendMessage(chatId, '⚠️ L\'analyse IA automatique a échoué. Veuillez réessayer dans quelques instants.')
         
-        // Fallback processing
+        // En cas d'erreur, rejeter l'image
         analysisResult = {
-          isGarbageDetected: true, // Allow manual review
-          detectedObjects: [{ label: 'Erreur technique - examen manuel requis', score: 0 }],
+          isGarbageDetected: false,
+          detectedObjects: [{ label: 'Erreur système - réessayez plus tard', score: 0 }],
           imageHash: await this.calculateFallbackHash(photoUint8Array)
         }
       }
@@ -114,17 +114,17 @@ export class PhotoHandler {
         return { success: false, error: 'Duplicate image detected' }
       }
 
-      // Envoyer le message de validation
-      const validationMessage = this.analyzer.generateValidationMessage(
+      // Envoyer le message de validation automatique IA
+      const validationMessage = this.aiAnalyzer.generateValidationMessage(
         analysisResult.isGarbageDetected,
         analysisResult.detectedObjects
       )
       await this.telegramAPI.sendMessage(chatId, validationMessage)
 
-      // Si l'analyse rejette la photo, arrêter le processus
+      // Si l'IA ne détecte pas de déchets, REJETER automatiquement
       if (!analysisResult.isGarbageDetected) {
-        console.log('❌ Image rejected by analysis, stopping process')
-        return { success: false, error: 'Image rejected by analysis system' }
+        console.log('❌ AI rejected image - no garbage detected, stopping process')
+        return { success: false, error: 'AI automatic rejection - no garbage detected' }
       }
 
       // Générer un nom de fichier unique
