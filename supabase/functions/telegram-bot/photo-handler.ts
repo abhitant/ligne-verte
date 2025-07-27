@@ -1,14 +1,17 @@
 
 import { TelegramAPI } from './telegram-api.ts'
 import type { TelegramUpdate } from './types.ts'
+import { AIAnalyzer } from './ai-analyzer.ts'
 
 export class PhotoHandler {
   private telegramAPI: TelegramAPI
   private supabaseClient: any
+  private aiAnalyzer: AIAnalyzer
 
   constructor(telegramAPI: TelegramAPI, supabaseClient: any) {
     this.telegramAPI = telegramAPI
     this.supabaseClient = supabaseClient
+    this.aiAnalyzer = new AIAnalyzer()
   }
 
   async handlePhoto(chatId: number, telegramId: string, photos: any[], telegramUsername?: string, firstName?: string) {
@@ -75,12 +78,48 @@ export class PhotoHandler {
       const photoArrayBuffer = await photoBlob.arrayBuffer()
       const photoUint8Array = new Uint8Array(photoArrayBuffer)
 
+      // Message d'analyse en cours
+      await this.telegramAPI.sendMessage(chatId, '📸 Merci pour votre photo ! Analyse en cours pour détecter la présence de déchets. Veuillez patienter un instant...')
+
+      // Analyser l'image avec l'IA
+      console.log('🤖 Starting AI analysis...')
+      const analysisResult = await this.aiAnalyzer.analyzeImage(photoUint8Array)
+      console.log('🤖 AI analysis completed:', analysisResult)
+
+      // Vérifier les doublons d'images via hash MD5
+      console.log('🔍 Checking for duplicate images...')
+      const { data: duplicateImages, error: duplicateError } = await this.supabaseClient
+        .from('reports')
+        .select('id')
+        .eq('image_hash', analysisResult.imageHash)
+        .limit(1)
+
+      if (duplicateError) {
+        console.error('❌ Error checking duplicate images:', duplicateError)
+      } else if (duplicateImages && duplicateImages.length > 0) {
+        await this.telegramAPI.sendMessage(chatId, '🚫 <b>Signalement dupliqué !</b> Cette photo a déjà été signalée. Merci pour votre vigilance, mais nous avons déjà cette information.')
+        return { success: false, error: 'Duplicate image detected' }
+      }
+
+      // Envoyer le message de validation IA
+      const validationMessage = this.aiAnalyzer.generateValidationMessage(
+        analysisResult.isGarbageDetected,
+        analysisResult.detectedObjects
+      )
+      await this.telegramAPI.sendMessage(chatId, validationMessage)
+
+      // Si aucun déchet détecté, arrêter le processus
+      if (!analysisResult.isGarbageDetected) {
+        console.log('❌ No garbage detected, stopping process')
+        return { success: false, error: 'No garbage detected by AI' }
+      }
+
       // Générer un nom de fichier unique
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
       const fileName = `${telegramId}-${timestamp}-${bestPhoto.file_id}.jpg`
       const filePath = `reports/${fileName}`
 
-      console.log('📤 Uploading photo to Supabase Storage:', filePath)
+      console.log('📤 Uploading validated photo to Supabase Storage:', filePath)
 
       // Uploader vers Supabase Storage
       const { data: uploadData, error: uploadError } = await this.supabaseClient.storage
@@ -107,34 +146,38 @@ export class PhotoHandler {
       const supabasePhotoUrl = publicUrlData.publicUrl
       console.log('📸 Supabase photo URL:', supabasePhotoUrl)
 
-      // Sauvegarder dans pending_reports avec l'URL Supabase
-      console.log('💾 Calling upsert_pending_report with Supabase URL:', {
+      // Sauvegarder dans pending_reports avec les données d'analyse IA
+      console.log('💾 Saving pending report with AI validation:', {
         p_telegram_id: telegramId,
-        p_photo_url: supabasePhotoUrl
+        p_photo_url: supabasePhotoUrl,
+        image_hash: analysisResult.imageHash,
+        ai_validated: true
       })
 
-      const { data: pendingReport, error: pendingError } = await this.supabaseClient.rpc('upsert_pending_report_with_url', {
+      const { data: pendingReport, error: pendingError } = await this.supabaseClient.rpc('upsert_pending_report_with_ai_data', {
         p_telegram_id: telegramId,
-        p_photo_url: supabasePhotoUrl
-      })
-
-      console.log('💾 Pending report upsert result:', {
-        pendingReport,
-        pendingError,
-        errorMessage: pendingError?.message,
-        errorDetails: pendingError?.details
+        p_photo_url: supabasePhotoUrl,
+        p_image_hash: analysisResult.imageHash,
+        p_ai_validated: true
       })
 
       if (pendingError) {
         console.error('❌ Error saving pending report:', pendingError)
-        await this.telegramAPI.sendMessage(chatId, '❌ Erreur lors de la sauvegarde de la photo. Réessayez.')
-        return { success: false, error: pendingError }
+        // Fallback to the existing function if the new one doesn't exist yet
+        const { data: fallbackReport, error: fallbackError } = await this.supabaseClient.rpc('upsert_pending_report_with_url', {
+          p_telegram_id: telegramId,
+          p_photo_url: supabasePhotoUrl
+        })
+        
+        if (fallbackError) {
+          console.error('❌ Error with fallback save:', fallbackError)
+          await this.telegramAPI.sendMessage(chatId, '❌ Erreur lors de la sauvegarde de la photo. Réessayez.')
+          return { success: false, error: fallbackError }
+        }
       }
 
-      // Message de succès uniquement si tout s'est bien passé
-      await this.telegramAPI.sendMessage(chatId, `📸 <b>Photo reçue et sauvegardée !</b>
-
-Maintenant, partagez votre localisation pour finaliser le signalement.
+      // Message de succès avec demande de localisation
+      await this.telegramAPI.sendMessage(chatId, `📍 N'oubliez pas d'envoyer la <b>localisation géographique</b> de l'endroit pour que nous puissions situer le problème sur la carte et agir ! Vous pouvez l'envoyer dans un message séparé.
 
 💡 <i>Utilisez le bouton "📍 Partager la localisation" de Telegram</i>`)
 

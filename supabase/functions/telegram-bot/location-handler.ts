@@ -42,6 +42,35 @@ export class LocationHandler {
         console.log('Created new user:', newUser)
       }
 
+      // Vérifier les doublons de localisation (proximité et récence)
+      console.log('🔍 Checking for duplicate locations...')
+      const DUPLICATE_RADIUS_METERS = 50
+      const DUPLICATE_TIME_WINDOW_HOURS = 24
+      
+      // Calculer la tolérance en degrés
+      const latToleranceDeg = DUPLICATE_RADIUS_METERS / 111139.0 // 1 degré de latitude ≈ 111.139 km
+      const lonToleranceDeg = DUPLICATE_RADIUS_METERS / (111139.0 * Math.abs(Math.cos(latitude * Math.PI / 180)))
+      
+      const timeLimit = new Date()
+      timeLimit.setHours(timeLimit.getHours() - DUPLICATE_TIME_WINDOW_HOURS)
+      
+      const { data: nearbyReports, error: nearbyError } = await this.supabaseClient
+        .from('reports')
+        .select('id, created_at')
+        .gte('location_lat', latitude - latToleranceDeg)
+        .lte('location_lat', latitude + latToleranceDeg)
+        .gte('location_lng', longitude - lonToleranceDeg)
+        .lte('location_lng', longitude + lonToleranceDeg)
+        .gte('created_at', timeLimit.toISOString())
+        .limit(1)
+
+      if (nearbyError) {
+        console.error('❌ Error checking nearby reports:', nearbyError)
+      } else if (nearbyReports && nearbyReports.length > 0) {
+        await this.telegramAPI.sendMessage(chatId, `📍 <b>Signalement dupliqué !</b> Un signalement très proche de cette localisation (moins de ${DUPLICATE_RADIUS_METERS}m) a déjà été enregistré dans les dernières ${DUPLICATE_TIME_WINDOW_HOURS} heures. Merci de ne pas dupliquer les rapports !`)
+        return { success: false, error: 'Duplicate location detected' }
+      }
+
       // Récupérer le signalement en attente avec l'URL de la photo
       const { data: pendingReport, error: pendingError } = await this.supabaseClient.rpc('get_and_delete_pending_report_with_url', {
         p_telegram_id: telegramId
@@ -66,14 +95,22 @@ Les deux sont nécessaires pour créer un signalement complet.`)
         return { success: false, error: 'No pending photo found' }
       }
 
-      // Créer le signalement avec la photo en attente
-      const { data: report, error: reportError } = await this.supabaseClient.rpc('create_report', {
-        p_user_telegram_id: telegramId,
-        p_photo_url: pendingReport.photo_url,
-        p_description: 'Signalement via Telegram',
-        p_location_lat: latitude,
-        p_location_lng: longitude
-      })
+      // Créer le signalement avec la photo en attente et les données IA
+      const { data: report, error: reportError } = await this.supabaseClient
+        .from('reports')
+        .insert({
+          user_telegram_id: telegramId,
+          photo_url: pendingReport.photo_url,
+          description: 'Signalement via Telegram - Validé par IA',
+          location_lat: latitude,
+          location_lng: longitude,
+          status: 'validated_ai',
+          image_hash: pendingReport.image_hash || null,
+          severity_level: 1,
+          points_awarded: 10
+        })
+        .select()
+        .single()
 
       if (reportError) {
         console.error('Error creating report:', reportError)
@@ -94,15 +131,18 @@ Les deux sont nécessaires pour créer un signalement complet.`)
       const currentPoints = updatedUser?.points_himpact || (user?.points_himpact || 0) + 10
       const userPseudo = updatedUser?.pseudo || user?.pseudo || firstName || `User ${telegramId.slice(-4)}`
 
-      const successText = `✅ <b>Signalement créé avec succès !</b>
+      const successText = `🥳 <b>Merci pour votre contribution !</b> Votre signalement a été enregistré avec succès et validé par notre IA.
 
+📍 <b>Localisation reçue !</b>
+Latitude : ${latitude.toFixed(6)}
+Longitude : ${longitude.toFixed(6)}
+
+🤖 <b>Statut :</b> Validé automatiquement par IA
 🎯 <b>+10 points Himpact</b> gagnés !
 💰 Vous avez maintenant <b>${currentPoints} points</b>
-
-📍 <b>Localisation :</b> ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
 👤 <b>Signalé par :</b> ${userPseudo}
 
-Votre signalement est maintenant visible sur la carte et sera examiné par nos équipes.
+Nous vous remercions de votre engagement pour une ville plus verte ! 💚
 
 <b>Continuez à contribuer pour améliorer notre environnement !</b> 🌱`
 
