@@ -1,17 +1,17 @@
 
 import { TelegramAPI } from './telegram-api.ts'
 import type { TelegramUpdate } from './types.ts'
-import { ReliableAnalyzer } from './reliable-analyzer.ts'
+import { WasteSorterAnalyzer } from './waste-sorter-analyzer.ts'
 
 export class PhotoHandler {
   private telegramAPI: TelegramAPI
   private supabaseClient: any
-  private analyzer: ReliableAnalyzer
+  private wasteAnalyzer: WasteSorterAnalyzer
 
   constructor(telegramAPI: TelegramAPI, supabaseClient: any) {
     this.telegramAPI = telegramAPI
     this.supabaseClient = supabaseClient
-    this.analyzer = new ReliableAnalyzer()
+    this.wasteAnalyzer = new WasteSorterAnalyzer()
   }
 
   async handlePhoto(chatId: number, telegramId: string, photos: any[], telegramUsername?: string, firstName?: string) {
@@ -79,23 +79,25 @@ export class PhotoHandler {
       const photoUint8Array = new Uint8Array(photoArrayBuffer)
 
       // Message d'analyse en cours
-      await this.telegramAPI.sendMessage(chatId, '🔍 Analyse de votre photo en cours...')
+      await this.telegramAPI.sendMessage(chatId, '🗂️ Classification automatique des déchets en cours... Analyse IA avancée.')
 
-      // Analyser l'image avec le système fiable
-      console.log('🔍 Starting reliable analysis...')
+      // Analyser et classifier les déchets avec l'IA avancée
+      console.log('🗂️ Starting waste classification analysis...')
       let analysisResult
       try {
-        analysisResult = await this.analyzer.analyzeImage(photoUint8Array)
-        console.log('✅ Reliable analysis completed:', analysisResult)
+        analysisResult = await this.wasteAnalyzer.analyzeImage(photoUint8Array)
+        console.log('✅ Waste classification completed:', analysisResult)
       } catch (analysisError) {
-        console.error('❌ Analysis failed:', analysisError)
-        await this.telegramAPI.sendMessage(chatId, '⚠️ Erreur d\'analyse. Votre photo sera traitée avec les paramètres par défaut.')
+        console.error('❌ Waste classification failed:', analysisError)
+        await this.telegramAPI.sendMessage(chatId, '⚠️ Erreur de classification. Traitement en mode standard.')
         
-        // Fallback avec acceptation par défaut
+        // Fallback simple
         analysisResult = {
           isGarbageDetected: true,
-          detectedObjects: [{ label: 'Traitement par défaut - photo acceptée', score: 70 }],
-          imageHash: await this.calculateFallbackHash(photoUint8Array)
+          detectedObjects: [{ label: 'Classification standard - déchet détecté', score: 70 }],
+          imageHash: await this.calculateFallbackHash(photoUint8Array),
+          wasteCategory: 'GENERAL',
+          disposalInstructions: 'Signalement traité en mode standard.'
         }
       }
 
@@ -114,10 +116,12 @@ export class PhotoHandler {
         return { success: false, error: 'Duplicate image detected' }
       }
 
-      // Envoyer le message de validation
-      const validationMessage = this.analyzer.generateValidationMessage(
+      // Envoyer le message de validation avec classification
+      const validationMessage = this.wasteAnalyzer.generateValidationMessage(
         analysisResult.isGarbageDetected,
-        analysisResult.detectedObjects
+        analysisResult.detectedObjects,
+        (analysisResult as any).wasteCategory,
+        (analysisResult as any).disposalInstructions
       )
       await this.telegramAPI.sendMessage(chatId, validationMessage)
 
