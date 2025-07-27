@@ -1,17 +1,17 @@
 
 import { TelegramAPI } from './telegram-api.ts'
 import type { TelegramUpdate } from './types.ts'
-import { OpenAIAnalyzer } from './openai-analyzer.ts'
+import { HuggingFaceAnalyzer } from './huggingface-analyzer.ts'
 
 export class PhotoHandler {
   private telegramAPI: TelegramAPI
   private supabaseClient: any
-  private aiAnalyzer: OpenAIAnalyzer
+  private aiAnalyzer: HuggingFaceAnalyzer
 
   constructor(telegramAPI: TelegramAPI, supabaseClient: any) {
     this.telegramAPI = telegramAPI
     this.supabaseClient = supabaseClient
-    this.aiAnalyzer = new OpenAIAnalyzer()
+    this.aiAnalyzer = new HuggingFaceAnalyzer()
   }
 
   async handlePhoto(chatId: number, telegramId: string, photos: any[], telegramUsername?: string, firstName?: string) {
@@ -79,17 +79,17 @@ export class PhotoHandler {
       const photoUint8Array = new Uint8Array(photoArrayBuffer)
 
       // Message d'analyse en cours
-      await this.telegramAPI.sendMessage(chatId, '🤖 Merci pour votre photo ! Analyse IA en cours pour détecter les déchets... Veuillez patienter un instant.')
+      await this.telegramAPI.sendMessage(chatId, '🤖 Merci pour votre photo ! Analyse IA gratuite en cours pour détecter les déchets... Veuillez patienter.')
 
-      // Analyser l'image avec OpenAI Vision
-      console.log('🤖 Starting OpenAI Vision analysis...')
+      // Analyser l'image avec Hugging Face (API gratuite)
+      console.log('🤖 Starting Hugging Face analysis...')
       let analysisResult
       try {
         analysisResult = await this.aiAnalyzer.analyzeImage(photoUint8Array)
-        console.log('🤖 OpenAI analysis completed:', analysisResult)
+        console.log('🤖 Hugging Face analysis completed:', analysisResult)
       } catch (aiError) {
-        console.error('❌ OpenAI analysis failed:', aiError)
-        await this.telegramAPI.sendMessage(chatId, '⚠️ Notre système d\'analyse IA rencontre des difficultés temporaires. Votre photo sera examinée manuellement.')
+        console.error('❌ Hugging Face analysis failed:', aiError)
+        await this.telegramAPI.sendMessage(chatId, '⚠️ L\'analyse IA gratuite rencontre des difficultés temporaires. Votre photo sera examinée manuellement.')
         
         // Fallback manual processing
         analysisResult = {
