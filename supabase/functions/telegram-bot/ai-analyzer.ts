@@ -28,8 +28,8 @@ export class AIAnalyzer {
 
     try {
       console.log('🤖 Initializing AI object detection model...')
-      // Use a lighter object detection model suitable for edge functions
-      this.detector = await pipeline('object-detection', 'Xenova/detr-resnet-50', {
+      // Use a simpler, faster model for edge functions
+      this.detector = await pipeline('image-classification', 'Xenova/vit-base-patch16-224', {
         device: 'cpu' // Use CPU for edge functions
       })
       this.initialized = true
@@ -50,7 +50,7 @@ export class AIAnalyzer {
     }
 
     try {
-      // Calculate MD5 hash of the image
+      // Calculate hash of the image
       const imageHash = await this.calculateMD5Hash(imageData)
       console.log('📊 Image hash calculated:', imageHash.substring(0, 8) + '...')
 
@@ -65,17 +65,34 @@ export class AIAnalyzer {
       let isGarbageDetected = false
       const detectedObjects: Array<{ label: string; score: number }> = []
 
-      for (const result of results) {
-        const { label, score } = result
-        const scorePercent = Math.round(score * 100)
-        
-        detectedObjects.push({ label, score: scorePercent })
-        console.log(`🎯 Detected: ${label} (${scorePercent}%)`)
+      // Process classification results
+      if (Array.isArray(results)) {
+        for (const result of results.slice(0, 10)) { // Top 10 predictions
+          const { label, score } = result
+          const scorePercent = Math.round(score * 100)
+          
+          detectedObjects.push({ label, score: scorePercent })
+          console.log(`🎯 Detected: ${label} (${scorePercent}%)`)
 
-        // Check if detected object is potential garbage with sufficient confidence
-        if (this.POTENTIAL_GARBAGE_CLASSES.includes(label) && score >= this.CONFIDENCE_THRESHOLD) {
-          isGarbageDetected = true
-          console.log(`✅ Garbage detected: ${label} with ${scorePercent}% confidence`)
+          // Check for garbage-related keywords in labels
+          const lowerLabel = label.toLowerCase()
+          const garbageKeywords = [
+            'trash', 'garbage', 'waste', 'litter', 'bottle', 'can', 'cup', 'bag', 
+            'food', 'wrapper', 'container', 'debris', 'rubbish', 'junk'
+          ]
+          
+          const isGarbageKeyword = garbageKeywords.some(keyword => lowerLabel.includes(keyword))
+          
+          if (isGarbageKeyword && score >= 0.3) { // Lower threshold for keywords
+            isGarbageDetected = true
+            console.log(`✅ Garbage detected: ${label} with ${scorePercent}% confidence`)
+          }
+          
+          // Also check our predefined garbage classes with higher threshold
+          if (this.POTENTIAL_GARBAGE_CLASSES.includes(lowerLabel) && score >= this.CONFIDENCE_THRESHOLD) {
+            isGarbageDetected = true
+            console.log(`✅ Garbage detected from predefined list: ${label} with ${scorePercent}% confidence`)
+          }
         }
       }
 
@@ -88,14 +105,22 @@ export class AIAnalyzer {
       }
     } catch (error) {
       console.error('❌ AI analysis error:', error)
-      throw error
+      // Fallback: if AI fails, assume it might be garbage to avoid blocking legitimate reports
+      const imageHash = await this.calculateMD5Hash(imageData)
+      console.log('⚠️ AI analysis failed, using fallback detection')
+      return {
+        isGarbageDetected: true, // Fallback to allowing the photo
+        detectedObjects: [{ label: 'AI analysis failed - manual review needed', score: 50 }],
+        imageHash
+      }
     }
   }
 
   private async calculateMD5Hash(data: Uint8Array): Promise<string> {
-    const hashBuffer = await crypto.subtle.digest('MD5', data)
+    // Use SHA-256 since MD5 is not available in crypto.subtle
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data)
     const hashArray = Array.from(new Uint8Array(hashBuffer))
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 32) // Truncate to simulate MD5 length
   }
 
   private uint8ArrayToBase64(uint8Array: Uint8Array): string {
@@ -112,6 +137,10 @@ export class AIAnalyzer {
     detectedObjects: Array<{ label: string; score: number }>
   ): string {
     if (isGarbageDetected) {
+      const hasAIFailure = detectedObjects.some(obj => obj.label.includes('AI analysis failed'))
+      if (hasAIFailure) {
+        return "⚠️ <b>Image acceptée !</b> Notre système d'analyse automatique a rencontré un problème technique, mais votre photo a été acceptée pour examen manuel. Merci pour votre contribution !"
+      }
       return "✅ <b>Image validée !</b> Des éléments ressemblant à des ordures ont été détectés. C'est une excellente contribution !"
     } else {
       let message = "❌ <b>Votre image n'a pas été détectée comme une ordure.</b> Aucun déchet clair n'a été identifié avec une confiance suffisante dans cette photo.\n\n"

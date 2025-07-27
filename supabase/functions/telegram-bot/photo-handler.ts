@@ -83,8 +83,21 @@ export class PhotoHandler {
 
       // Analyser l'image avec l'IA
       console.log('🤖 Starting AI analysis...')
-      const analysisResult = await this.aiAnalyzer.analyzeImage(photoUint8Array)
-      console.log('🤖 AI analysis completed:', analysisResult)
+      let analysisResult
+      try {
+        analysisResult = await this.aiAnalyzer.analyzeImage(photoUint8Array)
+        console.log('🤖 AI analysis completed:', analysisResult)
+      } catch (aiError) {
+        console.error('❌ AI analysis failed completely:', aiError)
+        await this.telegramAPI.sendMessage(chatId, '⚠️ Notre système d\'analyse automatique rencontre des difficultés. Votre photo sera examinée manuellement. Merci pour votre patience.')
+        
+        // Fallback manual processing
+        analysisResult = {
+          isGarbageDetected: true, // Allow manual review
+          detectedObjects: [{ label: 'Manual review required', score: 0 }],
+          imageHash: await this.calculateFallbackHash(photoUint8Array)
+        }
+      }
 
       // Vérifier les doublons d'images via hash MD5
       console.log('🔍 Checking for duplicate images...')
@@ -186,6 +199,18 @@ export class PhotoHandler {
       console.error('❌ Photo processing error:', error)
       await this.telegramAPI.sendMessage(chatId, '❌ Erreur lors du traitement de la photo')
       return { success: false, error }
+    }
+  }
+
+  private async calculateFallbackHash(data: Uint8Array): Promise<string> {
+    try {
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data)
+      const hashArray = Array.from(new Uint8Array(hashBuffer))
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 32)
+    } catch (error) {
+      console.error('❌ Error calculating fallback hash:', error)
+      // Ultimate fallback: use timestamp + size
+      return `fallback_${Date.now()}_${data.length}`
     }
   }
 }
