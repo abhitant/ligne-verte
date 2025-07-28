@@ -81,8 +81,8 @@ export class PhotoHandler {
       // Message d'analyse en cours
       await this.telegramAPI.sendMessage(chatId, '🗂️ Classification automatique des déchets en cours... Analyse IA avancée.')
 
-      // Analyser l'image avec l'edge function analyze-image
-      console.log('🗂️ Starting AI image analysis via edge function...')
+      // Analyser l'image avec l'edge function analyze-image  
+      console.log('🚀 NOUVELLE VERSION - Starting AI image analysis via edge function...')
       let analysisResult
       try {
         const analyzeResponse = await this.supabaseClient.functions.invoke('analyze-image', {
