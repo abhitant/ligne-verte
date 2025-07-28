@@ -179,18 +179,21 @@ export class PhotoHandler {
       const supabasePhotoUrl = publicUrlData.publicUrl
       console.log('📸 Supabase photo URL:', supabasePhotoUrl)
 
-      // Sauvegarder dans pending_reports avec les données d'analyse IA
-      console.log('💾 Saving pending report with AI validation:', {
-        p_telegram_id: telegramId,
-        p_photo_url: supabasePhotoUrl,
-        image_hash: analysisResult.imageHash,
-        ai_validated: true
-      })
-
-      const { data: pendingReport, error: pendingError } = await this.supabaseClient.rpc('upsert_pending_report_with_ai_data', {
+      // Sauvegarder dans pending_reports avec les données de classification
+      console.log('💾 Saving pending report with waste classification:', {
         p_telegram_id: telegramId,
         p_photo_url: supabasePhotoUrl,
         p_image_hash: analysisResult.imageHash,
+        p_waste_category: (analysisResult as any).wasteCategory,
+        p_disposal_instructions: (analysisResult as any).disposalInstructions
+      })
+
+      const { data: pendingReport, error: pendingError } = await this.supabaseClient.rpc('upsert_pending_report_with_waste_data', {
+        p_telegram_id: telegramId,
+        p_photo_url: supabasePhotoUrl,
+        p_image_hash: analysisResult.imageHash,
+        p_waste_category: (analysisResult as any).wasteCategory,
+        p_disposal_instructions: (analysisResult as any).disposalInstructions,
         p_ai_validated: true
       })
 

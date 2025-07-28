@@ -95,17 +95,19 @@ Les deux sont nécessaires pour créer un signalement complet.`)
         return { success: false, error: 'No pending photo found' }
       }
 
-      // Créer le signalement avec la photo en attente et les données IA
+      // Créer le signalement avec la photo en attente et les données de classification
       const { data: report, error: reportError } = await this.supabaseClient
         .from('reports')
         .insert({
           user_telegram_id: telegramId,
           photo_url: pendingReport.photo_url,
-          description: 'Signalement via Telegram - Validé par IA',
+          description: `Signalement via Telegram - ${pendingReport.waste_category ? `Type: ${pendingReport.waste_category}` : 'Validé par IA'}`,
           location_lat: latitude,
           location_lng: longitude,
           status: 'validated_ai',
           image_hash: pendingReport.image_hash || null,
+          waste_category: pendingReport.waste_category || 'GENERAL',
+          disposal_instructions: pendingReport.disposal_instructions || null,
           severity_level: 1,
           points_awarded: 10
         })
@@ -131,11 +133,24 @@ Les deux sont nécessaires pour créer un signalement complet.`)
       const currentPoints = updatedUser?.points_himpact || (user?.points_himpact || 0) + 10
       const userPseudo = updatedUser?.pseudo || user?.pseudo || firstName || `User ${telegramId.slice(-4)}`
 
-      const successText = `🥳 <b>Merci pour votre contribution !</b> Votre signalement a été enregistré avec succès et validé par notre IA.
+      // Construire les informations de classification
+      let wasteInfo = ''
+      if (pendingReport.waste_category && pendingReport.disposal_instructions) {
+        const categoryEmojis = {
+          'RECYCLABLE': '♻️',
+          'ORGANIC': '🌱', 
+          'HAZARDOUS': '⚠️',
+          'GENERAL': '🗑️'
+        }
+        const emoji = categoryEmojis[pendingReport.waste_category as keyof typeof categoryEmojis] || '🗂️'
+        wasteInfo = `\n\n🗂️ <b>Classification IA :</b> ${emoji} ${pendingReport.waste_category}\n💡 <b>Instructions :</b> ${pendingReport.disposal_instructions}`
+      }
+
+      const successText = `🥳 <b>Merci pour votre contribution !</b> Votre signalement a été enregistré avec succès et classifié par notre IA.
 
 📍 <b>Localisation reçue !</b>
 Latitude : ${latitude.toFixed(6)}
-Longitude : ${longitude.toFixed(6)}
+Longitude : ${longitude.toFixed(6)}${wasteInfo}
 
 🤖 <b>Statut :</b> Validé automatiquement par IA
 🎯 <b>+10 points Himpact</b> gagnés !

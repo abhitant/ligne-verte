@@ -56,27 +56,33 @@ export type Database = {
       pending_reports: {
         Row: {
           created_at: string | null
+          disposal_instructions: string | null
           file_id: string
           id: string
           image_hash: string | null
           photo_url: string | null
           telegram_id: string
+          waste_category: string | null
         }
         Insert: {
           created_at?: string | null
+          disposal_instructions?: string | null
           file_id: string
           id?: string
           image_hash?: string | null
           photo_url?: string | null
           telegram_id: string
+          waste_category?: string | null
         }
         Update: {
           created_at?: string | null
+          disposal_instructions?: string | null
           file_id?: string
           id?: string
           image_hash?: string | null
           photo_url?: string | null
           telegram_id?: string
+          waste_category?: string | null
         }
         Relationships: []
       }
@@ -86,6 +92,7 @@ export type Database = {
           cleanup_photo_url: string | null
           created_at: string | null
           description: string | null
+          disposal_instructions: string | null
           id: string
           image_hash: string | null
           is_cleaned: boolean | null
@@ -96,6 +103,7 @@ export type Database = {
           severity_level: number | null
           status: string | null
           user_telegram_id: string
+          waste_category: string | null
           waste_type: string | null
         }
         Insert: {
@@ -103,6 +111,7 @@ export type Database = {
           cleanup_photo_url?: string | null
           created_at?: string | null
           description?: string | null
+          disposal_instructions?: string | null
           id?: string
           image_hash?: string | null
           is_cleaned?: boolean | null
@@ -113,6 +122,7 @@ export type Database = {
           severity_level?: number | null
           status?: string | null
           user_telegram_id: string
+          waste_category?: string | null
           waste_type?: string | null
         }
         Update: {
@@ -120,6 +130,7 @@ export type Database = {
           cleanup_photo_url?: string | null
           created_at?: string | null
           description?: string | null
+          disposal_instructions?: string | null
           id?: string
           image_hash?: string | null
           is_cleaned?: boolean | null
@@ -130,6 +141,7 @@ export type Database = {
           severity_level?: number | null
           status?: string | null
           user_telegram_id?: string
+          waste_category?: string | null
           waste_type?: string | null
         }
         Relationships: [
@@ -308,6 +320,7 @@ export type Database = {
           cleanup_photo_url: string | null
           created_at: string | null
           description: string | null
+          disposal_instructions: string | null
           id: string
           image_hash: string | null
           is_cleaned: boolean | null
@@ -318,6 +331,7 @@ export type Database = {
           severity_level: number | null
           status: string | null
           user_telegram_id: string
+          waste_category: string | null
           waste_type: string | null
         }
       }
@@ -347,22 +361,26 @@ export type Database = {
         Args: Record<PropertyKey, never> | { p_telegram_id: string }
         Returns: {
           created_at: string | null
+          disposal_instructions: string | null
           file_id: string
           id: string
           image_hash: string | null
           photo_url: string | null
           telegram_id: string
+          waste_category: string | null
         }
       }
       get_and_delete_pending_report_with_url: {
         Args: { p_telegram_id: string }
         Returns: {
           created_at: string | null
+          disposal_instructions: string | null
           file_id: string
           id: string
           image_hash: string | null
           photo_url: string | null
           telegram_id: string
+          waste_category: string | null
         }
       }
       get_user_by_auth_id: {
@@ -408,6 +426,7 @@ export type Database = {
           cleanup_photo_url: string | null
           created_at: string | null
           description: string | null
+          disposal_instructions: string | null
           id: string
           image_hash: string | null
           is_cleaned: boolean | null
@@ -418,6 +437,7 @@ export type Database = {
           severity_level: number | null
           status: string | null
           user_telegram_id: string
+          waste_category: string | null
           waste_type: string | null
         }
       }
@@ -425,11 +445,13 @@ export type Database = {
         Args: { p_telegram_id: string; p_file_id: string }
         Returns: {
           created_at: string | null
+          disposal_instructions: string | null
           file_id: string
           id: string
           image_hash: string | null
           photo_url: string | null
           telegram_id: string
+          waste_category: string | null
         }
       }
       upsert_pending_report_with_ai_data: {
@@ -441,22 +463,46 @@ export type Database = {
         }
         Returns: {
           created_at: string | null
+          disposal_instructions: string | null
           file_id: string
           id: string
           image_hash: string | null
           photo_url: string | null
           telegram_id: string
+          waste_category: string | null
         }
       }
       upsert_pending_report_with_url: {
         Args: { p_telegram_id: string; p_photo_url: string }
         Returns: {
           created_at: string | null
+          disposal_instructions: string | null
           file_id: string
           id: string
           image_hash: string | null
           photo_url: string | null
           telegram_id: string
+          waste_category: string | null
+        }
+      }
+      upsert_pending_report_with_waste_data: {
+        Args: {
+          p_telegram_id: string
+          p_photo_url: string
+          p_image_hash: string
+          p_waste_category?: string
+          p_disposal_instructions?: string
+          p_ai_validated?: boolean
+        }
+        Returns: {
+          created_at: string | null
+          disposal_instructions: string | null
+          file_id: string
+          id: string
+          image_hash: string | null
+          photo_url: string | null
+          telegram_id: string
+          waste_category: string | null
         }
       }
     }
