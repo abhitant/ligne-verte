@@ -81,23 +81,39 @@ export class PhotoHandler {
       // Message d'analyse en cours
       await this.telegramAPI.sendMessage(chatId, '🗂️ Classification automatique des déchets en cours... Analyse IA avancée.')
 
-      // Analyser et classifier les déchets avec l'IA avancée
-      console.log('🗂️ Starting waste classification analysis...')
+      // Analyser l'image avec l'edge function analyze-image
+      console.log('🗂️ Starting AI image analysis via edge function...')
       let analysisResult
       try {
-        analysisResult = await this.wasteAnalyzer.analyzeImage(photoUint8Array)
-        console.log('✅ Waste classification completed:', analysisResult)
+        const analyzeResponse = await this.supabaseClient.functions.invoke('analyze-image', {
+          body: { image_url: photoUrl }
+        })
+
+        if (analyzeResponse.error) {
+          throw new Error(analyzeResponse.error.message)
+        }
+
+        analysisResult = analyzeResponse.data
+        analysisResult.imageHash = await this.calculateFallbackHash(photoUint8Array)
+        console.log('✅ AI analysis completed:', analysisResult)
       } catch (analysisError) {
-        console.error('❌ Waste classification failed:', analysisError)
-        await this.telegramAPI.sendMessage(chatId, '⚠️ Erreur de classification. Traitement en mode standard.')
+        console.error('❌ AI analysis failed:', analysisError)
+        await this.telegramAPI.sendMessage(chatId, '⚠️ Erreur d\'analyse IA. Traitement en mode standard.')
         
-        // Fallback simple
-        analysisResult = {
-          isGarbageDetected: true,
-          detectedObjects: [{ label: 'Classification standard - déchet détecté', score: 70 }],
-          imageHash: await this.calculateFallbackHash(photoUint8Array),
-          wasteCategory: 'GENERAL',
-          disposalInstructions: 'Signalement traité en mode standard.'
+        // Fallback à l'ancien système
+        try {
+          analysisResult = await this.wasteAnalyzer.analyzeImage(photoUint8Array)
+          console.log('✅ Fallback analysis completed:', analysisResult)
+        } catch (fallbackError) {
+          console.error('❌ Fallback analysis failed:', fallbackError)
+          // Fallback simple
+          analysisResult = {
+            isGarbageDetected: true,
+            detectedObjects: [{ label: 'Classification standard - déchet détecté', score: 70 }],
+            imageHash: await this.calculateFallbackHash(photoUint8Array),
+            wasteCategory: 'GENERAL',
+            disposalInstructions: 'Signalement traité en mode standard.'
+          }
         }
       }
 
