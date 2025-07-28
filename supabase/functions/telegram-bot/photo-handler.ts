@@ -81,12 +81,16 @@ export class PhotoHandler {
       // Message d'analyse en cours
       await this.telegramAPI.sendMessage(chatId, '🗂️ Classification automatique des déchets en cours... Analyse IA avancée.')
 
-      // Analyser l'image avec l'edge function analyze-image  
-      console.log('🚀 NOUVELLE VERSION - Starting AI image analysis via edge function...')
+      // Analyser l'image avec l'application waste sorter
+      console.log('🚀 Using waste sorter app for image analysis...')
       let analysisResult
+      
+      // Convertir en base64 pour l'edge function
+      const base64Data = `data:image/jpeg;base64,${btoa(String.fromCharCode(...photoUint8Array))}`
+      
       try {
-        const analyzeResponse = await this.supabaseClient.functions.invoke('analyze-image', {
-          body: { image_url: photoUrl }
+        const analyzeResponse = await this.supabaseClient.functions.invoke('analyze-image-with-waste-sorter', {
+          body: { imageData: base64Data }
         })
 
         if (analyzeResponse.error) {
@@ -94,10 +98,9 @@ export class PhotoHandler {
         }
 
         analysisResult = analyzeResponse.data
-        analysisResult.imageHash = await this.calculateFallbackHash(photoUint8Array)
-        console.log('✅ AI analysis completed:', analysisResult)
+        console.log('✅ Waste sorter analysis completed:', analysisResult)
       } catch (analysisError) {
-        console.error('❌ AI analysis failed:', analysisError)
+        console.error('❌ Waste sorter analysis failed:', analysisError)
         await this.telegramAPI.sendMessage(chatId, '⚠️ Erreur d\'analyse IA. Traitement en mode standard.')
         
         // Fallback à l'ancien système
