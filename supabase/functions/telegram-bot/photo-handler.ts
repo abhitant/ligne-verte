@@ -85,8 +85,8 @@ export class PhotoHandler {
       console.log('🚀 Using waste sorter app for image analysis...')
       let analysisResult
       
-      // Convertir en base64 pour l'edge function
-      const base64Data = `data:image/jpeg;base64,${btoa(String.fromCharCode(...photoUint8Array))}`
+      // Convertir en base64 pour l'edge function (méthode plus sûre pour les gros fichiers)
+      const base64Data = `data:image/jpeg;base64,${Buffer.from(photoUint8Array).toString('base64')}`
       
       try {
         const analyzeResponse = await this.supabaseClient.functions.invoke('analyze-image-with-waste-sorter', {
