@@ -212,10 +212,20 @@ export class PhotoHandler {
         }
       }
 
-      // Message de succès avec demande de localisation
-      await this.telegramAPI.sendMessage(chatId, `📍 N'oubliez pas d'envoyer la <b>localisation géographique</b> de l'endroit pour que nous puissions situer le problème sur la carte et agir ! Vous pouvez l'envoyer dans un message séparé.
+      // Message de succès avec keyboard de localisation automatique
+      const locationKeyboard = {
+        keyboard: [
+          [{ text: '📍 Partager ma localisation maintenant', request_location: true }]
+        ],
+        resize_keyboard: true,
+        one_time_keyboard: true
+      }
 
-💡 <i>Utilisez le bouton "📍 Partager la localisation" de Telegram</i>`)
+      await this.telegramAPI.sendMessage(chatId, `✅ <b>Photo validée avec succès !</b> 📸
+
+🎯 <i>Dernière étape :</i> Partagez maintenant votre localisation pour finaliser le signalement.
+
+📍 <b>Appuyez sur le bouton ci-dessous pour partager automatiquement votre position :</b>`, locationKeyboard)
 
       return { success: true }
     } catch (error) {

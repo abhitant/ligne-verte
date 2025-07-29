@@ -84,15 +84,19 @@ export class LocationHandler {
       }
 
       if (!pendingReport || !pendingReport.photo_url) {
+        // Vérifier si la photo est récente (moins de 10 minutes)
+        const tenMinutesAgo = new Date()
+        tenMinutesAgo.setMinutes(tenMinutesAgo.getMinutes() - 10)
+
         await this.telegramAPI.sendMessage(chatId, `📍 <b>Localisation reçue !</b>
 
-Mais je n'ai pas trouvé de photo associée. 
+❌ Aucune photo récente trouvée. 
 
-<b>Pour signaler un problème :</b>
-1. 📸 Envoyez d'abord une photo
-2. 📍 Puis partagez votre localisation
+🔄 <b>Pour créer un signalement :</b>
+1. 📸 Envoyez une photo du déchet/problème
+2. 📍 Partagez votre localisation dans les 10 minutes
 
-Les deux sont nécessaires pour créer un signalement complet.`)
+<i>Recommencez en envoyant d'abord une photo.</i>`)
         return { success: false, error: 'No pending photo found' }
       }
 
@@ -147,26 +151,28 @@ Les deux sont nécessaires pour créer un signalement complet.`)
         wasteInfo = `\n\n🗂️ <b>Classification IA :</b> ${emoji} ${pendingReport.waste_category}\n💡 <b>Instructions :</b> ${pendingReport.disposal_instructions}`
       }
 
-      const successText = `🥳 <b>Merci pour votre contribution !</b> Votre signalement a été enregistré avec succès et classifié par notre IA.
+      const successText = `🎉 <b>Signalement créé avec succès !</b>
 
-📍 <b>Localisation reçue !</b>
-Latitude : ${latitude.toFixed(6)}
-Longitude : ${longitude.toFixed(6)}${wasteInfo}
+📍 <b>Localisation enregistrée :</b>
+Coordonnées : ${latitude.toFixed(6)}, ${longitude.toFixed(6)}${wasteInfo}
 
-🤖 <b>Statut :</b> Validé automatiquement par IA
+✅ <b>Statut :</b> Validé automatiquement par IA
 🎯 <b>+10 points Himpact</b> gagnés !
-💰 Vous avez maintenant <b>${currentPoints} points</b>
-👤 <b>Signalé par :</b> ${userPseudo}
+💰 Total : <b>${currentPoints} points</b>
+👤 <b>Contributeur :</b> ${userPseudo}
 
-Nous vous remercions de votre engagement pour une ville plus verte ! 💚
+🌍 Merci de rendre notre environnement plus propre ! 
 
-<b>Continuez à contribuer pour améliorer notre environnement !</b> 🌱`
+🚀 <b>Prochaine étape :</b> Continuez vos signalements pour gagner plus de points !`
 
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir carte', url: 'https://ligne-verte.lovable.app/map' },
-            { text: '💰 Mes points', callback_data: 'points' }
+            { text: '🗺️ Voir sur la carte', url: 'https://ligne-verte.lovable.app/map' },
+            { text: '💰 Mes points', callback_data: 'show_points' }
+          ],
+          [
+            { text: '📸 Nouveau signalement', callback_data: 'start_new_report' }
           ]
         ]
       }
