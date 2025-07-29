@@ -317,8 +317,7 @@ export class EnhancedWasteAnalyzer {
       message += `⚡ <b>Signalement prioritaire</b> - Intervention rapide requise\n\n`
     }
     
-    message += `💰 <b>+10 points Himpact</b> gagnés !\n`
-    message += `📍 <b>Prochaine étape :</b> Partagez votre localisation pour compléter le signalement.`
+    message += `📍 Veuillez maintenant <b>partager votre localisation</b> pour finaliser le signalement.`
     
     return message
   }
