@@ -109,7 +109,7 @@ export class LocationHandler {
           description: `Signalement via Telegram - ${pendingReport.waste_category ? `Type: ${pendingReport.waste_category}` : 'Validé par IA'}`,
           location_lat: latitude,
           location_lng: longitude,
-          status: 'validated_ai',
+          status: 'validé',
           image_hash: pendingReport.image_hash || null,
           waste_category: pendingReport.waste_category || 'GENERAL',
           disposal_instructions: pendingReport.disposal_instructions || null,
