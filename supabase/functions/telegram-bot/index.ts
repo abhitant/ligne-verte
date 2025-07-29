@@ -5,6 +5,7 @@ import { TelegramAPI } from './telegram-api.ts'
 import { CommandHandler } from './commands.ts'
 import { PhotoHandler } from './photo-handler.ts'
 import { LocationHandler } from './location-handler.ts'
+import { AIConversationHandler } from './ai-conversation-handler.ts'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -35,6 +36,7 @@ serve(async (req) => {
     const commandHandler = new CommandHandler(telegramAPI, supabaseClient)
     const photoHandler = new PhotoHandler(telegramAPI, supabaseClient)
     const locationHandler = new LocationHandler(telegramAPI, supabaseClient)
+    const aiHandler = new AIConversationHandler(supabaseClient)
 
     // Nettoyage automatique des signalements expirés
     try {
@@ -110,6 +112,14 @@ serve(async (req) => {
         return new Response('OK', { status: 200 })
       }
 
+      if (callbackData === 'help_menu') {
+        await commandHandler.handleHelp(chatId)
+        
+        // Répondre au callback query pour supprimer le loading
+        await telegramAPI.answerCallbackQuery(callback_query.id)
+        return new Response('OK', { status: 200 })
+      }
+
       return new Response('OK', { status: 200 })
     }
 
@@ -172,7 +182,7 @@ serve(async (req) => {
       return new Response('OK', { status: 200 })
     }
 
-    // Messages texte - vérifier si c'est un choix de nom d'utilisateur
+    // Messages texte - gestion intelligente
     if (message.text && !message.text.startsWith('/')) {
       // Vérifier si l'utilisateur existe et n'a pas encore de nom personnalisé
       const { data: existingUser, error: checkError } = await supabaseClient.rpc('get_user_by_telegram_id', {
@@ -185,16 +195,39 @@ serve(async (req) => {
         return new Response('OK', { status: 200 })
       }
 
-      // Sinon, message non reconnu avec lien vers la carte
-      await telegramAPI.sendMessage(chatId, `🤖 <b>Message non reconnu</b>
+      // Vérifier si c'est un message pour conversation IA
+      if (aiHandler.isAIConversationMessage(message.text)) {
+        console.log('🤖 Processing AI conversation message')
+        const aiResponse = await aiHandler.handleAIConversation(message.text, telegramId)
+        
+        await telegramAPI.sendMessage(chatId, aiResponse, {
+          inline_keyboard: [
+            [
+              { text: '🗺️ Voir la carte', url: 'https://ligne-verte.lovable.app/map' },
+              { text: '❓ Aide complète', callback_data: 'help_menu' }
+            ]
+          ]
+        })
+        return new Response('OK', { status: 200 })
+      }
 
-Pour signaler un problème :
-1. 📸 Envoyez une photo
-2. 📍 Partagez votre localisation
+      // Sinon, message non reconnu avec suggestion d'interaction IA
+      await telegramAPI.sendMessage(chatId, `🤖 <b>Bonjour ! Je suis Débora, votre assistante.</b>
 
-Tapez /aide pour plus d'infos ou /carte pour voir la carte.`, {
+💬 <b>Vous pouvez me parler naturellement !</b>
+Posez-moi des questions sur l'environnement, les signalements, ou dites simplement "Bonjour Débora".
+
+📱 <b>Ou utilisez les fonctions rapides :</b>
+• 📸 Envoyez une photo pour signaler
+• 📍 Partagez votre localisation
+• Tapez /aide pour tous les outils
+
+🌱 <b>Ensemble, rendons notre ville plus verte !</b>`, {
         inline_keyboard: [
-          [{ text: '🗺️ Voir la carte', url: 'https://ligne-verte.lovable.app/map' }]
+          [
+            { text: '🗺️ Voir la carte', url: 'https://ligne-verte.lovable.app/map' },
+            { text: '🏆 Mes points', callback_data: 'show_points' }
+          ]
         ]
       })
       return new Response('OK', { status: 200 })

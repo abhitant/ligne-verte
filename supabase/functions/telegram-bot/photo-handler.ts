@@ -2,16 +2,19 @@
 import { TelegramAPI } from './telegram-api.ts'
 import type { TelegramUpdate } from './types.ts'
 import { WasteSorterAnalyzer } from './waste-sorter-analyzer.ts'
+import { EnhancedWasteAnalyzer } from './enhanced-waste-analyzer.ts'
 
 export class PhotoHandler {
   private telegramAPI: TelegramAPI
   private supabaseClient: any
   private wasteAnalyzer: WasteSorterAnalyzer
+  private enhancedAnalyzer: EnhancedWasteAnalyzer
 
   constructor(telegramAPI: TelegramAPI, supabaseClient: any) {
     this.telegramAPI = telegramAPI
     this.supabaseClient = supabaseClient
     this.wasteAnalyzer = new WasteSorterAnalyzer()
+    this.enhancedAnalyzer = new EnhancedWasteAnalyzer()
   }
 
   async handlePhoto(chatId: number, telegramId: string, photos: any[], telegramUsername?: string, firstName?: string) {
@@ -79,37 +82,44 @@ export class PhotoHandler {
       const photoUint8Array = new Uint8Array(photoArrayBuffer)
 
       // Message d'analyse en cours
-      await this.telegramAPI.sendMessage(chatId, '🗂️ Classification automatique des déchets en cours... Analyse IA avancée.')
+      await this.telegramAPI.sendMessage(chatId, '🗂️ Analyse IA avancée des déchets en cours... Détection de l\'ampleur et classification automatique.')
 
-      // Analyser l'image avec l'application waste sorter
-      console.log('🚀 Using waste sorter app for image analysis...')
-      let analysisResult
+      // Analyser d'abord avec notre analyseur amélioré
+      console.log('🔍 Starting enhanced waste analysis...')
+      let analysisResult = await this.enhancedAnalyzer.analyzeImage(photoUint8Array)
       
-      // Convertir en base64 pour l'edge function (compatible Deno)
-      const base64Data = `data:image/jpeg;base64,${btoa(String.fromCharCode.apply(null, Array.from(photoUint8Array.slice(0, 8192))))}`
-      
-      try {
-        const analyzeResponse = await this.supabaseClient.functions.invoke('analyze-image-with-waste-sorter', {
-          body: { imageData: base64Data }
-        })
-
-        if (analyzeResponse.error) {
-          throw new Error(analyzeResponse.error.message)
-        }
-
-        analysisResult = analyzeResponse.data
-        console.log('✅ Waste sorter analysis completed:', analysisResult)
-      } catch (analysisError) {
-        console.error('❌ Waste sorter analysis failed:', analysisError)
+      // Si l'analyseur amélioré ne détecte pas de déchets avec certitude, essayer l'edge function
+      if (!analysisResult.isGarbageDetected || (analysisResult.urgencyScore && analysisResult.urgencyScore < 30)) {
+        console.log('🚀 Using waste sorter app for additional analysis...')
         
-        // Fallback simple sans l'ancien analyseur qui cause problème
-        analysisResult = {
-          isGarbageDetected: true,
-          detectedObjects: [{ label: 'waste', score: 80 }],
-          imageHash: await this.calculateFallbackHash(photoUint8Array),
-          wasteCategory: 'GENERAL',
-          disposalInstructions: 'Veuillez vous assurer de jeter ce déchet dans la poubelle appropriée selon les règles de tri de votre commune.'
+        // Convertir en base64 pour l'edge function (compatible Deno) 
+        const base64Data = `data:image/jpeg;base64,${btoa(String.fromCharCode.apply(null, Array.from(photoUint8Array.slice(0, 8192))))}`
+        
+        try {
+          const analyzeResponse = await this.supabaseClient.functions.invoke('analyze-image-with-waste-sorter', {
+            body: { imageData: base64Data }
+          })
+
+          if (!analyzeResponse.error && analyzeResponse.data) {
+            // Fusionner les résultats des deux analyses
+            const wasteAnalysis = analyzeResponse.data
+            analysisResult = {
+              ...analysisResult,
+              isGarbageDetected: wasteAnalysis.isGarbageDetected || analysisResult.isGarbageDetected,
+              wasteCategory: wasteAnalysis.wasteCategory,
+              disposalInstructions: wasteAnalysis.disposalInstructions,
+              detectedObjects: [...analysisResult.detectedObjects, ...wasteAnalysis.detectedObjects]
+            }
+            console.log('✅ Combined analysis completed:', analysisResult)
+          }
+        } catch (analysisError) {
+          console.error('❌ Waste sorter analysis failed, using enhanced analysis only:', analysisError)
         }
+      }
+      
+      // Fallback complet si nécessaire
+      if (!analysisResult.imageHash) {
+        analysisResult.imageHash = await this.calculateFallbackHash(photoUint8Array)
       }
 
       // Vérifier les doublons d'images via hash MD5
@@ -127,13 +137,8 @@ export class PhotoHandler {
         return { success: false, error: 'Duplicate image detected' }
       }
 
-      // Envoyer le message de validation avec classification
-      const validationMessage = this.wasteAnalyzer.generateValidationMessage(
-        analysisResult.isGarbageDetected,
-        analysisResult.detectedObjects,
-        (analysisResult as any).wasteCategory,
-        (analysisResult as any).disposalInstructions
-      )
+      // Envoyer le message de validation amélioré
+      const validationMessage = this.enhancedAnalyzer.generateEnhancedValidationMessage(analysisResult)
       await this.telegramAPI.sendMessage(chatId, validationMessage)
 
       // Si l'analyse rejette la photo, arrêter le processus
