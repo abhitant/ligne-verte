@@ -77,7 +77,7 @@ serve(async (req) => {
       success: true,
       isGarbageDetected: true,
       wasteCategory: 'GENERAL',
-      disposalInstructions: 'Image reçue pour analyse manuelle. Un modérateur vérifiera votre signalement.',
+      disposalInstructions: 'Image recue pour analyse manuelle. Un moderateur verifiera votre signalement.',
       detectedObjects: [{ label: 'waste_for_review', score: 0.5 }],
       confidence: 0.5,
       imageHash: 'fallback_' + Date.now()
@@ -117,13 +117,13 @@ function generateDisposalInstructions(category: string, items: any[]): string {
   
   switch (category) {
     case 'RECYCLABLE':
-      return `♻️ Ce déchet est recyclable ! Placez-le dans le bac de tri sélectif (bac jaune dans la plupart des communes). Assurez-vous qu'il soit propre et vide.`;
+      return 'Ce dechet est recyclable ! Placez-le dans le bac de tri selectif (bac jaune dans la plupart des communes). Assurez-vous qu\'il soit propre et vide.';
     case 'ORGANIC':
-      return `🥬 Ce déchet est organique ! Si votre commune dispose d'une collecte de biodéchets (bac marron), vous pouvez l'y déposer. Sinon, compostez-le si possible ou mettez-le dans le bac d'ordures ménagères.`;
+      return 'Ce dechet est organique ! Si votre commune dispose d\'une collecte de biodechets (bac marron), vous pouvez l\'y deposer. Sinon, compostez-le si possible ou mettez-le dans le bac d\'ordures menageres.';
     case 'HAZARDOUS':
-      return `⚠️ Attention ! Ce déchet est dangereux et ne doit PAS être jeté avec les ordures ménagères. Apportez-le dans une déchetterie ou un point de collecte spécialisé.`;
+      return 'Attention ! Ce dechet est dangereux et ne doit PAS etre jete avec les ordures menageres. Apportez-le dans une dechetterie ou un point de collecte specialise.';
     default:
-      return `🗑️ Ce déchet va dans le bac d'ordures ménagères (bac noir/gris). Vérifiez les consignes de tri de votre commune pour être sûr.`;
+      return 'Ce dechet va dans le bac d\'ordures menageres (bac noir/gris). Verifiez les consignes de tri de votre commune pour etre sur.';
   }
 }
 
@@ -131,24 +131,24 @@ async function performBasicAnalysis(data: Uint8Array): Promise<any> {
   try {
     console.log('🔍 Starting basic analysis for image data of size:', data.length);
     
-    // Analyse basique: considère toute image comme un déchet potentiel
+    // Analyse basique: considere toute image comme un dechet potentiel
     const imageSize = data.length;
     
-    // Logique déterministe basée sur la taille de l'image
+    // Logique deterministe basee sur la taille de l'image
     let wasteCategory = 'GENERAL';
     let confidence = 0.85;
     
-    // Classification déterministe basée sur la taille de l'image
+    // Classification deterministe basee sur la taille de l'image
     if (imageSize > 200000) {
-      // Images très grandes - probablement recyclable (bouteilles, emballages)
+      // Images tres grandes - probablement recyclable (bouteilles, emballages)
       wasteCategory = 'RECYCLABLE';
       confidence = 0.75;
     } else if (imageSize > 100000) {
-      // Images moyennes - déchets généraux
+      // Images moyennes - dechets generaux
       wasteCategory = 'GENERAL';
       confidence = 0.80;
     } else if (imageSize < 50000) {
-      // Petites images - déchets organiques
+      // Petites images - dechets organiques
       wasteCategory = 'ORGANIC';
       confidence = 0.70;
     }
@@ -176,7 +176,7 @@ async function performBasicAnalysis(data: Uint8Array): Promise<any> {
     return {
       isGarbageDetected: true,
       wasteCategory: 'GENERAL',
-      disposalInstructions: '🗑️ Ce déchet va dans le bac d'ordures ménagères. Vérifiez les consignes de tri de votre commune.',
+      disposalInstructions: 'Ce dechet va dans le bac d\'ordures menageres. Verifiez les consignes de tri de votre commune.',
       detectedObjects: [{ label: 'waste_detected', score: 0.5 }],
       confidence: 0.5,
       imageHash: `fallback_${Date.now()}_${data.length}`
@@ -185,7 +185,7 @@ async function performBasicAnalysis(data: Uint8Array): Promise<any> {
 }
 
 function calculateImageHashSync(data: Uint8Array): string {
-  // Hash simple et synchrone basé sur les premiers bytes
+  // Hash simple et synchrone base sur les premiers bytes
   const sample = Array.from(data.slice(0, 32));
   return sample.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 32);
 }
