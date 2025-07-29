@@ -47,9 +47,10 @@ export class LocationHandler {
       const DUPLICATE_RADIUS_METERS = 50
       const DUPLICATE_TIME_WINDOW_HOURS = 24
       
-      // Calculer la tolérance en degrés
+      // Calculer la tolérance en degrés avec protection contre les valeurs extrêmes
       const latToleranceDeg = DUPLICATE_RADIUS_METERS / 111139.0 // 1 degré de latitude ≈ 111.139 km
-      const lonToleranceDeg = DUPLICATE_RADIUS_METERS / (111139.0 * Math.abs(Math.cos(latitude * Math.PI / 180)))
+      const cosLat = Math.abs(Math.cos(latitude * Math.PI / 180))
+      const lonToleranceDeg = DUPLICATE_RADIUS_METERS / (111139.0 * Math.max(cosLat, 0.001)) // Éviter division par zéro
       
       const timeLimit = new Date()
       timeLimit.setHours(timeLimit.getHours() - DUPLICATE_TIME_WINDOW_HOURS)
