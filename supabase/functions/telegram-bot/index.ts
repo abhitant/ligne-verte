@@ -134,7 +134,8 @@ serve(async (req) => {
     const telegramUsername = message.from.username
     const firstName = message.from.first_name
 
-    // Normaliser le texte des commandes en minuscules pour éviter les problèmes de casse
+    // Garder le texte original pour l'IA et normaliser seulement pour les commandes
+    const originalText = message.text
     const messageText = message.text?.toLowerCase()
 
     // Traitement des commandes
@@ -189,16 +190,17 @@ serve(async (req) => {
         p_telegram_id: telegramId
       })
 
-      // Si l'utilisateur n'existe pas OU a un nom par défaut, traiter comme choix de nom
-      if (!existingUser || !existingUser.pseudo || existingUser.pseudo === `User ${telegramId.slice(-4)}` || existingUser.pseudo === firstName) {
-        const result = await commandHandler.handleUsernameChoice(chatId, telegramId, message.text, telegramUsername, firstName)
+      // Si l'utilisateur n'existe pas OU a un nom par défaut, ET que ce n'est pas un message conversationnel
+      if ((!existingUser || !existingUser.pseudo || existingUser.pseudo === `User ${telegramId.slice(-4)}` || existingUser.pseudo === firstName) 
+          && !aiHandler.isAIConversationMessage(originalText)) {
+        const result = await commandHandler.handleUsernameChoice(chatId, telegramId, originalText, telegramUsername, firstName)
         return new Response('OK', { status: 200 })
       }
 
-      // Vérifier si c'est un message pour conversation IA
-      if (aiHandler.isAIConversationMessage(message.text)) {
-        console.log('🤖 Processing AI conversation message')
-        const aiResponse = await aiHandler.handleAIConversation(message.text, telegramId)
+      // Vérifier si c'est un message pour conversation IA (utiliser le texte original)
+      if (aiHandler.isAIConversationMessage(originalText)) {
+        console.log('🤖 Processing AI conversation message:', originalText)
+        const aiResponse = await aiHandler.handleAIConversation(originalText, telegramId)
         
         await telegramAPI.sendMessage(chatId, aiResponse, {
           inline_keyboard: [

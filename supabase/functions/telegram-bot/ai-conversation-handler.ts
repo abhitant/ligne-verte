@@ -161,14 +161,23 @@ CONTEXTE UTILISATEUR :
   isAIConversationMessage(message: string): boolean {
     // Messages qui déclenchent une conversation IA
     const aiTriggers = [
-      'débora', 'bonjour', 'salut', 'hello', 'bonsoir',
-      'comment', 'pourquoi', 'que faire', 'aide-moi',
-      'explique', 'conseille', 'suggestion',
-      'environnement', 'pollution', 'déchet', 'ordure',
-      'écologie', 'vert', 'nature', 'planète'
+      'débora', 'bonjour', 'salut', 'hello', 'bonsoir', 'bonne nuit',
+      'comment', 'pourquoi', 'que faire', 'aide-moi', 'peux-tu',
+      'explique', 'conseille', 'suggestion', 'recommande',
+      'environnement', 'pollution', 'déchet', 'ordure', 'poubelle',
+      'écologie', 'vert', 'nature', 'planète', 'climat',
+      'recycl', 'tri', 'propre', 'sale', 'nettoy'
     ]
     
     const lowerMessage = message.toLowerCase()
+    
+    // Si le message contient un point d'interrogation, c'est probablement une question
+    if (lowerMessage.includes('?')) return true
+    
+    // Si le message fait plus de 15 caractères, c'est probablement conversationnel
+    if (message.length > 15) return true
+    
+    // Vérifier les déclencheurs spécifiques
     return aiTriggers.some(trigger => lowerMessage.includes(trigger))
   }
 }
