@@ -252,6 +252,39 @@ export type Database = {
         }
         Relationships: []
       }
+      waitlist_users: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          motivation: string | null
+          name: string
+          phone: string
+          status: string | null
+          zone: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          motivation?: string | null
+          name: string
+          phone: string
+          status?: string | null
+          zone: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          motivation?: string | null
+          name?: string
+          phone?: string
+          status?: string | null
+          zone?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       user_display_info: {
@@ -293,6 +326,25 @@ export type Database = {
           streak_days: number | null
           telegram_id: string
           telegram_username: string | null
+        }
+      }
+      add_to_waitlist: {
+        Args: {
+          p_name: string
+          p_email: string
+          p_phone: string
+          p_zone: string
+          p_motivation?: string
+        }
+        Returns: {
+          created_at: string
+          email: string
+          id: string
+          motivation: string | null
+          name: string
+          phone: string
+          status: string | null
+          zone: string
         }
       }
       calculate_user_level: {
