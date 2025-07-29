@@ -48,21 +48,29 @@ export class EnhancedWasteAnalyzer {
           messages: [
             {
               role: 'system',
-              content: `Tu es un expert en analyse environnementale. Analyse cette image pour détecter :
-              1. Présence de déchets/ordures (oui/non)
-              2. Types de déchets (plastique, papier, verre, métal, organique, dangereux)
-              3. Niveau d'ampleur (low/medium/high/critical)
-              4. Score d'urgence (0-100)
-              5. Impact environnemental (phrase courte)
+              content: `Tu es un expert en analyse environnementale stricte. Analyse cette image avec précision.
+
+              IMPORTANT : Sois très sélectif ! Ne considère comme déchets QUE :
+              - Ordures, poubelles renversées, sacs poubelles ouverts
+              - Détritus jetés par terre (canettes, bouteilles, papiers, mégots)
+              - Pollution visible (plastiques dans la nature, dépôts illégaux)
+              - Environnements sales avec accumulation de déchets
+              
+              NE CONSIDÈRE PAS comme déchets :
+              - Animaux, personnes, véhicules, bâtiments
+              - Paysages propres, nature, objets en bon état
+              - Nourriture fraîche, plantes, objets décoratifs
+              - Photos de famille, selfies, intérieurs propres
               
               Réponds UNIQUEMENT avec un JSON valide dans ce format exact :
               {
                 "hasWaste": boolean,
                 "wasteTypes": ["type1", "type2"],
-                "wasteLevel": "low|medium|high|critical",
+                "wasteLevel": "low|medium|high|critical", 
                 "urgencyScore": number,
                 "environmentalImpact": "description courte",
-                "objects": [{"label": "objet", "confidence": number}]
+                "objects": [{"label": "objet", "confidence": number}],
+                "confidence": number
               }`
             },
             {
@@ -125,37 +133,51 @@ export class EnhancedWasteAnalyzer {
   }
 
   private async performHeuristicAnalysis(imageData: Uint8Array, imageHash: string): Promise<any> {
-    console.log('📊 Using heuristic analysis...')
+    console.log('📊 Using restrictive heuristic analysis...')
     
     const imageSize = imageData.length
     
-    // Analyse heuristique basée sur la taille
-    let wasteLevel: 'low' | 'medium' | 'high' | 'critical' = 'medium'
-    let urgencyScore = 50
-    let environmentalImpact = 'Impact environnemental à évaluer'
+    // Analyse très restrictive - REJETER la plupart des images
+    // Car sans IA vision, on ne peut pas vraiment détecter les déchets
     
-    if (imageSize < 20000) { // Très petite image
-      wasteLevel = 'low'
-      urgencyScore = 20
-      environmentalImpact = 'Impact probablement faible'
-    } else if (imageSize > 200000) { // Grande image détaillée
-      wasteLevel = 'high'
-      urgencyScore = 75
-      environmentalImpact = 'Nécessite attention - zone potentiellement polluée'
+    // Rejeter les images trop petites (probable selfie/photo floue)
+    if (imageSize < 50000) {
+      console.log('❌ Image rejected: too small (< 50KB)')
+      return {
+        isGarbageDetected: false,
+        detectedObjects: [{ label: 'Image trop petite - non analysable', score: 0 }],
+        imageHash,
+        wasteLevel: 'low' as const,
+        wasteTypes: [],
+        environmentalImpact: 'Aucun déchet détecté',
+        urgencyScore: 0
+      }
     }
     
-    const isAccepted = imageSize >= 10000 // Minimum 10KB
+    // Rejeter les images moyennes (probable photo normale)
+    if (imageSize < 150000) {
+      console.log('❌ Image rejected: likely normal photo')
+      return {
+        isGarbageDetected: false,
+        detectedObjects: [{ label: 'Analyse non concluante - besoin IA vision', score: 0 }],
+        imageHash,
+        wasteLevel: 'low' as const,
+        wasteTypes: [],
+        environmentalImpact: 'Image ne semble pas contenir de déchets',
+        urgencyScore: 0
+      }
+    }
     
+    // Pour les très grandes images, accepter avec réserve
+    console.log('⚠️ Large image accepted with caution for manual review')
     return {
-      isGarbageDetected: isAccepted,
-      detectedObjects: isAccepted 
-        ? [{ label: 'Image acceptée pour examen manuel', score: 80 }]
-        : [{ label: 'Image trop petite', score: 0 }],
+      isGarbageDetected: true,
+      detectedObjects: [{ label: 'Image grande - examen manuel requis', score: 30 }],
       imageHash,
-      wasteLevel,
-      wasteTypes: ['indéterminé'],
-      environmentalImpact,
-      urgencyScore
+      wasteLevel: 'low' as const,
+      wasteTypes: ['à_vérifier'],
+      environmentalImpact: 'Nécessite vérification manuelle',
+      urgencyScore: 20
     }
   }
 
@@ -213,7 +235,14 @@ export class EnhancedWasteAnalyzer {
     } = result
     
     if (!isGarbageDetected) {
-      return "❌ <b>Photo non acceptée.</b>\n\nL'image semble trop petite ou corrompue. Veuillez prendre une photo plus nette et plus grande."
+      const rejectionReasons = {
+        'Image trop petite - non analysable': "❌ <b>Photo non acceptée.</b>\n\n📱 L'image est trop petite (moins de 50KB). Veuillez prendre une photo plus grande et plus nette.",
+        'Analyse non concluante - besoin IA vision': "❌ <b>Photo non acceptée.</b>\n\n🔍 L'analyse automatique n'a pas détecté de déchets dans cette image. Si vous pensez qu'il y en a, contactez un modérateur.",
+        'Image ne semble pas contenir de déchets': "❌ <b>Photo non acceptée.</b>\n\n🌟 Cette image semble montrer un environnement propre ! C'est formidable, continuez à préserver notre planète."
+      }
+      
+      const detectedReason = detectedObjects?.[0]?.label || 'Image trop petite - non analysable'
+      return rejectionReasons[detectedReason] || "❌ <b>Photo non acceptée.</b>\n\nL'image ne semble pas contenir de déchets ou est de mauvaise qualité."
     }
 
     let message = "✅ <b>Photo acceptée et analysée !</b>\n\n"
