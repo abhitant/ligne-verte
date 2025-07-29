@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import { Mail, User, MapPin, MessageSquare, Phone } from "lucide-react";
 
 interface WaitlistModalProps {
@@ -26,17 +27,37 @@ const WaitlistModal = ({ isOpen, onClose }: WaitlistModalProps) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      // Appeler la fonction Supabase pour sauvegarder les données
+      const { error } = await supabase.rpc('add_to_waitlist', {
+        p_name: formData.name,
+        p_email: formData.email,
+        p_phone: formData.phone,
+        p_zone: formData.zone,
+        p_motivation: formData.motivation || null
+      });
 
-    toast({
-      title: "Inscription réussie !",
-      description: "Tu as été ajouté(e) à notre liste d'attente. Nous te contacterons bientôt.",
-    });
+      if (error) {
+        throw error;
+      }
 
-    setFormData({ name: '', email: '', phone: '', zone: '', motivation: '' });
-    setIsSubmitting(false);
-    onClose();
+      toast({
+        title: "Inscription réussie !",
+        description: "Tu as été ajouté(e) à notre liste d'attente. Nous te contacterons bientôt.",
+      });
+
+      setFormData({ name: '', email: '', phone: '', zone: '', motivation: '' });
+      onClose();
+    } catch (error) {
+      console.error('Erreur lors de l\'inscription:', error);
+      toast({
+        title: "Erreur",
+        description: "Une erreur s'est produite lors de l'inscription. Veuillez réessayer.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
