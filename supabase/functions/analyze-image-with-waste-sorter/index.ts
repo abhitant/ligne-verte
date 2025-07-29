@@ -59,7 +59,7 @@ serve(async (req) => {
     console.log('📤 Analyzing image with AI...');
 
     // Analyse basique mais fonctionnelle
-    const analysisResult = performBasicAnalysis(binaryData);
+    const analysisResult = await performBasicAnalysis(binaryData);
     console.log('✅ Analysis completed:', analysisResult);
 
     return new Response(JSON.stringify({
@@ -127,7 +127,7 @@ function generateDisposalInstructions(category: string, items: any[]): string {
   }
 }
 
-function performBasicAnalysis(data: Uint8Array): any {
+async function performBasicAnalysis(data: Uint8Array): Promise<any> {
   // Analyse basique: considère toute image comme un déchet potentiel
   // Détermine le type de déchet selon certains critères simples
   const imageSize = data.length;
@@ -151,7 +151,7 @@ function performBasicAnalysis(data: Uint8Array): any {
     disposalInstructions: generateDisposalInstructions(wasteCategory, []),
     detectedObjects: [{ label: 'waste_detected', score: confidence }],
     confidence,
-    imageHash: calculateImageHashSync(data)
+    imageHash: await calculateImageHash(data)
   };
 }
 
