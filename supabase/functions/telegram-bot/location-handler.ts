@@ -14,6 +14,27 @@ export class LocationHandler {
     console.log('Processing location:', latitude, longitude, 'for telegram ID:', telegramId)
 
     try {
+      // Vérifier d'abord s'il y a une photo en attente
+      const { data: pendingReport, error: pendingError } = await this.supabaseClient
+        .from('pending_reports')
+        .select('*')
+        .eq('telegram_id', telegramId)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single()
+
+      if (pendingError || !pendingReport) {
+        console.log('❌ No pending photo found for location sharing')
+        await this.telegramAPI.sendMessage(chatId, `❌ <b>Aucune photo en attente</b>
+
+🤔 Pour signaler des déchets, vous devez d'abord :
+1️⃣ Envoyer une photo de déchets
+2️⃣ Puis partager votre localisation
+
+📸 <i>Envoyez-moi une photo pour commencer !</i>`)
+        return { success: false, error: 'No pending photo found' }
+      }
+
       // Vérifier si l'utilisateur existe
       const { data: user, error: userError } = await this.supabaseClient.rpc('get_user_by_telegram_id', {
         p_telegram_id: telegramId
@@ -72,32 +93,15 @@ export class LocationHandler {
         return { success: false, error: 'Duplicate location detected' }
       }
 
-      // Récupérer le signalement en attente avec l'URL de la photo
-      const { data: pendingReport, error: pendingError } = await this.supabaseClient.rpc('get_and_delete_pending_report_with_url', {
+      // Récupérer et supprimer le signalement en attente avec l'URL de la photo
+      const { data: finalPendingReport, error: finalPendingError } = await this.supabaseClient.rpc('get_and_delete_pending_report_with_url', {
         p_telegram_id: telegramId
       })
 
-      if (pendingError) {
-        console.error('Error getting pending report:', pendingError)
+      if (finalPendingError) {
+        console.error('Error getting pending report:', finalPendingError)
         await this.telegramAPI.sendMessage(chatId, '❌ Erreur lors de la récupération du signalement')
-        return { success: false, error: pendingError }
-      }
-
-      if (!pendingReport || !pendingReport.photo_url) {
-        // Vérifier si la photo est récente (moins de 10 minutes)
-        const tenMinutesAgo = new Date()
-        tenMinutesAgo.setMinutes(tenMinutesAgo.getMinutes() - 10)
-
-        await this.telegramAPI.sendMessage(chatId, `📍 <b>Localisation reçue !</b>
-
-❌ Aucune photo récente trouvée. 
-
-🔄 <b>Pour créer un signalement :</b>
-1. 📸 Envoyez une photo du déchet/problème
-2. 📍 Partagez votre localisation dans les 10 minutes
-
-<i>Recommencez en envoyant d'abord une photo.</i>`)
-        return { success: false, error: 'No pending photo found' }
+        return { success: false, error: finalPendingError }
       }
 
       // Créer le signalement avec la photo en attente et les données de classification
@@ -105,14 +109,14 @@ export class LocationHandler {
         .from('reports')
         .insert({
           user_telegram_id: telegramId,
-          photo_url: pendingReport.photo_url,
-          description: `Signalement via Telegram - ${pendingReport.waste_category ? `Type: ${pendingReport.waste_category}` : 'Validé par IA'}`,
+          photo_url: finalPendingReport.photo_url,
+          description: `Signalement via Telegram - ${finalPendingReport.waste_category ? `Type: ${finalPendingReport.waste_category}` : 'Validé par IA'}`,
           location_lat: latitude,
           location_lng: longitude,
           status: 'validé',
-          image_hash: pendingReport.image_hash || null,
-          waste_category: pendingReport.waste_category || 'GENERAL',
-          disposal_instructions: pendingReport.disposal_instructions || null,
+          image_hash: finalPendingReport.image_hash || null,
+          waste_category: finalPendingReport.waste_category || 'GENERAL',
+          disposal_instructions: finalPendingReport.disposal_instructions || null,
           severity_level: 1,
           points_awarded: 10
         })
@@ -140,15 +144,15 @@ export class LocationHandler {
 
       // Construire les informations de classification
       let wasteInfo = ''
-      if (pendingReport.waste_category && pendingReport.disposal_instructions) {
+      if (finalPendingReport.waste_category && finalPendingReport.disposal_instructions) {
         const categoryEmojis = {
           'RECYCLABLE': '♻️',
           'ORGANIC': '🌱', 
           'HAZARDOUS': '⚠️',
           'GENERAL': '🗑️'
         }
-        const emoji = categoryEmojis[pendingReport.waste_category as keyof typeof categoryEmojis] || '🗂️'
-        wasteInfo = `\n\n🗂️ <b>Classification IA :</b> ${emoji} ${pendingReport.waste_category}\n💡 <b>Instructions :</b> ${pendingReport.disposal_instructions}`
+        const emoji = categoryEmojis[finalPendingReport.waste_category as keyof typeof categoryEmojis] || '🗂️'
+        wasteInfo = `\n\n🗂️ <b>Classification IA :</b> ${emoji} ${finalPendingReport.waste_category}\n💡 <b>Instructions :</b> ${finalPendingReport.disposal_instructions}`
       }
 
       const successText = `🎉 <b>Signalement créé avec succès !</b>
