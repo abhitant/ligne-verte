@@ -50,31 +50,31 @@ export class EnhancedWasteAnalyzer {
               role: 'system',
               content: `Tu es un expert en analyse environnementale avec des critères stricts de détection de déchets.
 
-              CRITÈRES DE DÉTECTION STRICTE :
+              MISSION : Détecter UNIQUEMENT les vrais déchets problématiques en Côte d'Ivoire.
               
-              ✅ DÉCHETS ACCEPTÉS :
-              - Détritus jetés au sol (canettes, bouteilles, emballages)
-              - Sacs poubelle ouverts/renversés avec contenu visible
-              - Accumulation de déchets dans espaces publics
-              - Pollution plastique dans la nature (rivières, parcs)
-              - Dépôts sauvages d'ordures
-              - Mégots de cigarettes au sol
-              - Graffitis et tags sur propriété publique
-              - Objets abandonnés (meubles, appareils électroniques)
+              ✅ DÉCHETS À SIGNALER (soyez sélectif) :
+              - Plastiques éparpillés au sol (sachets, bouteilles, contenants)
+              - Accumulations visibles d'ordures dans espaces publics
+              - Dépôts sauvages d'ordures en tas
+              - Détritus jetés dans caniveaux ou cours d'eau
+              - Sacs poubelle éventrés avec contenu répandu
+              - Déchets organiques qui pourrissent (restes alimentaires)
+              - Objets volumineux abandonnés (meubles, appareils)
+              - Mégots nombreux concentrés au même endroit
 
-              ❌ NE PAS CONSIDÉRER COMME DÉCHETS :
-              - Poubelles fermées et bien rangées
-              - Espaces propres même avec quelques éléments
-              - Véhicules, personnes, animaux
-              - Nature propre, paysages, intérieurs
-              - Nourriture fraîche ou objets en bon état
-              - Photos de famille, selfies
-              - Bâtiments, infrastructures normales
+              ❌ NE PAS SIGNALER :
+              - Poubelles fermées ou bacs de collecte organisés
+              - Une ou deux canettes isolées (sauf si c'est dans la nature)
+              - Espaces globalement propres
+              - Véhicules, construction, infrastructure
+              - Personnes, animaux, intérieurs de maisons
+              - Nourriture fraîche ou objets utilisables
+              - Images floues où rien n'est clairement identifiable
 
-              ÉVALUATION :
-              - Seuil minimum : présence ÉVIDENTE de déchets mal gérés
-              - Sévérité basée sur quantité et impact environnemental
-              - Urgence selon dangerosité et localisation
+              CRITÈRES DE VALIDATION :
+              - ÉVIDENCE CLAIRE : les déchets doivent être ÉVIDEMMENT visibles
+              - IMPACT NÉGATIF : l'accumulation nuit réellement à l'environnement
+              - LOCALISATION : préférer signaler si c'est dans espaces publics/nature
 
               Réponds UNIQUEMENT avec un JSON valide dans ce format exact :
               {
@@ -284,32 +284,41 @@ export class EnhancedWasteAnalyzer {
       return rejectionReasons[detectedReason] || "❌ <b>Photo non acceptée.</b>\n\nL'image ne semble pas contenir de déchets ou est de mauvaise qualité."
     }
 
-    let message = "✅ <b>Photo acceptée et analysée !</b>\n\n"
+    let message = "✅ <b>Image validée ! Des ordures ont été détectées.</b>\n\n"
     
-    // Ajouter les détails de l'analyse si disponibles
-    if (wasteLevel && wasteLevel !== 'low') {
-      const levelEmojis = {
-        'medium': '🟡',
-        'high': '🟠', 
-        'critical': '🔴'
+    // Analyser le niveau de déchets et donner des détails
+    if (wasteLevel) {
+      const levelDetails = {
+        'low': '🟢 <b>Déchets dispersés</b> - Quelques éléments isolés',
+        'medium': '🟡 <b>Accumulation modérée</b> - Plusieurs déchets regroupés', 
+        'high': '🟠 <b>Déchets en masse</b> - Accumulation importante',
+        'critical': '🔴 <b>Pollution critique</b> - Dépôt massif d\'ordures'
       }
-      message += `${levelEmojis[wasteLevel]} <b>Ampleur :</b> ${wasteLevel === 'medium' ? 'Modérée' : wasteLevel === 'high' ? 'Importante' : 'Critique'}\n`
+      message += `${levelDetails[wasteLevel]}\n\n`
     }
     
-    if (wasteTypes && wasteTypes.length > 0 && !wasteTypes.includes('indéterminé')) {
-      message += `🗑️ <b>Types détectés :</b> ${wasteTypes.join(', ')}\n`
+    // Afficher les types de déchets détectés
+    if (wasteTypes && wasteTypes.length > 0 && !wasteTypes.includes('indéterminé') && !wasteTypes.includes('à_classifier')) {
+      const typeEmojis = {
+        'plastique': '🧴',
+        'organique': '🍎', 
+        'métal': '🥫',
+        'verre': '🍾',
+        'papier': '📄',
+        'mégots': '🚬',
+        'électronique': '📱'
+      }
+      const typesWithEmojis = wasteTypes.map(type => `${typeEmojis[type] || '🗑️'} ${type}`).join(', ')
+      message += `<b>Types identifiés :</b> ${typesWithEmojis}\n\n`
     }
     
+    // Indicateur d'urgence
     if (urgencyScore && urgencyScore > 70) {
-      message += `⚡ <b>Urgence élevée</b> - Signalement prioritaire\n`
+      message += `⚡ <b>Signalement prioritaire</b> - Intervention rapide requise\n\n`
     }
     
-    if (environmentalImpact && !environmentalImpact.includes('évaluer')) {
-      message += `🌍 <b>Impact :</b> ${environmentalImpact}\n`
-    }
-    
-    message += `\n💰 <b>+10 points Himpact</b> pour votre contribution !\n`
-    message += `🔍 Votre signalement sera examiné par notre équipe.`
+    message += `💰 <b>+10 points Himpact</b> gagnés !\n`
+    message += `📍 <b>Prochaine étape :</b> Partagez votre localisation pour compléter le signalement.`
     
     return message
   }
