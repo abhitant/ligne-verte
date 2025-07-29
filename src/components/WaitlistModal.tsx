@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
-import { Mail, User, MapPin, MessageSquare, X } from "lucide-react";
+import { Mail, User, MapPin, MessageSquare, Phone } from "lucide-react";
 
 interface WaitlistModalProps {
   isOpen: boolean;
@@ -16,6 +16,7 @@ const WaitlistModal = ({ isOpen, onClose }: WaitlistModalProps) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     zone: '',
     motivation: ''
   });
@@ -33,7 +34,7 @@ const WaitlistModal = ({ isOpen, onClose }: WaitlistModalProps) => {
       description: "Tu as été ajouté(e) à notre liste d'attente. Nous te contacterons bientôt.",
     });
 
-    setFormData({ name: '', email: '', zone: '', motivation: '' });
+    setFormData({ name: '', email: '', phone: '', zone: '', motivation: '' });
     setIsSubmitting(false);
     onClose();
   };
@@ -77,6 +78,21 @@ const WaitlistModal = ({ isOpen, onClose }: WaitlistModalProps) => {
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
               placeholder="ton.email@exemple.com"
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="phone" className="flex items-center gap-2">
+              <Phone className="w-4 h-4" />
+              Numéro de téléphone
+            </Label>
+            <Input
+              id="phone"
+              type="tel"
+              value={formData.phone}
+              onChange={(e) => handleInputChange('phone', e.target.value)}
+              placeholder="+225 XX XX XX XX XX"
               required
             />
           </div>
