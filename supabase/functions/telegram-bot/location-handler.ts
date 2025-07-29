@@ -166,6 +166,7 @@ Coordonnées : ${latitude.toFixed(6)}, ${longitude.toFixed(6)}${wasteInfo}
 🚀 <b>Prochaine étape :</b> Continuez vos signalements pour gagner plus de points !`
 
       const keyboard = {
+        remove_keyboard: true, // Supprime le clavier de localisation
         inline_keyboard: [
           [
             { text: '🗺️ Voir sur la carte', url: 'https://ligne-verte.lovable.app/map' },
