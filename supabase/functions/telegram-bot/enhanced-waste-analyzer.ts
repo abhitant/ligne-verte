@@ -317,6 +317,7 @@ export class EnhancedWasteAnalyzer {
       message += `⚡ <b>Signalement prioritaire</b> - Intervention rapide requise\n\n`
     }
     
+    // SEULEMENT si des déchets sont détectés, demander la localisation
     message += `📍 Veuillez maintenant <b>partager votre localisation</b> pour finaliser le signalement.`
     
     return message
