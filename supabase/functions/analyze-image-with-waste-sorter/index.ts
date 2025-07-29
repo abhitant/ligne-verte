@@ -128,31 +128,60 @@ function generateDisposalInstructions(category: string, items: any[]): string {
 }
 
 async function performBasicAnalysis(data: Uint8Array): Promise<any> {
-  // Analyse basique: considère toute image comme un déchet potentiel
-  // Détermine le type de déchet selon certains critères simples
-  const imageSize = data.length;
-  
-  // Logique simple basée sur la taille et d'autres heuristiques
-  let wasteCategory = 'GENERAL';
-  let confidence = 0.85;
-  
-  // Classification simple basée sur la taille de l'image
-  if (imageSize > 100000) {
-    // Images plus grandes peuvent indiquer des objets plus volumineux
-    wasteCategory = Math.random() > 0.5 ? 'RECYCLABLE' : 'GENERAL';
-  } else if (imageSize < 50000) {
-    // Petites images peuvent indiquer des déchets organiques
-    wasteCategory = Math.random() > 0.7 ? 'ORGANIC' : 'GENERAL';
+  try {
+    console.log('🔍 Starting basic analysis for image data of size:', data.length);
+    
+    // Analyse basique: considère toute image comme un déchet potentiel
+    const imageSize = data.length;
+    
+    // Logique déterministe basée sur la taille de l'image
+    let wasteCategory = 'GENERAL';
+    let confidence = 0.85;
+    
+    // Classification déterministe basée sur la taille de l'image
+    if (imageSize > 200000) {
+      // Images très grandes - probablement recyclable (bouteilles, emballages)
+      wasteCategory = 'RECYCLABLE';
+      confidence = 0.75;
+    } else if (imageSize > 100000) {
+      // Images moyennes - déchets généraux
+      wasteCategory = 'GENERAL';
+      confidence = 0.80;
+    } else if (imageSize < 50000) {
+      // Petites images - déchets organiques
+      wasteCategory = 'ORGANIC';
+      confidence = 0.70;
+    }
+    
+    console.log('✅ Analysis completed - Category:', wasteCategory, 'Confidence:', confidence);
+    
+    const imageHash = await calculateImageHash(data);
+    console.log('✅ Image hash calculated:', imageHash.substring(0, 16) + '...');
+    
+    const disposalInstructions = generateDisposalInstructions(wasteCategory, []);
+    console.log('✅ Disposal instructions generated');
+    
+    return {
+      isGarbageDetected: true,
+      wasteCategory,
+      disposalInstructions,
+      detectedObjects: [{ label: 'waste_detected', score: confidence }],
+      confidence,
+      imageHash
+    };
+  } catch (error) {
+    console.error('❌ Error in performBasicAnalysis:', error);
+    
+    // Fallback simple en cas d'erreur
+    return {
+      isGarbageDetected: true,
+      wasteCategory: 'GENERAL',
+      disposalInstructions: '🗑️ Ce déchet va dans le bac d'ordures ménagères. Vérifiez les consignes de tri de votre commune.',
+      detectedObjects: [{ label: 'waste_detected', score: 0.5 }],
+      confidence: 0.5,
+      imageHash: `fallback_${Date.now()}_${data.length}`
+    };
   }
-  
-  return {
-    isGarbageDetected: true,
-    wasteCategory,
-    disposalInstructions: generateDisposalInstructions(wasteCategory, []),
-    detectedObjects: [{ label: 'waste_detected', score: confidence }],
-    confidence,
-    imageHash: await calculateImageHash(data)
-  };
 }
 
 function calculateImageHashSync(data: Uint8Array): string {
