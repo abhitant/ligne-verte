@@ -10,9 +10,10 @@ const Navigation = () => {
 
   const navigation = [
     { name: 'Accueil', href: '/', icon: Home },
-    { name: 'Carte', href: '/map', icon: MapPin },
-    { name: 'Actualité', href: '/actualite', icon: Users },
-    { name: 'À propos', href: '/rejoindre', icon: Info },
+    { name: 'Carte', href: '/carte', icon: MapPin },
+    { name: 'Classement', href: '/classement', icon: Users },
+    { name: 'À propos', href: '/a-propos', icon: Info },
+    { name: 'Rejoindre', href: '/rejoindre', icon: Leaf },
   ];
 
   const isActive = (href: string) => {
