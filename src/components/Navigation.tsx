@@ -27,7 +27,7 @@ const Navigation = () => {
           <div className="flex items-center flex-shrink-0">
             <Link to="/" className="flex items-center space-x-2">
               <img 
-                src="/lovable-uploads/82d44cbc-fa64-4191-8240-14779720377a.png" 
+                src="/lovable-uploads/51573e76-79ef-45bd-bbea-c89596bc53a0.png" 
                 alt="La Ligne Verte Logo" 
                 className="w-8 h-8 sm:w-10 sm:h-10"
               />

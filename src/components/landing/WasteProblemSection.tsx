@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Trash2, MapPin, TrendingDown } from "lucide-react";
 import { useEffect, useState } from "react";
-import ligneVerteLogo from "@/assets/ligne-verte-logo.png";
+// import ligneVerteLogo from "@/assets/ligne-verte-logo.png"; // Remplacé par l'image directe
 
 const WasteProblemSection = () => {
   const [visibleCards, setVisibleCards] = useState<number[]>([]);
