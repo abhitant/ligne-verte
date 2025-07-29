@@ -2,10 +2,12 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { MapPin, Home, Users, Menu, X, Leaf, Info } from "lucide-react";
+import { MapPin, Home, Users, Menu, X, Info } from "lucide-react";
+import WaitlistModal from "./WaitlistModal";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
   const location = useLocation();
 
   const navigation = [
@@ -13,7 +15,6 @@ const Navigation = () => {
     { name: 'Carte', href: '/carte', icon: MapPin },
     { name: 'Classement', href: '/classement', icon: Users },
     { name: 'À propos', href: '/a-propos', icon: Info },
-    { name: 'Rejoindre', href: '/rejoindre', icon: Leaf },
   ];
 
   const isActive = (href: string) => {
@@ -62,17 +63,13 @@ const Navigation = () => {
             </div>
           </div>
 
-          {/* Right side - Bot Telegram button */}
+          {/* Right side - Waitlist button */}
           <div className="hidden md:flex items-center flex-shrink-0 ml-2">
-            <Button className="bg-accent text-accent-foreground hover:bg-accent/80">
-              <a 
-                href="https://t.me/LigneverteBot?start=web" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center space-x-2"
-              >
-                <span>Participer à la lutte</span>
-              </a>
+            <Button 
+              className="bg-accent text-accent-foreground hover:bg-accent/80"
+              onClick={() => setIsWaitlistOpen(true)}
+            >
+              Participer à la lutte
             </Button>
           </div>
 
@@ -112,21 +109,25 @@ const Navigation = () => {
                 );
               })}
               <div className="pt-4 pb-2">
-                <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/80 py-3 text-base font-medium">
-                  <a 
-                    href="https://t.me/LigneverteBot?start=web" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="w-full"
-                  >
-                    Participer à la lutte
-                  </a>
+                <Button 
+                  className="w-full bg-accent text-accent-foreground hover:bg-accent/80 py-3 text-base font-medium"
+                  onClick={() => {
+                    setIsWaitlistOpen(true);
+                    setIsOpen(false);
+                  }}
+                >
+                  Participer à la lutte
                 </Button>
               </div>
             </div>
           </div>
         )}
       </div>
+      
+      <WaitlistModal 
+        isOpen={isWaitlistOpen} 
+        onClose={() => setIsWaitlistOpen(false)} 
+      />
     </nav>
   );
 };
