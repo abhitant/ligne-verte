@@ -181,18 +181,12 @@ export class LocationHandler {
         `🎯 <b>+${awardedPoints} points Himpact</b> gagnés !\n💰 Total : <b>${currentPoints} points</b>` :
         `💡 <b>Aucun point attribué</b> - Ampleur insuffisante\n💰 Total : <b>${currentPoints} points</b>`
 
-      const successText = `🎉 <b>Signalement créé avec succès !</b>
+      const successText = `✅ <b>Signalement terminé avec succès !</b>
 
-📍 <b>Localisation enregistrée :</b>
-Coordonnées : ${latitude.toFixed(6)}, ${longitude.toFixed(6)}${wasteInfo}${amplitudeMessage}
+📍 <b>Coordonnées de géolocalisation :</b> ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
+Vous remportez 10 points Himpact
 
-✅ <b>Statut :</b> Validé automatiquement par IA
-${pointsText}
-👤 <b>Contributeur :</b> ${userPseudo}
-
-🌍 Merci de contribuer à un environnement plus propre ! 
-
-🚀 <b>Prochaine étape :</b> Continuez vos signalements pour gagner plus de points !`
+🌍 Merci pour votre contribution, ensemble on rend nos quartiers zo et on prend nos points !`
 
       // D'abord supprimer le clavier de localisation
       await this.telegramAPI.sendMessage(chatId, '✅ Localisation reçue !', { remove_keyboard: true })
@@ -201,8 +195,8 @@ ${pointsText}
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir sur la carte', url: 'https://ligne-verte.lovable.app/map' },
-            { text: '💰 Mes points', callback_data: 'show_points' }
+            { text: '🗺️ Voir la carte', callback_data: 'show_map' },
+            { text: '💰 Voir mes points', callback_data: 'show_points' }
           ],
           [
             { text: '📸 Nouveau signalement', callback_data: 'start_new_report' }

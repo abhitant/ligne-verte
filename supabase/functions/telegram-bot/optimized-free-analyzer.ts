@@ -352,21 +352,9 @@ ${result.reasoning}
 Si vous voyez des déchets, prenez une photo plus nette et proche. Merci !`
     }
 
-    const urgencyLevel = result.urgencyScore > 60 ? 'ÉLEVÉE' : result.urgencyScore > 30 ? 'MODÉRÉE' : 'FAIBLE'
-    const urgencyEmoji = result.urgencyScore > 60 ? '🚨' : result.urgencyScore > 30 ? '⚠️' : '✅'
-    
-    let message = `${urgencyEmoji} <b>Déchets détectés !</b>
-
-🎯 <b>Objets identifiés :</b> ${result.wasteTypes?.slice(0, 3).join(', ') || 'Divers déchets'}
-🗂️ <b>Catégorie :</b> ${this.translateCategory(result.wasteCategory)}
-📊 <b>Niveau :</b> ${this.translateLevel(result.wasteLevel)} (${result.confidence}% confiance)
-⚡ <b>Urgence :</b> ${urgencyLevel}
-
-♻️ <b>Instructions :</b> ${result.disposalInstructions}
-
-💡 <b>Prévention :</b> ${result.preventionTips?.slice(0, 2).join(', ') || 'Maintenir la propreté'}`
-
-    return message
+    return `✅ <b>Déchets détectés !</b> 
+Quantité : masses
+Dernière étape : partagez votre localisation pour finaliser votre signalement`
   }
 
   private translateCategory(category: string): string {

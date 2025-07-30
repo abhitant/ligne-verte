@@ -79,7 +79,7 @@ export class PhotoHandler {
       const photoUint8Array = new Uint8Array(photoArrayBuffer)
 
       // Message d'analyse en cours
-      await this.telegramAPI.sendMessage(chatId, '🤖 Analyse IA gratuite en cours...')
+      await this.telegramAPI.sendMessage(chatId, '🤖 Analyse d\'image en cours par Debora...')
 
       // Analyser avec l'analyseur optimisé gratuit
       console.log('🎯 Starting optimized free analysis...')
