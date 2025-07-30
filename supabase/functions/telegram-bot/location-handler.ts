@@ -104,21 +104,38 @@ export class LocationHandler {
         return { success: false, error: finalPendingError }
       }
 
+      // Récupérer les données d'analyse pour déterminer les points
+      const analysisData = finalPendingReport.analysis_data ? JSON.parse(finalPendingReport.analysis_data) : null
+      const wasteAmplitude = analysisData?.wasteAmplitude || 'medium'
+      const recommendedPoints = analysisData?.recommendedPoints || 10
+
+      // Calculer les points selon l'ampleur
+      let awardedPoints = 0
+      let amplitudeMessage = ''
+      
+      if (wasteAmplitude === 'minimal' || wasteAmplitude === 'small') {
+        awardedPoints = 0
+        amplitudeMessage = '\n\n🤏 <b>Ampleur faible détectée</b>\n💡 <b>Conseil :</b> Veuillez ramasser ces déchets vous-même pour contribuer activement à l\'environnement !'
+      } else {
+        awardedPoints = recommendedPoints
+        amplitudeMessage = `\n\n📏 <b>Ampleur ${wasteAmplitude}</b> - Signalement justifié !`
+      }
+
       // Créer le signalement avec la photo en attente et les données de classification
       const { data: report, error: reportError } = await this.supabaseClient
         .from('reports')
         .insert({
           user_telegram_id: telegramId,
           photo_url: finalPendingReport.photo_url,
-          description: `Signalement via Telegram - ${finalPendingReport.waste_category ? `Type: ${finalPendingReport.waste_category}` : 'Validé par IA'}`,
+          description: `Signalement via Telegram - ${finalPendingReport.waste_category ? `Type: ${finalPendingReport.waste_category}` : 'Validé par IA'} - Ampleur: ${wasteAmplitude}`,
           location_lat: latitude,
           location_lng: longitude,
           status: 'validé',
           image_hash: finalPendingReport.image_hash || null,
           waste_category: finalPendingReport.waste_category || 'GENERAL',
           disposal_instructions: finalPendingReport.disposal_instructions || null,
-          severity_level: 1,
-          points_awarded: 10
+          severity_level: wasteAmplitude === 'massive' ? 3 : wasteAmplitude === 'large' ? 2 : 1,
+          points_awarded: awardedPoints
         })
         .select()
         .single()
@@ -129,17 +146,22 @@ export class LocationHandler {
         return { success: false, error: reportError }
       }
 
-      // Ajouter des points à l'utilisateur
-      const { data: updatedUser, error: pointsError } = await this.supabaseClient.rpc('add_points_to_user', {
-        p_telegram_id: telegramId,
-        p_points: 10
-      })
+      // Ajouter des points à l'utilisateur seulement si des points sont attribués
+      let updatedUser = null
+      if (awardedPoints > 0) {
+        const { data: userUpdate, error: pointsError } = await this.supabaseClient.rpc('add_points_to_user', {
+          p_telegram_id: telegramId,
+          p_points: awardedPoints
+        })
 
-      if (pointsError) {
-        console.error('Error adding points:', pointsError)
+        if (pointsError) {
+          console.error('Error adding points:', pointsError)
+        } else {
+          updatedUser = userUpdate
+        }
       }
 
-      const currentPoints = updatedUser?.points_himpact || (user?.points_himpact || 0) + 10
+      const currentPoints = updatedUser?.points_himpact || (user?.points_himpact || 0)
       const userPseudo = updatedUser?.pseudo || user?.pseudo || firstName || `User ${telegramId.slice(-4)}`
 
       // Construire les informations de classification
@@ -155,17 +177,20 @@ export class LocationHandler {
         wasteInfo = `\n\n🗂️ <b>Classification IA :</b> ${emoji} ${finalPendingReport.waste_category}\n💡 <b>Instructions :</b> ${finalPendingReport.disposal_instructions}`
       }
 
+      const pointsText = awardedPoints > 0 ? 
+        `🎯 <b>+${awardedPoints} points Himpact</b> gagnés !\n💰 Total : <b>${currentPoints} points</b>` :
+        `💡 <b>Aucun point attribué</b> - Ampleur insuffisante\n💰 Total : <b>${currentPoints} points</b>`
+
       const successText = `🎉 <b>Signalement créé avec succès !</b>
 
 📍 <b>Localisation enregistrée :</b>
-Coordonnées : ${latitude.toFixed(6)}, ${longitude.toFixed(6)}${wasteInfo}
+Coordonnées : ${latitude.toFixed(6)}, ${longitude.toFixed(6)}${wasteInfo}${amplitudeMessage}
 
 ✅ <b>Statut :</b> Validé automatiquement par IA
-🎯 <b>+10 points Himpact</b> gagnés !
-💰 Total : <b>${currentPoints} points</b>
+${pointsText}
 👤 <b>Contributeur :</b> ${userPseudo}
 
-🌍 Merci de rendre notre environnement plus propre ! 
+🌍 Merci de contribuer à un environnement plus propre ! 
 
 🚀 <b>Prochaine étape :</b> Continuez vos signalements pour gagner plus de points !`
 

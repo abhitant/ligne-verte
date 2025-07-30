@@ -77,10 +77,12 @@ export class UltraSophisticatedAnalyzer {
 🎯 MISSION ULTRA-PRÉCISE : Analyser avec une granularité exceptionnelle les déchets et la pollution environnementale.
 
 ✅ DÉTECTER ET CLASSIFIER :
-- Niveau de pollution : minimal, low, medium, high, critical, catastrophic
+- Niveau de pollution : minimal, low, medium, high, critical, catastrophic  
+- AMPLEUR des déchets : minimal, small, medium, large, massive
 - Types de déchets : plastique, organique, métal, verre, papier, textile, électronique, chimique, médical
 - Impact environnemental précis
 - Urgence d'intervention (score 0-100)
+- Points recommandés selon ampleur : 0 (minimal/small), 5 (medium), 10 (large), 15-20 (massive)
 - Contexte géographique : urban, natural, industrial, residential
 - Niveau de risque : very_low, low, medium, high, very_high, critical
 - Action requise : none, monitoring, cleanup, emergency
@@ -168,6 +170,8 @@ Réponds UNIQUEMENT avec un JSON valide dans ce format exact :
         detectedObjects: analysis.objects || [{ label: analysis.reasoning || 'Analyse ultra-sophistiquée complétée', score: analysis.confidence || 50 }],
         imageHash,
         wasteLevel: analysis.wasteLevel || 'minimal',
+        wasteAmplitude: analysis.wasteAmplitude || 'minimal',
+        recommendedPoints: analysis.recommendedPoints || 0,
         wasteTypes: analysis.wasteTypes || [],
         environmentalImpact: analysis.environmentalImpact || 'Impact environnemental à évaluer',
         urgencyScore: analysis.urgencyScore || 0,
@@ -255,6 +259,8 @@ Réponds UNIQUEMENT avec un JSON valide dans ce format exact :
       detectedObjects: crossValidatedAnalysis.consolidatedObjects,
       imageHash,
       wasteLevel: crossValidatedAnalysis.wasteLevel,
+      wasteAmplitude: crossValidatedAnalysis.wasteAmplitude,
+      recommendedPoints: crossValidatedAnalysis.recommendedPoints,
       wasteTypes: crossValidatedAnalysis.wasteTypes,
       environmentalImpact: crossValidatedAnalysis.environmentalImpact,
       urgencyScore: crossValidatedAnalysis.urgencyScore,
@@ -337,6 +343,10 @@ Réponds UNIQUEMENT avec un JSON valide dans ce format exact :
     else if (normalizedScore >= 60) wasteLevel = 'medium'
     else if (normalizedScore >= 40) wasteLevel = 'low'
 
+    // Évaluer l'ampleur des déchets
+    const wasteAmplitude = this.evaluateWasteAmplitude(normalizedScore, consolidatedObjects.length, detectedWasteTypes)
+    const recommendedPoints = this.calculatePointsFromAmplitude(wasteAmplitude)
+
     // Analyse contextuelle sophistiquée
     const contextualAnalysis = {
       location: this.determineLocation(results),
@@ -348,6 +358,8 @@ Réponds UNIQUEMENT avec un JSON valide dans ce format exact :
     return {
       isGarbage,
       wasteLevel,
+      wasteAmplitude,
+      recommendedPoints,
       wasteTypes: detectedWasteTypes,
       consolidatedObjects: consolidatedObjects.slice(0, 5),
       environmentalImpact: this.generateEnvironmentalImpact(wasteLevel, detectedWasteTypes),
