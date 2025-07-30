@@ -106,14 +106,14 @@ const WaitlistModal = ({ isOpen, onClose }: WaitlistModalProps) => {
           <div className="space-y-2">
             <Label htmlFor="phone" className="flex items-center gap-2">
               <Phone className="w-4 h-4" />
-              Numéro de téléphone
+              Numéro de téléphone (international)
             </Label>
             <Input
               id="phone"
               type="tel"
               value={formData.phone}
               onChange={(e) => handleInputChange('phone', e.target.value)}
-              placeholder="+225 XX XX XX XX XX"
+              placeholder="+33 1 23 45 67 89, +225 XX XX XX XX XX, +1 555 123 4567..."
               required
             />
           </div>
