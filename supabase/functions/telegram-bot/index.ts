@@ -129,17 +129,28 @@ serve(async (req) => {
       }
 
       if (callbackData === 'start_new_report') {
-        await telegramAPI.sendMessage(chatId, `📸 <b>Nouveau signalement</b>
-
-Pour commencer un nouveau signalement :
-1. Prenez une photo des déchets
-2. Envoyez-la moi directement dans le chat
-3. Je l'analyserai et vous demanderai votre localisation
-
-💡 Assurez-vous que la photo soit claire et proche des déchets pour une meilleure analyse !`)
+        // Envoyer une notification push
+        await telegramAPI.answerCallbackQuery(callback_query.id, '📸 Mode signalement activé ! Prenez une photo 👇')
         
-        // Répondre au callback query pour supprimer le loading
-        await telegramAPI.answerCallbackQuery(callback_query.id)
+        // Créer un clavier personnalisé avec bouton caméra
+        const replyKeyboard = {
+          keyboard: [
+            [{ text: '📸 Prendre une photo' }]
+          ],
+          resize_keyboard: true,
+          one_time_keyboard: true,
+          input_field_placeholder: 'Appuyez sur 📎 puis 📷 Caméra'
+        }
+        
+        await telegramAPI.sendMessage(chatId, `📸 <b>Nouveau signalement activé !</b>
+
+🎯 <b>Action à faire :</b>
+• Appuyez sur 📎 (trombone) en bas à gauche
+• Puis sélectionnez 📷 <b>Caméra</b>
+• Prenez une photo des déchets
+
+💡 <i>Photo claire et proche des déchets = meilleure analyse !</i>`, replyKeyboard)
+        
         return new Response('OK', { status: 200 })
       }
 
