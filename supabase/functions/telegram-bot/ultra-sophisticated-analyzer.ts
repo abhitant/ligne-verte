@@ -29,7 +29,7 @@ export class UltraSophisticatedAnalyzer {
       
       // 1. ANALYSE PRIMAIRE - OpenAI Vision (Ultra-précise)
       const openAIKey = Deno.env.get('OPENAI_API_KEY')
-      if (openAIKey && imageSize > 5000) { // Seuil très abaissé pour détecter plus de déchets
+      if (openAIKey && imageSize > 10000) { // Seuil équilibré pour qualité vs couverture
         console.log('🤖 Deploying OpenAI Vision Ultra-Analysis...')
         const openAIResult = await this.performUltraOpenAIAnalysis(imageData, imageHash)
         if (openAIResult) {
@@ -76,8 +76,8 @@ export class UltraSophisticatedAnalyzer {
 
 🎯 MISSION ULTRA-PRÉCISE : Analyser avec une granularité exceptionnelle les déchets et la pollution environnementale.
 
-✅ DÉTECTER ET CLASSIFIER AVEC SENSIBILITÉ MAXIMALE :
-- PRIORITÉ : Détecter même les plus petits déchets (mégots, papiers, canettes, bouteilles, emballages)
+✅ DÉTECTER ET CLASSIFIER AVEC PRÉCISION ÉQUILIBRÉE :
+- Déchets visibles : mégots, papiers, canettes, bouteilles, emballages abandonnés au sol
 - Niveau de pollution : minimal, low, medium, high, critical, catastrophic  
 - AMPLEUR des déchets : minimal, small, medium, large, massive
 - Types de déchets : plastique, organique, métal, verre, papier, textile, électronique, chimique, médical
@@ -88,21 +88,22 @@ export class UltraSophisticatedAnalyzer {
 - Niveau de risque : very_low, low, medium, high, very_high, critical
 - Action requise : none, monitoring, cleanup, emergency
 
-🔍 ANALYSE CONTEXTUELLE ULTRA-SENSIBLE :
-- Détecter TOUT déchet, même minime (papier froissé, mégot, emballage abandonné)
-- Identifier les objets jetés au sol ou abandonnés
-- Rechercher activement : bouteilles, canettes, papiers, emballages alimentaires, mégots
-- Évaluer l'ampleur réelle de la pollution
-- Identifier les risques pour la biodiversité
-- Proposer des solutions de tri spécifiques
+🔍 ANALYSE CONTEXTUELLE ÉQUILIBRÉE :
+- Identifier les objets ABANDONNÉS ou jetés au sol (pas ceux en usage normal)
+- Distinguer déchets réels vs objets fonctionnels à leur place
+- Évaluer l'ampleur réelle de la pollution visible
+- Contexte environnemental : espaces naturels, urbains, zones de passage
+- Proposer des solutions de tri appropriées
 
-❌ REJETER UNIQUEMENT :
-- Images très floues ou illisibles
-- Photos complètement sans déchets ET propres
-- Photos personnelles/selfies sans déchets
-- Objets clairement fonctionnels ET en bon état ET à leur place
+❌ REJETER STRICTEMENT :
+- Images floues ou de très mauvaise qualité
+- Écrans d'appareils électroniques (smartphones, ordinateurs, télévisions)
+- Photos personnelles/selfies sans déchets visibles
+- Objets fonctionnels en usage normal à leur place (véhicules, mobilier urbain)
+- Espaces propres sans déchets abandonnés
+- Images de produits neufs en magasin ou emballés
 
-⚠️ PRINCIPE DE SENSIBILITÉ : En cas de doute, ACCEPTER et analyser. Priorité à la détection des déchets.
+⚠️ PRINCIPE D'ÉQUILIBRE : Priorité à la PRÉCISION. En cas de doute sur la présence réelle de déchets abandonnés, REJETER.
 
 Réponds UNIQUEMENT avec un JSON valide dans ce format exact :
 {
@@ -333,9 +334,9 @@ Réponds UNIQUEMENT avec un JSON valide dans ce format exact :
       }
     }
 
-    // Normaliser le score et déterminer le niveau
+    // Normaliser le score et déterminer le niveau avec seuil plus strict
     const normalizedScore = Math.min(100, wasteScore / results.length)
-    const isGarbage = normalizedScore >= 50 && consolidatedObjects.length > 0
+    const isGarbage = normalizedScore >= 60 && consolidatedObjects.length > 0 && wasteScore >= 120
 
     let wasteLevel: string = 'minimal'
     if (normalizedScore >= 90) wasteLevel = 'catastrophic'
@@ -404,27 +405,25 @@ Réponds UNIQUEMENT avec un JSON valide dans ce format exact :
       }
     }
 
-    // Analyse heuristique avancée pour grandes images
-    if (contextualFactors.likelyOutdoor && contextualFactors.highDetail) {
-      return {
-        isGarbageDetected: true,
-        detectedObjects: [{ label: 'Image haute résolution nécessitant validation manuelle', score: 60 }],
-        imageHash,
-        wasteLevel: 'low',
-        wasteTypes: ['à_classifier'],
-        environmentalImpact: 'Image de haute qualité suggérant un contexte extérieur - validation manuelle recommandée',
-        urgencyScore: 25,
-        confidence: 60,
-        reasoning: 'Image haute résolution extérieure - probable contexte environnemental',
-        contextualAnalysis: {
-          location: 'unknown',
-          severity: 25,
-          riskLevel: 'low',
-          actionRequired: 'monitoring'
-        },
-        disposalInstructions: 'Classification manuelle requise',
-        preventionTips: ['Améliorer la qualité des prises de vue', 'Cadrer directement les déchets']
-      }
+    // Analyse heuristique conservatrice - rejet par défaut
+    // Plus d'auto-acceptation basée uniquement sur la taille
+    console.log('🛡️ Applying conservative contextual analysis - rejecting by default')
+    
+    return {
+      isGarbageDetected: false,
+      detectedObjects: [{ label: 'Aucun déchet clairement identifiable', score: 0 }],
+      imageHash,
+      wasteLevel: 'minimal',
+      confidence: 85,
+      reasoning: 'Analyse contextuelle conservatrice - aucun déchet clairement visible',
+      contextualAnalysis: {
+        location: 'unknown',
+        severity: 0,
+        riskLevel: 'very_low',
+        actionRequired: 'none'
+      },
+      disposalInstructions: 'Aucune action requise',
+      preventionTips: ['Prendre des photos plus claires des déchets si présents']
     }
 
     // Rejet conservateur par défaut
@@ -652,7 +651,7 @@ Réponds UNIQUEMENT avec un JSON valide dans ce format exact :
     // Niveau de pollution avec détails sophistiqués
     if (wasteLevel) {
       const levelDetails = {
-        'minimal': '🟢 <b>Pollution minimale</b> - Intervention préventive recommandée',
+        'minimal': '🟢 <b>Pollution minimale</b> - Veuillez ramasser ces déchets',
         'low': '🟡 <b>Pollution faible</b> - Nettoyage de routine suffisant',
         'medium': '🟠 <b>Pollution modérée</b> - Action de nettoyage prioritaire',
         'high': '🔴 <b>Pollution élevée</b> - Intervention urgente requise',
