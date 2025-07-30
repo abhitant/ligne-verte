@@ -1,23 +1,17 @@
 
 import { TelegramAPI } from './telegram-api.ts'
 import type { TelegramUpdate } from './types.ts'
-import { WasteSorterAnalyzer } from './waste-sorter-analyzer.ts'
-import { EnhancedWasteAnalyzer } from './enhanced-waste-analyzer.ts'
-import { UltraSophisticatedAnalyzer } from './ultra-sophisticated-analyzer.ts'
+import { OptimizedFreeAnalyzer } from './optimized-free-analyzer.ts'
 
 export class PhotoHandler {
   private telegramAPI: TelegramAPI
   private supabaseClient: any
-  private wasteAnalyzer: WasteSorterAnalyzer
-  private enhancedAnalyzer: EnhancedWasteAnalyzer
-  private ultraSophisticatedAnalyzer: UltraSophisticatedAnalyzer
+  private optimizedAnalyzer: OptimizedFreeAnalyzer
 
   constructor(telegramAPI: TelegramAPI, supabaseClient: any) {
     this.telegramAPI = telegramAPI
     this.supabaseClient = supabaseClient
-    this.wasteAnalyzer = new WasteSorterAnalyzer()
-    this.enhancedAnalyzer = new EnhancedWasteAnalyzer()
-    this.ultraSophisticatedAnalyzer = new UltraSophisticatedAnalyzer()
+    this.optimizedAnalyzer = new OptimizedFreeAnalyzer()
   }
 
   async handlePhoto(chatId: number, telegramId: string, photos: any[], telegramUsername?: string, firstName?: string) {
@@ -85,48 +79,19 @@ export class PhotoHandler {
       const photoUint8Array = new Uint8Array(photoArrayBuffer)
 
       // Message d'analyse en cours
-      await this.telegramAPI.sendMessage(chatId, 'Analyse de l\'image en cours de traitement...')
+      await this.telegramAPI.sendMessage(chatId, '🤖 Analyse IA gratuite en cours...')
 
-      // Analyser avec notre analyseur ultra-sophistiqué
-      console.log('🚀 Starting ultra-sophisticated waste analysis...')
-      let analysisResult = await this.ultraSophisticatedAnalyzer.analyzeImage(photoUint8Array)
-      
-      // Si l'analyseur ultra-sophistiqué ne détecte pas de déchets avec certitude, essayer l'edge function
-      if (!analysisResult.isGarbageDetected || (analysisResult.urgencyScore && analysisResult.urgencyScore < 30)) {
-        console.log('🚀 Using waste sorter app for additional classification...')
-        
-        // Convertir en base64 pour l'edge function (compatible Deno) 
-        const base64Data = `data:image/jpeg;base64,${btoa(String.fromCharCode.apply(null, Array.from(photoUint8Array.slice(0, 8192))))}`
-        
-        try {
-          const analyzeResponse = await this.supabaseClient.functions.invoke('analyze-image-with-waste-sorter', {
-            body: { imageData: base64Data }
-          })
-
-          if (!analyzeResponse.error && analyzeResponse.data) {
-            // Fusionner les résultats des deux analyses
-            const wasteAnalysis = analyzeResponse.data
-            analysisResult = {
-              ...analysisResult,
-              isGarbageDetected: wasteAnalysis.isGarbageDetected || analysisResult.isGarbageDetected,
-              wasteCategory: wasteAnalysis.wasteCategory,
-              disposalInstructions: wasteAnalysis.disposalInstructions,
-              detectedObjects: [...analysisResult.detectedObjects, ...wasteAnalysis.detectedObjects]
-            }
-            console.log('✅ Combined ultra-sophisticated analysis completed:', analysisResult)
-          }
-        } catch (analysisError) {
-          console.error('❌ Waste sorter analysis failed, using ultra-sophisticated analysis only:', analysisError)
-        }
-      }
+      // Analyser avec l'analyseur optimisé gratuit
+      console.log('🎯 Starting optimized free analysis...')
+      let analysisResult = await this.optimizedAnalyzer.analyzeImage(photoUint8Array)
       
       // Fallback complet si nécessaire
       if (!analysisResult.imageHash) {
         analysisResult.imageHash = await this.calculateFallbackHash(photoUint8Array)
       }
 
-      // Envoyer le message de validation ultra-sophistiqué
-      const validationMessage = this.ultraSophisticatedAnalyzer.generateUltraSophisticatedValidationMessage(analysisResult)
+      // Envoyer le message de validation optimisé
+      const validationMessage = this.optimizedAnalyzer.generateOptimizedValidationMessage(analysisResult)
       await this.telegramAPI.sendMessage(chatId, validationMessage, { parse_mode: 'HTML' })
 
       // VALIDATION PRÉCOCE : Si l'analyse rejette la photo, arrêter immédiatement
