@@ -100,20 +100,6 @@ export class PhotoHandler {
         return { success: false, error: 'Image rejected by analysis - no waste detected' }
       }
 
-      // Vérifier les doublons d'images via hash MD5
-      console.log('🔍 Checking for duplicate images...')
-      const { data: duplicateImages, error: duplicateError } = await this.supabaseClient
-        .from('reports')
-        .select('id')
-        .eq('image_hash', analysisResult.imageHash)
-        .limit(1)
-
-      if (duplicateError) {
-        console.error('❌ Error checking duplicate images:', duplicateError)
-      } else if (duplicateImages && duplicateImages.length > 0) {
-        await this.telegramAPI.sendMessage(chatId, '🚫 <b>Signalement dupliqué !</b> Cette photo a déjà été signalée. Merci pour votre vigilance, mais nous avons déjà cette information.')
-        return { success: false, error: 'Duplicate image detected' }
-      }
 
       // Générer un nom de fichier unique
       const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
