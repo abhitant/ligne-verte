@@ -3,18 +3,21 @@ import { TelegramAPI } from './telegram-api.ts'
 import type { TelegramUpdate } from './types.ts'
 import { WasteSorterAnalyzer } from './waste-sorter-analyzer.ts'
 import { EnhancedWasteAnalyzer } from './enhanced-waste-analyzer.ts'
+import { UltraSophisticatedAnalyzer } from './ultra-sophisticated-analyzer.ts'
 
 export class PhotoHandler {
   private telegramAPI: TelegramAPI
   private supabaseClient: any
   private wasteAnalyzer: WasteSorterAnalyzer
   private enhancedAnalyzer: EnhancedWasteAnalyzer
+  private ultraSophisticatedAnalyzer: UltraSophisticatedAnalyzer
 
   constructor(telegramAPI: TelegramAPI, supabaseClient: any) {
     this.telegramAPI = telegramAPI
     this.supabaseClient = supabaseClient
     this.wasteAnalyzer = new WasteSorterAnalyzer()
     this.enhancedAnalyzer = new EnhancedWasteAnalyzer()
+    this.ultraSophisticatedAnalyzer = new UltraSophisticatedAnalyzer()
   }
 
   async handlePhoto(chatId: number, telegramId: string, photos: any[], telegramUsername?: string, firstName?: string) {
@@ -82,15 +85,15 @@ export class PhotoHandler {
       const photoUint8Array = new Uint8Array(photoArrayBuffer)
 
       // Message d'analyse en cours
-      await this.telegramAPI.sendMessage(chatId, '🗂️ Analyse IA avancée des déchets en cours... Détection de l\'ampleur et classification automatique.')
+      await this.telegramAPI.sendMessage(chatId, '🚀 Analyse IA ultra-sophistiquée en cours... Détection multi-niveaux, classification avancée et évaluation d\'impact environnemental.')
 
-      // Analyser d'abord avec notre analyseur amélioré
-      console.log('🔍 Starting enhanced waste analysis...')
-      let analysisResult = await this.enhancedAnalyzer.analyzeImage(photoUint8Array)
+      // Analyser avec notre analyseur ultra-sophistiqué
+      console.log('🚀 Starting ultra-sophisticated waste analysis...')
+      let analysisResult = await this.ultraSophisticatedAnalyzer.analyzeImage(photoUint8Array)
       
-      // Si l'analyseur amélioré ne détecte pas de déchets avec certitude, essayer l'edge function
+      // Si l'analyseur ultra-sophistiqué ne détecte pas de déchets avec certitude, essayer l'edge function
       if (!analysisResult.isGarbageDetected || (analysisResult.urgencyScore && analysisResult.urgencyScore < 30)) {
-        console.log('🚀 Using waste sorter app for additional analysis...')
+        console.log('🚀 Using waste sorter app for additional classification...')
         
         // Convertir en base64 pour l'edge function (compatible Deno) 
         const base64Data = `data:image/jpeg;base64,${btoa(String.fromCharCode.apply(null, Array.from(photoUint8Array.slice(0, 8192))))}`
@@ -110,10 +113,10 @@ export class PhotoHandler {
               disposalInstructions: wasteAnalysis.disposalInstructions,
               detectedObjects: [...analysisResult.detectedObjects, ...wasteAnalysis.detectedObjects]
             }
-            console.log('✅ Combined analysis completed:', analysisResult)
+            console.log('✅ Combined ultra-sophisticated analysis completed:', analysisResult)
           }
         } catch (analysisError) {
-          console.error('❌ Waste sorter analysis failed, using enhanced analysis only:', analysisError)
+          console.error('❌ Waste sorter analysis failed, using ultra-sophisticated analysis only:', analysisError)
         }
       }
       
@@ -137,9 +140,9 @@ export class PhotoHandler {
         return { success: false, error: 'Duplicate image detected' }
       }
 
-      // Envoyer le message de validation amélioré
-      const validationMessage = this.enhancedAnalyzer.generateEnhancedValidationMessage(analysisResult)
-      await this.telegramAPI.sendMessage(chatId, validationMessage)
+      // Envoyer le message de validation ultra-sophistiqué
+      const validationMessage = this.ultraSophisticatedAnalyzer.generateUltraSophisticatedValidationMessage(analysisResult)
+      await this.telegramAPI.sendMessage(chatId, validationMessage, { parse_mode: 'HTML' })
 
       // Si l'analyse rejette la photo, arrêter le processus
       if (!analysisResult.isGarbageDetected) {
