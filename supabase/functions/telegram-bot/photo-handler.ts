@@ -180,33 +180,20 @@ export class PhotoHandler {
         }
       }
 
-      // Vérifier l'amplitude des déchets pour décider du message
-      const wasteAmplitude = (analysisResult as any).wasteAmplitude || 'minimal'
-      
-      if (wasteAmplitude === 'minimal' || wasteAmplitude === 'trace') {
-        // Pour pollution minimale : pas de partage de localisation, juste un message d'action
-        await this.telegramAPI.sendMessage(chatId, `✅ <b>Photo validée !</b> 📸
-
-🧹 <b>Pollution minimale détectée</b>
-Veuillez ramasser ces déchets si possible.
-
-💡 <i>Merci de contribuer à un environnement plus propre !</i>`)
-      } else {
-        // Pour pollution importante : message d'urgence et demande de localisation
-        const locationKeyboard = {
-          keyboard: [
-            [{ text: '📍 Partager ma localisation maintenant', request_location: true }]
-          ],
-          resize_keyboard: true,
-          one_time_keyboard: true
-        }
-
-        await this.telegramAPI.sendMessage(chatId, `🚨 <b>POLLUTION IMPORTANTE DÉTECTÉE !</b> 📸
-
-⚠️ <b>URGENCE :</b> Cette zone nécessite une intervention rapide.
-
-📍 <b>Partagez immédiatement votre localisation pour alerter les autorités :</b>`, locationKeyboard)
+      // Toujours demander la localisation après validation de photo (comportement original)
+      const locationKeyboard = {
+        keyboard: [
+          [{ text: '📍 Partager ma localisation maintenant', request_location: true }]
+        ],
+        resize_keyboard: true,
+        one_time_keyboard: true
       }
+
+      await this.telegramAPI.sendMessage(chatId, `✅ <b>Photo validée !</b> 📸
+
+📍 <b>Maintenant, partagez votre localisation pour finaliser le signalement</b>
+
+🎯 Vous recevrez 10 points Himpact une fois la localisation partagée !`, locationKeyboard)
 
       return { success: true }
     } catch (error) {
