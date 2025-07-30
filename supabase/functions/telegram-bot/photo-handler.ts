@@ -215,20 +215,33 @@ export class PhotoHandler {
         }
       }
 
-      // Message de succès avec keyboard de localisation automatique
-      const locationKeyboard = {
-        keyboard: [
-          [{ text: '📍 Partager ma localisation maintenant', request_location: true }]
-        ],
-        resize_keyboard: true,
-        one_time_keyboard: true
-      }
+      // Vérifier l'amplitude des déchets pour décider du message
+      const wasteAmplitude = (analysisResult as any).wasteAmplitude || 'minimal'
+      
+      if (wasteAmplitude === 'minimal') {
+        // Pour pollution minimale : pas de partage de localisation, juste un message d'action
+        await this.telegramAPI.sendMessage(chatId, `✅ <b>Photo validée !</b> 📸
 
-      await this.telegramAPI.sendMessage(chatId, `✅ <b>Photo validée avec succès !</b> 📸
+🧹 <b>Pollution minimale détectée</b>
+Veuillez ramasser ces déchets et prendre une photo après nettoyage.
+
+💡 <i>Merci de contribuer à un environnement plus propre !</i>`)
+      } else {
+        // Pour pollution modérée/importante : demander la localisation
+        const locationKeyboard = {
+          keyboard: [
+            [{ text: '📍 Partager ma localisation maintenant', request_location: true }]
+          ],
+          resize_keyboard: true,
+          one_time_keyboard: true
+        }
+
+        await this.telegramAPI.sendMessage(chatId, `✅ <b>Photo validée avec succès !</b> 📸
 
 🎯 <i>Dernière étape :</i> Partagez maintenant votre localisation pour finaliser le signalement.
 
 📍 <b>Appuyez sur le bouton ci-dessous pour partager automatiquement votre position :</b>`, locationKeyboard)
+      }
 
       return { success: true }
     } catch (error) {
