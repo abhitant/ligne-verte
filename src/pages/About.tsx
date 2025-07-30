@@ -3,7 +3,7 @@ import { Leaf, Target, Users, Zap } from "lucide-react";
 
 const About = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-secondary/20">
+    <div className="min-h-screen bg-primary">
       <div className="container mx-auto px-4 py-16">
         {/* Hero Section */}
         <div className="text-center mb-16">
