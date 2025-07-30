@@ -120,6 +120,29 @@ serve(async (req) => {
         return new Response('OK', { status: 200 })
       }
 
+      if (callbackData === 'show_map') {
+        await commandHandler.handleMap(chatId)
+        
+        // Répondre au callback query pour supprimer le loading
+        await telegramAPI.answerCallbackQuery(callback_query.id)
+        return new Response('OK', { status: 200 })
+      }
+
+      if (callbackData === 'start_new_report') {
+        await telegramAPI.sendMessage(chatId, `📸 <b>Nouveau signalement</b>
+
+Pour commencer un nouveau signalement :
+1. Prenez une photo des déchets
+2. Envoyez-la moi directement dans le chat
+3. Je l'analyserai et vous demanderai votre localisation
+
+💡 Assurez-vous que la photo soit claire et proche des déchets pour une meilleure analyse !`)
+        
+        // Répondre au callback query pour supprimer le loading
+        await telegramAPI.answerCallbackQuery(callback_query.id)
+        return new Response('OK', { status: 200 })
+      }
+
       return new Response('OK', { status: 200 })
     }
 
