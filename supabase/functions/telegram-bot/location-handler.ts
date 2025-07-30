@@ -195,7 +195,7 @@ Vous remportez 10 points Himpact
       const keyboard = {
         inline_keyboard: [
           [
-            { text: '🗺️ Voir la carte', callback_data: 'show_map' },
+            { text: '🗺️ Voir la carte', url: 'https://ligne-verte.lovable.app/map' },
             { text: '💰 Voir mes points', callback_data: 'show_points' }
           ],
           [
