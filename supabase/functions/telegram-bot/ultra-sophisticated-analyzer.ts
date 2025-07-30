@@ -593,6 +593,30 @@ Réponds UNIQUEMENT avec un JSON valide dans ce format exact :
     return entropy / 8 // Normaliser entre 0 et 1
   }
 
+  private evaluateWasteAmplitude(score: number, objectCount: number, wasteTypes: string[]): string {
+    // Évaluer l'amplitude basée sur le score, nombre d'objets et types de déchets
+    if (score >= 80 || objectCount >= 10 || wasteTypes.length >= 5) {
+      return 'massive'
+    } else if (score >= 60 || objectCount >= 5 || wasteTypes.length >= 3) {
+      return 'moderate' 
+    } else if (score >= 30 || objectCount >= 2 || wasteTypes.length >= 2) {
+      return 'minimal'
+    } else {
+      return 'trace'
+    }
+  }
+
+  private calculatePointsFromAmplitude(amplitude: string): number {
+    // Calculer les points recommandés basés sur l'amplitude
+    switch (amplitude) {
+      case 'massive': return 50
+      case 'moderate': return 30
+      case 'minimal': return 15
+      case 'trace': return 5
+      default: return 10
+    }
+  }
+
   private async calculateImageHash(data: Uint8Array): Promise<string> {
     try {
       const hashBuffer = await crypto.subtle.digest('SHA-256', data)
