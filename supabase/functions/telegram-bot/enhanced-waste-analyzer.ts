@@ -15,9 +15,10 @@ export class EnhancedWasteAnalyzer {
       const imageHash = await this.calculateImageHash(imageData)
       const imageSize = imageData.length
       
-      // Analyse IA avec OpenAI Vision si disponible
+      // 1. PRIORISER OPENAI VISION - Réduire le seuil à 20KB
       const openAIKey = Deno.env.get('OPENAI_API_KEY')
-      if (openAIKey && imageSize > 50000) { // Images assez grandes pour l'analyse
+      if (openAIKey && imageSize > 20000) { // Seuil réduit de 50KB à 20KB
+        console.log(`🤖 Using OpenAI Vision (image: ${imageSize} bytes > 20KB threshold)`)
         return await this.performOpenAIAnalysis(imageData, imageHash)
       }
       
@@ -48,34 +49,37 @@ export class EnhancedWasteAnalyzer {
           messages: [
             {
               role: 'system',
-              content: `Tu es un expert en analyse environnementale avec des critères stricts de détection de déchets.
+              content: `Tu es un expert environnemental avec une mission STRICTE : rejeter les faux positifs.
 
-              MISSION : Détecter UNIQUEMENT les vrais déchets problématiques en Côte d'Ivoire.
+              🎯 MISSION CRITIQUE : Éviter la sur-détection ! Être ultra-sélectif.
               
-              ✅ DÉCHETS À SIGNALER (soyez sélectif) :
-              - Plastiques éparpillés au sol (sachets, bouteilles, contenants)
-              - Accumulations visibles d'ordures dans espaces publics
-              - Dépôts sauvages d'ordures en tas
-              - Détritus jetés dans caniveaux ou cours d'eau
-              - Sacs poubelle éventrés avec contenu répandu
-              - Déchets organiques qui pourrissent (restes alimentaires)
-              - Objets volumineux abandonnés (meubles, appareils)
-              - Mégots nombreux concentrés au même endroit
+              ✅ SIGNALER UNIQUEMENT SI :
+              - Déchets CLAIREMENT visibles et éparpillés
+              - Accumulation ÉVIDENTE d'ordures 
+              - Pollution environnementale MANIFESTE
+              - Impact négatif ÉVIDENT sur l'espace
 
-              ❌ NE PAS SIGNALER :
-              - Poubelles fermées ou bacs de collecte organisés
-              - Une ou deux canettes isolées (sauf si c'est dans la nature)
-              - Espaces globalement propres
+              ❌ REJETER IMPÉRATIVEMENT :
+              - Images floues ou de mauvaise qualité
+              - Espaces propres ou neutres
+              - Objets utilisables ou en bon état
+              - Poubelles fermées ou organisées
               - Véhicules, construction, infrastructure
-              - Personnes, animaux, intérieurs de maisons
-              - Nourriture fraîche ou objets utilisables
-              - Images floues où rien n'est clairement identifiable
+              - Personnes, animaux, intérieurs
+              - Nourriture fraîche
+              - Cas douteux ou ambigus
+              - Photos de selfies ou personnelles
+              - Images sans déchets évidents
 
-              CRITÈRES DE VALIDATION :
-              - ÉVIDENCE CLAIRE : les déchets doivent être ÉVIDEMMENT visibles
-              - IMPACT NÉGATIF : l'accumulation nuit réellement à l'environnement
-              - LOCALISATION : préférer signaler si c'est dans espaces publics/nature
+              🔍 EXEMPLES NÉGATIFS à rejeter :
+              - "Une canette sur le sol" (trop mineur)
+              - "Photo de nourriture" (non concerné)
+              - "Selfie dans rue propre" (pas de pollution)
+              - "Voiture garée" (infrastructure normale)
+              - "Photo floue" (non analysable)
 
+              ⚠️ SOYEZ CONSERVATEUR : En cas de doute, REJETER.
+              
               Réponds UNIQUEMENT avec un JSON valide dans ce format exact :
               {
                 "hasWaste": boolean,
@@ -150,16 +154,18 @@ export class EnhancedWasteAnalyzer {
   }
 
   private async performHeuristicAnalysis(imageData: Uint8Array, imageHash: string): Promise<any> {
-    console.log('📊 Using enhanced heuristic analysis...')
+    console.log('📊 Using conservative heuristic analysis (AI Vision unavailable)...')
     
     const imageSize = imageData.length
     
-    // Analyse plus stricte mais intelligente
-    console.log(`🔍 Image analysis - Size: ${imageSize} bytes`)
+    // 2. INVERSER LA LOGIQUE PAR DÉFAUT - Mode conservateur strict
+    console.log(`🔍 Conservative analysis - Size: ${imageSize} bytes`)
     
-    // Rejeter les images très petites (selfies, photos floues)
-    if (imageSize < 30000) {
-      console.log('❌ Image rejected: too small (< 30KB) - likely selfie/blur')
+    // 3. RENFORCER LES CRITÈRES HEURISTIQUES - Plus stricts
+    
+    // Rejeter TOUTES les images petites (selfies, photos floues, insignifiantes)
+    if (imageSize < 50000) { // Augmentation du seuil de 30KB à 50KB
+      console.log('❌ Image rejected: too small (< 50KB) - likely selfie/personal photo')
       return {
         isGarbageDetected: false,
         detectedObjects: [{ label: 'Image trop petite - probable selfie/flou', score: 0 }],
@@ -168,69 +174,94 @@ export class EnhancedWasteAnalyzer {
         wasteTypes: [],
         environmentalImpact: 'Image non exploitable pour l\'analyse',
         urgencyScore: 0,
-        confidence: 95,
-        reasoning: 'Image trop petite pour contenir des déchets visibles'
+        confidence: 98,
+        reasoning: 'Image trop petite - probable photo personnelle sans déchets'
       }
     }
     
-    // Rejeter les images moyennes sans IA (photos normales)
-    if (imageSize < 100000) {
-      console.log('❌ Image rejected: moderate size without AI vision')
+    // Rejeter images moyennes sans IA - Être très conservateur
+    if (imageSize < 200000) { // Augmentation du seuil de 100KB à 200KB
+      console.log('❌ Image rejected: medium size without AI - conservative mode')
       return {
         isGarbageDetected: false,
         detectedObjects: [{ label: 'Analyse non concluante - IA vision requise', score: 0 }],
         imageHash,
         wasteLevel: 'low' as const,
         wasteTypes: [],
-        environmentalImpact: 'Nécessite analyse IA pour validation',
+        environmentalImpact: 'Analyse IA requise pour validation fiable',
         urgencyScore: 0,
-        confidence: 80,
-        reasoning: 'Image de taille moyenne - besoin IA vision pour détection précise'
+        confidence: 90,
+        reasoning: 'Taille modérée - IA Vision nécessaire pour éviter faux positifs'
       }
     }
     
-    // Pour les images plus grandes, analyse plus poussée
-    if (imageSize > 500000) {
-      console.log('⚠️ Large image - likely outdoor photo, accepting with medium confidence')
+    // 4. LOGIQUE DE VALIDATION CROISÉE - Exiger plus de preuves
+    const qualityChecks = this.performQualityChecks(imageData, imageSize)
+    
+    // Pour les TRÈS grandes images uniquement (probable photos extérieures)
+    if (imageSize > 800000 && qualityChecks.likelyOutdoor) {
+      console.log('⚠️ Very large image with quality checks - cautious acceptance')
       return {
         isGarbageDetected: true,
-        detectedObjects: [{ label: 'Image extérieure - examen prioritaire', score: 60 }],
+        detectedObjects: [{ label: 'Grande image extérieure - examen manuel', score: 50 }],
         imageHash,
-        wasteLevel: 'medium' as const,
-        wasteTypes: ['à_classifier'],
-        environmentalImpact: 'Probable signalement extérieur - vérification manuelle',
-        urgencyScore: 40,
-        confidence: 65,
-        reasoning: 'Grande image suggérant photo extérieure avec déchets potentiels'
+        wasteLevel: 'low' as const,
+        wasteTypes: ['à_vérifier'],
+        environmentalImpact: 'Nécessite validation manuelle - image de grande taille',
+        urgencyScore: 15,
+        confidence: 45, // Confiance réduite sans IA
+        reasoning: 'Très grande image suggérant contexte extérieur - validation requise'
       }
     }
     
-    // Images moyennes-grandes: accepter avec prudence
-    console.log('⚠️ Medium-large image accepted for manual review')
+    // Pour autres cas - MODE CONSERVATEUR : rejeter par défaut
+    console.log('❌ Image rejected: conservative mode - insufficient evidence without AI')
     return {
-      isGarbageDetected: true,
-      detectedObjects: [{ label: 'Signalement à vérifier - taille appropriée', score: 45 }],
+      isGarbageDetected: false,
+      detectedObjects: [{ label: 'Mode conservateur - IA Vision recommandée', score: 0 }],
       imageHash,
       wasteLevel: 'low' as const,
-      wasteTypes: ['indéterminé'],
-      environmentalImpact: 'Nécessite validation manuelle - taille d\'image appropriée',
-      urgencyScore: 25,
-      confidence: 55,
-      reasoning: 'Taille d\'image suggérant contenu potentiel mais incertain sans IA'
+      wasteTypes: [],
+      environmentalImpact: 'Mode conservateur activé - IA Vision recommandée',
+      urgencyScore: 0,
+      confidence: 85,
+      reasoning: 'Mode conservateur : privilégier la précision, éviter les faux positifs'
+    }
+  }
+
+  // 5. AMÉLIORER LES VÉRIFICATIONS DE QUALITÉ
+  private performQualityChecks(imageData: Uint8Array, imageSize: number): {
+    likelyOutdoor: boolean;
+    qualityScore: number;
+  } {
+    // Heuristiques simples pour détecter photos extérieures
+    const likelyOutdoor = imageSize > 800000 // Très grandes images
+    const qualityScore = Math.min(100, (imageSize / 10000) * 10) // Score basique sur taille
+    
+    console.log(`🔍 Quality checks - Likely outdoor: ${likelyOutdoor}, Quality score: ${qualityScore}`)
+    
+    return {
+      likelyOutdoor,
+      qualityScore
     }
   }
 
   private createFallbackResult(imageData: Uint8Array): any {
     const fallbackHash = `fallback_${Date.now()}_${imageData.length}`
     
+    // 6. MODE CONSERVATEUR - Même en cas d'erreur, ne pas accepter automatiquement
+    console.log('❌ Fallback result: rejecting due to analysis error (conservative mode)')
+    
     return {
-      isGarbageDetected: true,
-      detectedObjects: [{ label: 'Erreur analyse - examen manuel requis', score: 50 }],
+      isGarbageDetected: false, // Inversé de true à false
+      detectedObjects: [{ label: 'Erreur analyse - photo rejetée par précaution', score: 0 }],
       imageHash: fallbackHash,
-      wasteLevel: 'medium' as const,
-      wasteTypes: ['indéterminé'],
-      environmentalImpact: 'Impact à déterminer manuellement',
-      urgencyScore: 50
+      wasteLevel: 'low' as const,
+      wasteTypes: [],
+      environmentalImpact: 'Erreur analyse - mode conservateur activé',
+      urgencyScore: 0,
+      confidence: 75,
+      reasoning: 'Erreur analyse - précaution conservatrice appliquée'
     }
   }
 
@@ -275,13 +306,15 @@ export class EnhancedWasteAnalyzer {
     
     if (!isGarbageDetected) {
       const rejectionReasons = {
-        'Image trop petite - non analysable': "❌ <b>Photo non acceptée.</b>\n\n📱 L'image est trop petite (moins de 50KB). Veuillez prendre une photo plus grande et plus nette.",
-        'Analyse non concluante - besoin IA vision': "❌ <b>Photo non acceptée.</b>\n\n🔍 L'analyse automatique n'a pas détecté de déchets dans cette image. Si vous pensez qu'il y en a, contactez un modérateur.",
-        'Image ne semble pas contenir de déchets': "❌ <b>Photo non acceptée.</b>\n\n🌟 Cette image semble montrer un environnement propre ! C'est formidable, continuez à préserver notre planète."
+        'Image trop petite - probable selfie/flou': "❌ <b>Photo rejetée</b>\n\n📱 L'image est trop petite (< 50KB). Veuillez prendre une photo plus grande et nette de déchets visibles.",
+        'Analyse non concluante - IA vision requise': "❌ <b>Photo rejetée</b>\n\n🤖 Cette image nécessite l'analyse IA pour être validée. Réessayez avec une photo plus grande et claire.",
+        'Mode conservateur - IA Vision recommandée': "❌ <b>Photo rejetée par précaution</b>\n\n🔍 Notre système privilégie la précision. Prenez une photo plus nette avec des déchets clairement visibles.",
+        'Erreur analyse - photo rejetée par précaution': "❌ <b>Photo rejetée</b>\n\n⚠️ Erreur d'analyse. Par précaution, cette photo n'est pas acceptée. Réessayez avec une nouvelle photo.",
+        'Image ne semble pas contenir de déchets': "❌ <b>Photo rejetée</b>\n\n🌟 Aucun déchet détecté dans cette image. C'est excellent si l'environnement est propre !"
       }
       
-      const detectedReason = detectedObjects?.[0]?.label || 'Image trop petite - non analysable'
-      return rejectionReasons[detectedReason] || "❌ <b>Photo non acceptée.</b>\n\nL'image ne semble pas contenir de déchets ou est de mauvaise qualité."
+      const detectedReason = detectedObjects?.[0]?.label || 'Image trop petite - probable selfie/flou'
+      return rejectionReasons[detectedReason] || "❌ <b>Photo rejetée</b>\n\n🔍 Notre système n'a pas détecté de déchets clairs dans cette image. Mode conservateur activé pour éviter les erreurs."
     }
 
     let message = "✅ <b>Image validée ! Des ordures ont été détectées.</b>\n\n"
