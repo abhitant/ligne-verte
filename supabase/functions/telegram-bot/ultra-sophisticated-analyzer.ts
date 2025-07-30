@@ -722,10 +722,6 @@ Réponds UNIQUEMENT avec un JSON valide dans ce format exact :
       message += `🎯 <b>Analyse haute confiance :</b> ${confidence}% de certitude\n\n`
     }
     
-    // Instructions de tri sophistiquées
-    if (disposalInstructions && !disposalInstructions.includes('Classification')) {
-      message += `<b>♻️ Instructions de tri :</b>\n${disposalInstructions}\n\n`
-    }
     
     message += `📍 <b>Dernière étape :</b> Partagez votre localisation pour finaliser ce signalement ultra-précis.`
     

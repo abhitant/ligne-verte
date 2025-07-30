@@ -85,7 +85,7 @@ export class PhotoHandler {
       const photoUint8Array = new Uint8Array(photoArrayBuffer)
 
       // Message d'analyse en cours
-      await this.telegramAPI.sendMessage(chatId, '🚀 Analyse IA ultra-sophistiquée en cours... Détection multi-niveaux, classification avancée et évaluation d\'impact environnemental.')
+      await this.telegramAPI.sendMessage(chatId, 'Analyse de l\'image en cours de traitement...')
 
       // Analyser avec notre analyseur ultra-sophistiqué
       console.log('🚀 Starting ultra-sophisticated waste analysis...')
@@ -218,16 +218,16 @@ export class PhotoHandler {
       // Vérifier l'amplitude des déchets pour décider du message
       const wasteAmplitude = (analysisResult as any).wasteAmplitude || 'minimal'
       
-      if (wasteAmplitude === 'minimal') {
+      if (wasteAmplitude === 'minimal' || wasteAmplitude === 'trace') {
         // Pour pollution minimale : pas de partage de localisation, juste un message d'action
         await this.telegramAPI.sendMessage(chatId, `✅ <b>Photo validée !</b> 📸
 
 🧹 <b>Pollution minimale détectée</b>
-Veuillez ramasser ces déchets et prendre une photo après nettoyage.
+Veuillez ramasser ces déchets si possible.
 
 💡 <i>Merci de contribuer à un environnement plus propre !</i>`)
       } else {
-        // Pour pollution modérée/importante : demander la localisation
+        // Pour pollution importante : message d'urgence et demande de localisation
         const locationKeyboard = {
           keyboard: [
             [{ text: '📍 Partager ma localisation maintenant', request_location: true }]
@@ -236,11 +236,11 @@ Veuillez ramasser ces déchets et prendre une photo après nettoyage.
           one_time_keyboard: true
         }
 
-        await this.telegramAPI.sendMessage(chatId, `✅ <b>Photo validée avec succès !</b> 📸
+        await this.telegramAPI.sendMessage(chatId, `🚨 <b>POLLUTION IMPORTANTE DÉTECTÉE !</b> 📸
 
-🎯 <i>Dernière étape :</i> Partagez maintenant votre localisation pour finaliser le signalement.
+⚠️ <b>URGENCE :</b> Cette zone nécessite une intervention rapide.
 
-📍 <b>Appuyez sur le bouton ci-dessous pour partager automatiquement votre position :</b>`, locationKeyboard)
+📍 <b>Partagez immédiatement votre localisation pour alerter les autorités :</b>`, locationKeyboard)
       }
 
       return { success: true }
