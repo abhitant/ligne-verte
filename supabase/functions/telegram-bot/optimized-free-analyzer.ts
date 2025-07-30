@@ -210,7 +210,7 @@ Concentrez-vous sur : bouteilles plastique, déchets alimentaires, mégots, emba
         environmentalImpact: jsonData.environmentalImpact || 'Faible impact environnemental détecté',
         urgencyScore: jsonData.urgencyScore || 20,
         confidence: jsonData.confidence || 70,
-        reasoning: jsonData.reasoning || `Analysé par le modèle ${modelType}`,
+        reasoning: jsonData.reasoning || `Analyse automatique effectuée`,
         wasteCategory: jsonData.wasteCategory || 'general',
         disposalInstructions: jsonData.disposalInstructions || 'Jetez dans les poubelles appropriées',
         preventionTips: jsonData.preventionTips || ['Maintenir la propreté des zones', 'Utiliser des méthodes d\'élimination appropriées']
@@ -254,10 +254,10 @@ Concentrez-vous sur : bouteilles plastique, déchets alimentaires, mégots, emba
       }
     }
 
-    // Smart fallback: if no clear waste but low overall confidence, flag for review
-    if (!isGarbageDetected && maxScore < 70) {
+    // Smart fallback: detect waste more aggressively for better detection
+    if (!isGarbageDetected && maxScore < 90) {
       isGarbageDetected = true
-      console.log('⚠️ Low confidence detection - flagging for manual review')
+      console.log('⚠️ Détection conservative - signalement pour vérification manuelle')
     }
 
     return {
@@ -270,7 +270,7 @@ Concentrez-vous sur : bouteilles plastique, déchets alimentaires, mégots, emba
       environmentalImpact: isGarbageDetected ? 'Préoccupation environnementale potentielle détectée' : 'Aucun impact environnemental significatif',
       urgencyScore: isGarbageDetected ? Math.min(maxScore, 40) : 10,
       confidence: maxScore,
-      reasoning: 'Analyse de classification Google ViT',
+      reasoning: 'Analyse de classification automatique',
       wasteCategory: 'general',
       disposalInstructions: isGarbageDetected ? 'Veuillez jeter correctement dans les poubelles' : 'Aucune action d\'élimination nécessaire',
       preventionTips: ['Maintenir l\'environnement propre', 'Utiliser une élimination appropriée des déchets']
@@ -291,7 +291,7 @@ Concentrez-vous sur : bouteilles plastique, déchets alimentaires, mégots, emba
       environmentalImpact: 'Vérification manuelle requise pour évaluer l\'impact',
       urgencyScore: 30,
       confidence: 50,
-      reasoning: 'Analyse IA indisponible - solution de repli conservatrice appliquée',
+      reasoning: 'Analyse automatique - solution de repli conservatrice appliquée',
       wasteCategory: 'general',
       disposalInstructions: 'Évaluation manuelle nécessaire pour l\'élimination appropriée',
       preventionTips: ['Suivez les directives locales de gestion des déchets']
@@ -346,7 +346,7 @@ Concentrez-vous sur : bouteilles plastique, déchets alimentaires, mégots, emba
     if (!result.isGarbageDetected) {
       return `❌ <b>Aucun déchet détecté</b>
 
-🔍 <b>Analyse IA gratuite :</b> ${result.confidence}% de confiance
+🔍 <b>Analyse :</b> ${result.confidence}% de confiance
 ${result.reasoning}
 
 Si vous voyez des déchets, prenez une photo plus nette et proche. Merci !`
@@ -355,7 +355,7 @@ Si vous voyez des déchets, prenez une photo plus nette et proche. Merci !`
     const urgencyLevel = result.urgencyScore > 60 ? 'ÉLEVÉE' : result.urgencyScore > 30 ? 'MODÉRÉE' : 'FAIBLE'
     const urgencyEmoji = result.urgencyScore > 60 ? '🚨' : result.urgencyScore > 30 ? '⚠️' : '✅'
     
-    let message = `${urgencyEmoji} <b>Déchets détectés !</b> Analyse IA gratuite
+    let message = `${urgencyEmoji} <b>Déchets détectés !</b>
 
 🎯 <b>Objets identifiés :</b> ${result.wasteTypes?.slice(0, 3).join(', ') || 'Divers déchets'}
 🗂️ <b>Catégorie :</b> ${this.translateCategory(result.wasteCategory)}
@@ -364,9 +364,7 @@ Si vous voyez des déchets, prenez une photo plus nette et proche. Merci !`
 
 ♻️ <b>Instructions :</b> ${result.disposalInstructions}
 
-💡 <b>Prévention :</b> ${result.preventionTips?.slice(0, 2).join(', ') || 'Maintenir la propreté'}
-
-🤖 <i>Analysé par IA gratuite Hugging Face</i>`
+💡 <b>Prévention :</b> ${result.preventionTips?.slice(0, 2).join(', ') || 'Maintenir la propreté'}`
 
     return message
   }
