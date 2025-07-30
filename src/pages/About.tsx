@@ -27,7 +27,7 @@ const About = () => {
                 Dans le Grand Abidjan, <span className="text-accent font-semibold">1,4 million de tonnes</span> de déchets sont produits chaque année. Ce chiffre, conséquence directe d'une urbanisation galopante et d'une forte croissance démographique, se reflète à l'échelle de toute l'Afrique subsaharienne.
               </p>
             </div>
-            <Card className="bg-primary/10 border-primary/20">
+            <Card className="bg-primary/20 border-primary/40">
               <CardContent className="p-8">
                 <div className="text-center space-y-4">
                   <div className="text-4xl font-bold text-primary">174M</div>
@@ -45,7 +45,7 @@ const About = () => {
         <div className="mb-16">
           <h2 className="text-3xl font-bold text-center mb-12 text-foreground">Notre Solution : La Ligne Verte</h2>
           <div className="max-w-4xl mx-auto space-y-8">
-            <Card className="bg-gradient-to-r from-primary/10 to-accent/10 border-primary/30">
+            <Card className="bg-primary/20 border-primary/40">
               <CardContent className="p-8">
                 <p className="text-lg text-foreground leading-relaxed mb-6">
                   C'est à cette résignation que <span className="text-primary font-semibold">Greenpill Côte d'Ivoire</span> a décidé de dire non, en lançant La Ligne Verte.
@@ -62,7 +62,7 @@ const About = () => {
         <div className="mb-16">
           <h2 className="text-3xl font-bold text-center mb-12 text-foreground">Comment ça marche ?</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="text-center hover:shadow-lg transition-shadow">
+            <Card className="text-center hover:shadow-lg transition-shadow bg-primary/20 border-primary/40">
               <CardContent className="p-6">
                 <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Target className="w-8 h-8 text-primary" />
@@ -72,7 +72,7 @@ const About = () => {
               </CardContent>
             </Card>
 
-            <Card className="text-center hover:shadow-lg transition-shadow">
+            <Card className="text-center hover:shadow-lg transition-shadow bg-primary/20 border-primary/40">
               <CardContent className="p-6">
                 <div className="w-16 h-16 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Zap className="w-8 h-8 text-accent" />
@@ -82,7 +82,7 @@ const About = () => {
               </CardContent>
             </Card>
 
-            <Card className="text-center hover:shadow-lg transition-shadow">
+            <Card className="text-center hover:shadow-lg transition-shadow bg-primary/20 border-primary/40">
               <CardContent className="p-6">
                 <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Leaf className="w-8 h-8 text-primary" />
@@ -98,7 +98,7 @@ const About = () => {
         <div className="mb-16">
           <h2 className="text-3xl font-bold text-center mb-12 text-foreground">Technologie & Transparence</h2>
           <div className="max-w-4xl mx-auto">
-            <Card className="bg-gradient-to-r from-secondary/20 to-primary/10">
+            <Card className="bg-primary/20 border-primary/40">
               <CardContent className="p-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div>
@@ -122,7 +122,7 @@ const About = () => {
         {/* Vision */}
         <div className="text-center">
           <h2 className="text-3xl font-bold mb-8 text-foreground">Notre Vision</h2>
-          <Card className="max-w-4xl mx-auto bg-gradient-to-r from-primary/10 to-accent/10 border-primary/30">
+          <Card className="max-w-4xl mx-auto bg-primary/20 border-primary/40">
             <CardContent className="p-8">
               <div className="flex items-center justify-center mb-6">
                 <Users className="w-12 h-12 text-primary" />
