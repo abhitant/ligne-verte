@@ -1,3 +1,21 @@
+// Interfaces pour l'API DETR
+interface DetrBox {
+  0: number; // x_min
+  1: number; // y_min
+  2: number; // x_max
+  3: number; // y_max
+}
+
+interface DetrDetection {
+  score: number; // Probabilité de détection (ex: 0.98)
+  label: string; // Nom de l'objet détecté (ex: "bottle", "plastic bag")
+  box: DetrBox;  // Coordonnées de la boîte englobante
+}
+
+interface DetrApiResponse {
+  detections: DetrDetection[]; // Tableau de toutes les détections
+}
+
 export class UltraSophisticatedAnalyzer {
 
   async analyzeImage(imageData: Uint8Array): Promise<{
@@ -5,6 +23,7 @@ export class UltraSophisticatedAnalyzer {
     detectedObjects: Array<{ label: string; score: number }>
     imageHash: string
     wasteLevel?: 'minimal' | 'low' | 'medium' | 'high' | 'critical' | 'catastrophic'
+    wasteAmplitude?: 'trace' | 'minimal' | 'moderate' | 'massive'
     wasteTypes?: string[]
     environmentalImpact?: string
     urgencyScore?: number
@@ -18,6 +37,7 @@ export class UltraSophisticatedAnalyzer {
     }
     disposalInstructions?: string
     preventionTips?: string[]
+    detrDetections?: DetrDetection[]
   }> {
     try {
       console.log('🚀 Starting ultra-sophisticated waste analysis...')
@@ -27,7 +47,15 @@ export class UltraSophisticatedAnalyzer {
       
       console.log(`📊 Image metrics: ${imageSize} bytes, Hash: ${imageHash.substring(0, 12)}...`)
       
-      // 1. ANALYSE PRIMAIRE - OpenAI Vision (Ultra-précise)
+      // 1. ANALYSE PRIMAIRE - API DETR (Détection d'objets spécialisée, rapide)
+      console.log('🎯 Deploying DETR Object Detection API...')
+      const detrResult = await this.performDetrAnalysis(imageData, imageHash)
+      if (detrResult && detrResult.confidence > 80) {
+        console.log('✅ DETR Analysis completed with high confidence')
+        return detrResult
+      }
+      
+      // 2. ANALYSE SECONDAIRE - OpenAI Vision (Ultra-précise)
       const openAIKey = Deno.env.get('OPENAI_API_KEY')
       if (openAIKey && imageSize > 10000) { // Seuil équilibré pour qualité vs couverture
         console.log('🤖 Deploying OpenAI Vision Ultra-Analysis...')
@@ -38,7 +66,7 @@ export class UltraSophisticatedAnalyzer {
         }
       }
       
-      // 2. ANALYSE SECONDAIRE - Multi-modèles IA avec validation croisée
+      // 3. ANALYSE TERTIAIRE - Multi-modèles IA avec validation croisée
       console.log('🔬 Deploying Multi-Model AI Cross-Validation...')
       const multiModelResult = await this.performCrossValidatedMultiModelAnalysis(imageData, imageHash)
       if (multiModelResult.confidence > 70) {
@@ -46,13 +74,186 @@ export class UltraSophisticatedAnalyzer {
         return multiModelResult
       }
       
-      // 3. ANALYSE TERTIAIRE - Analyse contextuelle avancée
+      // 4. ANALYSE QUATERNAIRE - Analyse contextuelle avancée
       console.log('🧠 Deploying Advanced Contextual Analysis...')
       return await this.performAdvancedContextualAnalysis(imageData, imageHash)
       
     } catch (error) {
       console.error('❌ Ultra-sophisticated analysis error:', error)
       return this.createIntelligentFallbackResult(imageData)
+    }
+  }
+
+  /**
+   * Effectue une analyse d'objets en utilisant l'API DETR Python.
+   * @param imageData Le buffer binaire de l'image.
+   * @param imageHash Le hash de l'image pour identification.
+   * @returns Un objet d'analyse avec détections DETR ou null en cas d'erreur.
+   */
+  private async performDetrAnalysis(imageData: Uint8Array, imageHash: string): Promise<any> {
+    try {
+      const DETR_API_URL = Deno.env.get('DETR_API_URL') || 'http://localhost:8000/detect'
+      
+      console.log(`🎯 Calling DETR API at: ${DETR_API_URL}`)
+      
+      // Créer FormData pour envoyer l'image
+      const formData = new FormData()
+      const imageBlob = new Blob([imageData], { type: 'image/jpeg' })
+      formData.append('file', imageBlob, 'image.jpg')
+
+      // Effectuer la requête POST vers l'API DETR
+      const response = await fetch(DETR_API_URL, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          // Ne pas définir Content-Type, let fetch set it with boundary
+        },
+        signal: AbortSignal.timeout(30000), // 30 secondes de timeout
+      })
+
+      if (!response.ok) {
+        console.error(`❌ DETR API error: ${response.status} ${response.statusText}`)
+        const errorText = await response.text()
+        console.error('DETR API response:', errorText)
+        return null
+      }
+
+      const detrResponse: DetrApiResponse = await response.json()
+      console.log(`✅ DETR API response received with ${detrResponse.detections?.length || 0} detections`)
+
+      if (!detrResponse.detections || detrResponse.detections.length === 0) {
+        console.log('🔍 DETR: No objects detected')
+        return {
+          isGarbageDetected: false,
+          detectedObjects: [{ label: 'DETR: Aucun objet détecté', score: 0 }],
+          imageHash,
+          wasteLevel: 'minimal',
+          wasteAmplitude: 'trace',
+          confidence: 85,
+          reasoning: 'Analyse DETR - aucun objet détecté',
+          detrDetections: [],
+          contextualAnalysis: {
+            location: 'unknown',
+            severity: 0,
+            riskLevel: 'very_low',
+            actionRequired: 'none'
+          }
+        }
+      }
+
+      // Analyser les détections DETR pour classifier les déchets
+      const analysis = this.analyzeDetrDetections(detrResponse.detections, imageHash)
+      
+      console.log('✅ DETR analysis completed:', analysis)
+      return analysis
+
+    } catch (error) {
+      console.error('❌ DETR API call failed:', error)
+      return null
+    }
+  }
+
+  /**
+   * Analyse les détections DETR pour classifier les déchets et évaluer la pollution.
+   */
+  private analyzeDetrDetections(detections: DetrDetection[], imageHash: string): any {
+    // Mapping des labels DETR vers catégories de déchets
+    const wasteMapping = {
+      // Plastiques
+      'bottle': 'plastique',
+      'plastic bag': 'plastique', 
+      'cup': 'plastique',
+      'container': 'plastique',
+      'straw': 'plastique',
+      
+      // Métaux
+      'can': 'métal',
+      'aluminum': 'métal',
+      'metal': 'métal',
+      
+      // Papier/Carton
+      'paper': 'papier',
+      'cardboard': 'papier',
+      'box': 'papier',
+      
+      // Organique
+      'food': 'organique',
+      'fruit': 'organique',
+      'apple core': 'organique',
+      'banana peel': 'organique',
+      
+      // Verre
+      'glass bottle': 'verre',
+      'jar': 'verre',
+      
+      // Divers
+      'cigarette': 'autre',
+      'wrapper': 'plastique',
+      'package': 'autre'
+    }
+
+    let totalScore = 0
+    let detectedWasteTypes: string[] = []
+    let wasteObjects: Array<{ label: string; score: number }> = []
+    let highestConfidence = 0
+
+    // Analyser chaque détection
+    for (const detection of detections) {
+      const label = detection.label.toLowerCase()
+      const score = Math.round(detection.score * 100)
+      highestConfidence = Math.max(highestConfidence, score)
+
+      // Rechercher si c'est un type de déchet connu
+      const wasteType = Object.entries(wasteMapping).find(([key, _]) => 
+        label.includes(key)
+      )?.[1]
+
+      if (wasteType && score >= 50) { // Seuil de confiance minimum
+        totalScore += score
+        if (!detectedWasteTypes.includes(wasteType)) {
+          detectedWasteTypes.push(wasteType)
+        }
+        wasteObjects.push({ label: `${wasteType}: ${detection.label}`, score })
+      } else if (score >= 60) {
+        // Objet avec haute confiance mais pas dans notre mapping
+        wasteObjects.push({ label: detection.label, score })
+        totalScore += score * 0.7 // Pondération réduite
+      }
+    }
+
+    // Déterminer si c'est des déchets
+    const averageScore = detections.length > 0 ? totalScore / detections.length : 0
+    const isWaste = averageScore >= 60 && (detectedWasteTypes.length > 0 || wasteObjects.length > 0)
+
+    // Évaluer le niveau et l'amplitude
+    let wasteLevel = 'minimal'
+    if (averageScore >= 90) wasteLevel = 'critical'
+    else if (averageScore >= 80) wasteLevel = 'high' 
+    else if (averageScore >= 70) wasteLevel = 'medium'
+    else if (averageScore >= 60) wasteLevel = 'low'
+
+    const wasteAmplitude = this.evaluateWasteAmplitude(averageScore, wasteObjects.length, detectedWasteTypes)
+
+    return {
+      isGarbageDetected: isWaste,
+      detectedObjects: wasteObjects.length > 0 ? wasteObjects : [{ label: 'DETR: Objets détectés sans classification déchets', score: Math.round(averageScore) }],
+      imageHash,
+      wasteLevel,
+      wasteAmplitude,
+      wasteTypes: detectedWasteTypes,
+      confidence: Math.round(highestConfidence),
+      reasoning: `Analyse DETR: ${detections.length} objets détectés, ${detectedWasteTypes.length} types de déchets identifiés`,
+      detrDetections: detections,
+      environmentalImpact: this.generateEnvironmentalImpact(wasteLevel, detectedWasteTypes),
+      urgencyScore: Math.round(averageScore),
+      contextualAnalysis: {
+        location: 'unknown',
+        severity: Math.round(averageScore),
+        riskLevel: this.determineRiskLevel(averageScore, detectedWasteTypes),
+        actionRequired: this.determineActionRequired(averageScore, detectedWasteTypes)
+      },
+      disposalInstructions: this.generateDisposalInstructions(detectedWasteTypes),
+      preventionTips: this.generatePreventionTips(detectedWasteTypes)
     }
   }
 
@@ -493,6 +694,26 @@ Réponds UNIQUEMENT avec un JSON valide dans ce format exact :
     if (score >= 50) return 'medium'
     if (score >= 30) return 'low'
     return 'very_low'
+  }
+
+  private evaluateWasteAmplitude(averageScore: number, objectCount: number, wasteTypes: string[]): 'trace' | 'minimal' | 'moderate' | 'massive' {
+    // Évaluation basée sur le score moyen, le nombre d'objets et la diversité des types
+    const complexityScore = averageScore + (objectCount * 10) + (wasteTypes.length * 15)
+    
+    if (complexityScore >= 150) return 'massive'
+    if (complexityScore >= 100) return 'moderate'  
+    if (complexityScore >= 50) return 'minimal'
+    return 'trace'
+  }
+
+  private calculatePointsFromAmplitude(amplitude: 'trace' | 'minimal' | 'moderate' | 'massive'): number {
+    const pointsMapping = {
+      'trace': 1,
+      'minimal': 3,
+      'moderate': 8,
+      'massive': 15
+    }
+    return pointsMapping[amplitude] || 1
   }
 
   private determineActionRequired(score: number, wasteTypes: string[]): string {
