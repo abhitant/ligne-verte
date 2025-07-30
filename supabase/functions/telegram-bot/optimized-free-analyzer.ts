@@ -84,23 +84,23 @@ export class OptimizedFreeAnalyzer {
       
       const base64Image = this.uint8ArrayToBase64(imageData)
       
-      // Enhanced prompt for waste detection and classification
-      const prompt = `Analyze this image for environmental pollution and waste. Provide a detailed JSON response with:
+      // Enhanced prompt for waste detection and classification (in French)
+      const prompt = `Analysez cette image pour détecter la pollution environnementale et les déchets. Fournissez une réponse JSON détaillée UNIQUEMENT EN FRANÇAIS avec :
 {
   "isGarbageDetected": boolean,
   "wasteLevel": "minimal|low|medium|high|critical",
   "wasteAmplitude": "trace|minimal|moderate|massive", 
-  "wasteTypes": ["specific waste items found"],
+  "wasteTypes": ["objets déchets spécifiques trouvés EN FRANÇAIS"],
   "wasteCategory": "recyclable|organic|hazardous|electronic|general",
   "urgencyScore": number (0-100),
   "confidence": number (0-100),
-  "reasoning": "detailed explanation",
-  "environmentalImpact": "description",
-  "disposalInstructions": "how to properly dispose",
-  "preventionTips": ["prevention suggestions"]
+  "reasoning": "explication détaillée EN FRANÇAIS",
+  "environmentalImpact": "description EN FRANÇAIS",
+  "disposalInstructions": "comment bien éliminer EN FRANÇAIS",
+  "preventionTips": ["suggestions de prévention EN FRANÇAIS"]
 }
 
-Focus on: plastic bottles, food waste, cigarette butts, packaging, electronics, chemicals, litter, illegal dumping.`
+Concentrez-vous sur : bouteilles plastique, déchets alimentaires, mégots, emballages, électronique, produits chimiques, détritus, décharge sauvage. RÉPONDEZ UNIQUEMENT EN FRANÇAIS.`
 
       const response = await fetch(
         "https://api-inference.huggingface.co/models/microsoft/Phi-3.5-vision-instruct",
@@ -207,13 +207,13 @@ Focus on: plastic bottles, food waste, cigarette butts, packaging, electronics, 
         wasteLevel: jsonData.wasteLevel || 'minimal',
         wasteAmplitude: jsonData.wasteAmplitude || 'minimal',
         wasteTypes: jsonData.wasteTypes || [],
-        environmentalImpact: jsonData.environmentalImpact || 'Low environmental impact detected',
+        environmentalImpact: jsonData.environmentalImpact || 'Faible impact environnemental détecté',
         urgencyScore: jsonData.urgencyScore || 20,
         confidence: jsonData.confidence || 70,
-        reasoning: jsonData.reasoning || `Analyzed by ${modelType} model`,
+        reasoning: jsonData.reasoning || `Analysé par le modèle ${modelType}`,
         wasteCategory: jsonData.wasteCategory || 'general',
-        disposalInstructions: jsonData.disposalInstructions || 'Dispose in appropriate waste bins',
-        preventionTips: jsonData.preventionTips || ['Keep areas clean', 'Use proper disposal methods']
+        disposalInstructions: jsonData.disposalInstructions || 'Jetez dans les poubelles appropriées',
+        preventionTips: jsonData.preventionTips || ['Maintenir la propreté des zones', 'Utiliser des méthodes d\'élimination appropriées']
       }
       
     } catch (error) {
@@ -267,13 +267,13 @@ Focus on: plastic bottles, food waste, cigarette butts, packaging, electronics, 
       wasteLevel: isGarbageDetected ? 'low' : 'minimal',
       wasteAmplitude: isGarbageDetected ? 'minimal' : 'trace',
       wasteTypes: detectedObjects.filter(obj => obj.score > 30).map(obj => obj.label),
-      environmentalImpact: isGarbageDetected ? 'Potential environmental concern detected' : 'No significant environmental impact',
+      environmentalImpact: isGarbageDetected ? 'Préoccupation environnementale potentielle détectée' : 'Aucun impact environnemental significatif',
       urgencyScore: isGarbageDetected ? Math.min(maxScore, 40) : 10,
       confidence: maxScore,
-      reasoning: 'Google ViT classification analysis',
+      reasoning: 'Analyse de classification Google ViT',
       wasteCategory: 'general',
-      disposalInstructions: isGarbageDetected ? 'Please dispose properly in waste bins' : 'No disposal action needed',
-      preventionTips: ['Keep environment clean', 'Use proper waste disposal']
+      disposalInstructions: isGarbageDetected ? 'Veuillez jeter correctement dans les poubelles' : 'Aucune action d\'élimination nécessaire',
+      preventionTips: ['Maintenir l\'environnement propre', 'Utiliser une élimination appropriée des déchets']
     }
   }
 
@@ -283,18 +283,18 @@ Focus on: plastic bottles, food waste, cigarette butts, packaging, electronics, 
     // Conservative approach: assume waste present for manual review
     return {
       isGarbageDetected: true,
-      detectedObjects: [{ label: 'Requires manual review', score: 50 }],
+      detectedObjects: [{ label: 'Nécessite une vérification manuelle', score: 50 }],
       imageHash,
       wasteLevel: 'minimal' as const,
       wasteAmplitude: 'minimal' as const,
-      wasteTypes: ['Unknown - manual review needed'],
-      environmentalImpact: 'Manual review required to assess impact',
+      wasteTypes: ['Inconnu - vérification manuelle nécessaire'],
+      environmentalImpact: 'Vérification manuelle requise pour évaluer l\'impact',
       urgencyScore: 30,
       confidence: 50,
-      reasoning: 'AI analysis unavailable - conservative fallback applied',
+      reasoning: 'Analyse IA indisponible - solution de repli conservatrice appliquée',
       wasteCategory: 'general',
-      disposalInstructions: 'Manual assessment needed for proper disposal',
-      preventionTips: ['Follow local waste management guidelines']
+      disposalInstructions: 'Évaluation manuelle nécessaire pour l\'élimination appropriée',
+      preventionTips: ['Suivez les directives locales de gestion des déchets']
     }
   }
 
