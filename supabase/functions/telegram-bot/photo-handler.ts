@@ -125,6 +125,16 @@ export class PhotoHandler {
         analysisResult.imageHash = await this.calculateFallbackHash(photoUint8Array)
       }
 
+      // Envoyer le message de validation ultra-sophistiqué
+      const validationMessage = this.ultraSophisticatedAnalyzer.generateUltraSophisticatedValidationMessage(analysisResult)
+      await this.telegramAPI.sendMessage(chatId, validationMessage, { parse_mode: 'HTML' })
+
+      // VALIDATION PRÉCOCE : Si l'analyse rejette la photo, arrêter immédiatement
+      if (!analysisResult.isGarbageDetected) {
+        console.log('❌ Analysis rejected image - no waste detected, stopping process before upload/save')
+        return { success: false, error: 'Image rejected by analysis - no waste detected' }
+      }
+
       // Vérifier les doublons d'images via hash MD5
       console.log('🔍 Checking for duplicate images...')
       const { data: duplicateImages, error: duplicateError } = await this.supabaseClient
@@ -138,16 +148,6 @@ export class PhotoHandler {
       } else if (duplicateImages && duplicateImages.length > 0) {
         await this.telegramAPI.sendMessage(chatId, '🚫 <b>Signalement dupliqué !</b> Cette photo a déjà été signalée. Merci pour votre vigilance, mais nous avons déjà cette information.')
         return { success: false, error: 'Duplicate image detected' }
-      }
-
-      // Envoyer le message de validation ultra-sophistiqué
-      const validationMessage = this.ultraSophisticatedAnalyzer.generateUltraSophisticatedValidationMessage(analysisResult)
-      await this.telegramAPI.sendMessage(chatId, validationMessage, { parse_mode: 'HTML' })
-
-      // Si l'analyse rejette la photo, arrêter le processus
-      if (!analysisResult.isGarbageDetected) {
-        console.log('❌ Analysis rejected image, stopping process')
-        return { success: false, error: 'Image rejected by analysis' }
       }
 
       // Générer un nom de fichier unique
