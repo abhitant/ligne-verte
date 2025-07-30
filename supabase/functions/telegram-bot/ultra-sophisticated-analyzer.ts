@@ -29,7 +29,7 @@ export class UltraSophisticatedAnalyzer {
       
       // 1. ANALYSE PRIMAIRE - OpenAI Vision (Ultra-précise)
       const openAIKey = Deno.env.get('OPENAI_API_KEY')
-      if (openAIKey && imageSize > 15000) { // Seuil abaissé pour plus de couverture
+      if (openAIKey && imageSize > 5000) { // Seuil très abaissé pour détecter plus de déchets
         console.log('🤖 Deploying OpenAI Vision Ultra-Analysis...')
         const openAIResult = await this.performUltraOpenAIAnalysis(imageData, imageHash)
         if (openAIResult) {
@@ -76,7 +76,8 @@ export class UltraSophisticatedAnalyzer {
 
 🎯 MISSION ULTRA-PRÉCISE : Analyser avec une granularité exceptionnelle les déchets et la pollution environnementale.
 
-✅ DÉTECTER ET CLASSIFIER :
+✅ DÉTECTER ET CLASSIFIER AVEC SENSIBILITÉ MAXIMALE :
+- PRIORITÉ : Détecter même les plus petits déchets (mégots, papiers, canettes, bouteilles, emballages)
 - Niveau de pollution : minimal, low, medium, high, critical, catastrophic  
 - AMPLEUR des déchets : minimal, small, medium, large, massive
 - Types de déchets : plastique, organique, métal, verre, papier, textile, électronique, chimique, médical
@@ -87,21 +88,21 @@ export class UltraSophisticatedAnalyzer {
 - Niveau de risque : very_low, low, medium, high, very_high, critical
 - Action requise : none, monitoring, cleanup, emergency
 
-🔍 ANALYSE CONTEXTUELLE AVANCÉE :
+🔍 ANALYSE CONTEXTUELLE ULTRA-SENSIBLE :
+- Détecter TOUT déchet, même minime (papier froissé, mégot, emballage abandonné)
+- Identifier les objets jetés au sol ou abandonnés
+- Rechercher activement : bouteilles, canettes, papiers, emballages alimentaires, mégots
 - Évaluer l'ampleur réelle de la pollution
 - Identifier les risques pour la biodiversité
-- Estimer l'impact sur la santé publique
 - Proposer des solutions de tri spécifiques
-- Suggérer des mesures préventives
 
-❌ REJETER STRICTEMENT :
-- Images floues ou de mauvaise qualité
-- Espaces propres sans déchets visibles
-- Photos personnelles/selfies
-- Objets fonctionnels en bon état
-- Infrastructure normale (véhicules, bâtiments)
+❌ REJETER UNIQUEMENT :
+- Images très floues ou illisibles
+- Photos complètement sans déchets ET propres
+- Photos personnelles/selfies sans déchets
+- Objets clairement fonctionnels ET en bon état ET à leur place
 
-⚠️ PRINCIPE DE PRÉCISION : Privilégier la justesse d'analyse. En cas de doute minime, rejeter.
+⚠️ PRINCIPE DE SENSIBILITÉ : En cas de doute, ACCEPTER et analyser. Priorité à la détection des déchets.
 
 Réponds UNIQUEMENT avec un JSON valide dans ce format exact :
 {
