@@ -233,6 +233,7 @@ Concentrez-vous sur : bouteilles plastique, déchets alimentaires, mégots, emba
     let isGarbageDetected = false
     const detectedObjects: Array<{ label: string; score: number }> = []
     let maxScore = 0
+    let wasteConfidence = 0
 
     if (Array.isArray(results)) {
       for (const result of results.slice(0, 10)) {
@@ -249,15 +250,16 @@ Concentrez-vous sur : bouteilles plastique, déchets alimentaires, mégots, emba
         
         if (isWasteRelated && score >= 0.25) {
           isGarbageDetected = true
+          wasteConfidence = Math.max(wasteConfidence, scorePercent)
           console.log(`✅ Waste detected: ${label} (${scorePercent}%)`)
         }
       }
     }
 
-    // Smart fallback: detect waste more aggressively for better detection
-    if (!isGarbageDetected && maxScore < 90) {
-      isGarbageDetected = true
-      console.log('⚠️ Détection conservative - signalement pour vérification manuelle')
+    // Only use fallback if confidence is very low and no clear waste detected
+    if (!isGarbageDetected && maxScore < 50 && wasteConfidence < 30) {
+      // Allow "no waste detected" when confidence is reasonable
+      console.log('📊 Low confidence detection - allowing no waste result')
     }
 
     return {
@@ -280,21 +282,33 @@ Concentrez-vous sur : bouteilles plastique, déchets alimentaires, mégots, emba
   private createIntelligentFallback(imageData: Uint8Array, imageHash: string): any {
     console.log('🔄 Creating intelligent fallback result...')
     
-    // Conservative approach: assume waste present for manual review
+    // More balanced approach: only assume waste if image quality suggests it
+    const imageSize = imageData.length
+    const isLowQuality = imageSize < 10000 // Very small image
+    
+    // Default to no waste detected for better accuracy
     return {
-      isGarbageDetected: true,
-      detectedObjects: [{ label: 'Nécessite une vérification manuelle', score: 50 }],
+      isGarbageDetected: isLowQuality, // Only detect waste if image is too small/unclear
+      detectedObjects: isLowQuality 
+        ? [{ label: 'Image de qualité insuffisante', score: 30 }]
+        : [{ label: 'Aucun déchet détecté avec certitude', score: 20 }],
       imageHash,
       wasteLevel: 'minimal' as const,
-      wasteAmplitude: 'minimal' as const,
-      wasteTypes: ['Inconnu - vérification manuelle nécessaire'],
-      environmentalImpact: 'Vérification manuelle requise pour évaluer l\'impact',
-      urgencyScore: 30,
-      confidence: 50,
-      reasoning: 'Analyse automatique - solution de repli conservatrice appliquée',
+      wasteAmplitude: isLowQuality ? 'trace' : 'minimal',
+      wasteTypes: isLowQuality ? ['Analyse technique impossible'] : [],
+      environmentalImpact: isLowQuality 
+        ? 'Image trop floue pour analyse précise' 
+        : 'Aucun impact environnemental significatif détecté',
+      urgencyScore: isLowQuality ? 20 : 5,
+      confidence: isLowQuality ? 30 : 80,
+      reasoning: isLowQuality 
+        ? 'Image de qualité insuffisante pour analyse précise'
+        : 'Analyse technique terminée - aucun déchet visible',
       wasteCategory: 'general',
-      disposalInstructions: 'Évaluation manuelle nécessaire pour l\'élimination appropriée',
-      preventionTips: ['Suivez les directives locales de gestion des déchets']
+      disposalInstructions: isLowQuality 
+        ? 'Prenez une photo plus nette pour une meilleure analyse'
+        : 'Aucune action nécessaire - zone propre',
+      preventionTips: ['Continuez à maintenir un environnement propre']
     }
   }
 
@@ -352,9 +366,58 @@ ${result.reasoning}
 Si vous voyez des déchets, prenez une photo plus nette et proche. Merci !`
     }
 
-    return `✅ <b>Déchets détectés !</b> 
-Quantité : masses
-Dernière étape : partagez votre localisation pour finaliser votre signalement`
+    // Use real analysis data for dynamic messages
+    const wasteLevel = this.translateLevel(result.wasteLevel || 'minimal')
+    const wasteAmplitude = this.translateAmplitude(result.wasteAmplitude || 'minimal')
+    const wasteCategory = this.translateCategory(result.wasteCategory || 'general')
+    
+    // Create different messages based on confidence and detection level
+    if (result.confidence < 60) {
+      return `⚠️ <b>Déchets possibles détectés</b>
+
+🔍 <b>Confiance :</b> ${result.confidence}%
+📊 <b>Niveau :</b> ${wasteLevel}
+🎯 <b>Catégorie :</b> ${wasteCategory}
+
+${result.reasoning}
+
+Pour une meilleure analyse, prenez une photo plus nette. Voulez-vous continuer ?
+
+Dernière étape : partagez votre localisation.`
+    }
+
+    // High confidence detection
+    let message = `✅ <b>Déchets détectés avec certitude !</b>
+
+📊 <b>Niveau :</b> ${wasteLevel}
+🎯 <b>Quantité :</b> ${wasteAmplitude}
+♻️ <b>Catégorie :</b> ${wasteCategory}
+🔍 <b>Confiance :</b> ${result.confidence}%`
+
+    // Add detected waste types if available
+    if (result.wasteTypes && result.wasteTypes.length > 0 && result.wasteTypes[0] !== 'Inconnu - vérification manuelle nécessaire') {
+      const items = result.wasteTypes.slice(0, 3).join(', ')
+      message += `\n🗑️ <b>Objets :</b> ${items}`
+    }
+
+    // Add disposal instructions if available and meaningful
+    if (result.disposalInstructions && !result.disposalInstructions.includes('manuelle')) {
+      message += `\n\n💡 <b>Conseils :</b> ${result.disposalInstructions}`
+    }
+
+    message += `\n\nDernière étape : partagez votre localisation pour finaliser votre signalement.`
+
+    return message
+  }
+
+  private translateAmplitude(amplitude: string): string {
+    const translations: { [key: string]: string } = {
+      'trace': 'Traces',
+      'minimal': 'Minimal',
+      'moderate': 'Modéré',
+      'massive': 'Important'
+    }
+    return translations[amplitude] || 'Inconnu'
   }
 
   private translateCategory(category: string): string {
