@@ -58,11 +58,11 @@ Deno.serve(async (req) => {
         
         const message = `🌱 Salut ${user.pseudo || 'ami éco-citoyen'} !
 
-📢 Rejoignez notre nouvelle communauté WhatsApp <b>Greenpill-CI</b> pour suivre l'actualité environnementale et échanger avec d'autres contributeurs !
+📢 Rejoindre notre communauté de contributeur pour suivre l'actualité environnementale et échanger !
 
 💚 Avec vos <b>${user.points_himpact} points Himpact</b>, vous faites partie des membres actifs de La Ligne Verte.
 
-🌍 Discussions, conseils écologiques et actualités vous attendent sur Greenpill-CI
+🌍 Discussions, conseils écologiques et actualités vous attendent
 
 👥 Rejoindre : https://chat.whatsapp.com/BZhR0lzK8op850NUscjDwp
 
@@ -71,7 +71,7 @@ Deno.serve(async (req) => {
         const keyboard = {
           inline_keyboard: [
             [
-              { text: '💬 Rejoindre Greenpill-CI', url: 'https://chat.whatsapp.com/BZhR0lzK8op850NUscjDwp' }
+              { text: '💬 Rejoindre notre communauté', url: 'https://chat.whatsapp.com/BZhR0lzK8op850NUscjDwp' }
             ]
           ]
         }

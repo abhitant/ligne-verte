@@ -57,11 +57,11 @@ export default function BroadcastTest() {
             <div className="text-sm text-muted-foreground whitespace-pre-line">
               {`🌱 Salut [Pseudo] !
 
-📢 Rejoignez notre nouvelle communauté WhatsApp Greenpill-CI pour suivre l'actualité environnementale et échanger avec d'autres contributeurs !
+📢 Rejoindre notre communauté de contributeur pour suivre l'actualité environnementale et échanger !
 
 💚 Avec vos [Points] points Himpact, vous faites partie des membres actifs de La Ligne Verte.
 
-🌍 Discussions, conseils écologiques et actualités vous attendent sur Greenpill-CI
+🌍 Discussions, conseils écologiques et actualités vous attendent
 
 👥 Rejoindre : https://chat.whatsapp.com/BZhR0lzK8op850NUscjDwp
 
