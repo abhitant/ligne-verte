@@ -162,12 +162,22 @@ Votre inscription est terminée. Vous commencez avec <b>${user.points_himpact} p
 /aide - Guide complet
 /changenom - Modifier votre nom
 
+📱 <b>Rejoignez notre communauté Greenpill-CI !</b>
+
+Groupe WhatsApp exclusif pour :
+• Actualités environnementales 
+• Échanges entre éco-citoyens
+• Conseils et tips écologiques
+
 <b>Merci de rejoindre La Ligne Verte !</b> 🌱`
 
       const keyboard = {
         inline_keyboard: [
           [
             { text: '🗺️ Voir la carte', url: 'https://ligne-verte.lovable.app/map' }
+          ],
+          [
+            { text: '💬 Rejoindre Greenpill-CI', url: 'https://chat.whatsapp.com/BZhR0lzK8op850NUscjDwp' }
           ]
         ]
       }
