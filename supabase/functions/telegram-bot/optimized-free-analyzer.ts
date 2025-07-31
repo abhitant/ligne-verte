@@ -102,10 +102,17 @@ export class OptimizedFreeAnalyzer {
 
 Concentrez-vous sur : bouteilles plastique, déchets alimentaires, mégots, emballages, électronique, produits chimiques, détritus, décharge sauvage. RÉPONDEZ UNIQUEMENT EN FRANÇAIS.`
 
+      const huggingFaceToken = Deno.env.get('HUGGING_FACE_ACCESS_TOKEN')
+      if (!huggingFaceToken) {
+        console.error('❌ Missing HUGGING_FACE_ACCESS_TOKEN')
+        throw new Error('HUGGING_FACE_ACCESS_TOKEN not configured')
+      }
+
       const response = await fetch(
         "https://api-inference.huggingface.co/models/microsoft/Phi-3.5-vision-instruct",
         {
           headers: {
+            "Authorization": `Bearer ${huggingFaceToken}`,
             "Content-Type": "application/json",
           },
           method: "POST",
@@ -145,10 +152,17 @@ Concentrez-vous sur : bouteilles plastique, déchets alimentaires, mégots, emba
       
       const base64Image = this.uint8ArrayToBase64(imageData)
       
+      const huggingFaceToken = Deno.env.get('HUGGING_FACE_ACCESS_TOKEN')
+      if (!huggingFaceToken) {
+        console.error('❌ Missing HUGGING_FACE_ACCESS_TOKEN for ViT')
+        throw new Error('HUGGING_FACE_ACCESS_TOKEN not configured')
+      }
+
       const response = await fetch(
         "https://api-inference.huggingface.co/models/google/vit-base-patch16-224",
         {
           headers: {
+            "Authorization": `Bearer ${huggingFaceToken}`,
             "Content-Type": "application/json",
           },
           method: "POST",
@@ -282,33 +296,59 @@ Concentrez-vous sur : bouteilles plastique, déchets alimentaires, mégots, emba
   private createIntelligentFallback(imageData: Uint8Array, imageHash: string): any {
     console.log('🔄 Creating intelligent fallback result...')
     
-    // More balanced approach: only assume waste if image quality suggests it
+    // Enhanced heuristic analysis based on image characteristics
     const imageSize = imageData.length
-    const isLowQuality = imageSize < 10000 // Very small image
+    console.log(`📊 Image size: ${imageSize} bytes`)
     
-    // Default to no waste detected for better accuracy
+    // Heuristic analysis based on image size and characteristics
+    let isGarbageDetected = false
+    let confidence = 40
+    let reasoning = 'Analyse heuristique sans IA'
+    
+    // Large images are more likely to contain outdoor content that might have waste
+    if (imageSize > 100000) { // > 100KB - likely detailed outdoor photo
+      isGarbageDetected = true
+      confidence = 65
+      reasoning = 'Photo extérieure détaillée - déchets probables (analyse heuristique)'
+    } else if (imageSize > 50000) { // > 50KB - medium quality outdoor photo
+      isGarbageDetected = true
+      confidence = 55
+      reasoning = 'Photo de qualité moyenne - surveillance recommandée (analyse heuristique)'
+    } else if (imageSize < 10000) { // < 10KB - very small/low quality
+      isGarbageDetected = false
+      confidence = 30
+      reasoning = 'Image de qualité insuffisante pour analyse précise'
+    } else {
+      // 10-50KB - assume no waste for indoor/clean photos
+      isGarbageDetected = false
+      confidence = 50
+      reasoning = 'Analyse technique terminée - zone propre probable'
+    }
+    
     return {
-      isGarbageDetected: isLowQuality, // Only detect waste if image is too small/unclear
-      detectedObjects: isLowQuality 
-        ? [{ label: 'Image de qualité insuffisante', score: 30 }]
-        : [{ label: 'Aucun déchet détecté avec certitude', score: 20 }],
+      isGarbageDetected,
+      detectedObjects: isGarbageDetected 
+        ? [{ label: 'Déchets probables (analyse heuristique)', score: confidence }]
+        : [{ label: 'Zone propre probable', score: confidence }],
       imageHash,
-      wasteLevel: 'minimal' as const,
-      wasteAmplitude: isLowQuality ? 'trace' : 'minimal',
-      wasteTypes: isLowQuality ? ['Analyse technique impossible'] : [],
-      environmentalImpact: isLowQuality 
-        ? 'Image trop floue pour analyse précise' 
+      wasteLevel: isGarbageDetected ? 'medium' : 'minimal',
+      wasteAmplitude: isGarbageDetected ? 'moderate' : 'minimal',
+      wasteTypes: isGarbageDetected ? ['Déchets non spécifiés'] : [],
+      environmentalImpact: isGarbageDetected 
+        ? 'Impact environnemental potentiel détecté' 
         : 'Aucun impact environnemental significatif détecté',
-      urgencyScore: isLowQuality ? 20 : 5,
-      confidence: isLowQuality ? 30 : 80,
-      reasoning: isLowQuality 
-        ? 'Image de qualité insuffisante pour analyse précise'
-        : 'Analyse technique terminée - aucun déchet visible',
+      urgencyScore: isGarbageDetected ? 60 : 15,
+      confidence,
+      reasoning,
       wasteCategory: 'general',
-      disposalInstructions: isLowQuality 
-        ? 'Prenez une photo plus nette pour une meilleure analyse'
-        : 'Aucune action nécessaire - zone propre',
-      preventionTips: ['Continuez à maintenir un environnement propre']
+      disposalInstructions: isGarbageDetected 
+        ? 'Vérifiez la zone et éliminez les déchets si présents'
+        : imageSize < 10000 
+          ? 'Prenez une photo plus nette pour une meilleure analyse'
+          : 'Aucune action nécessaire - zone propre',
+      preventionTips: isGarbageDetected 
+        ? ['Surveillez régulièrement la zone', 'Éliminez rapidement les nouveaux déchets']
+        : ['Continuez à maintenir un environnement propre']
     }
   }
 
