@@ -1,5 +1,4 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.50.2'
-import { TelegramAPI } from '../telegram-bot/telegram-api.ts'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -21,8 +20,8 @@ Deno.serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    // Initialize Telegram API
-    const telegramAPI = new TelegramAPI(Deno.env.get('TELEGRAM_BOT_TOKEN') ?? '')
+    // Get Telegram bot token
+    const botToken = Deno.env.get('TELEGRAM_BOT_TOKEN') ?? ''
 
     // Get all users from database
     const { data: users, error: usersError } = await supabaseClient
@@ -77,7 +76,21 @@ Deno.serve(async (req) => {
           ]
         }
 
-        const result = await telegramAPI.sendMessage(chatId, message, keyboard)
+        // Send message directly to Telegram API
+        const payload = {
+          chat_id: chatId,
+          text: message,
+          parse_mode: 'HTML',
+          reply_markup: keyboard
+        }
+
+        const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        })
+
+        const result = await response.json()
         
         if (result.ok) {
           successCount++
