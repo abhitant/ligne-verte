@@ -154,6 +154,12 @@ serve(async (req) => {
         return new Response('OK', { status: 200 })
       }
 
+      if (callbackData === 'suggest_start') {
+        await commandHandler.handleSuggestionStart(chatId, telegramId)
+        await telegramAPI.answerCallbackQuery(callback_query.id)
+        return new Response('OK', { status: 200 })
+      }
+
       if (callbackData?.startsWith('suggestion_')) {
         const suggestionType = callbackData.replace('suggestion_', '')
         await commandHandler.handleSuggestionType(chatId, telegramId, suggestionType)
@@ -201,10 +207,6 @@ serve(async (req) => {
       return new Response('OK', { status: 200 })
     }
 
-    if (messageText === '/suggestion') {
-      await commandHandler.handleSuggestion(chatId, telegramId)
-      return new Response('OK', { status: 200 })
-    }
 
     if (messageText === '/changenom') {
       await commandHandler.handleChangeName(chatId, telegramId)
@@ -275,6 +277,9 @@ Posez-moi des questions sur l'environnement, les signalements, ou dites simpleme
           [
             { text: '🗺️ Voir la carte', url: 'https://ligne-verte.lovable.app/map' },
             { text: '🏆 Mes points', callback_data: 'show_points' }
+          ],
+          [
+            { text: '💡 Faire une suggestion', callback_data: 'suggest_start' }
           ]
         ]
       })

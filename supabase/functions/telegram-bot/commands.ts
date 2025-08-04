@@ -78,6 +78,9 @@ Pour commencer, <b>par quel nom souhaitez-vous être appelé ${userName} ?</b>
           [
             { text: '🗺️ Voir la carte', url: 'https://ligne-verte.lovable.app/map' },
             { text: '🏆 Classement', callback_data: 'show_leaderboard' }
+          ],
+          [
+            { text: '💡 Faire une suggestion', callback_data: 'suggest_start' }
           ]
         ]
       }
@@ -409,6 +412,9 @@ Envoyez une photo d'un problème environnemental pour gagner vos premiers points
           [
             { text: '🗺️ Voir la carte', url: 'https://ligne-verte.lovable.app/map' },
             { text: '🏆 Top 10', callback_data: 'show_leaderboard' }
+          ],
+          [
+            { text: '💡 Faire une suggestion', callback_data: 'suggest_start' }
           ]
         ]
       }
@@ -460,6 +466,9 @@ Envoyez une photo d'un problème environnemental pour gagner vos premiers points
         inline_keyboard: [
           [
             { text: '🗺️ Voir la carte', url: 'https://ligne-verte.lovable.app/map' }
+          ],
+          [
+            { text: '💡 Faire une suggestion', callback_data: 'suggest_start' }
           ]
         ]
       }
@@ -523,6 +532,9 @@ Découvrez tous les signalements de la communauté sur notre carte interactive !
         [
             { text: '🗺️ Voir la carte', url: 'https://ligne-verte.fr/map' },
           { text: '🏆 Classement', callback_data: 'show_leaderboard' }
+        ],
+        [
+          { text: '💡 Faire une suggestion', callback_data: 'suggest_start' }
         ]
       ]
     }
@@ -569,6 +581,9 @@ Découvrez tous les signalements de la communauté sur notre carte interactive !
           [
             { text: '🗺️ Voir la carte', url: 'https://ligne-verte.fr/map' },
             { text: '📊 Mes points', callback_data: 'show_points' }
+          ],
+          [
+            { text: '💡 Faire une suggestion', callback_data: 'suggest_start' }
           ]
         ]
       }
@@ -582,7 +597,7 @@ Découvrez tous les signalements de la communauté sur notre carte interactive !
     }
   }
 
-  async handleSuggestion(chatId: number, telegramId: string) {
+  async handleSuggestionStart(chatId: number, telegramId: string) {
     try {
       const message = `💡 **FAIRE UNE SUGGESTION** 💡
 

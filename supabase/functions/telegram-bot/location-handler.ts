@@ -171,6 +171,9 @@ Vous remportez 10 points Himpact
           ],
           [
             { text: '📸 Nouveau signalement', callback_data: 'start_new_report' }
+          ],
+          [
+            { text: '💡 Donner votre avis', callback_data: 'suggest_start' }
           ]
         ]
       }
