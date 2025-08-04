@@ -155,8 +155,15 @@ serve(async (req) => {
       }
 
       if (callbackData === 'suggest_start') {
-        await commandHandler.handleSuggestionStart(chatId, telegramId)
-        await telegramAPI.answerCallbackQuery(callback_query.id)
+        console.log('🔧 DEBUG: suggest_start callback received for user:', telegramId)
+        try {
+          await commandHandler.handleSuggestionStart(chatId, telegramId)
+          await telegramAPI.answerCallbackQuery(callback_query.id)
+          console.log('✅ DEBUG: suggest_start handled successfully')
+        } catch (error) {
+          console.error('❌ DEBUG: Error in suggest_start:', error)
+          await telegramAPI.answerCallbackQuery(callback_query.id, 'Erreur lors du traitement')
+        }
         return new Response('OK', { status: 200 })
       }
 

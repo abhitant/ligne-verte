@@ -598,6 +598,7 @@ Découvrez tous les signalements de la communauté sur notre carte interactive !
   }
 
   async handleSuggestionStart(chatId: number, telegramId: string) {
+    console.log('🔧 DEBUG: handleSuggestionStart called for user:', telegramId)
     try {
       const message = `💡 **FAIRE UNE SUGGESTION** 💡
 
