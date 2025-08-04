@@ -161,6 +161,36 @@ export type Database = {
           },
         ]
       }
+      suggestions: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          status: string
+          suggestion_type: string
+          telegram_id: string
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          status?: string
+          suggestion_type: string
+          telegram_id: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          status?: string
+          suggestion_type?: string
+          telegram_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_achievements: {
         Row: {
           achievement_id: string
@@ -385,6 +415,22 @@ export type Database = {
           user_telegram_id: string
           waste_category: string | null
           waste_type: string | null
+        }
+      }
+      create_suggestion: {
+        Args: {
+          p_telegram_id: string
+          p_suggestion_type: string
+          p_content: string
+        }
+        Returns: {
+          content: string
+          created_at: string
+          id: string
+          status: string
+          suggestion_type: string
+          telegram_id: string
+          updated_at: string
         }
       }
       create_user_if_not_exists: {
