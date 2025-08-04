@@ -543,6 +543,37 @@ Découvrez tous les signalements de la communauté sur notre carte interactive !
     return { success: true }
   }
 
+  // Nouvelle méthode simplifiée pour les suggestions
+  async handleSuggestionRedirect(chatId: number) {
+    try {
+      const message = `💡 **DONNEZ VOTRE AVIS** 💡
+
+Nous aimerions connaître votre opinion ! 
+Cliquez sur le lien ci-dessous pour accéder à notre formulaire de suggestions :
+
+🔗 **[Formulaire de suggestions](https://ligne-verte.lovable.app/suggestions)**
+
+Vous pouvez :
+• 🐛 Signaler des bugs
+• ⚡ Proposer des améliorations  
+• ❗ Signaler des problèmes
+• 💡 Suggérer de nouvelles fonctionnalités
+
+Votre feedback nous aide à améliorer HimpactLive ! 🌱`
+
+      await this.telegramAPI.sendMessage(chatId, message, {
+        parse_mode: 'Markdown',
+        disable_web_page_preview: false
+      })
+    } catch (error) {
+      console.error('❌ Erreur lors de l\'envoi du lien de suggestions:', error)
+      await this.telegramAPI.sendMessage(
+        chatId,
+        "❌ Une erreur s'est produite. Vous pouvez accéder aux suggestions via : https://ligne-verte.lovable.app/suggestions"
+      )
+    }
+  }
+
   async handleLeaderboard(chatId: number) {
     try {
       // Récupérer les 10 meilleurs utilisateurs
