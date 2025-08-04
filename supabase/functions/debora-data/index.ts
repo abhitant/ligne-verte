@@ -119,6 +119,54 @@ serve(async (req) => {
         );
       }
 
+      case 'suggestions': {
+        const status = url.searchParams.get('status');
+        const type = url.searchParams.get('type');
+        
+        let query = supabaseClient
+          .from('suggestions')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (status) {
+          query = query.eq('status', status);
+        }
+        if (type) {
+          query = query.eq('suggestion_type', type);
+        }
+
+        const { data: suggestions, error } = await query;
+
+        if (error) {
+          console.error('Error fetching suggestions:', error);
+          return new Response(
+            JSON.stringify({ error: 'Failed to fetch suggestions' }),
+            { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+
+        const formattedSuggestions = suggestions?.map(suggestion => ({
+          id: suggestion.id,
+          telegram_id: suggestion.telegram_id,
+          type: suggestion.suggestion_type,
+          content: suggestion.content,
+          status: suggestion.status,
+          date: suggestion.created_at,
+          created_at: suggestion.created_at
+        })) || [];
+
+        console.log(`Found ${formattedSuggestions.length} suggestions`);
+
+        return new Response(
+          JSON.stringify({
+            success: true,
+            data: formattedSuggestions,
+            total: formattedSuggestions.length
+          }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
       case 'stats': {
         // Récupérer les statistiques générales
         const { data: reportsCount, error: reportsError } = await supabaseClient
@@ -130,8 +178,17 @@ serve(async (req) => {
           .select('telegram_id', { count: 'exact' })
           .not('pseudo', 'is', null);
 
-        if (reportsError || usersError) {
-          console.error('Error fetching stats:', reportsError || usersError);
+        const { data: suggestionsCount, error: suggestionsError } = await supabaseClient
+          .from('suggestions')
+          .select('id', { count: 'exact' });
+
+        const { data: pendingSuggestionsCount, error: pendingSuggestionsError } = await supabaseClient
+          .from('suggestions')
+          .select('id', { count: 'exact' })
+          .eq('status', 'pending');
+
+        if (reportsError || usersError || suggestionsError || pendingSuggestionsError) {
+          console.error('Error fetching stats:', reportsError || usersError || suggestionsError || pendingSuggestionsError);
           return new Response(
             JSON.stringify({ error: 'Failed to fetch stats' }),
             { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -140,7 +197,9 @@ serve(async (req) => {
 
         const stats = {
           total_reports: reportsCount?.length || 0,
-          total_users: usersCount?.length || 0
+          total_users: usersCount?.length || 0,
+          total_suggestions: suggestionsCount?.length || 0,
+          pending_suggestions: pendingSuggestionsCount?.length || 0
         };
 
         console.log('Stats fetched:', stats);
@@ -158,11 +217,12 @@ serve(async (req) => {
         return new Response(
           JSON.stringify({ 
             error: 'Action non supportée',
-            available_actions: ['reports', 'leaderboard', 'stats'],
+            available_actions: ['reports', 'leaderboard', 'stats', 'suggestions'],
             usage: {
               reports: '?action=reports - Récupère tous les signalements pour la carte',
               leaderboard: '?action=leaderboard&limit=10 - Récupère le classement des plus Himpactant',
-              stats: '?action=stats - Récupère les statistiques générales'
+              stats: '?action=stats - Récupère les statistiques générales',
+              suggestions: '?action=suggestions&status=pending&type=bug - Récupère les suggestions'
             }
           }),
           { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }

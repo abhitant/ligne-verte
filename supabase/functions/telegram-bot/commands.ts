@@ -581,4 +581,104 @@ Découvrez tous les signalements de la communauté sur notre carte interactive !
       return { success: false, error }
     }
   }
+
+  async handleSuggestion(chatId: number, telegramId: string) {
+    try {
+      const message = `💡 **FAIRE UNE SUGGESTION** 💡
+
+Quel type de suggestion voulez-vous faire ?
+
+🐛 **Bug** - Signaler un problème technique
+🔧 **Amélioration** - Proposer une amélioration
+⚠️ **Problème** - Signaler un problème d'usage
+⭐ **Nouvelle fonctionnalité** - Proposer une nouvelle feature
+
+Choisissez une catégorie ci-dessous :`;
+
+      const keyboard = {
+        inline_keyboard: [
+          [
+            { text: '🐛 Bug', callback_data: 'suggestion_bug' },
+            { text: '🔧 Amélioration', callback_data: 'suggestion_improvement' }
+          ],
+          [
+            { text: '⚠️ Problème', callback_data: 'suggestion_problem' },
+            { text: '⭐ Nouvelle fonctionnalité', callback_data: 'suggestion_new_feature' }
+          ]
+        ]
+      };
+
+      await this.telegramAPI.sendMessage(chatId, message, { 
+        parse_mode: 'Markdown',
+        reply_markup: keyboard 
+      });
+      return { success: true }
+    } catch (error) {
+      console.error('Error in handleSuggestion:', error)
+      await this.telegramAPI.sendMessage(chatId, '❌ Une erreur est survenue lors de l\'affichage des options de suggestion')
+      return { success: false, error }
+    }
+  }
+
+  async handleSuggestionType(chatId: number, telegramId: string, suggestionType: string) {
+    try {
+      const typeLabels = {
+        bug: '🐛 Bug',
+        improvement: '🔧 Amélioration', 
+        problem: '⚠️ Problème',
+        new_feature: '⭐ Nouvelle fonctionnalité'
+      };
+
+      const typeLabel = typeLabels[suggestionType] || 'Suggestion';
+      
+      const message = `${typeLabel}
+
+Décrivez votre suggestion en détail :
+- Soyez précis et clair
+- Ajoutez des exemples si nécessaire
+- Expliquez l'impact sur l'usage du bot
+
+📝 Tapez votre suggestion :`;
+
+      await this.telegramAPI.sendMessage(chatId, message)
+      return { success: true }
+    } catch (error) {
+      console.error('Error in handleSuggestionType:', error)
+      await this.telegramAPI.sendMessage(chatId, '❌ Une erreur est survenue lors de la préparation de la suggestion')
+      return { success: false, error }
+    }
+  }
+
+  async saveSuggestion(chatId: number, telegramId: string, suggestionType: string, content: string) {
+    try {
+      const { data, error } = await this.supabaseClient
+        .rpc('create_suggestion', {
+          p_telegram_id: telegramId,
+          p_suggestion_type: suggestionType,
+          p_content: content
+        });
+
+      if (error) {
+        console.error('Error saving suggestion:', error)
+        await this.telegramAPI.sendMessage(chatId, '❌ Erreur lors de l\'enregistrement de votre suggestion')
+        return { success: false, error }
+      }
+
+      const message = `✅ **SUGGESTION ENREGISTRÉE** ✅
+
+Votre suggestion a été enregistrée avec succès !
+
+📋 **Type :** ${suggestionType}
+💬 **Contenu :** ${content.length > 100 ? content.substring(0, 100) + '...' : content}
+
+🚀 Notre équipe examinera votre suggestion et vous remercie pour votre contribution à l'amélioration de La Ligne Verte !`;
+
+      await this.telegramAPI.sendMessage(chatId, message, { parse_mode: 'Markdown' })
+      return { success: true }
+    } catch (error) {
+      console.error('Error in saveSuggestion:', error)
+      await this.telegramAPI.sendMessage(chatId, '❌ Une erreur est survenue lors de l\'enregistrement de votre suggestion')
+      return { success: false, error }
+    }
+  }
 }

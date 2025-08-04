@@ -106,7 +106,7 @@ const Dashboard = () => {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
           <Card className="bg-card shadow-lg border-l-4 border-l-accent">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-gray-600">Total Signalements</CardTitle>
@@ -129,6 +129,14 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-yellow-600">198</div>
+            </CardContent>
+          </Card>
+          <Card className="bg-card shadow-lg border-l-4 border-l-destructive">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-gray-600">Suggestions</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-orange-600">8</div>
             </CardContent>
           </Card>
           <Card className="bg-card shadow-lg border-l-4 border-l-muted">
@@ -169,6 +177,66 @@ const Dashboard = () => {
                 <Settings className="w-4 h-4 mr-2" />
                 Configurer Débora
               </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Suggestions Section */}
+        <Card className="bg-card shadow-lg mb-8">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              💡 Suggestions des Utilisateurs
+            </CardTitle>
+            <CardDescription>
+              Gérez les suggestions, bugs et demandes d'amélioration
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="font-medium">User 1234</span>
+                      <Badge className="bg-orange-100 text-orange-800">🐛 Bug</Badge>
+                      <Badge className="bg-yellow-100 text-yellow-800">En attente</Badge>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                      <Calendar className="w-4 h-4" />
+                      2024-01-15
+                    </div>
+                    <p className="text-gray-700">Le bot ne répond pas quand j'envoie plusieurs photos d'affilée</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button className="bg-green-600 hover:bg-green-700" size="sm">
+                      <CheckCircle className="w-4 h-4 mr-1" />
+                      Marquer comme traité
+                    </Button>
+                  </div>
+                </div>
+              </div>
+              <div className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="font-medium">User 5678</span>
+                      <Badge className="bg-blue-100 text-blue-800">🔧 Amélioration</Badge>
+                      <Badge className="bg-yellow-100 text-yellow-800">En attente</Badge>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                      <Calendar className="w-4 h-4" />
+                      2024-01-14
+                    </div>
+                    <p className="text-gray-700">Ajouter une option pour signaler les problèmes d'éclairage public</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button className="bg-green-600 hover:bg-green-700" size="sm">
+                      <CheckCircle className="w-4 h-4 mr-1" />
+                      Marquer comme traité
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>

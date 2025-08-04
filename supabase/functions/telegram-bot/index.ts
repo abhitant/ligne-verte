@@ -154,6 +154,13 @@ serve(async (req) => {
         return new Response('OK', { status: 200 })
       }
 
+      if (callbackData?.startsWith('suggestion_')) {
+        const suggestionType = callbackData.replace('suggestion_', '')
+        await commandHandler.handleSuggestionType(chatId, telegramId, suggestionType)
+        await telegramAPI.answerCallbackQuery(callback_query.id)
+        return new Response('OK', { status: 200 })
+      }
+
       return new Response('OK', { status: 200 })
     }
 
@@ -191,6 +198,11 @@ serve(async (req) => {
 
     if (messageText === '/aide' || messageText === '/help') {
       await commandHandler.handleHelp(chatId)
+      return new Response('OK', { status: 200 })
+    }
+
+    if (messageText === '/suggestion') {
+      await commandHandler.handleSuggestion(chatId, telegramId)
       return new Response('OK', { status: 200 })
     }
 
