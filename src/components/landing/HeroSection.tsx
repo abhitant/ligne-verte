@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { Camera, Info } from "lucide-react";
+import { Camera, Info, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { WHATSAPP_GROUP_URL } from "@/config/links";
 
 const HeroSection = () => {
   const [currentImage, setCurrentImage] = useState(0);
@@ -115,7 +116,7 @@ const HeroSection = () => {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-          <Link to="/rejoindre">
+          <Link to="/join">
             <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground px-12 py-6 text-xl font-bold rounded-xl shadow-xl transform hover:scale-105 transition-all">
               <Camera className="w-6 h-6 mr-3" />
               Commencer maintenant
@@ -128,6 +129,13 @@ const HeroSection = () => {
               En apprendre plus
             </Button>
           </Link>
+
+          <a href={WHATSAPP_GROUP_URL} target="_blank" rel="noopener noreferrer" aria-label="Rejoindre le groupe WhatsApp">
+            <Button variant="outline" size="lg" className="border-2 border-accent/60 text-accent hover:bg-accent hover:text-accent-foreground px-8 py-6 text-xl font-bold rounded-xl shadow-xl backdrop-blur-sm">
+              <MessageCircle className="w-6 h-6 mr-3" />
+              WhatsApp
+            </Button>
+          </a>
         </div>
       </div>
     </div>

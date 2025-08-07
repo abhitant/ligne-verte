@@ -2,8 +2,9 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { MapPin, Home, Users, Menu, X, Info } from "lucide-react";
+import { MapPin, Home, Users, Menu, X, Info, MessageCircle } from "lucide-react";
 import WaitlistModal from "./WaitlistModal";
+import { WHATSAPP_GROUP_URL } from "@/config/links";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -63,13 +64,25 @@ const Navigation = () => {
             </div>
           </div>
 
-          {/* Right side - Waitlist button */}
-          <div className="hidden md:flex items-center flex-shrink-0 ml-2">
+          {/* Right side - Actions */}
+          <div className="hidden md:flex items-center flex-shrink-0 ml-2 gap-2">
             <Button 
               className="bg-accent text-accent-foreground hover:bg-accent/80"
               onClick={() => setIsWaitlistOpen(true)}
             >
               Participer à la lutte
+            </Button>
+            <Button variant="outline" asChild>
+              <a
+                href={WHATSAPP_GROUP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Rejoindre notre groupe WhatsApp"
+                className="flex items-center gap-2"
+              >
+                <MessageCircle className="w-4 h-4" />
+                WhatsApp
+              </a>
             </Button>
           </div>
 
@@ -108,7 +121,7 @@ const Navigation = () => {
                   </Link>
                 );
               })}
-              <div className="pt-4 pb-2">
+              <div className="pt-4 pb-2 space-y-2">
                 <Button 
                   className="w-full bg-accent text-accent-foreground hover:bg-accent/80 py-3 text-base font-medium"
                   onClick={() => {
@@ -117,6 +130,19 @@ const Navigation = () => {
                   }}
                 >
                   Participer à la lutte
+                </Button>
+                <Button variant="outline" asChild className="w-full py-3 text-base font-medium">
+                  <a
+                    href={WHATSAPP_GROUP_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Rejoindre notre groupe WhatsApp"
+                    className="flex items-center justify-center gap-2"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <MessageCircle className="w-5 h-5" />
+                    Rejoindre WhatsApp
+                  </a>
                 </Button>
               </div>
             </div>

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Trophy, ArrowLeft } from "lucide-react";
 import { useLeaderboard } from "@/hooks/useGamification";
 import { Link } from "react-router-dom";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const LeaderboardPage = () => {
   const { data: leaderboard = [], isLoading } = useLeaderboard(100);
@@ -41,8 +42,17 @@ const LeaderboardPage = () => {
           
           <CardContent className="space-y-3">
             {isLoading ? (
-              <div className="text-center py-8">
-                <p className="text-primary-foreground/80">Chargement du classement...</p>
+              <div className="space-y-3 p-4">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <div key={i} className="flex items-center gap-3 p-4 rounded-lg bg-accent/20">
+                    <Skeleton className="h-12 w-12 rounded-full" />
+                    <div className="flex-1 space-y-2">
+                      <Skeleton className="h-4 w-1/3" />
+                      <Skeleton className="h-3 w-1/5" />
+                    </div>
+                    <Skeleton className="h-6 w-16" />
+                  </div>
+                ))}
               </div>
             ) : leaderboard.length === 0 ? (
               <div className="text-center py-8">
