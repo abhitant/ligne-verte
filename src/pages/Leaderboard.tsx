@@ -28,7 +28,8 @@ const LeaderboardPage = () => {
         >
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         </MapContainer>
-        <div className="absolute inset-0 bg-accent/40" />
+        <div className="absolute inset-0 bg-accent/70 mix-blend-multiply" />
+        <div className="absolute inset-0 bg-background/40" />
       </div>
 
       {/* Header */}
