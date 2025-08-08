@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { MapPin, Home, Users, Menu, X, Info } from "lucide-react";
+import { WHATSAPP_INVITE_URL } from "@/config/links";
 import WaitlistModal from "./WaitlistModal";
 
 const Navigation = () => {
@@ -127,6 +128,8 @@ const Navigation = () => {
       <WaitlistModal 
         isOpen={isWaitlistOpen} 
         onClose={() => setIsWaitlistOpen(false)} 
+        redirectAfterSubmit
+        whatsappUrl={WHATSAPP_INVITE_URL}
       />
     </nav>
   );

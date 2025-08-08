@@ -1,4 +1,6 @@
 import { Button } from "@/components/ui/button";
+import WaitlistModal from "@/components/WaitlistModal";
+import { WHATSAPP_INVITE_URL } from "@/config/links";
 import { Camera, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -7,6 +9,7 @@ const HeroSection = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [firstLineText, setFirstLineText] = useState("");
   const [secondLineText, setSecondLineText] = useState("");
+  const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
   
   const images = [
     "/lovable-uploads/41b3a1b4-03ed-4912-95dd-05f5880046d0.png",
@@ -122,13 +125,26 @@ const HeroSection = () => {
             </Button>
           </Link>
           
-          <a href="https://chat.whatsapp.com/XXXXXXXXXXXXXXX" target="_blank" rel="noopener noreferrer" aria-label="Rejoindre notre groupe WhatsApp">
+          <a 
+            href={WHATSAPP_INVITE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Rejoindre notre groupe WhatsApp"
+            onClick={(e) => { e.preventDefault(); setIsWaitlistOpen(true); }}
+          >
             <Button variant="outline" size="lg" className="border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground px-12 py-6 text-xl font-bold rounded-xl shadow-xl backdrop-blur-sm">
               <MessageCircle className="w-6 h-6 mr-3" />
               Rejoindre WhatsApp
             </Button>
           </a>
         </div>
+
+        <WaitlistModal 
+          isOpen={isWaitlistOpen}
+          onClose={() => setIsWaitlistOpen(false)}
+          redirectAfterSubmit
+          whatsappUrl={WHATSAPP_INVITE_URL}
+        />
       </div>
     </div>
   );

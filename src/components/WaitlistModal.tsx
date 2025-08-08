@@ -11,9 +11,11 @@ import { Mail, User, MapPin, MessageSquare, Phone } from "lucide-react";
 interface WaitlistModalProps {
   isOpen: boolean;
   onClose: () => void;
+  redirectAfterSubmit?: boolean;
+  whatsappUrl?: string;
 }
 
-const WaitlistModal = ({ isOpen, onClose }: WaitlistModalProps) => {
+const WaitlistModal = ({ isOpen, onClose, redirectAfterSubmit, whatsappUrl }: WaitlistModalProps) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -47,6 +49,12 @@ const WaitlistModal = ({ isOpen, onClose }: WaitlistModalProps) => {
       });
 
       setFormData({ name: '', email: '', phone: '', zone: '', motivation: '' });
+
+      // Optionnel: rediriger vers WhatsApp après inscription
+      if (redirectAfterSubmit && whatsappUrl) {
+        window.open(whatsappUrl, '_blank', 'noopener');
+      }
+
       onClose();
     } catch (error) {
       console.error('Erreur lors de l\'inscription:', error);
