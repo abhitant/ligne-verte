@@ -15,10 +15,10 @@ const CommunitySection = () => {
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-            Rejoins ceux qui agissent déjà
+            Nous sommes en guerre
           </h2>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            Des habitants comme toi contribuent chaque jour à rendre nos quartiers plus propres. Rejoins-les et prends tes points.
+            Guerre contre les déchets: chaque action compte. Rejoins le mouvement et transforme ton quartier en gagnant des points Himpact.
           </p>
         </div>
 
