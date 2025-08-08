@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Camera, Info } from "lucide-react";
+import { Camera, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -122,12 +122,12 @@ const HeroSection = () => {
             </Button>
           </Link>
           
-          <Link to="/map">
+          <a href="https://chat.whatsapp.com/XXXXXXXXXXXXXXX" target="_blank" rel="noopener noreferrer" aria-label="Rejoindre notre groupe WhatsApp">
             <Button variant="outline" size="lg" className="border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground px-12 py-6 text-xl font-bold rounded-xl shadow-xl backdrop-blur-sm">
-              <Info className="w-6 h-6 mr-3" />
-              En apprendre plus
+              <MessageCircle className="w-6 h-6 mr-3" />
+              Rejoindre WhatsApp
             </Button>
-          </Link>
+          </a>
         </div>
       </div>
     </div>
