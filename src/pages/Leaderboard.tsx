@@ -10,9 +10,9 @@ const LeaderboardPage = () => {
   const { data: leaderboard = [], isLoading } = useLeaderboard(100);
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-background">
+    <div className="relative min-h-screen overflow-hidden">
       {/* Background Map preview with green tint */}
-      <div className="absolute inset-0 -z-10">
+      <div className="absolute inset-0 z-0">
         <MapContainer
           center={[5.3478, -4.0267]}
           zoom={12}
@@ -32,7 +32,7 @@ const LeaderboardPage = () => {
       </div>
 
       {/* Header */}
-      <div className="backdrop-blur-md bg-background/40 border-b border-primary/20">
+      <div className="relative z-10 backdrop-blur-md bg-background/40 border-b border-primary/20">
         <div className="max-w-4xl mx-auto p-4">
           <div className="flex items-center gap-4 mb-4">
             <Link to="/map">
@@ -49,7 +49,7 @@ const LeaderboardPage = () => {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto p-4">
+      <div className="relative z-10 max-w-4xl mx-auto p-4">
         <Card className="bg-background/40 backdrop-blur-lg border border-primary/20 shadow-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-foreground text-xl">
