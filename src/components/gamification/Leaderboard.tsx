@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Trophy, Medal, Award } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { Trophy, Medal, Award, Star } from "lucide-react";
 
 interface LeaderboardUser {
   telegram_id: string;
@@ -40,6 +41,17 @@ const getRankColor = (rank: number) => {
     default:
       return "bg-white border";
   }
+};
+
+const getLevel = (points: number) => Math.floor(points / 100) + 1;
+const getProgress = (points: number) => points % 100;
+const getBadges = (user: LeaderboardUser) => {
+  const badges: string[] = [];
+  if (user.reports_count >= 50) badges.push("Commandant");
+  else if (user.reports_count >= 25) badges.push("Nettoyeur");
+  else if (user.reports_count >= 10) badges.push("Éclaireur");
+  if (user.points_himpact >= 500) badges.push("Légende");
+  return badges;
 };
 
 const Leaderboard = ({ users, currentUserId, limit = 10 }: LeaderboardProps) => {
@@ -90,6 +102,24 @@ const Leaderboard = ({ users, currentUserId, limit = 10 }: LeaderboardProps) => 
                     {user.points_himpact} pts Himpact
                   </div>
                 </div>
+              </div>
+
+              {/* Progression d'XP et badges */}
+              <div className="mt-3 bg-white/70 rounded-lg p-3">
+                <div className="flex items-center justify-between mb-2 text-xs font-medium text-gray-700">
+                  <span>Niveau {getLevel(user.points_himpact)}</span>
+                  <span>{getProgress(user.points_himpact)}/100 XP</span>
+                </div>
+                <Progress value={getProgress(user.points_himpact)} className="h-2" />
+                {getBadges(user).length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {getBadges(user).map((b) => (
+                      <Badge key={b} variant="secondary" className="text-xs">
+                        <Star className="w-3 h-3 mr-1" /> {b}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {currentUserId === user.telegram_id && (

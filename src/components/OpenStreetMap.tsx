@@ -171,6 +171,15 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
           </div>
         </div>
       )}
+      {/* Légende et zones d'opération */}
+      <div className="absolute top-3 left-3 z-20 bg-background/90 backdrop-blur-sm border rounded-lg shadow px-4 py-3">
+        <div className="text-sm font-bold text-foreground mb-2">Zones d'opération</div>
+        <div className="space-y-1 text-xs">
+          <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-green-500 inline-block"></span> En attente</div>
+          <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span> Validé</div>
+          <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-red-500 inline-block"></span> Rejeté</div>
+        </div>
+      </div>
       
       <div style={{ height: '100%', width: '100%' }}>
         <MapContainer 
