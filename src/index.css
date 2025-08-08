@@ -28,8 +28,8 @@
     --muted-foreground: 0 0% 70%;
 
     /* Vert clair vif #A3FF3F pour les éléments accentués */
-    --accent: 75 100% 62%;
-    --accent-foreground: 141 40% 11%;
+    --accent: var(--primary);
+    --accent-foreground: var(--primary-foreground);
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
@@ -71,8 +71,8 @@
     --muted: 141 20% 20%;
     --muted-foreground: 0 0% 70%;
 
-    --accent: 75 100% 62%;
-    --accent-foreground: 141 40% 11%;
+    --accent: var(--primary);
+    --accent-foreground: var(--primary-foreground);
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 95%;
