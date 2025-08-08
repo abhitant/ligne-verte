@@ -28,7 +28,7 @@ const LeaderboardPage = () => {
         >
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         </MapContainer>
-        <div className="absolute inset-0 bg-gradient-to-b from-accent/10 via-background/60 to-background/90" />
+        <div className="absolute inset-0 bg-accent/20" />
       </div>
 
       {/* Header */}
