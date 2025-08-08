@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Mail, User, MapPin, MessageSquare, Phone } from "lucide-react";
-
+import { TELEGRAM_BOT_URL } from "@/config/links";
 interface WaitlistModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -155,14 +155,22 @@ const WaitlistModal = ({ isOpen, onClose, redirectAfterSubmit, whatsappUrl }: Wa
           </div>
 
           <div className="flex gap-3 pt-4">
-            <Button 
-              type="button" 
-              variant="outline" 
-              onClick={onClose} 
+            <a
+              href={TELEGRAM_BOT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={onClose}
               className="flex-1"
+              aria-label="Commencer maintenant via le bot Telegram"
             >
-              Annuler
-            </Button>
+              <Button 
+                type="button" 
+                variant="outline" 
+                className="w-full border-2 border-accent text-accent hover:bg-accent hover:text-accent-foreground"
+              >
+                Commencer maintenant
+              </Button>
+            </a>
             <Button 
               type="submit" 
               disabled={isSubmitting}
