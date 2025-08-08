@@ -64,11 +64,13 @@ const WasteProblemSection = () => {
   return (
     <div className="py-20 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header centré */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-12 animate-fade-in">
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-foreground leading-tight">
-            Les déchets urbains dégradent nos villes et quartiers
+            Nous sommes en guerre
           </h2>
+          <p className="mt-4 text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+            Une guerre contre les déchets. Notre mission: en finir avec la pollution urbaine. Ensemble, transformons chaque quartier en terrain de victoire grâce à la gamification et aux points Himpact.
+          </p>
         </div>
 
         {/* Graphiques en dessous */}
@@ -110,10 +112,10 @@ const WasteProblemSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mt-16">
           <div className="text-left">
             <h2 className="text-2xl md:text-3xl font-bold leading-none text-foreground mb-4">
-              Notre solution contre les déchets urbain : <span className="text-accent">La ligne verte</span>
+              <span className="text-accent">La Ligne Verte</span> : le jeu grandeur nature contre les déchets
             </h2>
             <p className="text-lg text-foreground leading-relaxed text-justify">
-              La ligne verte est une plateforme participative mise en place par Greenpill civ, pour signaler les déchets urbains et les urgences environnementales, afin de mener des actions et lutter contre la pollution urbaine.
+              Signale, nettoie et gagne des points Himpact. Accomplis des missions, protège ta zone d’opération, débloque des badges et grimpe au classement pour mener la victoire contre la pollution urbaine.
             </p>
           </div>
           
