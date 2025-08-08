@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, Trophy, MessageCircle } from "lucide-react";
+import { MapPin, Trophy } from "lucide-react";
 import { Link } from "react-router-dom";
-import { WHATSAPP_GROUP_URL } from "@/config/links";
 import OpenStreetMap from "@/components/OpenStreetMap";
 import Leaderboard from "@/components/gamification/Leaderboard";
 import { useLeaderboard } from "@/hooks/useGamification";
@@ -101,20 +100,12 @@ const CommunitySection = () => {
 
         {/* CTA - Style Gaming */}
         <div className="text-center">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to="/map">
-              <Button className="bg-accent hover:bg-accent/80 text-accent-foreground px-12 py-6 text-xl font-bold rounded-xl shadow-xl transform hover:scale-105 transition-all border-2 border-accent-foreground/20 tracking-wider">
-                <MapPin className="w-6 h-6 mr-3" />
-                ACCÉDER À LA CARTE
-              </Button>
-            </Link>
-            <Button variant="outline" asChild className="px-10 py-6 text-lg font-bold rounded-xl border-2 border-accent/60">
-              <a href={WHATSAPP_GROUP_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                <MessageCircle className="w-6 h-6" />
-                Rejoindre WhatsApp
-              </a>
+          <Link to="/map">
+            <Button className="bg-accent hover:bg-accent/80 text-accent-foreground px-12 py-6 text-xl font-bold rounded-xl shadow-xl transform hover:scale-105 transition-all border-2 border-accent-foreground/20 tracking-wider">
+              <MapPin className="w-6 h-6 mr-3" />
+              ACCÉDER À LA CARTE
             </Button>
-          </div>
+          </Link>
         </div>
       </div>
     </div>

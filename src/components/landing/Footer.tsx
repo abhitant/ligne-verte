@@ -1,5 +1,5 @@
-import { MessageSquare, MessageCircle } from "lucide-react";
-import { WHATSAPP_GROUP_URL } from "@/config/links";
+import { MessageSquare } from "lucide-react";
+
 const Footer = () => {
   return (
     <footer className="bg-background py-12 border-t border-accent/20">
@@ -24,20 +24,9 @@ const Footer = () => {
               className="flex items-center gap-2 text-accent hover:text-accent/80 transition-colors"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Ouvrir notre bot Telegram"
             >
               <MessageSquare className="w-6 h-6" />
               Telegram
-            </a>
-            <a 
-              href={WHATSAPP_GROUP_URL}
-              className="flex items-center gap-2 text-accent hover:text-accent/80 transition-colors"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Rejoindre notre groupe WhatsApp"
-            >
-              <MessageCircle className="w-6 h-6" />
-              WhatsApp
             </a>
           </div>
         </div>

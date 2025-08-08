@@ -28,8 +28,7 @@
     --muted-foreground: 0 0% 70%;
 
     /* Vert clair vif #A3FF3F pour les éléments accentués */
-    /* Accent based on uploaded reference green */
-    --accent: 110 100% 54%;
+    --accent: 75 100% 62%;
     --accent-foreground: 141 40% 11%;
 
     --destructive: 0 84.2% 60.2%;
@@ -72,8 +71,7 @@
     --muted: 141 20% 20%;
     --muted-foreground: 0 0% 70%;
 
-    /* Accent based on uploaded reference green (dark mode) */
-    --accent: 110 100% 54%;
+    --accent: 75 100% 62%;
     --accent-foreground: 141 40% 11%;
 
     --destructive: 0 62.8% 30.6%;
