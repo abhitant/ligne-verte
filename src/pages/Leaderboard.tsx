@@ -80,7 +80,7 @@ const LeaderboardPage = () => {
                   className={`flex items-center gap-3 p-4 rounded-xl transition-all hover:shadow-lg border ${
                     index < 3 
                       ? 'bg-accent/10 border-accent/30' 
-                      : 'bg-card border-border'
+                      : 'bg-background/30 backdrop-blur-md border-border/50'
                   }`}
                 >
                   <div className={`flex items-center justify-center w-12 h-12 rounded-full font-bold text-lg border ${
