@@ -54,7 +54,7 @@ const LeaderboardPage = () => {
               Classement Général
             </CardTitle>
             <CardDescription className="text-muted-foreground">
-              Tous les utilisateurs classés par points Himpact
+              Les utilisateurs classés en fonction de leur Himpact
             </CardDescription>
           </CardHeader>
           
