@@ -10,9 +10,9 @@ const LeaderboardPage = () => {
   const { data: leaderboard = [], isLoading } = useLeaderboard(100);
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
+    <div className="relative min-h-screen">
       {/* Background Map preview with green tint */}
-      <div className="absolute inset-0 z-0">
+      <div className="fixed inset-0 z-0">
         <MapContainer
           center={[5.3478, -4.0267]}
           zoom={12}
