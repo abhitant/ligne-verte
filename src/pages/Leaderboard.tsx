@@ -33,10 +33,10 @@ const LeaderboardPage = () => {
       </div>
 
       {/* Header */}
-      <div className="relative z-10 backdrop-blur-md bg-background/40 border-b border-primary/20">
+      <div className="relative z-10">
         <div className="max-w-4xl mx-auto p-4">
           <div className="flex items-center gap-4 mb-4">
-            <Link to="/map">
+            <Link to="/carte">
               <Button variant="ghost" size="sm" className="text-foreground hover:bg-primary/10">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Retour à la carte
@@ -51,7 +51,7 @@ const LeaderboardPage = () => {
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto p-4">
-        <Card className="bg-background/40 backdrop-blur-lg border border-primary/20 shadow-xl">
+        <Card className="bg-background border border-border shadow-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-foreground text-xl">
               <Trophy className="w-6 h-6 text-accent" />
@@ -77,10 +77,10 @@ const LeaderboardPage = () => {
               leaderboard.map((user, index) => (
                 <div 
                   key={user.telegram_id} 
-                  className={`flex items-center gap-3 p-4 rounded-xl transition-all hover:shadow-lg border backdrop-blur-sm ${
+                  className={`flex items-center gap-3 p-4 rounded-xl transition-all hover:shadow-lg border ${
                     index < 3 
-                      ? 'bg-accent/20 border-accent/30' 
-                      : 'bg-background/50 border-primary/20'
+                      ? 'bg-accent/10 border-accent/30' 
+                      : 'bg-card border-border'
                   }`}
                 >
                   <div className={`flex items-center justify-center w-12 h-12 rounded-full font-bold text-lg border ${
