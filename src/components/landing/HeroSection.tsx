@@ -104,10 +104,6 @@ const HeroSection = () => {
       {/* Content */}
       <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
         <div className="mb-16">
-          <div className="inline-flex items-center gap-2 bg-accent text-accent-foreground px-4 py-2 rounded-full text-sm font-bold shadow hover-scale animate-fade-in mb-6">
-            <span>🎮 Saison 1</span>
-            <span className="opacity-80">Combat des déchets</span>
-          </div>
           <div className="text-3xl md:text-5xl lg:text-6xl font-medium leading-tight space-y-4 min-h-[10rem] flex flex-col items-center justify-center">
             <div className="font-bold tracking-wide">
               {renderText(firstLineText)}
