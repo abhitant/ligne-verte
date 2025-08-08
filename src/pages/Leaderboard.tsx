@@ -43,10 +43,6 @@ const LeaderboardPage = () => {
               </Button>
             </Link>
           </div>
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-1">🏆 Classement Complet</h1>
-            <p className="text-muted-foreground">Découvrez tous les champions de l'environnement</p>
-          </div>
         </div>
       </div>
 
