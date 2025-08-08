@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
 import WaitlistModal from "@/components/WaitlistModal";
-import { WHATSAPP_INVITE_URL } from "@/config/links";
+import { WHATSAPP_INVITE_URL, TELEGRAM_BOT_URL } from "@/config/links";
 import { Camera, MessageCircle } from "lucide-react";
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 const HeroSection = () => {
@@ -122,12 +121,12 @@ const HeroSection = () => {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-          <Link to="/rejoindre">
+          <a href={TELEGRAM_BOT_URL} target="_blank" rel="noopener noreferrer" aria-label="Démarrer avec le bot Telegram">
             <Button size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground px-12 py-6 text-xl font-bold rounded-xl shadow-xl transform hover:scale-105 transition-all">
               <Camera className="w-6 h-6 mr-3" />
               Commencer maintenant
             </Button>
-          </Link>
+          </a>
           
           <a 
             href={WHATSAPP_INVITE_URL}

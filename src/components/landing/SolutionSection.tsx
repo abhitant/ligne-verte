@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Camera, MapPin, Trophy, MessageSquare } from "lucide-react";
 import { Link } from "react-router-dom";
+import { TELEGRAM_BOT_URL } from "@/config/links";
 
 const SolutionSection = () => {
   return (
@@ -74,7 +75,7 @@ const SolutionSection = () => {
             {/* CTA */}
             <div className="pt-6">
               <a 
-                href="https://t.me/ligneverte_bot" 
+                href={TELEGRAM_BOT_URL}
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="inline-block"

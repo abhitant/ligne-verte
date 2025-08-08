@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MapPin, Users, Target, TrendingUp, AlertTriangle, Leaf } from "lucide-react";
-
+import { TELEGRAM_BOT_URL } from "@/config/links";
 const ImpactOverview = () => {
   return (
     <div className="py-20 bg-gradient-to-br from-slate-900 via-gray-800 to-green-900">
@@ -118,10 +118,12 @@ const ImpactOverview = () => {
               </div>
             </div>
 
-            <Button size="lg" className="w-full bg-lime-400 hover:bg-lime-500 text-gray-900 text-lg py-6 rounded-xl shadow-2xl font-bold border-2 border-lime-300 hover:border-lime-400 transition-all">
-              <Target className="w-6 h-6 mr-3" />
-              Commencer maintenant
-            </Button>
+            <a href={TELEGRAM_BOT_URL} target="_blank" rel="noopener noreferrer" className="block">
+              <Button size="lg" className="w-full bg-lime-400 hover:bg-lime-500 text-gray-900 text-lg py-6 rounded-xl shadow-2xl font-bold border-2 border-lime-300 hover:border-lime-400 transition-all">
+                <Target className="w-6 h-6 mr-3" />
+                Commencer maintenant
+              </Button>
+            </a>
             
             <div className="mt-6 text-center">
               <div className="text-gray-400 text-sm mb-2">Contact</div>
