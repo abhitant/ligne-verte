@@ -1,25 +1,37 @@
+import { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Leaf, Target, Users, Zap } from "lucide-react";
 
 const About = () => {
+  useEffect(() => {
+    document.title = "À propos | La Ligne Verte - Greenpill Côte d'Ivoire";
+    const desc = "Découvrez la vision et la solution La Ligne Verte : signalement citoyen, IA et traçabilité pour un environnement plus propre.";
+    let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.name = "description";
+      document.head.appendChild(meta);
+    }
+    meta.content = desc;
+  }, []);
   return (
-    <div className="min-h-screen bg-primary">
-      <div className="container mx-auto px-4 py-16">
+    <div className="min-h-screen bg-gradient-to-b from-background to-muted/30">
+      <main className="container mx-auto px-4 py-16" role="main">
         {/* Hero Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6">
+        <header className="text-center mb-16">
+          <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-6">
             Rends ton quartier zo
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Rends ton quartier <span className="text-accent font-semibold">propre</span> et gagne tes points HIMPACT
           </p>
-        </div>
+        </header>
 
         {/* Le Problème */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-12 text-foreground">Le Défi des Déchets Urbains</h2>
+        <section aria-labelledby="defi" className="mb-16">
+          <h2 id="defi" className="text-3xl font-bold text-center mb-12 text-foreground">Le Défi des Déchets Urbains</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div className="space-y-6">
+            <div className="space-y-6 max-w-prose mx-auto md:mx-0 text-justify">
               <p className="text-lg text-foreground leading-relaxed">
                 Difficile de ne pas la remarquer, cette guerre que mènent toutes les grandes villes africaines contre les déchets urbains. Ces saletés qui envahissent nos quartiers, nos rues et leurs abords donnent un triste visage à notre continent.
               </p>
@@ -27,7 +39,7 @@ const About = () => {
                 Dans le Grand Abidjan, <span className="text-accent font-semibold">1,4 million de tonnes</span> de déchets sont produits chaque année. Ce chiffre, conséquence directe d'une urbanisation galopante et d'une forte croissance démographique, se reflète à l'échelle de toute l'Afrique subsaharienne.
               </p>
             </div>
-            <Card className="bg-primary/20 border-primary/40">
+            <Card className="bg-primary/20 border-primary/40 shadow-sm">
               <CardContent className="p-8">
                 <div className="text-center space-y-4">
                   <div className="text-4xl font-bold text-primary">174M</div>
@@ -39,13 +51,13 @@ const About = () => {
               </CardContent>
             </Card>
           </div>
-        </div>
+        </section>
 
         {/* Notre Solution */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-12 text-foreground">Notre Solution : La Ligne Verte</h2>
+        <section aria-labelledby="solution" className="mb-16">
+          <h2 id="solution" className="text-3xl font-bold text-center mb-12 text-foreground">Notre Solution : La Ligne Verte</h2>
           <div className="max-w-4xl mx-auto space-y-8">
-            <Card className="bg-primary/20 border-primary/40">
+            <Card className="bg-primary/20 border-primary/40 shadow-sm">
               <CardContent className="p-8">
                 <p className="text-lg text-foreground leading-relaxed mb-6">
                   C'est à cette résignation que <span className="text-primary font-semibold">Greenpill Côte d'Ivoire</span> a décidé de dire non, en lançant La Ligne Verte.
@@ -56,14 +68,14 @@ const About = () => {
               </CardContent>
             </Card>
           </div>
-        </div>
+        </section>
 
         {/* Comment ça marche */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-12 text-foreground">Comment ça marche ?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="text-center hover:shadow-lg transition-shadow bg-primary/20 border-primary/40">
-              <CardContent className="p-6">
+        <section aria-labelledby="how" className="mb-16">
+          <h2 id="how" className="text-3xl font-bold text-center mb-12 text-foreground">Comment ça marche ?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+            <Card className="text-center hover:shadow-lg transition-shadow bg-primary/20 border-primary/40 h-full">
+              <CardContent className="p-6 flex flex-col h-full">
                 <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Target className="w-8 h-8 text-primary" />
                 </div>
@@ -72,8 +84,8 @@ const About = () => {
               </CardContent>
             </Card>
 
-            <Card className="text-center hover:shadow-lg transition-shadow bg-primary/20 border-primary/40">
-              <CardContent className="p-6">
+            <Card className="text-center hover:shadow-lg transition-shadow bg-primary/20 border-primary/40 h-full">
+              <CardContent className="p-6 flex flex-col h-full">
                 <div className="w-16 h-16 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Zap className="w-8 h-8 text-accent" />
                 </div>
@@ -82,8 +94,8 @@ const About = () => {
               </CardContent>
             </Card>
 
-            <Card className="text-center hover:shadow-lg transition-shadow bg-primary/20 border-primary/40">
-              <CardContent className="p-6">
+            <Card className="text-center hover:shadow-lg transition-shadow bg-primary/20 border-primary/40 h-full">
+              <CardContent className="p-6 flex flex-col h-full">
                 <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Leaf className="w-8 h-8 text-primary" />
                 </div>
@@ -92,13 +104,13 @@ const About = () => {
               </CardContent>
             </Card>
           </div>
-        </div>
+        </section>
 
         {/* Technologie */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-12 text-foreground">Technologie & Transparence</h2>
+        <section aria-labelledby="tech" className="mb-16">
+          <h2 id="tech" className="text-3xl font-bold text-center mb-12 text-foreground">Technologie & Transparence</h2>
           <div className="max-w-4xl mx-auto">
-            <Card className="bg-primary/20 border-primary/40">
+            <Card className="bg-primary/20 border-primary/40 shadow-sm">
               <CardContent className="p-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div>
@@ -117,12 +129,12 @@ const About = () => {
               </CardContent>
             </Card>
           </div>
-        </div>
+        </section>
 
         {/* Vision */}
-        <div className="text-center">
-          <h2 className="text-3xl font-bold mb-8 text-foreground">Notre Vision</h2>
-          <Card className="max-w-4xl mx-auto bg-primary/20 border-primary/40">
+        <section aria-labelledby="vision" className="text-center">
+          <h2 id="vision" className="text-3xl font-bold mb-8 text-foreground">Notre Vision</h2>
+          <Card className="max-w-4xl mx-auto bg-primary/20 border-primary/40 shadow-sm">
             <CardContent className="p-8">
               <div className="flex items-center justify-center mb-6">
                 <Users className="w-12 h-12 text-primary" />
@@ -132,8 +144,8 @@ const About = () => {
               </p>
             </CardContent>
           </Card>
-        </div>
-      </div>
+        </section>
+      </main>
     </div>
   );
 };
