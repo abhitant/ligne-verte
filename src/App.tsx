@@ -16,7 +16,9 @@ import ReportsPage from "./pages/Reports";
 import ReportDetails from "./pages/ReportDetails";
 import About from "./pages/About";
 import Suggestions from "./pages/Suggestions";
+import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import AdminRoute from "./components/AdminRoute";
 
 const queryClient = new QueryClient();
 
@@ -43,7 +45,12 @@ const App = () => {
               <Route path="/a-propos" element={<About />} />
               <Route path="/suggestions" element={<Suggestions />} />
               <Route path="/profile" element={<UserProfile />} />
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/dashboard" element={
+                <AdminRoute>
+                  <Dashboard />
+                </AdminRoute>
+              } />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

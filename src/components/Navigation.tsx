@@ -2,14 +2,16 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { MapPin, Home, Users, Menu, X, Info } from "lucide-react";
+import { MapPin, Home, Users, Menu, X, Info, Settings, LogOut } from "lucide-react";
 import { WHATSAPP_INVITE_URL } from "@/config/links";
+import { useAuth } from "@/hooks/useAuth";
 import WaitlistModal from "./WaitlistModal";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
   const location = useLocation();
+  const { user, isAdmin, signOut } = useAuth();
 
   const navigation = [
     { name: 'Accueil', href: '/', icon: Home },
@@ -17,6 +19,16 @@ const Navigation = () => {
     { name: 'Classement', href: '/classement', icon: Users },
     { name: 'À propos', href: '/a-propos', icon: Info },
   ];
+
+  const adminNavigation = isAdmin ? [
+    { name: 'Dashboard', href: '/dashboard', icon: Settings },
+  ] : [];
+
+  const allNavigation = [...navigation, ...adminNavigation];
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
 
   const isActive = (href: string) => {
     return location.pathname === href;
@@ -44,7 +56,7 @@ const Navigation = () => {
           {/* Desktop Navigation - Centered */}
           <div className="hidden md:flex items-center justify-center flex-1 px-4">
             <div className="flex items-center space-x-1">
-              {navigation.map((item) => {
+              {allNavigation.map((item) => {
                 const Icon = item.icon;
                 return (
                   <Link
@@ -64,14 +76,34 @@ const Navigation = () => {
             </div>
           </div>
 
-          {/* Right side - Waitlist button */}
-          <div className="hidden md:flex items-center flex-shrink-0 ml-2">
-            <Button 
-              className="bg-accent text-accent-foreground hover:bg-accent/80"
-              onClick={() => setIsWaitlistOpen(true)}
-            >
-              Participer à la lutte
-            </Button>
+          {/* Right side - Auth/Waitlist buttons */}
+          <div className="hidden md:flex items-center flex-shrink-0 ml-2 gap-2">
+            {user ? (
+              <Button 
+                variant="outline"
+                className="border-accent text-accent hover:bg-accent/10"
+                onClick={handleSignOut}
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Déconnexion
+              </Button>
+            ) : (
+              <>
+                <Button 
+                  variant="outline"
+                  className="border-accent text-accent hover:bg-accent/10"
+                  onClick={() => window.location.href = '/auth'}
+                >
+                  Admin
+                </Button>
+                <Button 
+                  className="bg-accent text-accent-foreground hover:bg-accent/80"
+                  onClick={() => setIsWaitlistOpen(true)}
+                >
+                  Participer à la lutte
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -91,7 +123,7 @@ const Navigation = () => {
         {isOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-100">
-              {navigation.map((item) => {
+              {allNavigation.map((item) => {
                 const Icon = item.icon;
                 return (
                   <Link
@@ -109,16 +141,42 @@ const Navigation = () => {
                   </Link>
                 );
               })}
-              <div className="pt-4 pb-2">
-                <Button 
-                  className="w-full bg-accent text-accent-foreground hover:bg-accent/80 py-3 text-base font-medium"
-                  onClick={() => {
-                    setIsWaitlistOpen(true);
-                    setIsOpen(false);
-                  }}
-                >
-                  Participer à la lutte
-                </Button>
+              <div className="pt-4 pb-2 space-y-2">
+                {user ? (
+                  <Button 
+                    variant="outline"
+                    className="w-full border-accent text-accent hover:bg-accent/10 py-3 text-base font-medium"
+                    onClick={() => {
+                      handleSignOut();
+                      setIsOpen(false);
+                    }}
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Déconnexion
+                  </Button>
+                ) : (
+                  <Button 
+                    variant="outline"
+                    className="w-full border-accent text-accent hover:bg-accent/10 py-3 text-base font-medium"
+                    onClick={() => {
+                      window.location.href = '/auth';
+                      setIsOpen(false);
+                    }}
+                  >
+                    Admin
+                  </Button>
+                )}
+                {!user && (
+                  <Button 
+                    className="w-full bg-accent text-accent-foreground hover:bg-accent/80 py-3 text-base font-medium"
+                    onClick={() => {
+                      setIsWaitlistOpen(true);
+                      setIsOpen(false);
+                    }}
+                  >
+                    Participer à la lutte
+                  </Button>
+                )}
               </div>
             </div>
           </div>
