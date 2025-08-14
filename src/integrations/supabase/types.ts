@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -359,7 +359,7 @@ export type Database = {
     }
     Functions: {
       add_points_to_user: {
-        Args: { p_telegram_id: string; p_points: number }
+        Args: { p_points: number; p_telegram_id: string }
         Returns: {
           auth_user_id: string | null
           badges: Json | null
@@ -378,11 +378,11 @@ export type Database = {
       }
       add_to_waitlist: {
         Args: {
-          p_name: string
           p_email: string
+          p_motivation?: string
+          p_name: string
           p_phone: string
           p_zone: string
-          p_motivation?: string
         }
         Returns: {
           created_at: string
@@ -404,16 +404,16 @@ export type Database = {
         Returns: number
       }
       create_auth_user_for_telegram: {
-        Args: { p_telegram_id: string; p_email?: string }
+        Args: { p_email?: string; p_telegram_id: string }
         Returns: string
       }
       create_report: {
         Args: {
-          p_user_telegram_id: string
-          p_photo_url: string
           p_description: string
           p_location_lat: number
           p_location_lng: number
+          p_photo_url: string
+          p_user_telegram_id: string
         }
         Returns: {
           brand: string | null
@@ -437,9 +437,9 @@ export type Database = {
       }
       create_suggestion: {
         Args: {
-          p_telegram_id: string
-          p_suggestion_type: string
           p_content: string
+          p_suggestion_type: string
+          p_telegram_id: string
         }
         Returns: {
           content: string
@@ -453,9 +453,9 @@ export type Database = {
       }
       create_user_if_not_exists: {
         Args: {
+          p_pseudo?: string
           p_telegram_id: string
           p_telegram_username?: string
-          p_pseudo?: string
         }
         Returns: {
           auth_user_id: string | null
@@ -537,8 +537,8 @@ export type Database = {
       }
       has_role: {
         Args: {
-          _user_id: string
           _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
         }
         Returns: boolean
       }
@@ -565,7 +565,7 @@ export type Database = {
         }
       }
       upsert_pending_report: {
-        Args: { p_telegram_id: string; p_file_id: string }
+        Args: { p_file_id: string; p_telegram_id: string }
         Returns: {
           created_at: string | null
           disposal_instructions: string | null
@@ -579,10 +579,10 @@ export type Database = {
       }
       upsert_pending_report_with_ai_data: {
         Args: {
-          p_telegram_id: string
-          p_photo_url: string
-          p_image_hash: string
           p_ai_validated?: boolean
+          p_image_hash: string
+          p_photo_url: string
+          p_telegram_id: string
         }
         Returns: {
           created_at: string | null
@@ -596,7 +596,7 @@ export type Database = {
         }
       }
       upsert_pending_report_with_url: {
-        Args: { p_telegram_id: string; p_photo_url: string }
+        Args: { p_photo_url: string; p_telegram_id: string }
         Returns: {
           created_at: string | null
           disposal_instructions: string | null
@@ -610,12 +610,12 @@ export type Database = {
       }
       upsert_pending_report_with_waste_data: {
         Args: {
-          p_telegram_id: string
-          p_photo_url: string
-          p_image_hash: string
-          p_waste_category?: string
-          p_disposal_instructions?: string
           p_ai_validated?: boolean
+          p_disposal_instructions?: string
+          p_image_hash: string
+          p_photo_url: string
+          p_telegram_id: string
+          p_waste_category?: string
         }
         Returns: {
           created_at: string | null
