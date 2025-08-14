@@ -88,21 +88,12 @@ const Navigation = () => {
                 Déconnexion
               </Button>
             ) : (
-              <>
-                <Button 
-                  variant="outline"
-                  className="border-accent text-accent hover:bg-accent/10"
-                  onClick={() => window.location.href = '/auth'}
-                >
-                  Admin
-                </Button>
-                <Button 
-                  className="bg-accent text-accent-foreground hover:bg-accent/80"
-                  onClick={() => setIsWaitlistOpen(true)}
-                >
-                  Participer à la lutte
-                </Button>
-              </>
+              <Button 
+                className="bg-accent text-accent-foreground hover:bg-accent/80"
+                onClick={() => setIsWaitlistOpen(true)}
+              >
+                Participer à la lutte
+              </Button>
             )}
           </div>
 
@@ -155,18 +146,6 @@ const Navigation = () => {
                     Déconnexion
                   </Button>
                 ) : (
-                  <Button 
-                    variant="outline"
-                    className="w-full border-accent text-accent hover:bg-accent/10 py-3 text-base font-medium"
-                    onClick={() => {
-                      window.location.href = '/auth';
-                      setIsOpen(false);
-                    }}
-                  >
-                    Admin
-                  </Button>
-                )}
-                {!user && (
                   <Button 
                     className="w-full bg-accent text-accent-foreground hover:bg-accent/80 py-3 text-base font-medium"
                     onClick={() => {
