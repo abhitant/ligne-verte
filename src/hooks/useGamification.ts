@@ -23,7 +23,6 @@ interface UserAchievement {
 }
 
 interface LeaderboardUser {
-  telegram_id: string;
   pseudo: string;
   points_himpact: number;
   reports_count: number;
@@ -75,7 +74,6 @@ export const useLeaderboard = (limit: number = 10) => {
       const { data, error } = await supabase
         .from('users')
         .select(`
-          telegram_id,
           pseudo,
           points_himpact,
           reports_count

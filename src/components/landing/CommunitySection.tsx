@@ -59,7 +59,7 @@ const CommunitySection = () => {
                 <div className="space-y-3">
                   {users.slice(0, 3).map((user, index) => (
                     <div 
-                      key={user.telegram_id} 
+                      key={user.pseudo + index} 
                       className="flex items-center gap-3 p-3 rounded-lg bg-accent/20 border border-accent/40 hover:bg-accent/30 transition-all"
                     >
                       <div className="flex items-center justify-center w-10 h-10 rounded-full bg-accent text-accent-foreground font-bold text-lg border-2 border-accent-foreground shadow-lg">

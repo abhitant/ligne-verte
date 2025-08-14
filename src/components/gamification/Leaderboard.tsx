@@ -4,7 +4,6 @@ import { Progress } from "@/components/ui/progress";
 import { Trophy, Medal, Award, Star } from "lucide-react";
 
 interface LeaderboardUser {
-  telegram_id: string;
   pseudo: string;
   points_himpact: number;
   reports_count: number;
@@ -13,7 +12,6 @@ interface LeaderboardUser {
 
 interface LeaderboardProps {
   users: LeaderboardUser[];
-  currentUserId?: string;
   limit?: number;
 }
 
@@ -54,7 +52,7 @@ const getBadges = (user: LeaderboardUser) => {
   return badges;
 };
 
-const Leaderboard = ({ users, currentUserId, limit = 10 }: LeaderboardProps) => {
+const Leaderboard = ({ users, limit = 10 }: LeaderboardProps) => {
   const topUsers = users.slice(0, limit);
 
   return (
@@ -74,10 +72,8 @@ const Leaderboard = ({ users, currentUserId, limit = 10 }: LeaderboardProps) => 
         ) : (
           topUsers.map((user) => (
             <div
-              key={user.telegram_id}
-              className={`p-4 rounded-lg transition-all hover:shadow-md ${getRankColor(user.rank)} ${
-                currentUserId === user.telegram_id ? 'ring-2 ring-green-500' : ''
-              }`}
+              key={user.pseudo + user.rank}
+              className={`p-4 rounded-lg transition-all hover:shadow-md ${getRankColor(user.rank)}`}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -122,11 +118,6 @@ const Leaderboard = ({ users, currentUserId, limit = 10 }: LeaderboardProps) => 
                 )}
               </div>
 
-              {currentUserId === user.telegram_id && (
-                <div className="mt-2 pt-2 border-t border-white/20">
-                  <p className="text-xs text-white/90 font-medium">C'est vous ! 🎉</p>
-                </div>
-              )}
             </div>
           ))
         )}

@@ -14,7 +14,6 @@ interface Report {
 }
 
 interface UserDisplayInfo {
-  telegram_id: string;
   pseudo: string | null;
   points_himpact: number | null;
   created_at: string | null;
@@ -99,8 +98,8 @@ export const useReports = () => {
         try {
           const { data: usersData, error: usersError } = await supabase
             .from('users')
-            .select('telegram_id, pseudo, points_himpact, created_at')
-            .in('telegram_id', uniqueTelegramIds);
+            .select('pseudo, points_himpact, created_at')
+            .not('pseudo', 'is', null);
 
           if (usersError) {
             console.warn('Warning fetching users (using fallback):', usersError);
@@ -115,39 +114,15 @@ export const useReports = () => {
 
         console.log('Users fetched from users table:', users);
 
-        // Créer une map pour un accès rapide aux données utilisateur
-        const usersMap = new Map();
-        users.forEach(user => {
-          usersMap.set(user.telegram_id, user);
-          console.log(`User ${user.telegram_id} mapped (users table):`, {
-            pseudo: user.pseudo,
-            points: user.points_himpact
-          });
-        });
-
-        console.log('Final users map (users table):', usersMap);
+        // Since we can no longer access telegram_id for mapping, 
+        // we'll use a simpler approach - just use generic user names for security
+        console.log('Available users (without telegram_id for security):', users);
 
         const mappedReports = reports.map((report): MapReport => {
-          const user = usersMap.get(report.user_telegram_id);
+          // Use a generic display name since we can't map users by telegram_id anymore for security
           let displayName = `Utilisateur ${report.user_telegram_id.slice(-4)}`;
           
-          if (user) {
-            console.log(`Processing user ${report.user_telegram_id}:`, {
-              pseudo: user.pseudo
-            });
-            
-            // Utiliser le pseudo si disponible et non générique
-            if (user.pseudo && user.pseudo.trim() !== '') {
-              const genericPattern = /^User \d{4}$/;
-              if (!genericPattern.test(user.pseudo)) {
-                displayName = user.pseudo;
-              }
-            }
-            
-            console.log(`Final display name for ${report.user_telegram_id}: ${displayName}`);
-          } else {
-            console.log(`No user found for ${report.user_telegram_id}, using fallback: ${displayName}`);
-          }
+          console.log(`Using generic display name for security: ${displayName}`);
           
           return {
             id: report.id,

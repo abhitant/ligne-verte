@@ -212,7 +212,7 @@ const Map = () => {
                           </div>
                           <div className="space-y-1">
                             {leaderboard.slice(0, 3).map((user, index) => (
-                               <div key={user.telegram_id} className="flex items-center gap-2 text-xs">
+                               <div key={user.pseudo + user.rank} className="flex items-center gap-2 text-xs">
                                  <span className="text-sm">{index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}</span>
                                  <User className="w-3 h-3 text-accent" />
                                  <span className="text-primary-foreground font-medium flex-1 truncate">{user.pseudo}</span>
@@ -306,7 +306,7 @@ const Map = () => {
                           <div className="space-y-2">
                             {leaderboard.map((user, index) => (
                               <div 
-                                key={user.telegram_id} 
+                             key={user.pseudo + user.rank}
                                 className="flex items-center gap-3 p-3 rounded-lg bg-accent/20 border border-accent/40"
                               >
                                 <div className="flex items-center justify-center w-8 h-8 rounded-full bg-accent text-accent-foreground font-bold text-sm">

@@ -72,7 +72,7 @@ const LeaderboardPage = () => {
             ) : (
               leaderboard.map((user, index) => (
                 <div 
-                  key={user.telegram_id} 
+                  key={user.pseudo + user.rank} 
                   className={`flex items-center gap-3 p-4 rounded-xl transition-all hover:shadow-lg border ${
                     index < 3 
                       ? 'bg-accent/10 border-accent/30' 
