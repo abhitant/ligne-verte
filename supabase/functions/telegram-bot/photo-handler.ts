@@ -2,16 +2,19 @@
 import { TelegramAPI } from './telegram-api.ts'
 import type { TelegramUpdate } from './types.ts'
 import { OptimizedFreeAnalyzer } from './optimized-free-analyzer.ts'
+import { SimpleAnalyzer } from './simple-analyzer.ts'
 
 export class PhotoHandler {
   private telegramAPI: TelegramAPI
   private supabaseClient: any
   private optimizedAnalyzer: OptimizedFreeAnalyzer
+  private simpleAnalyzer: SimpleAnalyzer
 
   constructor(telegramAPI: TelegramAPI, supabaseClient: any) {
     this.telegramAPI = telegramAPI
     this.supabaseClient = supabaseClient
     this.optimizedAnalyzer = new OptimizedFreeAnalyzer()
+    this.simpleAnalyzer = new SimpleAnalyzer()
   }
 
   async handlePhoto(chatId: number, telegramId: string, photos: any[], telegramUsername?: string, firstName?: string) {
@@ -81,17 +84,34 @@ export class PhotoHandler {
       // Message d'analyse en cours
       await this.telegramAPI.sendMessage(chatId, '🤖 Analyse d\'image en cours par Debora...')
 
-      // Analyser avec l'analyseur optimisé gratuit
-      console.log('🎯 Starting optimized free analysis...')
-      let analysisResult = await this.optimizedAnalyzer.analyzeImage(photoUint8Array)
+      // Choisir l'analyseur selon le mode configuré
+      const analyzerMode = Deno.env.get('BOT_ANALYZER_MODE') || 'simple'
+      console.log('🔬 Using analyzer mode:', analyzerMode)
+      
+      let analysisResult
+      if (analyzerMode === 'simple') {
+        console.log('📊 Starting simple analysis...')
+        analysisResult = await this.simpleAnalyzer.analyzeImage(photoUint8Array)
+      } else {
+        console.log('🎯 Starting optimized free analysis...')
+        analysisResult = await this.optimizedAnalyzer.analyzeImage(photoUint8Array)
+      }
       
       // Fallback complet si nécessaire
       if (!analysisResult.imageHash) {
         analysisResult.imageHash = await this.calculateFallbackHash(photoUint8Array)
       }
 
-      // Envoyer le message de validation optimisé
-      const validationMessage = this.optimizedAnalyzer.generateOptimizedValidationMessage(analysisResult)
+      // Envoyer le message de validation selon l'analyseur utilisé
+      let validationMessage
+      if (analyzerMode === 'simple') {
+        validationMessage = this.simpleAnalyzer.generateValidationMessage(
+          analysisResult.isGarbageDetected, 
+          analysisResult.detectedObjects
+        )
+      } else {
+        validationMessage = this.optimizedAnalyzer.generateOptimizedValidationMessage(analysisResult)
+      }
       await this.telegramAPI.sendMessage(chatId, validationMessage, { parse_mode: 'HTML' })
 
       // VALIDATION PRÉCOCE : Si l'analyse rejette la photo, arrêter immédiatement

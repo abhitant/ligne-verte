@@ -12,10 +12,12 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-// Stockage des update_id traités pour éviter les doublons
-const processedUpdates = new Set<number>()
+// Mode d'analyse configurable
+const BOT_ANALYZER_MODE = Deno.env.get('BOT_ANALYZER_MODE') || 'simple'
+console.log('🔬 Bot analyzer mode:', BOT_ANALYZER_MODE)
 
 serve(async (req) => {
+  const startTime = Date.now()
   console.log('=== TELEGRAM BOT REQUEST ===', new Date().toISOString())
   
   if (req.method === 'OPTIONS') {
@@ -33,40 +35,68 @@ serve(async (req) => {
 
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
     const telegramAPI = new TelegramAPI(TELEGRAM_BOT_TOKEN)
-    const commandHandler = new CommandHandler(telegramAPI, supabaseClient)
-    const photoHandler = new PhotoHandler(telegramAPI, supabaseClient)
-    const locationHandler = new LocationHandler(telegramAPI, supabaseClient)
-    const aiHandler = new AIConversationHandler(supabaseClient)
-
-    // Nettoyage automatique des signalements expirés
-    try {
-      await supabaseClient.rpc('cleanup_old_pending_reports')
-    } catch (cleanupError) {
-      console.log('Cleanup warning:', cleanupError)
-    }
 
     const body = await req.text()
     const update: TelegramUpdate = JSON.parse(body)
     console.log('Update received:', JSON.stringify(update, null, 2))
 
-    // Vérifier si c'est un update déjà traité
-    if (processedUpdates.has(update.update_id)) {
-      console.log('Update already processed, skipping...')
+    // VÉRIFICATION D'IDEMPOTENCE EN BASE DE DONNÉES
+    const { data: existingUpdate, error: checkError } = await supabaseClient
+      .from('telegram_processed_updates')
+      .select('update_id')
+      .eq('update_id', update.update_id)
+      .single()
+
+    if (existingUpdate) {
+      console.log('⚡ Update already processed in database, returning 200 OK')
       return new Response('Already processed', { status: 200 })
     }
 
-    // Ajouter l'update_id aux traités
-    processedUpdates.add(update.update_id)
+    // INSERTION IMMÉDIATE POUR PRÉVENIR LES DOUBLONS
+    const messageType = update.callback_query ? 'callback_query' : 
+                       update.message?.photo ? 'photo' : 
+                       update.message?.location ? 'location' : 
+                       update.message?.text?.startsWith('/') ? 'command' : 
+                       'text'
 
-    // Nettoyer les anciens update_id (garder seulement les 100 derniers)
-    if (processedUpdates.size > 100) {
-      const sorted = Array.from(processedUpdates).sort((a, b) => b - a)
-      processedUpdates.clear()
-      sorted.slice(0, 50).forEach(id => processedUpdates.add(id))
+    const userTelegramId = update.callback_query?.from.id.toString() || 
+                          update.message?.from.id.toString() || null
+
+    const { error: insertError } = await supabaseClient
+      .from('telegram_processed_updates')
+      .insert({
+        update_id: update.update_id,
+        analyzer_mode: BOT_ANALYZER_MODE,
+        user_telegram_id: userTelegramId,
+        message_type: messageType
+      })
+
+    if (insertError) {
+      console.log('⚠️ Insert error (might be duplicate):', insertError)
+      // Si l'insertion échoue à cause d'un doublon, c'est OK
+      return new Response('Duplicate prevented', { status: 200 })
     }
 
-    // Traitement des callback queries (boutons inline)
-    if (update.callback_query) {
+    console.log('✅ Update registered in database, proceeding with processing...')
+
+    // TRAITEMENT EN ARRIÈRE-PLAN
+    const backgroundProcessing = async () => {
+      try {
+        const commandHandler = new CommandHandler(telegramAPI, supabaseClient)
+        const photoHandler = new PhotoHandler(telegramAPI, supabaseClient)
+        const locationHandler = new LocationHandler(telegramAPI, supabaseClient)
+        const aiHandler = new AIConversationHandler(supabaseClient)
+
+        // Nettoyage automatique
+        try {
+          await supabaseClient.rpc('cleanup_old_pending_reports')
+          await supabaseClient.rpc('cleanup_old_processed_updates')
+        } catch (cleanupError) {
+          console.log('🧹 Cleanup warning:', cleanupError)
+        }
+
+        // Traitement des callback queries (boutons inline)
+        if (update.callback_query) {
       console.log('CALLBACK QUERY RECEIVED:', JSON.stringify(update.callback_query, null, 2))
       
       const { callback_query } = update
@@ -174,13 +204,13 @@ serve(async (req) => {
         return new Response('OK', { status: 200 })
       }
 
-      return new Response('OK', { status: 200 })
-    }
+          return
+        }
 
-    if (!update.message) {
-      console.log('No message in update, skipping...')
-      return new Response('No message', { status: 200 })
-    }
+        if (!update.message) {
+          console.log('No message in update, skipping...')
+          return
+        }
 
     const { message } = update
     const chatId = message.chat.id
@@ -192,84 +222,83 @@ serve(async (req) => {
     const originalText = message.text
     const messageText = message.text?.toLowerCase()
 
-    // Traitement des commandes
-    if (messageText === '/start') {
-      console.log('Processing /start command')
-      const result = await commandHandler.handleStart(chatId, telegramId, telegramUsername, firstName)
-      return new Response('OK', { status: 200 })
-    }
+        // Traitement des commandes
+        if (messageText === '/start') {
+          console.log('Processing /start command')
+          await commandHandler.handleStart(chatId, telegramId, telegramUsername, firstName)
+          return
+        }
 
-    if (messageText === '/points') {
-      const result = await commandHandler.handlePoints(chatId, telegramId)
-      return new Response('OK', { status: 200 })
-    }
+        if (messageText === '/points') {
+          await commandHandler.handlePoints(chatId, telegramId)
+          return
+        }
 
-    if (messageText === '/carte' || messageText === '/map') {
-      await commandHandler.handleMap(chatId)
-      return new Response('OK', { status: 200 })
-    }
+        if (messageText === '/carte' || messageText === '/map') {
+          await commandHandler.handleMap(chatId)
+          return
+        }
 
-    if (messageText === '/aide' || messageText === '/help') {
-      await commandHandler.handleHelp(chatId)
-      return new Response('OK', { status: 200 })
-    }
+        if (messageText === '/aide' || messageText === '/help') {
+          await commandHandler.handleHelp(chatId)
+          return
+        }
 
+        if (messageText === '/changenom') {
+          await commandHandler.handleChangeName(chatId, telegramId)
+          return
+        }
 
-    if (messageText === '/changenom') {
-      await commandHandler.handleChangeName(chatId, telegramId)
-      return new Response('OK', { status: 200 })
-    }
+        if (messageText === '/compte') {
+          await commandHandler.handleCreateWebAccount(chatId, telegramId)
+          return
+        }
 
-    if (messageText === '/compte') {
-      await commandHandler.handleCreateWebAccount(chatId, telegramId)
-      return new Response('OK', { status: 200 })
-    }
+        // Traitement des photos - passer les infos utilisateur
+        if (message.photo && message.photo.length > 0) {
+          await photoHandler.handlePhoto(chatId, telegramId, message.photo, telegramUsername, firstName)
+          return
+        }
 
-    // Traitement des photos - passer les infos utilisateur
-    if (message.photo && message.photo.length > 0) {
-      const result = await photoHandler.handlePhoto(chatId, telegramId, message.photo, telegramUsername, firstName)
-      return new Response('OK', { status: 200 })
-    }
+        // Traitement de la localisation - passer les infos utilisateur
+        if (message.location) {
+          const { latitude, longitude } = message.location
+          await locationHandler.handleLocation(chatId, telegramId, latitude, longitude, telegramUsername, firstName)
+          return
+        }
 
-    // Traitement de la localisation - passer les infos utilisateur
-    if (message.location) {
-      const { latitude, longitude } = message.location
-      const result = await locationHandler.handleLocation(chatId, telegramId, latitude, longitude, telegramUsername, firstName)
-      return new Response('OK', { status: 200 })
-    }
+        // Messages texte - gestion intelligente
+        if (message.text && !message.text.startsWith('/')) {
+          // Vérifier si l'utilisateur existe et n'a pas encore de nom personnalisé
+          const { data: existingUser, error: checkError } = await supabaseClient.rpc('get_user_by_telegram_id', {
+            p_telegram_id: telegramId
+          })
 
-    // Messages texte - gestion intelligente
-    if (message.text && !message.text.startsWith('/')) {
-      // Vérifier si l'utilisateur existe et n'a pas encore de nom personnalisé
-      const { data: existingUser, error: checkError } = await supabaseClient.rpc('get_user_by_telegram_id', {
-        p_telegram_id: telegramId
-      })
+          // Si l'utilisateur n'existe pas OU a un nom par défaut, ET que ce n'est pas un message conversationnel
+          if ((!existingUser || !existingUser.pseudo || existingUser.pseudo === `User ${telegramId.slice(-4)}` || existingUser.pseudo === firstName) 
+              && !aiHandler.isAIConversationMessage(originalText)) {
+            await commandHandler.handleUsernameChoice(chatId, telegramId, originalText, telegramUsername, firstName)
+            return
+          }
 
-      // Si l'utilisateur n'existe pas OU a un nom par défaut, ET que ce n'est pas un message conversationnel
-      if ((!existingUser || !existingUser.pseudo || existingUser.pseudo === `User ${telegramId.slice(-4)}` || existingUser.pseudo === firstName) 
-          && !aiHandler.isAIConversationMessage(originalText)) {
-        const result = await commandHandler.handleUsernameChoice(chatId, telegramId, originalText, telegramUsername, firstName)
-        return new Response('OK', { status: 200 })
-      }
+          // Vérifier si c'est un message pour conversation IA (utiliser le texte original)
+          if (aiHandler.isAIConversationMessage(originalText)) {
+            console.log('🤖 Processing AI conversation message:', originalText)
+            const aiResponse = await aiHandler.handleAIConversation(originalText, telegramId)
+            
+            await telegramAPI.sendMessage(chatId, aiResponse, {
+              inline_keyboard: [
+                [
+                  { text: '🗺️ Voir la carte', url: 'https://ligne-verte.lovable.app/map' },
+                  { text: '❓ Aide complète', callback_data: 'help_menu' }
+                ]
+              ]
+            })
+            return
+          }
 
-      // Vérifier si c'est un message pour conversation IA (utiliser le texte original)
-      if (aiHandler.isAIConversationMessage(originalText)) {
-        console.log('🤖 Processing AI conversation message:', originalText)
-        const aiResponse = await aiHandler.handleAIConversation(originalText, telegramId)
-        
-        await telegramAPI.sendMessage(chatId, aiResponse, {
-          inline_keyboard: [
-            [
-              { text: '🗺️ Voir la carte', url: 'https://ligne-verte.lovable.app/map' },
-              { text: '❓ Aide complète', callback_data: 'help_menu' }
-            ]
-          ]
-        })
-        return new Response('OK', { status: 200 })
-      }
-
-      // Sinon, message non reconnu avec suggestion d'interaction IA
-      await telegramAPI.sendMessage(chatId, `🤖 <b>Bonjour ! Je suis Débora, votre assistante.</b>
+          // Sinon, message non reconnu avec suggestion d'interaction IA
+          await telegramAPI.sendMessage(chatId, `🤖 <b>Bonjour ! Je suis Débora, votre assistante.</b>
 
 💬 <b>Vous pouvez me parler naturellement !</b>
 Posez-moi des questions sur l'environnement, les signalements, ou dites simplement "Bonjour Débora".
@@ -280,21 +309,37 @@ Posez-moi des questions sur l'environnement, les signalements, ou dites simpleme
 • Tapez /aide pour tous les outils
 
 🌱 <b>Ensemble, rendons notre ville plus verte !</b>`, {
-        inline_keyboard: [
-          [
-            { text: '🗺️ Voir la carte', url: 'https://ligne-verte.lovable.app/map' },
-            { text: '🏆 Mes points', callback_data: 'show_points' }
-          ],
-          [
-            { text: '💡 Faire une suggestion', callback_data: 'suggest_start' }
-          ]
-        ]
-      })
-      return new Response('OK', { status: 200 })
+            inline_keyboard: [
+              [
+                { text: '🗺️ Voir la carte', url: 'https://ligne-verte.lovable.app/map' },
+                { text: '🏆 Mes points', callback_data: 'show_points' }
+              ],
+              [
+                { text: '💡 Faire une suggestion', callback_data: 'suggest_start' }
+              ]
+            ]
+          })
+          return
+        }
+
+        // Ignorer silencieusement tous les autres types de messages
+        console.log('Message ignored silently')
+      } catch (bgError) {
+        console.error('❌ Background processing error:', bgError)
+        // Mettre à jour la durée même en cas d'erreur
+        const duration = Date.now() - startTime
+        await supabaseClient
+          .from('telegram_processed_updates')
+          .update({ processing_duration_ms: duration })
+          .eq('update_id', update.update_id)
+      }
     }
 
-    // Ignorer silencieusement tous les autres types de messages
-    console.log('Message ignored silently')
+    // DÉMARRER LE TRAITEMENT EN ARRIÈRE-PLAN SANS ATTENDRE
+    EdgeRuntime.waitUntil(backgroundProcessing())
+
+    // RETOURNER 200 OK IMMÉDIATEMENT
+    console.log('⚡ Returning 200 OK immediately, processing continues in background')
     return new Response('OK', { status: 200 })
 
   } catch (error) {
