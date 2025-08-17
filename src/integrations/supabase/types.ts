@@ -184,6 +184,33 @@ export type Database = {
         }
         Relationships: []
       }
+      telegram_processed_updates: {
+        Row: {
+          analyzer_mode: string | null
+          message_type: string | null
+          processed_at: string
+          processing_duration_ms: number | null
+          update_id: number
+          user_telegram_id: string | null
+        }
+        Insert: {
+          analyzer_mode?: string | null
+          message_type?: string | null
+          processed_at?: string
+          processing_duration_ms?: number | null
+          update_id: number
+          user_telegram_id?: string | null
+        }
+        Update: {
+          analyzer_mode?: string | null
+          message_type?: string | null
+          processed_at?: string
+          processing_duration_ms?: number | null
+          update_id?: number
+          user_telegram_id?: string | null
+        }
+        Relationships: []
+      }
       user_achievements: {
         Row: {
           achievement_id: string
@@ -395,6 +422,10 @@ export type Database = {
         Returns: number
       }
       cleanup_old_pending_reports: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
+      cleanup_old_processed_updates: {
         Args: Record<PropertyKey, never>
         Returns: number
       }
