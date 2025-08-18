@@ -1,8 +1,14 @@
 # ♻️ LA LIGNE VERTE  
 
-**La population est-elle suffisamment impliquée dans la gestion de son cadre de vie ?**  
+Is the population sufficiently involved in managing its living environment?
 
-**La Ligne Verte** ( Greenline) is an **open-source civic and clean tech project** by **GreenPill Côte d’Ivoire**.  
+To find out, we need data on people’s living environment:  
+- Data helps identify what is already working well ✅  
+- And improve what can be made better 🔧  
+
+---
+
+**La Ligne Verte** ( Greenline )is an **open-source civic and clean tech project** by **GreenPill Côte d’Ivoire**.  
 We empower citizens to **map, clean, and regenerate** their neighborhoods while earning **Himpact points** for their contributions.  
 
 Our motto:  
