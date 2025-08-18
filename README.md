@@ -1,73 +1,73 @@
-# Welcome to your Lovable project
+# ♻️ LA LIGNE VERTE  
 
-## Project info
+**La population est-elle suffisamment impliquée dans la gestion de son cadre de vie ?**  
 
-**URL**: https://lovable.dev/projects/399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9
+**La Ligne Verte** ( Greenline) is an **open-source civic and clean tech project** by **GreenPill Côte d’Ivoire**.  
+We empower citizens to **map, clean, and regenerate** their neighborhoods while earning **Himpact points** for their contributions.  
 
-## How can I edit this code?
+Our motto:  
+👉 *“Rends ton quartier Zo et prends tes points.”* (Make your neighborhood cool and earn your points)  
 
-There are several ways of editing your application.
+---
 
-**Use Lovable**
+## ✨ WHAT IS LA LIGNE VERTE?  
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9) and start prompting.
+La Ligne Verte is a **participatory mapping platform** that transforms urban sanitation into a community-driven mission.  
 
-Changes made via Lovable will be committed automatically to this repo.
+- Citizens report unsanitary zones using **Debora**, our Telegram (and soon WhatsApp) chatbot.  
+- Reports are validated and published on an **open-source map**.  
+- Contributors earn **Himpact points** (a tokenized reward system on Celo) exchangeable for airtime, vouchers, and other benefits.  
 
-**Use your preferred IDE**
+By combining **citizen engagement**, **open environmental data**, and **regenerative incentives**, La Ligne Verte turns waste problems into opportunities.  
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+---
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 🛠 HOW IT WORKS (FOR USERS)  
 
-Follow these steps:
+1. **Chat with Debora**  
+   Upload a photo, share the location, date, and description.  
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+2. **Validation**  
+   Reports are reviewed for accuracy.  
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+3. **Mapping**  
+   Verified reports appear on the open-source sanitation map.  
 
-# Step 3: Install the necessary dependencies.
-npm i
+4. **Rewards**  
+   Contributors earn **Himpact points** for every validated report.  
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+---
+
+## 🌱 WHY IT MATTERS  
+
+- Supports Côte d’Ivoire’s **climate and sanitation goals (CDN 2021-2030)**  
+- Produces **open environmental datasets** stored transparently on the blockchain  
+- Turns sustainability into something **fun, competitive, and rewarding**  
+- Bridges **citizens, tech, and institutions** for real-world impact  
+
+---
+
+## 🔗 TECH STACK (WORK IN PROGRESS)  
+
+- **Frontend**: Map interface (Leaflet / Mapbox)  
+- **Chatbot**: Debora (Telegram + WhatsApp integration)  
+- **Backend**: Node.js / Python / TypeScript  
+- **Blockchain**: Celo smart contracts (Himpact token)  
+- **Database**: Supabase + IPFS for media storage  
+
+---
+
+## 🚀 GETTING STARTED (CONTRIBUTORS)  
+
+### Prerequisites  
+- Node.js, Python or TypeScript  
+- PostgreSQL  
+- (Optional) Familiarity with Celo smart contracts  
+
+### Setup  
+
+```bash
+git clone https://github.com/abhitant/ligne-verte.git
+cd ligne-verte
+npm install
 npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/399fedd2-7cd7-4dbf-aeb9-30ca307b3ea9) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
