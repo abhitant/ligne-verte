@@ -582,6 +582,14 @@ export type Database = {
           waste_category: string | null
         }
       }
+      get_report_locations: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          id: string
+          location_lat: number
+          location_lng: number
+        }[]
+      }
       get_user_by_auth_id: {
         Args: { p_auth_user_id: string }
         Returns: {
