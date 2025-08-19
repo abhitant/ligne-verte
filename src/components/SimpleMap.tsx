@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { MapContainer, TileLayer, CircleMarker } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useQuery } from '@tanstack/react-query';
@@ -8,12 +8,17 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Loader2, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-// Fix pour les markers par défaut dans react-leaflet
+// Configuration des icônes Google Maps-style
 delete (Icon.Default.prototype as any)._getIconUrl;
-Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+
+// Icône rouge pour les signalements
+const redIcon = new Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
 });
 
 interface ReportLocation {
@@ -184,18 +189,12 @@ const SimpleMap = () => {
             }}
           />
           
-          {/* Marqueurs simples pour chaque signalement */}
+          {/* Marqueurs Google Maps-style pour chaque signalement */}
           {reports.map((report) => (
-            <CircleMarker
+            <Marker
               key={report.id}
-              center={[report.location_lat, report.location_lng]}
-              radius={6}
-              pathOptions={{
-                color: 'hsl(var(--primary))',
-                fillColor: 'hsl(var(--primary))',
-                fillOpacity: 0.7,
-                weight: 2
-              }}
+              position={[report.location_lat, report.location_lng]}
+              icon={redIcon}
             />
           ))}
         </MapContainer>
