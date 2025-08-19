@@ -348,6 +348,63 @@ export type Database = {
       }
     }
     Views: {
+      reports_public: {
+        Row: {
+          brand: string | null
+          cleanup_photo_url: string | null
+          created_at: string | null
+          description: string | null
+          disposal_instructions: string | null
+          id: string | null
+          is_cleaned: boolean | null
+          location_lat: number | null
+          location_lng: number | null
+          photo_url: string | null
+          points_awarded: number | null
+          reporter_hash: string | null
+          severity_level: number | null
+          status: string | null
+          waste_category: string | null
+          waste_type: string | null
+        }
+        Insert: {
+          brand?: string | null
+          cleanup_photo_url?: string | null
+          created_at?: string | null
+          description?: string | null
+          disposal_instructions?: string | null
+          id?: string | null
+          is_cleaned?: boolean | null
+          location_lat?: never
+          location_lng?: never
+          photo_url?: string | null
+          points_awarded?: number | null
+          reporter_hash?: never
+          severity_level?: number | null
+          status?: string | null
+          waste_category?: string | null
+          waste_type?: string | null
+        }
+        Update: {
+          brand?: string | null
+          cleanup_photo_url?: string | null
+          created_at?: string | null
+          description?: string | null
+          disposal_instructions?: string | null
+          id?: string | null
+          is_cleaned?: boolean | null
+          location_lat?: never
+          location_lng?: never
+          photo_url?: string | null
+          points_awarded?: number | null
+          reporter_hash?: never
+          severity_level?: number | null
+          status?: string | null
+          waste_category?: string | null
+          waste_type?: string | null
+        }
+        Relationships: []
+      }
       user_display_info: {
         Row: {
           badges: Json | null

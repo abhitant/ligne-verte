@@ -25,9 +25,9 @@ serve(async (req) => {
 
     switch (action) {
       case 'reports': {
-        // Récupérer tous les signalements pour la carte
+        // Récupérer tous les signalements depuis la vue publique sécurisée
         const { data: reports, error } = await supabaseClient
-          .from('reports')
+          .from('reports_public')
           .select(`
             id,
             location_lat,
@@ -36,7 +36,7 @@ serve(async (req) => {
             description,
             status,
             waste_type,
-            user_telegram_id,
+            reporter_hash,
             photo_url
           `)
           .order('created_at', { ascending: false });
@@ -49,7 +49,7 @@ serve(async (req) => {
           );
         }
 
-        // Formatage des données pour Télégram
+        // Formatage des données avec identifiants anonymisés
         const formattedReports = reports?.map(report => ({
           id: report.id,
           latitude: report.location_lat,
@@ -58,7 +58,8 @@ serve(async (req) => {
           description: report.description || 'Pas de description',
           status: report.status || 'en attente',
           type: report.waste_type || 'autre',
-          photo_url: report.photo_url
+          photo_url: report.photo_url,
+          reporter: `Reporter#${report.reporter_hash.slice(-6)}`
         })) || [];
 
         console.log(`Found ${formattedReports.length} reports`);

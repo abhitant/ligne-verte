@@ -70,9 +70,9 @@ export const useReports = () => {
       console.log('Starting reports fetch from Supabase...');
       
       try {
-        // Récupérer tous les signalements
+        // Récupérer tous les signalements depuis la vue publique sécurisée
         const { data: reports, error: reportsError } = await supabase
-          .from('reports')
+          .from('reports_public')
           .select('*')
           .order('created_at', { ascending: false });
 
@@ -89,45 +89,19 @@ export const useReports = () => {
           return [];
         }
 
-        // Récupérer les IDs Telegram uniques
-        const uniqueTelegramIds = [...new Set(reports.map(r => r.user_telegram_id))];
-        console.log('Unique telegram IDs in reports:', uniqueTelegramIds);
-
-        // Récupérer les informations utilisateur avec gestion d'erreur
-        let users: UserDisplayInfo[] = [];
-        try {
-          const { data: usersData, error: usersError } = await supabase
-            .from('users')
-            .select('pseudo, points_himpact, created_at')
-            .not('pseudo', 'is', null);
-
-          if (usersError) {
-            console.warn('Warning fetching users (using fallback):', usersError);
-            users = [];
-          } else {
-            users = usersData || [];
-          }
-        } catch (error) {
-          console.warn('Exception fetching users (using fallback):', error);
-          users = [];
-        }
-
-        console.log('Users fetched from users table:', users);
-
-        // Since we can no longer access telegram_id for mapping, 
-        // we'll use a simpler approach - just use generic user names for security
-        console.log('Available users (without telegram_id for security):', users);
+        // Les IDs Telegram ne sont plus accessibles, nous utilisons le hash anonymisé
+        console.log('Using anonymized reporter hashes for security');
 
         const mappedReports = reports.map((report): MapReport => {
-          // Use a generic display name since we can't map users by telegram_id anymore for security
-          let displayName = `Utilisateur ${report.user_telegram_id.slice(-4)}`;
+          // Utiliser le hash anonymisé pour l'affichage sécurisé
+          const displayName = `Reporter#${report.reporter_hash.slice(-6)}`;
           
-          console.log(`Using generic display name for security: ${displayName}`);
+          console.log(`Using anonymized display name for security: ${displayName}`);
           
           return {
             id: report.id,
             user: displayName,
-            location: `Abidjan (${report.location_lat.toFixed(4)}, ${report.location_lng.toFixed(4)})`,
+            location: `Abidjan (${report.location_lat.toFixed(3)}, ${report.location_lng.toFixed(3)})`,
             coordinates: { lat: report.location_lat, lng: report.location_lng },
             description: report.description || 'Signalement via bot Telegram',
             status: getStatusFromDb(report.status),
