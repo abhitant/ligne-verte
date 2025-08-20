@@ -4,9 +4,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Filter, Eye, Loader2, Trophy, Award, Users, X, ChevronDown, ChevronUp, User, RefreshCw } from "lucide-react";
-import SimpleMap from "@/components/SimpleMap";
+import OpenStreetMap from "@/components/OpenStreetMap";
 import Leaderboard from "@/components/gamification/Leaderboard";
 import { useLeaderboard } from "@/hooks/useGamification";
+import { useReports } from "@/hooks/useReports";
 import { wasteTypes } from "@/components/gamification/WasteTypeSelector";
 
 interface MapReport {
@@ -32,6 +33,7 @@ const Map = () => {
   const [showReportDetails, setShowReportDetails] = useState(false);
   
   const { data: leaderboard = [] } = useLeaderboard(10);
+  const { data: reports = [], isLoading, error } = useReports();
 
 
   const getStatusColor = (status: string) => {
@@ -71,7 +73,15 @@ const Map = () => {
           </CardHeader>
           <CardContent className="flex-1 p-0 relative overflow-hidden">
             <div className="h-full w-full relative">
-              <SimpleMap />
+              <OpenStreetMap 
+                reports={reports}
+                selectedReport={selectedReport}
+                onReportSelect={(report) => {
+                  setSelectedReport(report);
+                  setShowReportDetails(true);
+                }}
+                filter={filter}
+              />
               {/* HUD overlay permanent sur la carte */}
               <div className="absolute top-2 right-2 lg:top-4 lg:right-4 space-y-3 w-60 lg:w-72 pointer-events-auto z-[1000]">
                 
@@ -123,13 +133,20 @@ const Map = () => {
                         </div>
                       </div>
 
-                      <div className="flex gap-2">
+                        <div className="flex gap-2">
                         <Button 
                           size="sm" 
                           className="flex-1 bg-accent/80 text-accent-foreground hover:bg-accent text-xs py-1 h-7"
                           onClick={() => setShowLeaderboard(true)}
                         >
                           Classement
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          className="flex-1 bg-accent/80 text-accent-foreground hover:bg-accent text-xs py-1 h-7"
+                          onClick={() => setShowReports(true)}
+                        >
+                          Signalements
                         </Button>
                       </div>
                     </div>
@@ -311,10 +328,47 @@ const Map = () => {
                         
                         {/* Contenu */}
                         <div className="p-4 overflow-y-auto max-h-[60vh]">
-                           <div className="text-center py-12">
-                             <p className="text-primary-foreground/80">Mode carte anonymisée activé</p>
-                             <p className="text-xs text-accent mt-2">Aucune information détaillée disponible</p>
-                           </div>
+                          {isLoading ? (
+                            <div className="text-center py-12">
+                              <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2 text-accent" />
+                              <p className="text-primary-foreground/80">Chargement des signalements...</p>
+                            </div>
+                          ) : reports.length === 0 ? (
+                            <div className="text-center py-12">
+                              <p className="text-primary-foreground/80">Aucun signalement disponible</p>
+                            </div>
+                          ) : (
+                            <div className="space-y-2">
+                              {reports
+                                .filter(report => filter === 'all' || report.status === filter)
+                                .map((report) => (
+                                <div 
+                                  key={report.id}
+                                  className="flex items-center gap-3 p-3 rounded-lg bg-accent/20 border border-accent/40 cursor-pointer hover:bg-accent/30 transition-colors"
+                                  onClick={() => {
+                                    setSelectedReport(report);
+                                    setShowReports(false);
+                                    setShowReportDetails(true);
+                                  }}
+                                >
+                                  <span className="text-lg">
+                                    {getTypeIcon(report.type)}
+                                  </span>
+                                  <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2 mb-1">
+                                      <p className="font-medium text-primary-foreground text-sm truncate">{report.user}</p>
+                                      <div className={`w-2 h-2 rounded-full ${getStatusColor(report.status)}`}></div>
+                                    </div>
+                                    <p className="text-xs text-accent truncate">{report.description}</p>
+                                    <p className="text-xs text-accent/80">{report.location}</p>
+                                  </div>
+                                  <div className="text-xs text-accent/60">
+                                    {new Date(report.date).toLocaleDateString('fr-FR')}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
