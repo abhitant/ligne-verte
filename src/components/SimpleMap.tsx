@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { MapContainer, TileLayer, CircleMarker } from 'react-leaflet';
-import { Icon } from 'leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -8,12 +8,21 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Loader2, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-// Fix pour les markers par défaut dans react-leaflet
-delete (Icon.Default.prototype as any)._getIconUrl;
-Icon.Default.mergeOptions({
+// Fix default markers in react-leaflet
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
   iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
+
+const redIcon = new L.Icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
 });
 
 interface ReportLocation {
@@ -184,19 +193,22 @@ const SimpleMap = () => {
             }}
           />
           
-          {/* Pastilles simples pour chaque signalement */}
+          {/* Red markers for each report */}
           {reports.map((report) => (
-            <CircleMarker
+            <Marker
               key={report.id}
-              center={[report.location_lat, report.location_lng]}
-              radius={6}
-              pathOptions={{
-                color: 'hsl(var(--primary))',
-                fillColor: 'hsl(var(--primary))',
-                fillOpacity: 0.7,
-                weight: 2
-              }}
-            />
+              position={[report.location_lat, report.location_lng]}
+              icon={redIcon}
+            >
+              <Popup>
+                <div>
+                  <p className="font-semibold">Signalement</p>
+                  <p className="text-sm text-muted-foreground">
+                    Position: {report.location_lat.toFixed(4)}, {report.location_lng.toFixed(4)}
+                  </p>
+                </div>
+              </Popup>
+            </Marker>
           ))}
         </MapContainer>
       </div>
