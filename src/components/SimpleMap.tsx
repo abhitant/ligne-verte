@@ -17,21 +17,25 @@ const useSimpleReports = () => {
   return useQuery({
     queryKey: ['simple-reports'],
     queryFn: async (): Promise<ReportLocation[]> => {
-      console.log('Fetching report locations via RPC function...');
+      console.log('Fetching report locations directly from reports table...');
       
       try {
-        // Utiliser la fonction RPC sécurisée pour récupérer uniquement les coordonnées
-        const { data: locations, error } = await supabase.rpc('get_report_locations');
+        // Utiliser directement la table reports avec les nouvelles politiques publiques
+        const { data: reports, error } = await supabase
+          .from('reports')
+          .select('id, location_lat, location_lng')
+          .not('location_lat', 'is', null)
+          .not('location_lng', 'is', null);
 
         if (error) {
-          console.error('Error fetching report locations via RPC:', error);
+          console.error('Error fetching reports directly:', error);
           throw error;
         }
 
-        console.log('Report locations fetched via RPC:', locations?.length || 0, 'locations');
-        return locations || [];
+        console.log('Report locations fetched directly:', reports?.length || 0, 'locations');
+        return reports || [];
       } catch (error) {
-        console.error('Critical error in RPC reports fetch:', error);
+        console.error('Critical error in reports fetch:', error);
         throw error;
       }
     },
