@@ -17,30 +17,28 @@ const useSimpleReports = () => {
   return useQuery({
     queryKey: ['simple-reports'],
     queryFn: async (): Promise<ReportLocation[]> => {
-      console.log('Fetching report locations directly from reports table...');
+      console.log('Fetching report locations via RPC function...');
       
       try {
-        // Utiliser directement la table reports avec les nouvelles politiques publiques
-        const { data: reports, error } = await supabase
-          .from('reports')
-          .select('id, location_lat, location_lng')
-          .not('location_lat', 'is', null)
-          .not('location_lng', 'is', null);
+        // Utiliser la fonction RPC sécurisée pour récupérer uniquement les coordonnées
+        const { data: locations, error } = await supabase.rpc('get_report_locations');
 
         if (error) {
-          console.error('Error fetching reports directly:', error);
-          throw error;
+          console.error('Error fetching report locations via RPC:', error);
+          // Ne pas lancer d'erreur - retourner un tableau vide pour afficher la carte sans marqueurs
+          return [];
         }
 
-        console.log('Report locations fetched directly:', reports?.length || 0, 'locations');
-        return reports || [];
+        console.log('Report locations fetched via RPC:', locations?.length || 0, 'locations');
+        return locations || [];
       } catch (error) {
-        console.error('Critical error in reports fetch:', error);
-        throw error;
+        console.error('Critical error in RPC reports fetch:', error);
+        // Retourner un tableau vide pour éviter de casser l'affichage de la carte
+        return [];
       }
     },
     refetchInterval: 60000, // Actualiser toutes les minutes
-    retry: 3,
+    retry: 1, // Réduire le nombre de tentatives pour éviter les erreurs répétées
     staleTime: 30000,
   });
 };
