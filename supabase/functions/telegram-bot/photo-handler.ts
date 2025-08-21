@@ -3,18 +3,21 @@ import { TelegramAPI } from './telegram-api.ts'
 import type { TelegramUpdate } from './types.ts'
 import { OptimizedFreeAnalyzer } from './optimized-free-analyzer.ts'
 import { SimpleAnalyzer } from './simple-analyzer.ts'
+import { DETRAnalyzer } from './detr-analyzer.ts'
 
 export class PhotoHandler {
   private telegramAPI: TelegramAPI
   private supabaseClient: any
   private optimizedAnalyzer: OptimizedFreeAnalyzer
   private simpleAnalyzer: SimpleAnalyzer
+  private detrAnalyzer: DETRAnalyzer
 
   constructor(telegramAPI: TelegramAPI, supabaseClient: any) {
     this.telegramAPI = telegramAPI
     this.supabaseClient = supabaseClient
     this.optimizedAnalyzer = new OptimizedFreeAnalyzer()
     this.simpleAnalyzer = new SimpleAnalyzer()
+    this.detrAnalyzer = new DETRAnalyzer()
   }
 
   async handlePhoto(chatId: number, telegramId: string, photos: any[], telegramUsername?: string, firstName?: string) {
@@ -92,6 +95,9 @@ export class PhotoHandler {
       if (analyzerMode === 'simple') {
         console.log('📊 Starting simple analysis...')
         analysisResult = await this.simpleAnalyzer.analyzeImage(photoUint8Array)
+      } else if (analyzerMode === 'detr') {
+        console.log('🎯 Starting DETR analysis...')
+        analysisResult = await this.detrAnalyzer.analyzeImage(photoUint8Array)
       } else {
         console.log('🎯 Starting optimized free analysis...')
         analysisResult = await this.optimizedAnalyzer.analyzeImage(photoUint8Array)
@@ -109,6 +115,8 @@ export class PhotoHandler {
           analysisResult.isGarbageDetected, 
           analysisResult.detectedObjects
         )
+      } else if (analyzerMode === 'detr') {
+        validationMessage = this.detrAnalyzer.generateValidationMessage(analysisResult)
       } else {
         validationMessage = this.optimizedAnalyzer.generateOptimizedValidationMessage(analysisResult)
       }
