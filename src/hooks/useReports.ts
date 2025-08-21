@@ -70,17 +70,13 @@ export const useReports = () => {
       console.log('Starting reports fetch from Supabase...');
       
       try {
-        // Utiliser la même approche que SimpleMap pour éviter les erreurs de permissions
+        // Utiliser la fonction RPC publique pour récupérer les signalements
         const { data: reports, error: reportsError } = await supabase
-          .from('reports_public')
-          .select('id, location_lat, location_lng, description, status, created_at, photo_url, reporter_hash, waste_type, brand')
-          .not('location_lat', 'is', null)
-          .not('location_lng', 'is', null)
-          .order('created_at', { ascending: false });
+          .rpc('get_public_reports');
 
         if (reportsError) {
           console.error('Error fetching reports:', reportsError);
-          // Fallback: retourner des données de test si erreur de permission
+          // Fallback: retourner des données de test si erreur
           return generateTestData();
         }
 
@@ -93,9 +89,9 @@ export const useReports = () => {
         }
 
         const mappedReports = reports.map((report): MapReport => {
-          // Utiliser le hash anonymisé pour l'affichage sécurisé
+          // Utiliser le hash anonymisé fourni par la fonction RPC
           const displayName = report.reporter_hash 
-            ? `Reporter#${report.reporter_hash.slice(-6)}` 
+            ? `Reporter#${report.reporter_hash}` 
             : `User#${Math.random().toString(36).substr(2, 6)}`;
           
           return {
@@ -123,7 +119,7 @@ export const useReports = () => {
       }
     },
     refetchInterval: 30000,
-    retry: 1, // Réduire les tentatives pour éviter le spam d'erreurs
+    retry: 1,
     retryDelay: 1000,
     staleTime: 5000,
   });

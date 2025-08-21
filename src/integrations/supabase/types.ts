@@ -582,6 +582,21 @@ export type Database = {
           waste_category: string | null
         }
       }
+      get_public_reports: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          brand: string
+          created_at: string
+          description: string
+          id: string
+          location_lat: number
+          location_lng: number
+          photo_url: string
+          reporter_hash: string
+          status: string
+          waste_type: string
+        }[]
+      }
       get_report_locations: {
         Args: Record<PropertyKey, never>
         Returns: {
