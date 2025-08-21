@@ -17,28 +17,35 @@ const useSimpleReports = () => {
   return useQuery({
     queryKey: ['simple-reports'],
     queryFn: async (): Promise<ReportLocation[]> => {
-      console.log('Fetching report locations via RPC function...');
+      console.log('Fetching report locations from reports_public...');
       
       try {
-        // Utiliser la fonction RPC sécurisée pour récupérer uniquement les coordonnées
-        const { data: locations, error } = await supabase.rpc('get_report_locations');
+        const { data: reports, error } = await supabase
+          .from('reports_public')
+          .select('id, location_lat, location_lng')
+          .not('location_lat', 'is', null)
+          .not('location_lng', 'is', null);
 
         if (error) {
-          console.error('Error fetching report locations via RPC:', error);
-          // Ne pas lancer d'erreur - retourner un tableau vide pour afficher la carte sans marqueurs
+          console.error('Error fetching report locations:', error);
           return [];
         }
 
-        console.log('Report locations fetched via RPC:', locations?.length || 0, 'locations');
-        return locations || [];
+        console.log('Report locations fetched:', reports?.length || 0, 'locations');
+        
+        // Arrondir les coordonnées à 3 décimales
+        return reports?.map(report => ({
+          ...report,
+          location_lat: Math.round(report.location_lat * 1000) / 1000,
+          location_lng: Math.round(report.location_lng * 1000) / 1000
+        })) || [];
       } catch (error) {
-        console.error('Critical error in RPC reports fetch:', error);
-        // Retourner un tableau vide pour éviter de casser l'affichage de la carte
+        console.error('Critical error in reports fetch:', error);
         return [];
       }
     },
-    refetchInterval: 60000, // Actualiser toutes les minutes
-    retry: 1, // Réduire le nombre de tentatives pour éviter les erreurs répétées
+    refetchInterval: 60000,
+    retry: 1,
     staleTime: 30000,
   });
 };
