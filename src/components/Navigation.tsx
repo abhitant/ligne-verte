@@ -16,7 +16,6 @@ const Navigation = () => {
   const navigation = [
     { name: 'Accueil', href: '/', icon: Home },
     { name: 'Carte', href: '/carte', icon: MapPin },
-    { name: 'Classement', href: '/classement', icon: Users },
     { name: 'À propos', href: '/a-propos', icon: Info },
   ];
 
