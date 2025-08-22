@@ -59,13 +59,13 @@ const Dashboard = () => {
   const handleValidate = async (reportId: string) => {
     try {
       const { error } = await supabase
-        .rpc('update_report_status', { 
+        .rpc('validate_report_and_award_points', { 
           p_report_id: reportId, 
           p_status: 'validé' 
         });
 
       if (error) throw error;
-      toast.success('Signalement validé avec succès');
+      toast.success('Signalement validé avec succès - Points attribués à l\'utilisateur');
     } catch (error) {
       console.error('Error validating report:', error);
       toast.error('Erreur lors de la validation');
@@ -75,7 +75,7 @@ const Dashboard = () => {
   const handleReject = async (reportId: string) => {
     try {
       const { error } = await supabase
-        .rpc('update_report_status', { 
+        .rpc('validate_report_and_award_points', { 
           p_report_id: reportId, 
           p_status: 'rejeté' 
         });
