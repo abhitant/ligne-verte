@@ -127,6 +127,40 @@ export const useReports = () => {
 
 // Fonction pour générer des données de test si la base de données n'est pas accessible
 const generateTestData = (): MapReport[] => {
-  console.log('No test data generated - returning empty array');
-  return [];
+  console.log('Generating test data for map display');
+  return [
+    {
+      id: 'test-1',
+      user: 'TestUser#001',
+      location: 'Abidjan (5.348, -4.027)',
+      coordinates: { lat: 5.348, lng: -4.027 },
+      description: 'Déchets plastiques abandonnés près du marché',
+      status: 'pending',
+      date: new Date().toISOString(),
+      type: 'waste',
+      photo_url: '/lovable-uploads/41170097-be04-4adf-98c3-0ba26b5efd3a.png'
+    },
+    {
+      id: 'test-2', 
+      user: 'TestUser#002',
+      location: 'Abidjan (5.355, -4.030)',
+      coordinates: { lat: 5.355, lng: -4.030 },
+      description: 'Caniveau bouché causant des inondations',
+      status: 'validated',
+      date: new Date(Date.now() - 86400000).toISOString(),
+      type: 'drain',
+      photo_url: '/lovable-uploads/bca28378-ee5f-4a53-98dd-d742ca7d646d.png'
+    },
+    {
+      id: 'test-3',
+      user: 'TestUser#003', 
+      location: 'Abidjan (5.340, -4.025)',
+      coordinates: { lat: 5.340, lng: -4.025 },
+      description: 'Accumulation de déchets organiques',
+      status: 'pending',
+      date: new Date(Date.now() - 172800000).toISOString(),
+      type: 'waste',
+      photo_url: '/lovable-uploads/c3dd5fe0-b292-40f6-8bf8-5d335dafa57a.png'
+    }
+  ];
 };

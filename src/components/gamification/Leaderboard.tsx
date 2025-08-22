@@ -66,8 +66,8 @@ const Leaderboard = ({ users, limit = 10 }: LeaderboardProps) => {
       <CardContent className="space-y-3">
         {topUsers.length === 0 ? (
           <div className="text-center py-8 text-gray-500">
-            <p>Le classement commencera dès les premiers signalements</p>
-            <p className="text-sm mt-1">En attente des premières contributions...</p>
+            <p>Aucun utilisateur dans le classement</p>
+            <p className="text-sm mt-1">Soyez le premier à signaler !</p>
           </div>
         ) : (
           topUsers.map((user) => (

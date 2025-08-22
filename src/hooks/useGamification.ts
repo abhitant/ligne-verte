@@ -71,18 +71,6 @@ export const useLeaderboard = (limit: number = 10) => {
   return useQuery({
     queryKey: ['leaderboard', limit],
     queryFn: async (): Promise<LeaderboardUser[]> => {
-      // First check if there are any real reports in the database
-      const { count: reportsCount, error: reportsError } = await supabase
-        .from('reports')
-        .select('id', { count: 'exact', head: true });
-
-      if (reportsError) throw reportsError;
-
-      // If no reports exist, return empty array (don't show leaderboard yet)
-      if (!reportsCount || reportsCount === 0) {
-        return [];
-      }
-
       const { data, error } = await supabase
         .from('users')
         .select(`
