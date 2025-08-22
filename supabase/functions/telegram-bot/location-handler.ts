@@ -101,7 +101,7 @@ export class LocationHandler {
           description: `Signalement via Telegram - ${finalPendingReport.waste_category ? `Type: ${finalPendingReport.waste_category}` : 'Validé par IA'} - Ampleur: ${wasteAmplitude}`,
           location_lat: latitude,
           location_lng: longitude,
-          status: 'validé',
+          status: 'pending',
           image_hash: finalPendingReport.image_hash || null,
           waste_category: finalPendingReport.waste_category || 'GENERAL',
           disposal_instructions: finalPendingReport.disposal_instructions || null,
@@ -117,22 +117,9 @@ export class LocationHandler {
         return { success: false, error: reportError }
       }
 
-      // Ajouter des points à l'utilisateur seulement si des points sont attribués
+      // Ne pas attribuer de points immédiatement - ils seront attribués lors de la validation par l'admin
       let updatedUser = null
-      if (awardedPoints > 0) {
-        const { data: userUpdate, error: pointsError } = await this.supabaseClient.rpc('add_points_to_user', {
-          p_telegram_id: telegramId,
-          p_points: awardedPoints
-        })
-
-        if (pointsError) {
-          console.error('Error adding points:', pointsError)
-        } else {
-          updatedUser = userUpdate
-        }
-      }
-
-      const currentPoints = updatedUser?.points_himpact || (user?.points_himpact || 0)
+      const currentPoints = user?.points_himpact || 0
       const userPseudo = updatedUser?.pseudo || user?.pseudo || firstName || `User ${telegramId.slice(-4)}`
 
       // Construire les informations de classification
@@ -152,12 +139,12 @@ export class LocationHandler {
         `🎯 <b>+${awardedPoints} points Himpact</b> gagnés !\n💰 Total : <b>${currentPoints} points</b>` :
         `💡 <b>Aucun point attribué</b> - Ampleur insuffisante\n💰 Total : <b>${currentPoints} points</b>`
 
-      const successText = `✅ <b>Signalement terminé avec succès !</b>
+      const successText = `✅ <b>Signalement soumis avec succès !</b>
 
 📍 <b>Coordonnées de géolocalisation :</b> ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
-Vous remportez 10 points Himpact
+⏳ <b>Statut :</b> En attente de validation par l'équipe
 
-🌍 Merci pour votre contribution, ensemble on rend nos quartiers zo et on prend nos points !`
+🌍 Merci pour votre contribution ! Votre signalement sera examiné par nos modérateurs avant validation.`
 
       // D'abord supprimer le clavier de localisation
       await this.telegramAPI.sendMessage(chatId, '✅ Localisation reçue !', { remove_keyboard: true })
