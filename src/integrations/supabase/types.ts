@@ -734,6 +734,28 @@ export type Database = {
           waste_category: string | null
         }
       }
+      validate_report_and_award_points: {
+        Args: { p_report_id: string; p_status: string }
+        Returns: {
+          brand: string | null
+          cleanup_photo_url: string | null
+          created_at: string | null
+          description: string | null
+          disposal_instructions: string | null
+          id: string
+          image_hash: string | null
+          is_cleaned: boolean | null
+          location_lat: number
+          location_lng: number
+          photo_url: string | null
+          points_awarded: number | null
+          severity_level: number | null
+          status: string | null
+          user_telegram_id: string
+          waste_category: string | null
+          waste_type: string | null
+        }
+      }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
