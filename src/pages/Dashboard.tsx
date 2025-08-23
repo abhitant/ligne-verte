@@ -10,6 +10,7 @@ import { useLeaderboard } from "@/hooks/useGamification";
 import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { toast } from "sonner";
 import { useNavigate } from 'react-router-dom';
+import OpenStreetMap from '@/components/OpenStreetMap';
 
 const Dashboard = () => {
   const { admin, signOut } = useAdminAuth();
@@ -18,6 +19,7 @@ const Dashboard = () => {
   const { data: leaderboard, isLoading: leaderboardLoading } = useLeaderboard(50);
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [suggestionsLoading, setSuggestionsLoading] = useState(true);
+  const [selectedReport, setSelectedReport] = useState<any>(null);
 
   // Set page metadata for SEO
   useEffect(() => {
@@ -159,6 +161,68 @@ const Dashboard = () => {
             </div>
           </div>
         </header>
+
+        {/* Carte Interactive */}
+        <section className="mb-8" aria-labelledby="map-heading">
+          <Card className="bg-card shadow-lg">
+            <CardHeader>
+              <CardTitle id="map-heading" className="flex items-center gap-2">
+                <MapPin className="w-5 h-5 text-primary" />
+                Carte des Signalements
+              </CardTitle>
+              <CardDescription>
+                Vue d'ensemble géographique des signalements - Cliquez sur un marqueur pour plus de détails
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="h-96 rounded-lg overflow-hidden border">
+                <OpenStreetMap
+                  reports={reports || []}
+                  selectedReport={selectedReport}
+                  onReportSelect={setSelectedReport}
+                  filter="all"
+                />
+              </div>
+              {selectedReport && (
+                <div className="mt-4 p-4 bg-muted/20 rounded-lg border">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h4 className="font-semibold">{selectedReport.description}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Par {selectedReport.user} - {new Date(selectedReport.date).toLocaleDateString('fr-FR')}
+                      </p>
+                      <div className="flex items-center gap-2 mt-2">
+                        {getStatusBadge(selectedReport.status)}
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      {selectedReport.status === 'pending' && (
+                        <>
+                          <Button 
+                            onClick={() => handleValidate(selectedReport.id)}
+                            className="bg-green-600 hover:bg-green-700"
+                            size="sm"
+                          >
+                            <CheckCircle className="w-4 h-4 mr-1" />
+                            Valider
+                          </Button>
+                          <Button 
+                            onClick={() => handleReject(selectedReport.id)}
+                            variant="destructive"
+                            size="sm"
+                          >
+                            <XCircle className="w-4 h-4 mr-1" />
+                            Rejeter
+                          </Button>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </section>
 
         {/* Stats Cards */}
         <section className="grid grid-cols-1 md:grid-cols-6 gap-6 mb-8" aria-labelledby="stats-heading">
