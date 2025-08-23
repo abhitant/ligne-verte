@@ -6,37 +6,37 @@
 
 @layer base {
   :root {
-    /* Couleurs La Ligne Verte - style urbain Gen Z */
-    --background: 0 0% 100%; /* Fond blanc pour une meilleure lisibilité */
-    --foreground: 141 40% 11%; /* Texte vert foncé */
+    /* Couleurs La Ligne Verte - vert foncé saturé */
+    --background: 0 0% 100%; 
+    --foreground: 150 70% 8%; /* Vert très foncé et saturé */
 
     --card: 0 0% 100%;
-    --card-foreground: 141 40% 11%;
+    --card-foreground: 150 70% 8%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 141 40% 11%;
+    --popover-foreground: 150 70% 8%;
 
-    /* Vert foncé principal #1B3925 */
-    --primary: 141 40% 11%;
+    /* Vert foncé principal - plus saturé */
+    --primary: 150 70% 12%;
     --primary-foreground: 0 0% 98%;
 
-    /* Vert clair accent #C3FF5D */
-    --secondary: 75 100% 68%;
-    --secondary-foreground: 141 40% 11%;
+    /* Vert clair accent vibrant */
+    --secondary: 75 100% 65%;
+    --secondary-foreground: 150 70% 8%;
 
-    --muted: 0 0% 96%;
-    --muted-foreground: 141 40% 25%;
+    --muted: 150 20% 95%;
+    --muted-foreground: 150 50% 20%;
 
-    /* Vert clair vif #A3FF3F pour les éléments accentués */
-    --accent: 75 100% 62%;
-    --accent-foreground: 141 40% 11%;
+    /* Vert accent vif */
+    --accent: 75 100% 58%;
+    --accent-foreground: 150 70% 8%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 89.8%;
-    --input: 0 0% 100%; /* Fond blanc pour les inputs */
-    --ring: 141 40% 11%; /* Bordure verte foncée pour le focus */
+    --border: 150 30% 85%;
+    --input: 0 0% 100%; 
+    --ring: 150 70% 12%; /* Bordure verte foncée saturée pour le focus */
 
     --radius: 0.5rem;
 
