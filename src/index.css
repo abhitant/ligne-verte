@@ -7,8 +7,8 @@
 @layer base {
   :root {
     /* Couleurs La Ligne Verte - style urbain Gen Z */
-    --background: 0 0% 100%; /* Fond blanc pour une meilleure lisibilité */
-    --foreground: 141 40% 11%; /* Texte vert foncé */
+    --background: 141 40% 16%; /* Fond vert foncé #1B3925 */
+    --foreground: 0 0% 95%; /* Texte blanc pour contraster */
 
     --card: 0 0% 100%;
     --card-foreground: 141 40% 11%;
