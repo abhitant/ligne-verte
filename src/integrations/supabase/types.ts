@@ -527,6 +527,10 @@ export type Database = {
         Args: { p_email: string; p_full_name?: string; p_password: string }
         Returns: Json
       }
+      create_admin_simple: {
+        Args: { p_email: string; p_full_name?: string; p_password: string }
+        Returns: Json
+      }
       create_auth_user_for_telegram: {
         Args: { p_email?: string; p_telegram_id: string }
         Returns: string

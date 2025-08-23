@@ -7,8 +7,8 @@
 @layer base {
   :root {
     /* Couleurs La Ligne Verte - style urbain Gen Z */
-    --background: 141 40% 11%; /* #1B3925 - Vert foncé principal */
-    --foreground: 0 0% 98%;
+    --background: 0 0% 100%; /* Fond blanc pour une meilleure lisibilité */
+    --foreground: 141 40% 11%; /* Texte vert foncé */
 
     --card: 0 0% 100%;
     --card-foreground: 141 40% 11%;
@@ -24,8 +24,8 @@
     --secondary: 75 100% 68%;
     --secondary-foreground: 141 40% 11%;
 
-    --muted: 141 20% 20%;
-    --muted-foreground: 0 0% 70%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 141 40% 25%;
 
     /* Vert clair vif #A3FF3F pour les éléments accentués */
     --accent: 75 100% 62%;
@@ -34,9 +34,9 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 120 15% 88%;
-    --input: 120 15% 88%;
-    --ring: 150 60% 25%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 100%; /* Fond blanc pour les inputs */
+    --ring: 141 40% 11%; /* Bordure verte foncée pour le focus */
 
     --radius: 0.5rem;
 
@@ -52,21 +52,21 @@
   }
 
   .dark {
-    /* Mode sombre identique au clair pour cohérence */
+    /* Mode sombre avec un vert foncé pour l'arrière-plan */
     --background: 141 40% 11%;
     --foreground: 0 0% 95%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 141 40% 11%;
+    --card: 141 30% 15%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 141 40% 11%;
+    --popover: 141 30% 15%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 141 40% 11%;
-    --primary-foreground: 0 0% 95%;
+    --primary: 75 100% 68%;
+    --primary-foreground: 141 40% 11%;
 
-    --secondary: 75 100% 68%;
-    --secondary-foreground: 141 40% 11%;
+    --secondary: 141 20% 20%;
+    --secondary-foreground: 0 0% 95%;
 
     --muted: 141 20% 20%;
     --muted-foreground: 0 0% 70%;
@@ -77,9 +77,9 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 95%;
 
-    --border: 150 40% 20%;
-    --input: 150 40% 20%;
-    --ring: 85 85% 70%;
+    --border: 141 30% 25%;
+    --input: 141 30% 18%;
+    --ring: 75 100% 68%;
 
     /* Mode sombre sidebar */
     --sidebar-background: 150 80% 6%;
