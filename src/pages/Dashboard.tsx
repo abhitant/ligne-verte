@@ -3,13 +3,17 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Calendar, User, Camera, CheckCircle, XCircle, Settings, Bot, Users, BarChart3 } from "lucide-react";
+import { MapPin, Calendar, User, Camera, CheckCircle, XCircle, Settings, Bot, Users, BarChart3, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useReports } from "@/hooks/useReports";
 import { useLeaderboard } from "@/hooks/useGamification";
+import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { toast } from "sonner";
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
+  const { admin, signOut } = useAdminAuth();
+  const navigate = useNavigate();
   const { data: reports, isLoading: reportsLoading } = useReports();
   const { data: leaderboard, isLoading: leaderboardLoading } = useLeaderboard(50);
   const [suggestions, setSuggestions] = useState<any[]>([]);
@@ -119,12 +123,31 @@ const Dashboard = () => {
     }
   };
 
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/admin/auth');
+  };
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-background to-muted/30 p-4">
       <div className="max-w-7xl mx-auto">
         <header className="mb-8">
-          <h1 className="text-4xl font-bold text-primary mb-2">🌱 Dashboard Admin</h1>
-          <p className="text-lg text-muted-foreground">Gestion des signalements et données de La Ligne Verte</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-4xl font-bold text-primary mb-2">🌱 Dashboard Admin</h1>
+              <p className="text-lg text-muted-foreground">
+                Bienvenue {admin?.full_name || admin?.email} - Gestion des signalements et données de La Ligne Verte
+              </p>
+            </div>
+            <Button 
+              onClick={handleSignOut}
+              variant="outline"
+              className="flex items-center gap-2"
+            >
+              <LogOut className="h-4 w-4" />
+              Se déconnecter
+            </Button>
+          </div>
         </header>
 
         {/* Stats Cards */}

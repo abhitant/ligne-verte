@@ -53,6 +53,39 @@ export type Database = {
         }
         Relationships: []
       }
+      admins: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          is_active: boolean
+          last_login: string | null
+          password_hash: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id?: string
+          is_active?: boolean
+          last_login?: string | null
+          password_hash: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          is_active?: boolean
+          last_login?: string | null
+          password_hash?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       pending_reports: {
         Row: {
           created_at: string | null
@@ -474,6 +507,10 @@ export type Database = {
           zone: string
         }
       }
+      authenticate_admin: {
+        Args: { p_email: string; p_password: string }
+        Returns: Json
+      }
       calculate_user_level: {
         Args: { exp_points: number }
         Returns: number
@@ -485,6 +522,10 @@ export type Database = {
       cleanup_old_processed_updates: {
         Args: Record<PropertyKey, never>
         Returns: number
+      }
+      create_admin: {
+        Args: { p_email: string; p_full_name?: string; p_password: string }
+        Returns: Json
       }
       create_auth_user_for_telegram: {
         Args: { p_email?: string; p_telegram_id: string }

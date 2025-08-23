@@ -1,9 +1,9 @@
 
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import Home from "./pages/Home";
 import Map from "./pages/Map";
@@ -17,8 +17,10 @@ import ReportDetails from "./pages/ReportDetails";
 import About from "./pages/About";
 import Suggestions from "./pages/Suggestions";
 import Auth from "./pages/Auth";
+import AdminAuth from "./pages/AdminAuth";
 import NotFound from "./pages/NotFound";
 import AdminRoute from "./components/AdminRoute";
+import { AdminProtectedRoute } from "./components/AdminProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -46,10 +48,11 @@ const App = () => {
               <Route path="/suggestions" element={<Suggestions />} />
               <Route path="/profile" element={<UserProfile />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/admin/auth" element={<AdminAuth />} />
               <Route path="/dashboard" element={
-                <AdminRoute>
+                <AdminProtectedRoute>
                   <Dashboard />
-                </AdminRoute>
+                </AdminProtectedRoute>
               } />
               <Route path="*" element={<NotFound />} />
             </Routes>
