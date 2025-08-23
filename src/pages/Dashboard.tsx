@@ -11,6 +11,7 @@ import { useAdminAuth } from '@/hooks/useAdminAuth';
 import { toast } from "sonner";
 import { useNavigate } from 'react-router-dom';
 import OpenStreetMap from '@/components/OpenStreetMap';
+import { BotControlPanel } from '@/components/BotControlPanel';
 
 const Dashboard = () => {
   const { admin, signOut } = useAdminAuth();
@@ -102,26 +103,6 @@ const Dashboard = () => {
         return <Badge className="bg-red-100 text-red-800">Rejeté</Badge>;
       default:
         return <Badge className="bg-yellow-100 text-yellow-800">En attente</Badge>;
-    }
-  };
-
-  const handleSetupDebora = async () => {
-    try {
-      toast.loading("Configuration du profil de Débora en cours...");
-      
-      const { data, error } = await supabase.functions.invoke('setup-debora-profile');
-      
-      if (error) {
-        throw error;
-      }
-      
-      toast.dismiss();
-      toast.success("Profil de Débora configuré avec succès !");
-      console.log('Setup result:', data);
-    } catch (error) {
-      toast.dismiss();
-      toast.error("Erreur lors de la configuration du profil");
-      console.error('Setup error:', error);
     }
   };
 
@@ -294,30 +275,14 @@ const Dashboard = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Bot className="w-5 h-5 text-blue-600" />
-              Configuration du Bot Telegram
+              Contrôle du Bot Telegram Débora
             </CardTitle>
             <CardDescription>
-              Configurez le profil de Débora, votre standardiste Telegram
+              Gérez et configurez votre assistant Telegram
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center gap-4">
-              <div className="flex-1">
-                <p className="text-sm text-gray-600 mb-2">
-                  Cliquez sur le bouton ci-dessous pour configurer le nom, la description et la photo de profil de Débora sur Telegram.
-                </p>
-                <p className="text-xs text-gray-500">
-                  Note: Les changements peuvent prendre quelques minutes pour apparaître dans Telegram.
-                </p>
-              </div>
-              <Button 
-                onClick={handleSetupDebora}
-                className="bg-blue-600 hover:bg-blue-700"
-              >
-                <Settings className="w-4 h-4 mr-2" />
-                Configurer Débora
-              </Button>
-            </div>
+            <BotControlPanel />
           </CardContent>
         </Card>
 
