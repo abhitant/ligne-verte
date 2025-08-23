@@ -104,20 +104,6 @@ export default function AdminAuth() {
               )}
             </Button>
           </form>
-          
-          <div className="mt-6 text-center">
-            <div className="bg-muted/50 rounded-lg p-3">
-              <p className="text-sm text-muted-foreground mb-2">
-                <strong>Identifiants par défaut :</strong>
-              </p>
-              <p className="text-sm font-mono bg-background px-2 py-1 rounded">
-                Email: admin@himpact.com
-              </p>
-              <p className="text-sm font-mono bg-background px-2 py-1 rounded mt-1">
-                Mot de passe: admin123
-              </p>
-            </div>
-          </div>
         </CardContent>
       </Card>
     </div>
