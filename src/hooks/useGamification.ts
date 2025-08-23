@@ -23,9 +23,16 @@ interface UserAchievement {
 }
 
 interface LeaderboardUser {
+  telegram_id: string;
   pseudo: string;
   points_himpact: number;
+  experience_points: number;
+  level_current: number;
   reports_count: number;
+  cleanups_count: number;
+  streak_days: number;
+  badges: Json;
+  created_at: string;
   rank: number;
 }
 
@@ -71,38 +78,44 @@ export const useLeaderboard = (limit: number = 10) => {
   return useQuery({
     queryKey: ['leaderboard', limit],
     queryFn: async (): Promise<LeaderboardUser[]> => {
-      // First check if there are any real reports in the database
-      const { count: reportsCount, error: reportsError } = await supabase
-        .from('reports')
-        .select('id', { count: 'exact', head: true });
+      try {
+        const { data: users, error } = await supabase
+          .from('users')
+          .select(`
+            telegram_id,
+            pseudo,
+            points_himpact,
+            experience_points,
+            level_current,
+            reports_count,
+            cleanups_count,
+            streak_days,
+            badges,
+            created_at
+          `)
+          .order('points_himpact', { ascending: false })
+          .limit(limit);
 
-      if (reportsError) throw reportsError;
+        if (error) {
+          console.error('Error fetching leaderboard:', error);
+          throw error;
+        }
 
-      // If no reports exist, return empty array (don't show leaderboard yet)
-      if (!reportsCount || reportsCount === 0) {
+        console.log('Real leaderboard data from Supabase:', users);
+        
+        // Add rank to each user
+        return (users || []).map((user, index) => ({
+          ...user,
+          rank: index + 1
+        }));
+      } catch (error) {
+        console.error('Critical error fetching leaderboard:', error);
         return [];
       }
-
-      const { data, error } = await supabase
-        .from('users')
-        .select(`
-          pseudo,
-          points_himpact,
-          reports_count
-        `)
-        .not('pseudo', 'is', null)
-        .order('points_himpact', { ascending: false })
-        .order('reports_count', { ascending: false })
-        .limit(limit);
-
-      if (error) throw error;
-
-      // Add rank to each user
-      return (data || []).map((user, index) => ({
-        ...user,
-        rank: index + 1
-      }));
     },
+    refetchInterval: 30000,
+    retry: 2,
+    staleTime: 10000,
   });
 };
 

@@ -71,21 +71,20 @@ export const useReports = () => {
       
       try {
         // Utiliser la fonction RPC publique pour récupérer les signalements
-        const { data: reports, error: reportsError } = await supabase
+        const { data: reports, error } = await supabase
           .rpc('get_public_reports');
 
-        if (reportsError) {
-          console.error('Error fetching reports:', reportsError);
-          // Fallback: retourner des données de test si erreur
-          return generateTestData();
+        if (error) {
+          console.error('Error fetching reports:', error);
+          return [];
         }
 
         console.log('Raw reports data from Supabase:', reports);
         console.log('Number of reports found:', reports?.length || 0);
 
         if (!reports || reports.length === 0) {
-          console.log('No reports found in database - using test data');
-          return generateTestData();
+          console.log('No reports found in database');
+          return [];
         }
 
         const mappedReports = reports.map((report): MapReport => {
@@ -114,19 +113,14 @@ export const useReports = () => {
         return mappedReports;
       } catch (error) {
         console.error('Critical error in reports fetch:', error);
-        // Return test data instead of empty array to show the map functionality
-        return generateTestData();
+        return [];
       }
     },
     refetchInterval: 30000,
-    retry: 1,
+    retry: 2,
     retryDelay: 1000,
     staleTime: 5000,
   });
 };
 
-// Fonction pour générer des données de test si la base de données n'est pas accessible
-const generateTestData = (): MapReport[] => {
-  console.log('No test data generated - returning empty array');
-  return [];
-};
+

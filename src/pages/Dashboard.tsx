@@ -390,8 +390,75 @@ const Dashboard = () => {
           </Card>
         </section>
 
+        {/* Users List */}
+        <section aria-labelledby="users-heading">
+          <Card className="bg-card shadow-lg">
+            <CardHeader>
+              <CardTitle id="users-heading" className="flex items-center gap-2">
+                <Users className="w-5 h-5 text-primary" />
+                Utilisateurs Actifs
+              </CardTitle>
+              <CardDescription>
+                Gestion des utilisateurs de la plateforme
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {leaderboardLoading ? (
+                <div className="text-center py-8 text-muted-foreground">
+                  Chargement des utilisateurs...
+                </div>
+              ) : !leaderboard || leaderboard.length === 0 ? (
+                <div className="text-center py-8 text-muted-foreground">
+                  Aucun utilisateur trouvé
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {leaderboard.slice(0, 10).map((user, index) => (
+                    <div key={user.telegram_id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-full">
+                            <span className="text-sm font-semibold text-primary">#{index + 1}</span>
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="font-medium">{user.pseudo || `User ${user.telegram_id}`}</span>
+                              <Badge variant="outline">Niveau {user.level_current}</Badge>
+                            </div>
+                            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                              <span>{user.points_himpact} points</span>
+                              <span>{user.reports_count} signalements</span>
+                              <span>Série: {user.streak_days} jours</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-sm text-muted-foreground">
+                            Inscrit le {new Date(user.created_at).toLocaleDateString('fr-FR')}
+                          </div>
+                          <div className="flex gap-1 mt-1">
+                            {user.badges && Array.isArray(user.badges) && user.badges.length > 0 ? (
+                              user.badges.slice(0, 3).map((badge: any, i: number) => (
+                                <Badge key={i} variant="secondary" className="text-xs">
+                                  {badge.name || 'Badge'}
+                                </Badge>
+                              ))
+                            ) : (
+                              <Badge variant="outline" className="text-xs">Aucun badge</Badge>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </section>
+
         {/* Reports List */}
-        <section aria-labelledby="reports-heading">
+        <section aria-labelledby="reports-heading" className="mt-8">
           <Card className="bg-card shadow-lg">
             <CardHeader>
               <CardTitle id="reports-heading" className="flex items-center gap-2">
@@ -409,7 +476,9 @@ const Dashboard = () => {
                 </div>
               ) : !reports || reports.length === 0 ? (
                 <div className="text-center py-8 text-muted-foreground">
-                  Aucun signalement pour le moment
+                  <MapPin className="w-12 h-12 mx-auto mb-4 text-muted-foreground/50" />
+                  <h3 className="font-semibold mb-2">Aucun signalement pour le moment</h3>
+                  <p className="text-sm">Les signalements soumis via le bot Telegram apparaîtront ici.</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -440,12 +509,6 @@ const Dashboard = () => {
                                 {new Date(report.date).toLocaleDateString('fr-FR')}
                               </div>
                               <p className="text-foreground">{report.description || 'Aucune description'}</p>
-                              <div className="flex items-center gap-2 mt-2">
-                                <Camera className="w-4 h-4 text-primary" />
-                                <span className="text-sm text-primary font-medium">
-                                  Points Himpact
-                                </span>
-                              </div>
                             </div>
                             {report.status === 'pending' && (
                               <div className="flex gap-2">
