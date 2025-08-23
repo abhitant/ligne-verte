@@ -693,6 +693,15 @@ export type Database = {
         }
         Returns: boolean
       }
+      update_admin_credentials: {
+        Args: {
+          p_admin_id: string
+          p_new_email?: string
+          p_new_full_name?: string
+          p_new_password?: string
+        }
+        Returns: Json
+      }
       update_report_status: {
         Args: { p_report_id: string; p_status: string }
         Returns: {

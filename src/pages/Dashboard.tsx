@@ -139,14 +139,24 @@ const Dashboard = () => {
                 Bienvenue {admin?.full_name || admin?.email} - Gestion des signalements et données de La Ligne Verte
               </p>
             </div>
-            <Button 
-              onClick={handleSignOut}
-              variant="outline"
-              className="flex items-center gap-2"
-            >
-              <LogOut className="h-4 w-4" />
-              Se déconnecter
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button 
+                onClick={() => navigate('/admin/settings')}
+                variant="outline"
+                className="flex items-center gap-2"
+              >
+                <Settings className="h-4 w-4" />
+                Paramètres
+              </Button>
+              <Button 
+                onClick={handleSignOut}
+                variant="outline"
+                className="flex items-center gap-2"
+              >
+                <LogOut className="h-4 w-4" />
+                Se déconnecter
+              </Button>
+            </div>
           </div>
         </header>
 

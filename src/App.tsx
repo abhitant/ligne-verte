@@ -18,6 +18,7 @@ import About from "./pages/About";
 import Suggestions from "./pages/Suggestions";
 import Auth from "./pages/Auth";
 import AdminAuth from "./pages/AdminAuth";
+import AdminSettings from "./pages/AdminSettings";
 import NotFound from "./pages/NotFound";
 import AdminRoute from "./components/AdminRoute";
 import { AdminProtectedRoute } from "./components/AdminProtectedRoute";
@@ -48,12 +49,17 @@ const App = () => {
               <Route path="/suggestions" element={<Suggestions />} />
               <Route path="/profile" element={<UserProfile />} />
               <Route path="/auth" element={<Auth />} />
-              <Route path="/admin/auth" element={<AdminAuth />} />
-              <Route path="/dashboard" element={
-                <AdminProtectedRoute>
-                  <Dashboard />
-                </AdminProtectedRoute>
-              } />
+          <Route path="/admin/auth" element={<AdminAuth />} />
+          <Route path="/dashboard" element={
+            <AdminProtectedRoute>
+              <Dashboard />
+            </AdminProtectedRoute>
+          } />
+          <Route path="/admin/settings" element={
+            <AdminProtectedRoute>
+              <AdminSettings />
+            </AdminProtectedRoute>
+          } />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

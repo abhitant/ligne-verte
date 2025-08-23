@@ -86,9 +86,53 @@ export const useAdminAuth = () => {
     return { error: null };
   };
 
+  const updateCredentials = async (updates: { email?: string; password?: string; fullName?: string }) => {
+    if (!adminAuthState.admin) {
+      return { error: new Error('Admin non connecté') };
+    }
+
+    try {
+      const { data, error } = await supabase
+        .rpc('update_admin_credentials', {
+          p_admin_id: adminAuthState.admin.admin_id,
+          p_new_email: updates.email,
+          p_new_password: updates.password,
+          p_new_full_name: updates.fullName,
+        });
+
+      if (error) throw error;
+
+      const result = data as any;
+
+      if (result?.success) {
+        // Mettre à jour les informations locales
+        const updatedAdmin = {
+          ...adminAuthState.admin,
+          email: updates.email || adminAuthState.admin.email,
+          full_name: updates.fullName !== undefined ? updates.fullName : adminAuthState.admin.full_name,
+        };
+
+        localStorage.setItem('admin_user', JSON.stringify(updatedAdmin));
+        setAdminAuthState({
+          admin: updatedAdmin,
+          loading: false,
+          isAuthenticated: true,
+        });
+
+        return { error: null };
+      } else {
+        return { error: new Error(result?.error || 'Erreur lors de la mise à jour') };
+      }
+    } catch (error) {
+      console.error('Error updating admin credentials:', error);
+      return { error: error as Error };
+    }
+  };
+
   return {
     ...adminAuthState,
     signIn,
     signOut,
+    updateCredentials,
   };
 };
