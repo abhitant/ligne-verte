@@ -6,49 +6,49 @@
 
 @layer base {
   :root {
-    /* Couleurs La Ligne Verte - style urbain Gen Z */
-    --background: 0 0% 100%; /* Fond blanc pour une meilleure lisibilité */
-    --foreground: 141 40% 11%; /* Texte vert foncé */
+    /* Couleurs La Ligne Verte - vert foncé dominant */
+    --background: 0 0% 100%;
+    --foreground: 140 50% 15%; /* Vert très foncé pour le texte */
 
     --card: 0 0% 100%;
-    --card-foreground: 141 40% 11%;
+    --card-foreground: 140 50% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 141 40% 11%;
+    --popover-foreground: 140 50% 15%;
 
-    /* Vert foncé principal #1B3925 */
-    --primary: 141 40% 11%;
+    /* Vert foncé principal plus intense */
+    --primary: 140 60% 20%; /* Vert foncé plus saturé */
     --primary-foreground: 0 0% 98%;
 
-    /* Vert clair accent #C3FF5D */
-    --secondary: 75 100% 68%;
-    --secondary-foreground: 141 40% 11%;
+    /* Vert accent plus visible */
+    --secondary: 140 40% 30%; /* Vert moyen */
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 0 0% 96%;
-    --muted-foreground: 141 40% 25%;
+    --muted: 140 20% 95%;
+    --muted-foreground: 140 30% 35%;
 
-    /* Vert clair vif #A3FF3F pour les éléments accentués */
-    --accent: 75 100% 62%;
-    --accent-foreground: 141 40% 11%;
+    /* Vert accent vif */
+    --accent: 75 85% 55%; /* Vert lime plus foncé */
+    --accent-foreground: 140 50% 15%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 89.8%;
-    --input: 0 0% 100%; /* Fond blanc pour les inputs */
-    --ring: 141 40% 11%; /* Bordure verte foncée pour le focus */
+    --border: 140 20% 85%;
+    --input: 0 0% 100%;
+    --ring: 140 60% 20%;
 
     --radius: 0.5rem;
 
-    /* Couleurs sidebar avec thème vert */
-    --sidebar-background: 150 55% 22%;
+    /* Couleurs sidebar avec vert foncé */
+    --sidebar-background: 140 70% 15%;
     --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 85 85% 70%;
-    --sidebar-primary-foreground: 120 15% 15%;
-    --sidebar-accent: 150 45% 30%;
+    --sidebar-primary: 75 85% 55%;
+    --sidebar-primary-foreground: 140 50% 15%;
+    --sidebar-accent: 140 50% 25%;
     --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 150 40% 35%;
-    --sidebar-ring: 85 85% 70%;
+    --sidebar-border: 140 40% 30%;
+    --sidebar-ring: 75 85% 55%;
   }
 
   .dark {
