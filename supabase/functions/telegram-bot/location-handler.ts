@@ -118,9 +118,17 @@ export class LocationHandler {
       }
 
       // Ne pas attribuer de points immédiatement - ils seront attribués lors de la validation par l'admin
-      let updatedUser = null
       const currentPoints = user?.points_himpact || 0
-      const userPseudo = updatedUser?.pseudo || user?.pseudo || firstName || `User ${telegramId.slice(-4)}`
+      const userPseudo = user?.pseudo || firstName || `User ${telegramId.slice(-4)}`
+      
+      // Calculer les points en attente en comptant tous les signalements non validés de l'utilisateur
+      const { data: pendingReports, error: pendingError } = await this.supabaseClient
+        .from('reports')
+        .select('points_awarded')
+        .eq('user_telegram_id', telegramId)
+        .eq('status', 'en attente')
+      
+      const totalPendingPoints = (pendingReports || []).reduce((sum, report) => sum + (report.points_awarded || 0), 0) + awardedPoints
 
       // Construire les informations de classification
       let wasteInfo = ''
@@ -136,15 +144,17 @@ export class LocationHandler {
       }
 
       const pointsText = awardedPoints > 0 ? 
-        `🎯 <b>+${awardedPoints} points Himpact</b> gagnés !\n💰 Total : <b>${currentPoints} points</b>` :
-        `💡 <b>Aucun point attribué</b> - Ampleur insuffisante\n💰 Total : <b>${currentPoints} points</b>`
+        `⏳ <b>+${awardedPoints} points Himpact</b> en attente de validation !\n💰 Total confirmé : <b>${currentPoints} points</b>\n⏳ Total en attente : <b>${totalPendingPoints} points</b>` :
+        `💡 <b>Aucun point en attente</b> - Ampleur insuffisante\n💰 Total confirmé : <b>${currentPoints} points</b>`
 
       const successText = `✅ <b>Signalement soumis avec succès !</b>
 
-📍 <b>Coordonnées de géolocalisation :</b> ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
+📍 <b>Coordonnées :</b> ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
 ⏳ <b>Statut :</b> En attente de validation par l'équipe
 
-🌍 Merci pour votre contribution ! Votre signalement sera examiné par nos modérateurs avant validation.`
+${pointsText}${amplitudeMessage}
+
+🌍 Merci pour votre contribution ! Une fois validé par l'équipe, vous recevrez vos points Himpact.`
 
       // D'abord supprimer le clavier de localisation
       await this.telegramAPI.sendMessage(chatId, '✅ Localisation reçue !', { remove_keyboard: true })

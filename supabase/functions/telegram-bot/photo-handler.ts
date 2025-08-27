@@ -215,7 +215,7 @@ export class PhotoHandler {
 
 📍 <b>Maintenant, partagez votre localisation pour finaliser le signalement</b>
 
-🎯 Vous recevrez 10 points Himpact une fois la localisation partagée !`, locationKeyboard)
+⏳ Vos points Himpact seront en attente jusqu'à validation par l'équipe !`, locationKeyboard)
 
       return { success: true }
     } catch (error) {
