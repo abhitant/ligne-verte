@@ -211,11 +211,13 @@ export class PhotoHandler {
         one_time_keyboard: true
       }
 
+      console.log('📸 Photo validation successful, prompting for location...')
       await this.telegramAPI.sendMessage(chatId, `✅ <b>Photo validée !</b> 📸
 
 📍 <b>Maintenant, partagez votre localisation pour finaliser le signalement</b>
 
 ⏳ Vos points Himpact seront en attente jusqu'à validation par l'équipe !`, locationKeyboard)
+      console.log('✅ Location request message sent')
 
       return { success: true }
     } catch (error) {

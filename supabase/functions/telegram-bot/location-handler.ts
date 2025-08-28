@@ -11,6 +11,7 @@ export class LocationHandler {
   }
 
   async handleLocation(chatId: number, telegramId: string, latitude: number, longitude: number, telegramUsername: string | undefined, firstName: string) {
+    console.log('🌍 Location handler started for user:', telegramId, 'at coordinates:', latitude, longitude)
     console.log('Processing location:', latitude, longitude, 'for telegram ID:', telegramId)
 
     try {
@@ -156,8 +157,11 @@ ${pointsText}${amplitudeMessage}
 
 🌍 Merci pour votre contribution ! Une fois validé par l'équipe, vous recevrez vos points Himpact.`
 
+      console.log('🔄 Location processed successfully, sending confirmation messages...')
+      
       // D'abord supprimer le clavier de localisation
       await this.telegramAPI.sendMessage(chatId, '✅ Localisation reçue !', { remove_keyboard: true })
+      console.log('✅ Location received message sent')
       
       // Puis envoyer le message avec les boutons inline
       const keyboard = {
@@ -175,7 +179,15 @@ ${pointsText}${amplitudeMessage}
         ]
       }
 
+      console.log('📤 Sending success message with points info:', { 
+        awardedPoints, 
+        currentPoints, 
+        totalPendingPoints,
+        reportId: report.id 
+      })
+      
       await this.telegramAPI.sendMessage(chatId, successText, keyboard)
+      console.log('✅ Success message sent successfully')
       return { success: true, report_id: report.id }
 
     } catch (error) {
