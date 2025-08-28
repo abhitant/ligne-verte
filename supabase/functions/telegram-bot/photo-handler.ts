@@ -1,26 +1,14 @@
 
 import { TelegramAPI } from './telegram-api.ts'
 import type { TelegramUpdate } from './types.ts'
-import { OptimizedFreeAnalyzer } from './optimized-free-analyzer.ts'
-import { SimpleAnalyzer } from './simple-analyzer.ts'
-import { DETRAnalyzer } from './detr-analyzer.ts'
-import { WasteSorterAnalyzer } from './waste-sorter-analyzer.ts'
 
 export class PhotoHandler {
   private telegramAPI: TelegramAPI
   private supabaseClient: any
-  private optimizedAnalyzer: OptimizedFreeAnalyzer
-  private simpleAnalyzer: SimpleAnalyzer
-  private detrAnalyzer: DETRAnalyzer
-  private wasteSorterAnalyzer: WasteSorterAnalyzer
 
   constructor(telegramAPI: TelegramAPI, supabaseClient: any) {
     this.telegramAPI = telegramAPI
     this.supabaseClient = supabaseClient
-    this.optimizedAnalyzer = new OptimizedFreeAnalyzer()
-    this.simpleAnalyzer = new SimpleAnalyzer()
-    this.detrAnalyzer = new DETRAnalyzer()
-    this.wasteSorterAnalyzer = new WasteSorterAnalyzer()
   }
 
   async handlePhoto(chatId: number, telegramId: string, photos: any[], telegramUsername?: string, firstName?: string) {
@@ -87,54 +75,8 @@ export class PhotoHandler {
       const photoArrayBuffer = await photoBlob.arrayBuffer()
       const photoUint8Array = new Uint8Array(photoArrayBuffer)
 
-      // Message d'analyse en cours
-      await this.telegramAPI.sendMessage(chatId, '🤖 Analyse d\'image en cours par Debora...')
-
-      // Choisir l'analyseur selon le mode configuré
-      const analyzerMode = Deno.env.get('BOT_ANALYZER_MODE') || 'simple'
-      console.log('🔬 Using analyzer mode:', analyzerMode)
-      
-      let analysisResult
-      if (analyzerMode === 'simple') {
-        console.log('📊 Starting simple analysis...')
-        analysisResult = await this.simpleAnalyzer.analyzeImage(photoUint8Array)
-      } else if (analyzerMode === 'detr') {
-        console.log('🎯 Starting DETR analysis...')
-        analysisResult = await this.detrAnalyzer.analyzeImage(photoUint8Array)
-      } else if (analyzerMode === 'waste-sorter') {
-        console.log('🗂️ Starting optimized waste-sorter analysis...')
-        analysisResult = await this.wasteSorterAnalyzer.analyzeImage(photoUint8Array)
-      } else {
-        console.log('🎯 Starting optimized free analysis...')
-        analysisResult = await this.optimizedAnalyzer.analyzeImage(photoUint8Array)
-      }
-      
-      // Fallback complet si nécessaire
-      if (!analysisResult.imageHash) {
-        analysisResult.imageHash = await this.calculateFallbackHash(photoUint8Array)
-      }
-
-      // Envoyer le message de validation selon l'analyseur utilisé
-      let validationMessage
-      if (analyzerMode === 'simple') {
-        validationMessage = this.simpleAnalyzer.generateValidationMessage(
-          analysisResult.isGarbageDetected, 
-          analysisResult.detectedObjects
-        )
-      } else if (analyzerMode === 'detr') {
-        validationMessage = this.detrAnalyzer.generateValidationMessage(analysisResult)
-      } else if (analyzerMode === 'waste-sorter') {
-        validationMessage = this.wasteSorterAnalyzer.generateValidationMessage(analysisResult)
-      } else {
-        validationMessage = this.optimizedAnalyzer.generateOptimizedValidationMessage(analysisResult)
-      }
-      await this.telegramAPI.sendMessage(chatId, validationMessage, { parse_mode: 'HTML' })
-
-      // VALIDATION PRÉCOCE : Si l'analyse rejette la photo, arrêter immédiatement
-      if (!analysisResult.isGarbageDetected) {
-        console.log('❌ Analysis rejected image - no waste detected, stopping process before upload/save')
-        return { success: false, error: 'Image rejected by analysis - no waste detected' }
-      }
+      // Message de confirmation simple
+      await this.telegramAPI.sendMessage(chatId, '📸 Photo reçue ! Elle sera analysée manuellement par l\'équipe.')
 
 
       // Générer un nom de fichier unique
@@ -169,37 +111,25 @@ export class PhotoHandler {
       const supabasePhotoUrl = publicUrlData.publicUrl
       console.log('📸 Supabase photo URL:', supabasePhotoUrl)
 
-      // Sauvegarder dans pending_reports avec les données de classification
-      console.log('💾 Saving pending report with waste classification:', {
+      // Générer un hash simple pour la photo
+      const imageHash = await this.calculateFallbackHash(photoUint8Array)
+
+      // Sauvegarder dans pending_reports sans classification IA
+      console.log('💾 Saving pending report for manual validation:', {
         p_telegram_id: telegramId,
         p_photo_url: supabasePhotoUrl,
-        p_image_hash: analysisResult.imageHash,
-        p_waste_category: (analysisResult as any).wasteCategory,
-        p_disposal_instructions: (analysisResult as any).disposalInstructions
+        p_image_hash: imageHash
       })
 
-      const { data: pendingReport, error: pendingError } = await this.supabaseClient.rpc('upsert_pending_report_with_waste_data', {
+      const { data: pendingReport, error: pendingError } = await this.supabaseClient.rpc('upsert_pending_report_with_url', {
         p_telegram_id: telegramId,
-        p_photo_url: supabasePhotoUrl,
-        p_image_hash: analysisResult.imageHash,
-        p_waste_category: (analysisResult as any).wasteCategory,
-        p_disposal_instructions: (analysisResult as any).disposalInstructions,
-        p_ai_validated: true
+        p_photo_url: supabasePhotoUrl
       })
 
       if (pendingError) {
         console.error('❌ Error saving pending report:', pendingError)
-        // Fallback to the existing function if the new one doesn't exist yet
-        const { data: fallbackReport, error: fallbackError } = await this.supabaseClient.rpc('upsert_pending_report_with_url', {
-          p_telegram_id: telegramId,
-          p_photo_url: supabasePhotoUrl
-        })
-        
-        if (fallbackError) {
-          console.error('❌ Error with fallback save:', fallbackError)
-          await this.telegramAPI.sendMessage(chatId, '❌ Erreur lors de la sauvegarde de la photo. Réessayez.')
-          return { success: false, error: fallbackError }
-        }
+        await this.telegramAPI.sendMessage(chatId, '❌ Erreur lors de la sauvegarde de la photo. Réessayez.')
+        return { success: false, error: pendingError }
       }
 
       // Toujours demander la localisation après validation de photo (comportement original)
@@ -211,12 +141,12 @@ export class PhotoHandler {
         one_time_keyboard: true
       }
 
-      console.log('📸 Photo validation successful, prompting for location...')
-      await this.telegramAPI.sendMessage(chatId, `✅ <b>Photo validée !</b> 📸
+      console.log('📸 Photo saved successfully, prompting for location...')
+      await this.telegramAPI.sendMessage(chatId, `✅ <b>Photo reçue !</b> 📸
 
 📍 <b>Maintenant, partagez votre localisation pour finaliser le signalement</b>
 
-⏳ Vos points Himpact seront en attente jusqu'à validation par l'équipe !`, locationKeyboard)
+⏳ Votre signalement sera validé manuellement par l'équipe !`, locationKeyboard)
       console.log('✅ Location request message sent')
 
       return { success: true }

@@ -76,22 +76,9 @@ export class LocationHandler {
         return { success: false, error: finalPendingError }
       }
 
-      // Récupérer les données d'analyse pour déterminer les points
-      const analysisData = finalPendingReport.analysis_data ? JSON.parse(finalPendingReport.analysis_data) : null
-      const wasteAmplitude = analysisData?.wasteAmplitude || 'medium'
-      const recommendedPoints = analysisData?.recommendedPoints || 10
-
-      // Calculer les points selon l'ampleur
-      let awardedPoints = 0
-      let amplitudeMessage = ''
-      
-      if (wasteAmplitude === 'minimal' || wasteAmplitude === 'small') {
-        awardedPoints = 0
-        amplitudeMessage = '\n\n🤏 <b>Ampleur faible détectée</b>\n💡 <b>Conseil :</b> Veuillez ramasser ces déchets vous-même pour contribuer activement à l\'environnement !'
-      } else {
-        awardedPoints = recommendedPoints
-        amplitudeMessage = `\n\n📏 <b>Ampleur ${wasteAmplitude}</b> - Signalement justifié !`
-      }
+      // Aucun calcul automatique de points - tout sera fait manuellement par l'admin
+      const awardedPoints = 0
+      const amplitudeMessage = '\n\n📋 <b>Validation manuelle</b> - L\'équipe analysera votre signalement !'
 
       // Créer le signalement avec la photo en attente et les données de classification
       const { data: report, error: reportError } = await this.supabaseClient
@@ -99,14 +86,14 @@ export class LocationHandler {
         .insert({
           user_telegram_id: telegramId,
           photo_url: finalPendingReport.photo_url,
-          description: `Signalement via Telegram - ${finalPendingReport.waste_category ? `Type: ${finalPendingReport.waste_category}` : 'Validé par IA'} - Ampleur: ${wasteAmplitude}`,
+          description: `Signalement via Telegram - En attente de validation manuelle`,
           location_lat: latitude,
           location_lng: longitude,
           status: 'en attente',
           image_hash: finalPendingReport.image_hash || null,
           waste_category: finalPendingReport.waste_category || 'GENERAL',
           disposal_instructions: finalPendingReport.disposal_instructions || null,
-          severity_level: wasteAmplitude === 'massive' ? 3 : wasteAmplitude === 'large' ? 2 : 1,
+          severity_level: 1, // Sera défini par l'admin
           points_awarded: awardedPoints
         })
         .select()
@@ -131,22 +118,8 @@ export class LocationHandler {
       
       const totalPendingPoints = (pendingReports || []).reduce((sum, report) => sum + (report.points_awarded || 0), 0) + awardedPoints
 
-      // Construire les informations de classification
-      let wasteInfo = ''
-      if (finalPendingReport.waste_category && finalPendingReport.disposal_instructions) {
-        const categoryEmojis = {
-          'RECYCLABLE': '♻️',
-          'ORGANIC': '🌱', 
-          'HAZARDOUS': '⚠️',
-          'GENERAL': '🗑️'
-        }
-        const emoji = categoryEmojis[finalPendingReport.waste_category as keyof typeof categoryEmojis] || '🗂️'
-        wasteInfo = `\n\n🗂️ <b>Classification IA :</b> ${emoji} ${finalPendingReport.waste_category}\n💡 <b>Instructions :</b> ${finalPendingReport.disposal_instructions}`
-      }
-
-      const pointsText = awardedPoints > 0 ? 
-        `⏳ <b>+${awardedPoints} points Himpact</b> en attente de validation !\n💰 Total confirmé : <b>${currentPoints} points</b>\n⏳ Total en attente : <b>${totalPendingPoints} points</b>` :
-        `💡 <b>Aucun point en attente</b> - Ampleur insuffisante\n💰 Total confirmé : <b>${currentPoints} points</b>`
+      // Message simple pour validation manuelle
+      const pointsText = `📋 <b>Signalement en attente de validation manuelle</b>\n💰 Total confirmé : <b>${currentPoints} points</b>`
 
       const successText = `✅ <b>Signalement soumis avec succès !</b>
 
