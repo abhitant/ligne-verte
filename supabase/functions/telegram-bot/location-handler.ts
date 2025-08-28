@@ -123,7 +123,7 @@ export class LocationHandler {
       const userPseudo = user?.pseudo || firstName || `User ${telegramId.slice(-4)}`
       
       // Calculer les points en attente en comptant tous les signalements non validés de l'utilisateur
-      const { data: pendingReports, error: pendingError } = await this.supabaseClient
+      const { data: pendingReports, error: pendingReportsError } = await this.supabaseClient
         .from('reports')
         .select('points_awarded')
         .eq('user_telegram_id', telegramId)
