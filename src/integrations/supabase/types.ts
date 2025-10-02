@@ -86,6 +86,42 @@ export type Database = {
         }
         Relationships: []
       }
+      notifications: {
+        Row: {
+          created_at: string | null
+          error_message: string | null
+          id: string
+          message: string
+          message_type: string
+          sent_at: string | null
+          sent_by_admin_id: string | null
+          status: string | null
+          target_user_telegram_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          message: string
+          message_type?: string
+          sent_at?: string | null
+          sent_by_admin_id?: string | null
+          status?: string | null
+          target_user_telegram_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          error_message?: string | null
+          id?: string
+          message?: string
+          message_type?: string
+          sent_at?: string | null
+          sent_by_admin_id?: string | null
+          status?: string | null
+          target_user_telegram_id?: string | null
+        }
+        Relationships: []
+      }
       pending_reports: {
         Row: {
           created_at: string | null
@@ -507,6 +543,32 @@ export type Database = {
           zone: string
         }
       }
+      admin_update_report: {
+        Args: {
+          p_points_awarded?: number
+          p_report_id: string
+          p_status: string
+        }
+        Returns: {
+          brand: string | null
+          cleanup_photo_url: string | null
+          created_at: string | null
+          description: string | null
+          disposal_instructions: string | null
+          id: string
+          image_hash: string | null
+          is_cleaned: boolean | null
+          location_lat: number
+          location_lng: number
+          photo_url: string | null
+          points_awarded: number | null
+          severity_level: number | null
+          status: string | null
+          user_telegram_id: string
+          waste_category: string | null
+          waste_type: string | null
+        }
+      }
       authenticate_admin: {
         Args: { p_email: string; p_password: string }
         Returns: Json
@@ -603,16 +665,7 @@ export type Database = {
       }
       get_and_delete_pending_report: {
         Args: Record<PropertyKey, never> | { p_telegram_id: string }
-        Returns: {
-          created_at: string | null
-          disposal_instructions: string | null
-          file_id: string
-          id: string
-          image_hash: string | null
-          photo_url: string | null
-          telegram_id: string
-          waste_category: string | null
-        }
+        Returns: undefined
       }
       get_and_delete_pending_report_with_url: {
         Args: { p_telegram_id: string }
