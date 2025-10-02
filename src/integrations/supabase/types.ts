@@ -316,6 +316,39 @@ export type Database = {
           },
         ]
       }
+      user_public_profiles: {
+        Row: {
+          badges: Json | null
+          created_at: string | null
+          experience_points: number | null
+          level_current: number | null
+          points_himpact: number | null
+          pseudo: string | null
+          reports_count: number | null
+          telegram_id: string
+        }
+        Insert: {
+          badges?: Json | null
+          created_at?: string | null
+          experience_points?: number | null
+          level_current?: number | null
+          points_himpact?: number | null
+          pseudo?: string | null
+          reports_count?: number | null
+          telegram_id: string
+        }
+        Update: {
+          badges?: Json | null
+          created_at?: string | null
+          experience_points?: number | null
+          level_current?: number | null
+          points_himpact?: number | null
+          pseudo?: string | null
+          reports_count?: number | null
+          telegram_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -471,36 +504,6 @@ export type Database = {
           status?: string | null
           waste_category?: string | null
           waste_type?: string | null
-        }
-        Relationships: []
-      }
-      user_display_info: {
-        Row: {
-          badges: Json | null
-          created_at: string | null
-          experience_points: number | null
-          level_current: number | null
-          points_himpact: number | null
-          pseudo: string | null
-          reports_count: number | null
-        }
-        Insert: {
-          badges?: Json | null
-          created_at?: string | null
-          experience_points?: number | null
-          level_current?: number | null
-          points_himpact?: number | null
-          pseudo?: string | null
-          reports_count?: number | null
-        }
-        Update: {
-          badges?: Json | null
-          created_at?: string | null
-          experience_points?: number | null
-          level_current?: number | null
-          points_himpact?: number | null
-          pseudo?: string | null
-          reports_count?: number | null
         }
         Relationships: []
       }
