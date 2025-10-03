@@ -65,7 +65,7 @@ export class LocationHandler {
       }
 
 
-      // Récupérer et supprimer le signalement en attente avec l'URL de la photo
+      // Récupérer et supprimer le signalement en attente avec toutes les données d'analyse
       const { data: finalPendingReport, error: finalPendingError } = await this.supabaseClient.rpc('get_and_delete_pending_report_with_url', {
         p_telegram_id: telegramId
       })
@@ -76,22 +76,29 @@ export class LocationHandler {
         return { success: false, error: finalPendingError }
       }
 
+      // Vérifier si c'est un signalement nécessitant validation manuelle (waste_category = null)
+      const needsManualReview = !finalPendingReport.waste_category
+
       // Aucun calcul automatique de points - tout sera fait manuellement par l'admin
       const awardedPoints = 0
       const amplitudeMessage = ''
 
-      // Créer le signalement avec la photo en attente et les données de classification
+      // Créer le signalement avec toutes les données d'analyse IA
       const { data: report, error: reportError } = await this.supabaseClient
         .from('reports')
         .insert({
           user_telegram_id: telegramId,
           photo_url: finalPendingReport.photo_url,
-          description: `Signalement via Telegram`,
+          description: needsManualReview 
+            ? `Signalement via Telegram - Nécessite validation manuelle` 
+            : `Signalement via Telegram`,
           location_lat: latitude,
           location_lng: longitude,
           status: 'en attente',
           image_hash: finalPendingReport.image_hash || null,
           waste_category: finalPendingReport.waste_category || 'GENERAL',
+          waste_type: finalPendingReport.waste_type || null,
+          brand: finalPendingReport.brand || null,
           disposal_instructions: finalPendingReport.disposal_instructions || null,
           severity_level: 1, // Sera défini par l'admin
           points_awarded: awardedPoints

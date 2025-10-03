@@ -839,14 +839,25 @@ export type Database = {
         }
       }
       upsert_pending_report_with_waste_data: {
-        Args: {
-          p_ai_validated?: boolean
-          p_disposal_instructions?: string
-          p_image_hash: string
-          p_photo_url: string
-          p_telegram_id: string
-          p_waste_category?: string
-        }
+        Args:
+          | {
+              p_ai_validated?: boolean
+              p_brand?: string
+              p_disposal_instructions?: string
+              p_image_hash: string
+              p_photo_url: string
+              p_telegram_id: string
+              p_waste_category?: string
+              p_waste_type?: string
+            }
+          | {
+              p_ai_validated?: boolean
+              p_disposal_instructions?: string
+              p_image_hash: string
+              p_photo_url: string
+              p_telegram_id: string
+              p_waste_category?: string
+            }
         Returns: {
           brand: string | null
           created_at: string | null
