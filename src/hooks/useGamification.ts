@@ -80,7 +80,7 @@ export const useLeaderboard = (limit: number = 10) => {
     queryFn: async (): Promise<LeaderboardUser[]> => {
       try {
         const { data: users, error } = await supabase
-          .from('users')
+          .from('user_public_profiles')
           .select(`
             telegram_id,
             pseudo,
@@ -88,8 +88,6 @@ export const useLeaderboard = (limit: number = 10) => {
             experience_points,
             level_current,
             reports_count,
-            cleanups_count,
-            streak_days,
             badges,
             created_at
           `)
@@ -103,10 +101,12 @@ export const useLeaderboard = (limit: number = 10) => {
 
         console.log('Real leaderboard data from Supabase:', users);
         
-        // Add rank to each user
+        // Add rank and default values to each user
         return (users || []).map((user, index) => ({
           ...user,
-          rank: index + 1
+          rank: index + 1,
+          cleanups_count: 0, // Not in public profile
+          streak_days: 0 // Not in public profile
         }));
       } catch (error) {
         console.error('Critical error fetching leaderboard:', error);
