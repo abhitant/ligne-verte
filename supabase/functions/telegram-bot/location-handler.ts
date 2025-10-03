@@ -122,18 +122,27 @@ export class LocationHandler {
 
       // Message clair indiquant le système de points
       const hasAIInstructions = finalPendingReport.disposal_instructions
-      const pointsInfo = hasAIInstructions
-        ? `Vous pourrez gagner ${basePoints} points après validation. Si vous nettoyez le déchet selon les instructions de l'IA et envoyez une photo de preuve, vous gagnerez 30 points supplémentaires !`
-        : `Vous pourrez gagner ${basePoints} points après validation !`
-
-      const successText = `✅ <b>Parfait ! Votre signalement est enregistré !</b>
+      
+      let successText = `✅ <b>Parfait ! Votre signalement est enregistré !</b>
 
 📍 <b>Localisation :</b> ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
 
 ⏳ <b>Statut :</b> En attente de validation
 💰 <b>Vos points actuels :</b> ${currentPoints} points Himpact
 
-<i>💡 ${pointsInfo}</i>
+<i>💡 Vous gagnerez ${basePoints} points après validation de votre signalement.</i>`
+
+      if (hasAIInstructions) {
+        successText += `
+
+🎁 <b>BONUS DISPONIBLE : +30 points !</b>
+Si vous nettoyez ce déchet selon les instructions de l'IA et que vous nous envoyez une photo du lieu nettoyé, vous recevrez 30 points supplémentaires !
+
+📋 <b>Instructions de l'IA :</b>
+${finalPendingReport.disposal_instructions}`
+      }
+
+      successText += `
 
 🌍 Merci beaucoup pour votre aide ! Votre action compte vraiment pour rendre notre environnement plus propre.`
 
