@@ -81,14 +81,59 @@ const Dashboard = () => {
 
   const handleReject = async (reportId: string) => {
     try {
-      const { error } = await supabase
+      // D'abord rejeter le signalement
+      const { data: rejectedReport, error: rejectError } = await supabase
         .rpc('validate_report_and_award_points', { 
           p_report_id: reportId, 
           p_status: 'rejeté' 
         });
 
-      if (error) throw error;
-      toast.success('Signalement rejeté');
+      if (rejectError) throw rejectError;
+
+      // Ensuite envoyer la notification automatiquement
+      // Récupérer les notifications en attente pour cet utilisateur
+      const { data: report } = await supabase
+        .from('reports')
+        .select('user_telegram_id')
+        .eq('id', reportId)
+        .single();
+
+      if (report?.user_telegram_id) {
+        // Récupérer la notification créée
+        const { data: notifications } = await supabase
+          .from('notifications')
+          .select('*')
+          .eq('target_user_telegram_id', report.user_telegram_id)
+          .eq('status', 'pending')
+          .eq('message_type', 'rejection')
+          .order('created_at', { ascending: false })
+          .limit(1);
+
+        if (notifications && notifications.length > 0) {
+          const notification = notifications[0];
+          
+          // Envoyer la notification via Telegram
+          const { error: notifError } = await supabase.functions.invoke('notify-user-telegram', {
+            body: {
+              telegramId: report.user_telegram_id,
+              message: notification.message,
+              messageType: 'rejection'
+            }
+          });
+
+          if (!notifError) {
+            // Marquer la notification comme envoyée
+            await supabase
+              .from('notifications')
+              .update({ status: 'sent', sent_at: new Date().toISOString() })
+              .eq('id', notification.id);
+          } else {
+            console.error('Error sending notification:', notifError);
+          }
+        }
+      }
+
+      toast.success('Signalement rejeté et utilisateur notifié');
     } catch (error) {
       console.error('Error rejecting report:', error);
       toast.error('Erreur lors du rejet');
