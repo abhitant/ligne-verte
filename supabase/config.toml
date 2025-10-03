@@ -6,6 +6,9 @@ verify_jwt = false
 [functions.telegram-diagnostic]
 verify_jwt = false
 
+[functions.notify-user-telegram]
+verify_jwt = false
+
 [functions.setup-debora-profile]
 verify_jwt = false
 
