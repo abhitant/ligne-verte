@@ -91,6 +91,7 @@ export const useLeaderboard = (limit: number = 10) => {
             badges,
             created_at
           `)
+          .gt('points_himpact', 0)
           .order('points_himpact', { ascending: false })
           .limit(limit);
 
