@@ -115,24 +115,16 @@ export class LocationHandler {
       // Ne pas attribuer de points immédiatement - ils seront attribués lors de la validation par l'admin
       const currentPoints = user?.points_himpact || 0
       const userPseudo = user?.pseudo || firstName || `User ${telegramId.slice(-4)}`
-      
-      // Calculer les points en attente en comptant tous les signalements non validés de l'utilisateur
-      const { data: pendingReports, error: pendingReportsError } = await this.supabaseClient
-        .from('reports')
-        .select('points_awarded')
-        .eq('user_telegram_id', telegramId)
-        .eq('status', 'en attente')
-      
-      const totalPendingPoints = (pendingReports || []).reduce((sum, report) => sum + (report.points_awarded || 0), 0) + awardedPoints
 
-      // Message simple et naturel
-      const pointsText = `💰 <b>Vos points :</b> ${currentPoints} points Himpact`
-
+      // Message clair indiquant que le signalement est en attente de validation
       const successText = `✅ <b>Parfait ! Votre signalement est enregistré !</b>
 
 📍 <b>Localisation :</b> ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
 
-${pointsText}
+⏳ <b>Statut :</b> En attente de validation
+💰 <b>Vos points actuels :</b> ${currentPoints} points Himpact
+
+<i>📝 Votre signalement sera examiné par notre équipe. Les points seront attribués après validation.</i>
 
 🌍 Merci beaucoup pour votre aide ! Votre action compte vraiment pour rendre notre environnement plus propre.`
 
@@ -160,8 +152,7 @@ ${pointsText}
 
       console.log('📤 Sending success message with points info:', { 
         awardedPoints, 
-        currentPoints, 
-        totalPendingPoints,
+        currentPoints,
         reportId: report.id 
       })
       
