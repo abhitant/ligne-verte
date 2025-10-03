@@ -80,12 +80,10 @@ export class LocationHandler {
       const needsManualReview = !finalPendingReport.waste_category
 
       // Système de points :
-      // - 10 points de base pour tout signalement
-      // - 30 points bonus si l'IA a analysé et fourni des instructions de résolution
-      const hasAIAnalysis = finalPendingReport.waste_category && finalPendingReport.disposal_instructions
+      // - 10 points de base pour tout signalement validé
+      // - 30 points bonus si l'utilisateur fournit une photo de nettoyage (cleanup_photo_url)
+      // Les points seront calculés lors de la validation par l'admin
       const basePoints = 10
-      const aiAnalysisBonus = hasAIAnalysis ? 30 : 0
-      const totalPoints = basePoints + aiAnalysisBonus
 
       // Créer le signalement avec toutes les données d'analyse IA
       const { data: report, error: reportError } = await this.supabaseClient
@@ -105,7 +103,7 @@ export class LocationHandler {
           brand: finalPendingReport.brand || null,
           disposal_instructions: finalPendingReport.disposal_instructions || null,
           severity_level: 1,
-          points_awarded: totalPoints // Points qui seront attribués lors de la validation
+          points_awarded: basePoints // 10 points de base, +30 si photo de nettoyage fournie
         })
         .select()
         .single()
@@ -116,15 +114,16 @@ export class LocationHandler {
         return { success: false, error: reportError }
       }
 
-      console.log(`📊 Points configurés: ${totalPoints} (base: ${basePoints}, bonus IA: ${aiAnalysisBonus})`)
+      console.log(`📊 Points configurés: ${basePoints} points de base`)
 
       // Ne pas attribuer de points immédiatement - ils seront attribués lors de la validation par l'admin
       const currentPoints = user?.points_himpact || 0
       const userPseudo = user?.pseudo || firstName || `User ${telegramId.slice(-4)}`
 
-      // Message clair indiquant que le signalement est en attente de validation
-      const pointsInfo = hasAIAnalysis 
-        ? `Vous pourrez gagner jusqu'à ${totalPoints} points (${basePoints} points de base + ${aiAnalysisBonus} points bonus analyse IA) après validation !`
+      // Message clair indiquant le système de points
+      const hasAIInstructions = finalPendingReport.disposal_instructions
+      const pointsInfo = hasAIInstructions
+        ? `Vous pourrez gagner ${basePoints} points après validation. Si vous nettoyez le déchet selon les instructions de l'IA et envoyez une photo de preuve, vous gagnerez 30 points supplémentaires !`
         : `Vous pourrez gagner ${basePoints} points après validation !`
 
       const successText = `✅ <b>Parfait ! Votre signalement est enregistré !</b>
@@ -161,7 +160,7 @@ export class LocationHandler {
       }
 
       console.log('📤 Sending success message with points info:', { 
-        totalPoints, 
+        basePoints, 
         currentPoints,
         reportId: report.id 
       })
