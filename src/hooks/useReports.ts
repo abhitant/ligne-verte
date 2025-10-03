@@ -29,6 +29,7 @@ interface MapReport {
   date: string;
   type: 'waste' | 'drain' | 'other';
   photo_url?: string;
+  points_awarded: number;
 }
 
 const getStatusFromDb = (status: string | null): 'pending' | 'validated' | 'rejected' => {
