@@ -124,6 +124,7 @@ export type Database = {
       }
       pending_reports: {
         Row: {
+          brand: string | null
           created_at: string | null
           disposal_instructions: string | null
           file_id: string
@@ -132,8 +133,10 @@ export type Database = {
           photo_url: string | null
           telegram_id: string
           waste_category: string | null
+          waste_type: string | null
         }
         Insert: {
+          brand?: string | null
           created_at?: string | null
           disposal_instructions?: string | null
           file_id: string
@@ -142,8 +145,10 @@ export type Database = {
           photo_url?: string | null
           telegram_id: string
           waste_category?: string | null
+          waste_type?: string | null
         }
         Update: {
+          brand?: string | null
           created_at?: string | null
           disposal_instructions?: string | null
           file_id?: string
@@ -152,6 +157,7 @@ export type Database = {
           photo_url?: string | null
           telegram_id?: string
           waste_category?: string | null
+          waste_type?: string | null
         }
         Relationships: []
       }
@@ -673,6 +679,7 @@ export type Database = {
       get_and_delete_pending_report_with_url: {
         Args: { p_telegram_id: string }
         Returns: {
+          brand: string | null
           created_at: string | null
           disposal_instructions: string | null
           file_id: string
@@ -681,6 +688,7 @@ export type Database = {
           photo_url: string | null
           telegram_id: string
           waste_category: string | null
+          waste_type: string | null
         }
       }
       get_public_reports: {
@@ -783,6 +791,7 @@ export type Database = {
       upsert_pending_report: {
         Args: { p_file_id: string; p_telegram_id: string }
         Returns: {
+          brand: string | null
           created_at: string | null
           disposal_instructions: string | null
           file_id: string
@@ -791,6 +800,7 @@ export type Database = {
           photo_url: string | null
           telegram_id: string
           waste_category: string | null
+          waste_type: string | null
         }
       }
       upsert_pending_report_with_ai_data: {
@@ -801,6 +811,7 @@ export type Database = {
           p_telegram_id: string
         }
         Returns: {
+          brand: string | null
           created_at: string | null
           disposal_instructions: string | null
           file_id: string
@@ -809,11 +820,13 @@ export type Database = {
           photo_url: string | null
           telegram_id: string
           waste_category: string | null
+          waste_type: string | null
         }
       }
       upsert_pending_report_with_url: {
         Args: { p_photo_url: string; p_telegram_id: string }
         Returns: {
+          brand: string | null
           created_at: string | null
           disposal_instructions: string | null
           file_id: string
@@ -822,6 +835,7 @@ export type Database = {
           photo_url: string | null
           telegram_id: string
           waste_category: string | null
+          waste_type: string | null
         }
       }
       upsert_pending_report_with_waste_data: {
@@ -834,6 +848,7 @@ export type Database = {
           p_waste_category?: string
         }
         Returns: {
+          brand: string | null
           created_at: string | null
           disposal_instructions: string | null
           file_id: string
@@ -842,6 +857,7 @@ export type Database = {
           photo_url: string | null
           telegram_id: string
           waste_category: string | null
+          waste_type: string | null
         }
       }
       validate_report_and_award_points: {
