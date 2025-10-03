@@ -104,7 +104,8 @@ export const useReports = () => {
             status: getStatusFromDb(report.status),
             date: report.created_at || new Date().toISOString(),
             type: getTypeFromDescription(report.description || report.waste_type),
-            photo_url: report.photo_url
+            photo_url: report.photo_url,
+            points_awarded: report.points_awarded || 0
           };
         });
 

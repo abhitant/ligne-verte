@@ -701,6 +701,7 @@ export type Database = {
           location_lat: number
           location_lng: number
           photo_url: string
+          points_awarded: number
           reporter_hash: string
           reporter_pseudo: string
           status: string
