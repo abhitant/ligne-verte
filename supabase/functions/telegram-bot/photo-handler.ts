@@ -111,7 +111,7 @@ export class PhotoHandler {
       const supabasePhotoUrl = publicUrlData.publicUrl
       console.log('📸 Supabase photo URL:', supabasePhotoUrl)
 
-      // 🤖 Analyse automatique avec Gemini AI
+      // 🤖 Analyse automatique avec Gemini AI en priorité
       console.log('🤖 Analyzing image with Gemini AI...')
       await this.telegramAPI.sendMessage(chatId, '🔍 Analyse du signalement en cours...')
       
@@ -120,6 +120,7 @@ export class PhotoHandler {
       let aiDescription = null
       let wasteType = null
       let brand = null
+      let needsManualReview = false // Flag pour savoir si besoin de validation manuelle
 
       try {
         const { data: analysisData, error: analysisError } = await this.supabaseClient.functions.invoke('analyze-waste-image', {
@@ -128,12 +129,15 @@ export class PhotoHandler {
 
         if (analysisError) {
           console.error('❌ AI analysis error:', analysisError)
-          await this.telegramAPI.sendMessage(chatId, '⚠️ L\'analyse prend un peu plus de temps que prévu, mais pas d\'inquiétude !')
+          // En cas d'erreur AI, passer en mode manuel silencieusement
+          needsManualReview = true
+          await this.telegramAPI.sendMessage(chatId, '🔍 Analyse supplémentaire en cours, merci de patienter...')
         } else if (analysisData?.success && analysisData?.analysis) {
           const analysis = analysisData.analysis
           console.log('✅ AI Analysis result:', analysis)
 
           if (analysis.isWaste) {
+            // ✅ IA valide le déchet - processus normal
             wasteCategory = analysis.category
             disposalInstructions = analysis.disposalInstructions
             aiDescription = analysis.description
@@ -150,32 +154,42 @@ ${brand ? `🏷️ <b>Marque:</b> ${brand}` : ''}
 
 ♻️ <b>Instructions:</b> ${disposalInstructions}`)
           } else {
-            await this.telegramAPI.sendMessage(chatId, '⚠️ Cela ne semble pas être un déchet. Veuillez envoyer une photo claire d\'un déchet.')
-            return { success: false, error: 'Not a waste item' }
+            // ❌ IA ne valide pas - passer en mode manuel SANS dire à l'utilisateur
+            console.log('⚠️ AI detected non-waste, switching to manual review silently')
+            needsManualReview = true
+            await this.telegramAPI.sendMessage(chatId, '🔍 Votre signalement nécessite une analyse supplémentaire. Nous le traitons avec attention !')
           }
         }
       } catch (aiError) {
         console.error('❌ Error calling AI analysis:', aiError)
-        await this.telegramAPI.sendMessage(chatId, '⚠️ L\'analyse prend un peu plus de temps que prévu, mais pas d\'inquiétude !')
+        // En cas d'erreur, passer en mode manuel
+        needsManualReview = true
+        await this.telegramAPI.sendMessage(chatId, '🔍 Analyse supplémentaire en cours, merci de patienter...')
       }
 
       // Générer un hash simple pour la photo
       const imageHash = await this.calculateFallbackHash(photoUint8Array)
 
       // Sauvegarder dans pending_reports avec les données d'analyse IA
+      // Si needsManualReview = true, on laisse waste_category à null pour signaler besoin de validation manuelle
       console.log('💾 Saving pending report with AI analysis:', {
         p_telegram_id: telegramId,
         p_photo_url: supabasePhotoUrl,
         p_image_hash: imageHash,
         p_waste_category: wasteCategory,
-        p_disposal_instructions: disposalInstructions
+        p_waste_type: wasteType,
+        p_brand: brand,
+        p_disposal_instructions: disposalInstructions,
+        needs_manual_review: needsManualReview
       })
 
       const { data: pendingReport, error: pendingError } = await this.supabaseClient.rpc('upsert_pending_report_with_waste_data', {
         p_telegram_id: telegramId,
         p_photo_url: supabasePhotoUrl,
         p_image_hash: imageHash,
-        p_waste_category: wasteCategory,
+        p_waste_category: wasteCategory, // null si needsManualReview
+        p_waste_type: wasteType,
+        p_brand: brand,
         p_disposal_instructions: disposalInstructions
       })
 
