@@ -88,10 +88,8 @@ export const useReports = () => {
         }
 
         const mappedReports = reports.map((report): MapReport => {
-          // Utiliser le hash anonymisé fourni par la fonction RPC
-          const displayName = report.reporter_hash 
-            ? `Reporter#${report.reporter_hash}` 
-            : `User#${Math.random().toString(36).substr(2, 6)}`;
+          // Utiliser le pseudo de l'utilisateur fourni par la fonction RPC
+          const displayName = report.reporter_pseudo || 'Anonyme';
           
           return {
             id: report.id,

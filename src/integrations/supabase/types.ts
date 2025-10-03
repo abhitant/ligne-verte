@@ -702,6 +702,7 @@ export type Database = {
           location_lng: number
           photo_url: string
           reporter_hash: string
+          reporter_pseudo: string
           status: string
           waste_type: string
         }[]
