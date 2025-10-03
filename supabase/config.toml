@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.analyze-image-with-waste-sorter]
 verify_jwt = false
+
+[functions.analyze-waste-image]
+verify_jwt = false

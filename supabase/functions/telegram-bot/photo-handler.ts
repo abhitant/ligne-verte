@@ -111,19 +111,74 @@ export class PhotoHandler {
       const supabasePhotoUrl = publicUrlData.publicUrl
       console.log('📸 Supabase photo URL:', supabasePhotoUrl)
 
+      // 🤖 Analyse automatique avec Gemini AI
+      console.log('🤖 Analyzing image with Gemini AI...')
+      await this.telegramAPI.sendMessage(chatId, '🤖 Analyse de la photo en cours...')
+      
+      let wasteCategory = null
+      let disposalInstructions = null
+      let aiDescription = null
+      let wasteType = null
+      let brand = null
+
+      try {
+        const { data: analysisData, error: analysisError } = await this.supabaseClient.functions.invoke('analyze-waste-image', {
+          body: { imageUrl: supabasePhotoUrl }
+        })
+
+        if (analysisError) {
+          console.error('❌ AI analysis error:', analysisError)
+          await this.telegramAPI.sendMessage(chatId, '⚠️ Analyse automatique impossible, validation manuelle nécessaire.')
+        } else if (analysisData?.success && analysisData?.analysis) {
+          const analysis = analysisData.analysis
+          console.log('✅ AI Analysis result:', analysis)
+
+          if (analysis.isWaste) {
+            wasteCategory = analysis.category
+            disposalInstructions = analysis.disposalInstructions
+            aiDescription = analysis.description
+            wasteType = analysis.wasteType
+            brand = analysis.brand
+
+            await this.telegramAPI.sendMessage(chatId, `✅ <b>Photo analysée !</b> 🤖
+
+🗑️ <b>Type:</b> ${wasteType}
+📦 <b>Catégorie:</b> ${wasteCategory}
+${brand ? `🏷️ <b>Marque:</b> ${brand}` : ''}
+
+📝 ${aiDescription}
+
+♻️ <b>Instructions:</b> ${disposalInstructions}
+
+<i>Cette analyse est automatique et sera vérifiée par l'équipe.</i>`)
+          } else {
+            await this.telegramAPI.sendMessage(chatId, '⚠️ Cela ne semble pas être un déchet. Veuillez envoyer une photo claire d\'un déchet.')
+            return { success: false, error: 'Not a waste item' }
+          }
+        }
+      } catch (aiError) {
+        console.error('❌ Error calling AI analysis:', aiError)
+        await this.telegramAPI.sendMessage(chatId, '⚠️ Analyse automatique impossible, validation manuelle nécessaire.')
+      }
+
       // Générer un hash simple pour la photo
       const imageHash = await this.calculateFallbackHash(photoUint8Array)
 
-      // Sauvegarder dans pending_reports sans classification IA
-      console.log('💾 Saving pending report for manual validation:', {
+      // Sauvegarder dans pending_reports avec les données d'analyse IA
+      console.log('💾 Saving pending report with AI analysis:', {
         p_telegram_id: telegramId,
         p_photo_url: supabasePhotoUrl,
-        p_image_hash: imageHash
+        p_image_hash: imageHash,
+        p_waste_category: wasteCategory,
+        p_disposal_instructions: disposalInstructions
       })
 
-      const { data: pendingReport, error: pendingError } = await this.supabaseClient.rpc('upsert_pending_report_with_url', {
+      const { data: pendingReport, error: pendingError } = await this.supabaseClient.rpc('upsert_pending_report_with_waste_data', {
         p_telegram_id: telegramId,
-        p_photo_url: supabasePhotoUrl
+        p_photo_url: supabasePhotoUrl,
+        p_image_hash: imageHash,
+        p_waste_category: wasteCategory,
+        p_disposal_instructions: disposalInstructions
       })
 
       if (pendingError) {
@@ -141,12 +196,12 @@ export class PhotoHandler {
         one_time_keyboard: true
       }
 
-      console.log('📸 Photo saved successfully, prompting for location...')
-      await this.telegramAPI.sendMessage(chatId, `✅ <b>Photo reçue !</b> 📸
+      console.log('📸 Photo analyzed and saved successfully, prompting for location...')
+      await this.telegramAPI.sendMessage(chatId, `📍 <b>Dernière étape : Partagez votre localisation !</b>
 
-📍 <b>Maintenant, partagez votre localisation pour finaliser le signalement</b>
+Cliquez sur le bouton ci-dessous pour partager où vous avez pris cette photo.
 
-⏳ Votre signalement sera validé manuellement par l'équipe !`, locationKeyboard)
+✅ Votre signalement sera ensuite validé par l'équipe.`, locationKeyboard)
       console.log('✅ Location request message sent')
 
       return { success: true }
