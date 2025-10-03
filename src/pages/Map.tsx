@@ -31,9 +31,39 @@ const Map = () => {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showReports, setShowReports] = useState(false);
   const [showReportDetails, setShowReportDetails] = useState(false);
+  const [showFullscreenImage, setShowFullscreenImage] = useState(false);
+  const [locationName, setLocationName] = useState<string>('');
   
   const { data: leaderboard = [] } = useLeaderboard(10);
   const { data: reports = [], isLoading, error } = useReports();
+
+  // Fonction pour obtenir le nom de la localité via géocodage inverse
+  const fetchLocationName = async (lat: number, lng: number) => {
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=fr`
+      );
+      const data = await response.json();
+      
+      if (data.address) {
+        const { suburb, neighbourhood, quarter, city_district, city, town, village } = data.address;
+        const locality = suburb || neighbourhood || quarter || city_district || town || village || city || 'Abidjan';
+        return locality;
+      }
+      return 'Abidjan';
+    } catch (error) {
+      console.error('Error fetching location name:', error);
+      return 'Abidjan';
+    }
+  };
+
+  // Charger le nom de la localité quand un signalement est sélectionné
+  useEffect(() => {
+    if (selectedReport && showReportDetails) {
+      fetchLocationName(selectedReport.coordinates.lat, selectedReport.coordinates.lng)
+        .then(name => setLocationName(name));
+    }
+  }, [selectedReport, showReportDetails]);
 
 
   const getStatusColor = (status: string) => {
@@ -235,14 +265,18 @@ const Map = () => {
                         <div className="p-6 overflow-y-auto max-h-[60vh] space-y-4">
                           {/* Photo si disponible */}
                           {selectedReport.photo_url ? (
-                            <div className="w-full">
+                            <div 
+                              className="w-full cursor-pointer group relative"
+                              onClick={() => setShowFullscreenImage(true)}
+                            >
                               <img 
                                 src={selectedReport.photo_url} 
                                 alt="Signalement" 
-                                className="w-full h-48 object-cover rounded-lg border border-accent/30"
-                                onLoad={() => console.log('Image loaded successfully:', selectedReport.photo_url)}
-                                onError={(e) => console.log('Image failed to load:', selectedReport.photo_url, e)}
+                                className="w-full h-48 object-cover rounded-lg border border-accent/30 transition-transform group-hover:scale-[1.02]"
                               />
+                              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 rounded-lg transition-all flex items-center justify-center">
+                                <Eye className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                              </div>
                             </div>
                           ) : (
                             <div className="w-full h-48 bg-accent/10 rounded-lg border border-accent/30 flex items-center justify-center">
@@ -270,14 +304,18 @@ const Map = () => {
                               <div className="flex items-start gap-2">
                                 <MapPin className="w-4 h-4 text-accent mt-0.5" />
                                 <div>
-                                  <p className="text-primary-foreground font-medium">{selectedReport.location}</p>
+                                  <p className="text-primary-foreground font-medium">
+                                    {locationName || 'Chargement...'}
+                                  </p>
                                   <p className="text-xs text-accent">
                                     {selectedReport.coordinates.lat.toFixed(6)}, {selectedReport.coordinates.lng.toFixed(6)}
                                   </p>
                                 </div>
                               </div>
                               
-                              {selectedReport.description && (
+                              {selectedReport.description && 
+                               !selectedReport.description.includes('Signalement via Telegram') && 
+                               selectedReport.description !== 'Signalement via bot Telegram' && (
                                 <div className="bg-accent/10 p-3 rounded-lg border border-accent/30">
                                   <p className="text-primary-foreground text-sm">{selectedReport.description}</p>
                                 </div>
@@ -298,6 +336,34 @@ const Map = () => {
                           </div>
                         </div>
                       </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Overlay Image plein écran */}
+                {showFullscreenImage && selectedReport?.photo_url && (
+                  <div 
+                    className="absolute inset-0 bg-black/90 z-[3000] flex items-center justify-center p-4"
+                    onClick={() => setShowFullscreenImage(false)}
+                  >
+                    <div className="relative max-w-7xl max-h-[90vh] w-full h-full flex items-center justify-center">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="absolute top-4 right-4 h-10 w-10 p-0 hover:bg-white/20 bg-black/50 rounded-full z-10"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowFullscreenImage(false);
+                        }}
+                      >
+                        <X className="w-6 h-6 text-white" />
+                      </Button>
+                      <img 
+                        src={selectedReport.photo_url} 
+                        alt="Signalement en plein écran" 
+                        className="max-w-full max-h-full object-contain rounded-lg"
+                        onClick={(e) => e.stopPropagation()}
+                      />
                     </div>
                   </div>
                 )}
