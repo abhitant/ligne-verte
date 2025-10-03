@@ -76,7 +76,7 @@ export class PhotoHandler {
       const photoUint8Array = new Uint8Array(photoArrayBuffer)
 
       // Message de confirmation simple
-      await this.telegramAPI.sendMessage(chatId, '📸 Photo reçue ! Elle sera analysée manuellement par l\'équipe.')
+      await this.telegramAPI.sendMessage(chatId, '📸 Super ! J\'ai bien reçu votre photo.')
 
 
       // Générer un nom de fichier unique
@@ -113,7 +113,7 @@ export class PhotoHandler {
 
       // 🤖 Analyse automatique avec Gemini AI
       console.log('🤖 Analyzing image with Gemini AI...')
-      await this.telegramAPI.sendMessage(chatId, '🤖 Analyse de la photo en cours...')
+      await this.telegramAPI.sendMessage(chatId, '🔍 Analyse du signalement en cours...')
       
       let wasteCategory = null
       let disposalInstructions = null
@@ -128,7 +128,7 @@ export class PhotoHandler {
 
         if (analysisError) {
           console.error('❌ AI analysis error:', analysisError)
-          await this.telegramAPI.sendMessage(chatId, '⚠️ Analyse automatique impossible, validation manuelle nécessaire.')
+          await this.telegramAPI.sendMessage(chatId, '⚠️ L\'analyse prend un peu plus de temps que prévu, mais pas d\'inquiétude !')
         } else if (analysisData?.success && analysisData?.analysis) {
           const analysis = analysisData.analysis
           console.log('✅ AI Analysis result:', analysis)
@@ -140,7 +140,7 @@ export class PhotoHandler {
             wasteType = analysis.wasteType
             brand = analysis.brand
 
-            await this.telegramAPI.sendMessage(chatId, `✅ <b>Photo analysée !</b> 🤖
+            await this.telegramAPI.sendMessage(chatId, `✅ <b>Photo analysée !</b>
 
 🗑️ <b>Type:</b> ${wasteType}
 📦 <b>Catégorie:</b> ${wasteCategory}
@@ -148,9 +148,7 @@ ${brand ? `🏷️ <b>Marque:</b> ${brand}` : ''}
 
 📝 ${aiDescription}
 
-♻️ <b>Instructions:</b> ${disposalInstructions}
-
-<i>Cette analyse est automatique et sera vérifiée par l'équipe.</i>`)
+♻️ <b>Instructions:</b> ${disposalInstructions}`)
           } else {
             await this.telegramAPI.sendMessage(chatId, '⚠️ Cela ne semble pas être un déchet. Veuillez envoyer une photo claire d\'un déchet.')
             return { success: false, error: 'Not a waste item' }
@@ -158,7 +156,7 @@ ${brand ? `🏷️ <b>Marque:</b> ${brand}` : ''}
         }
       } catch (aiError) {
         console.error('❌ Error calling AI analysis:', aiError)
-        await this.telegramAPI.sendMessage(chatId, '⚠️ Analyse automatique impossible, validation manuelle nécessaire.')
+        await this.telegramAPI.sendMessage(chatId, '⚠️ L\'analyse prend un peu plus de temps que prévu, mais pas d\'inquiétude !')
       }
 
       // Générer un hash simple pour la photo
@@ -199,9 +197,7 @@ ${brand ? `🏷️ <b>Marque:</b> ${brand}` : ''}
       console.log('📸 Photo analyzed and saved successfully, prompting for location...')
       await this.telegramAPI.sendMessage(chatId, `📍 <b>Dernière étape : Partagez votre localisation !</b>
 
-Cliquez sur le bouton ci-dessous pour partager où vous avez pris cette photo.
-
-✅ Votre signalement sera ensuite validé par l'équipe.`, locationKeyboard)
+Cliquez sur le bouton ci-dessous pour partager où vous avez pris cette photo. Cela m'aidera à mieux comprendre la situation ! 🌍`, locationKeyboard)
       console.log('✅ Location request message sent')
 
       return { success: true }

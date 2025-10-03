@@ -78,7 +78,7 @@ export class LocationHandler {
 
       // Aucun calcul automatique de points - tout sera fait manuellement par l'admin
       const awardedPoints = 0
-      const amplitudeMessage = '\n\n📋 <b>Validation manuelle</b> - L\'équipe analysera votre signalement !'
+      const amplitudeMessage = ''
 
       // Créer le signalement avec la photo en attente et les données de classification
       const { data: report, error: reportError } = await this.supabaseClient
@@ -86,7 +86,7 @@ export class LocationHandler {
         .insert({
           user_telegram_id: telegramId,
           photo_url: finalPendingReport.photo_url,
-          description: `Signalement via Telegram - En attente de validation manuelle`,
+          description: `Signalement via Telegram`,
           location_lat: latitude,
           location_lng: longitude,
           status: 'en attente',
@@ -118,17 +118,16 @@ export class LocationHandler {
       
       const totalPendingPoints = (pendingReports || []).reduce((sum, report) => sum + (report.points_awarded || 0), 0) + awardedPoints
 
-      // Message simple pour validation manuelle
-      const pointsText = `📋 <b>Signalement en attente de validation manuelle</b>\n💰 Total confirmé : <b>${currentPoints} points</b>`
+      // Message simple et naturel
+      const pointsText = `💰 <b>Vos points :</b> ${currentPoints} points Himpact`
 
-      const successText = `✅ <b>Signalement soumis avec succès !</b>
+      const successText = `✅ <b>Parfait ! Votre signalement est enregistré !</b>
 
-📍 <b>Coordonnées :</b> ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
-⏳ <b>Statut :</b> En attente de validation par l'équipe
+📍 <b>Localisation :</b> ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
 
-${pointsText}${amplitudeMessage}
+${pointsText}
 
-🌍 Merci pour votre contribution ! Une fois validé par l'équipe, vous recevrez vos points Himpact.`
+🌍 Merci beaucoup pour votre aide ! Votre action compte vraiment pour rendre notre environnement plus propre.`
 
       console.log('🔄 Location processed successfully, sending confirmation messages...')
       
