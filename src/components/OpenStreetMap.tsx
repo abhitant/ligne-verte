@@ -98,6 +98,7 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
   const [mapLoaded, setMapLoaded] = useState(false);
   const [loadingTimeout, setLoadingTimeout] = useState(false);
   const mapRef = useRef<any>(null);
+  const [locationNames, setLocationNames] = useState<Record<string, string>>({});
   
   // Centre sur Abidjan
   const center: [number, number] = [5.3478, -4.0267];
@@ -108,6 +109,33 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
   );
 
   console.log('OpenStreetMap rendered with', filteredReports.length, 'reports');
+
+  // Fonction pour obtenir le nom de la localité via géocodage inverse
+  const fetchLocationName = async (lat: number, lng: number, reportId: string) => {
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=fr`
+      );
+      const data = await response.json();
+      
+      if (data.address) {
+        const { suburb, neighbourhood, quarter, city_district, city, town, village } = data.address;
+        const locality = suburb || neighbourhood || quarter || city_district || town || village || city || 'Abidjan';
+        setLocationNames(prev => ({ ...prev, [reportId]: locality }));
+      }
+    } catch (error) {
+      console.error('Error fetching location name:', error);
+    }
+  };
+
+  // Charger les noms de localités pour tous les rapports visibles
+  useEffect(() => {
+    filteredReports.forEach(report => {
+      if (!locationNames[report.id]) {
+        fetchLocationName(report.coordinates.lat, report.coordinates.lng, report.id);
+      }
+    });
+  }, [filteredReports]);
 
   // Timeout pour forcer le fallback si la carte prend trop de temps
   useEffect(() => {
@@ -219,8 +247,14 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
               <Popup>
                 <div className="p-2 max-w-xs">
                   <h3 className="font-bold text-sm mb-1">{report.user}</h3>
-                  <p className="text-xs text-gray-600 mb-1">{report.location}</p>
-                  <p className="text-xs mb-2">{report.description}</p>
+                  <p className="text-xs text-gray-600 mb-1 font-medium">
+                    {locationNames[report.id] || 'Chargement...'}
+                  </p>
+                  {report.description && 
+                   !report.description.includes('Signalement via Telegram') && 
+                   report.description !== 'Signalement via bot Telegram' && (
+                    <p className="text-xs mb-2">{report.description}</p>
+                  )}
                   <div className="flex items-center justify-between">
                     <span className={`text-xs px-2 py-1 rounded ${
                       report.status === 'validated' ? 'bg-green-100 text-green-800' :
