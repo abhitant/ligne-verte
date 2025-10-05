@@ -104,9 +104,10 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
   // Centre sur Abidjan
   const center: [number, number] = [5.3478, -4.0267];
 
-  // Filtrer les rapports selon le filtre actuel
+  // Filtrer les rapports selon le filtre actuel et exclure les rejetés
   const filteredReports = reports.filter(report => 
-    filter === 'all' || report.status === filter
+    report.status !== 'rejected' &&
+    (filter === 'all' || report.status === filter)
   );
 
   console.log('OpenStreetMap rendered with', filteredReports.length, 'reports');
@@ -220,10 +221,6 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
             <div className="flex items-center gap-3">
               <span className="w-3 h-3 rounded-full bg-orange-500 inline-block"></span> 
               <span className="font-medium text-sm">En attente</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="w-3 h-3 rounded-full bg-red-500 inline-block"></span> 
-              <span className="font-medium text-sm">Rejetés</span>
             </div>
             <div className="pt-3 border-t border-gray-200">
               <span className="text-gray-700 font-semibold text-sm">{filteredReports.length} rapports</span>
