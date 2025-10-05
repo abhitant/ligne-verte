@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { Icon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { Card, CardContent } from '@/components/ui/card';
 
 // Fix pour les markers par défaut dans react-leaflet
 delete (Icon.Default.prototype as any)._getIconUrl;
@@ -208,26 +209,28 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
         </div>
       )}
       {/* Légende et zones d'opération */}
-      <div className="absolute top-4 left-4 z-[1000] bg-white border-2 border-gray-300 rounded-lg shadow-lg px-5 py-4">
-        <div className="text-base font-bold text-gray-900 mb-3">Signalements</div>
-        <div className="space-y-2 text-sm">
-          <div className="flex items-center gap-3">
-            <span className="w-3 h-3 rounded-full bg-green-500 inline-block"></span> 
-            <span className="font-medium">Validés</span>
+      <Card className="absolute top-4 left-4 z-[1000] shadow-xl">
+        <CardContent className="p-6">
+          <h3 className="text-lg font-bold text-gray-900 mb-4">Signalements</h3>
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <span className="w-3 h-3 rounded-full bg-green-500 inline-block"></span> 
+              <span className="font-medium text-sm">Validés</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="w-3 h-3 rounded-full bg-orange-500 inline-block"></span> 
+              <span className="font-medium text-sm">En attente</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="w-3 h-3 rounded-full bg-red-500 inline-block"></span> 
+              <span className="font-medium text-sm">Rejetés</span>
+            </div>
+            <div className="pt-3 border-t border-gray-200">
+              <span className="text-gray-700 font-semibold text-sm">{filteredReports.length} rapports</span>
+            </div>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="w-3 h-3 rounded-full bg-orange-500 inline-block"></span> 
-            <span className="font-medium">En attente</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="w-3 h-3 rounded-full bg-red-500 inline-block"></span> 
-            <span className="font-medium">Rejetés</span>
-          </div>
-          <div className="pt-2 border-t border-gray-200">
-            <span className="text-gray-700 font-semibold">{filteredReports.length} rapports</span>
-          </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
       
       <div style={{ height: '100%', width: '100%' }}>
         <MapContainer 
