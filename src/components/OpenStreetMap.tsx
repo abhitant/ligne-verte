@@ -156,7 +156,7 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
     if (status === 'validé') {
       color = 'green';
     } else if (status === 'en attente') {
-      color = 'yellow';
+      color = 'orange';
     } else if (status === 'rejeté') {
       color = 'red';
     }
@@ -212,7 +212,7 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
         <div className="text-sm font-bold text-foreground mb-2">Zones d'opération</div>
         <div className="space-y-1 text-xs">
           <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-green-500 inline-block"></span> Validés</div>
-          <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-yellow-500 inline-block"></span> En attente</div>
+          <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-orange-500 inline-block"></span> En attente</div>
           <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-red-500 inline-block"></span> Rejetés</div>
           <div className="text-gray-600 mt-1">{filteredReports.length} rapports</div>
         </div>
