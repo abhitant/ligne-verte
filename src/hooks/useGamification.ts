@@ -93,6 +93,8 @@ export const useLeaderboard = (limit: number = 10) => {
           `)
           .gt('points_himpact', 0)
           .order('points_himpact', { ascending: false })
+          .order('reports_count', { ascending: false })
+          .order('created_at', { ascending: true })
           .limit(limit);
 
         if (error) {
