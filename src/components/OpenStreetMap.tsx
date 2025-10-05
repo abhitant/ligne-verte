@@ -150,10 +150,19 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
     return () => clearTimeout(timer);
   }, [mapLoaded, mapError]);
 
-  // Créer des icônes personnalisées - tous rouges comme demandé
+  // Créer des icônes personnalisées selon le statut
   const createCustomIcon = (status: string) => {
+    let color = 'red';
+    if (status === 'validé') {
+      color = 'green';
+    } else if (status === 'en attente') {
+      color = 'yellow';
+    } else if (status === 'rejeté') {
+      color = 'red';
+    }
+    
     return new Icon({
-      iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png`,
+      iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
       shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
       iconSize: [25, 41],
       iconAnchor: [12, 41],
@@ -202,7 +211,9 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
       <div className="absolute top-3 left-3 z-20 bg-background/90 backdrop-blur-sm border rounded-lg shadow px-4 py-3">
         <div className="text-sm font-bold text-foreground mb-2">Zones d'opération</div>
         <div className="space-y-1 text-xs">
-          <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-red-500 inline-block"></span> Signalements</div>
+          <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-green-500 inline-block"></span> Validés</div>
+          <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-yellow-500 inline-block"></span> En attente</div>
+          <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-red-500 inline-block"></span> Rejetés</div>
           <div className="text-gray-600 mt-1">{filteredReports.length} rapports</div>
         </div>
       </div>
