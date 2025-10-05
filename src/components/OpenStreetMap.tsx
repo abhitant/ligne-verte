@@ -208,13 +208,24 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
         </div>
       )}
       {/* Légende et zones d'opération */}
-      <div className="absolute top-3 left-3 z-20 bg-background/90 backdrop-blur-sm border rounded-lg shadow px-4 py-3">
-        <div className="text-sm font-bold text-foreground mb-2">Zones d'opération</div>
-        <div className="space-y-1 text-xs">
-          <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-green-500 inline-block"></span> Validés</div>
-          <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-orange-500 inline-block"></span> En attente</div>
-          <div className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-red-500 inline-block"></span> Rejetés</div>
-          <div className="text-gray-600 mt-1">{filteredReports.length} rapports</div>
+      <div className="absolute top-4 left-4 z-20 bg-white border-2 border-gray-300 rounded-lg shadow-lg px-5 py-4">
+        <div className="text-base font-bold text-gray-900 mb-3">Signalements</div>
+        <div className="space-y-2 text-sm">
+          <div className="flex items-center gap-3">
+            <span className="w-3 h-3 rounded-full bg-green-500 inline-block"></span> 
+            <span className="font-medium">Validés</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="w-3 h-3 rounded-full bg-orange-500 inline-block"></span> 
+            <span className="font-medium">En attente</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="w-3 h-3 rounded-full bg-red-500 inline-block"></span> 
+            <span className="font-medium">Rejetés</span>
+          </div>
+          <div className="pt-2 border-t border-gray-200">
+            <span className="text-gray-700 font-semibold">{filteredReports.length} rapports</span>
+          </div>
         </div>
       </div>
       
