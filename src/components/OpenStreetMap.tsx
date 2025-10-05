@@ -208,7 +208,7 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
         </div>
       )}
       {/* Légende et zones d'opération */}
-      <div className="absolute top-4 left-4 z-20 bg-white border-2 border-gray-300 rounded-lg shadow-lg px-5 py-4">
+      <div className="absolute top-4 left-4 z-[1000] bg-white border-2 border-gray-300 rounded-lg shadow-lg px-5 py-4">
         <div className="text-base font-bold text-gray-900 mb-3">Signalements</div>
         <div className="space-y-2 text-sm">
           <div className="flex items-center gap-3">
