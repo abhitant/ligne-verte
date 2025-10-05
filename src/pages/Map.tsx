@@ -113,29 +113,29 @@ const Map = () => {
                 filter={filter}
               />
               {/* HUD overlay permanent sur la carte */}
-              <div className="absolute top-2 right-2 lg:top-4 lg:right-4 space-y-3 w-60 lg:w-72 pointer-events-auto z-[1000]">
+              <div className="absolute top-2 right-2 sm:top-3 sm:right-3 lg:top-4 lg:right-4 space-y-2 sm:space-y-3 w-56 sm:w-64 lg:w-72 pointer-events-auto z-[1000]">
                 
                 {/* Statistiques compactes HUD */}
-                <div className="bg-primary/80 backdrop-blur-sm border-2 border-accent/60 rounded-lg shadow-2xl relative overflow-hidden">
+                <div className="bg-primary/90 backdrop-blur-md border-2 border-accent/60 rounded-lg shadow-2xl relative overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-transparent rounded-lg"></div>
                   
                   {/* Header avec bouton toggle */}
-                  <div className="relative z-10 p-3 border-b border-accent/30">
+                  <div className="relative z-10 p-2 sm:p-3 border-b border-accent/30">
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Trophy className="w-4 h-4 text-accent" />
-                        <h3 className="text-accent font-bold text-sm tracking-wider">STATS</h3>
+                      <div className="flex items-center gap-1.5 sm:gap-2">
+                        <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent flex-shrink-0" />
+                        <h3 className="text-accent font-bold text-xs sm:text-sm tracking-wider">STATS</h3>
                       </div>
                       <Button
                         size="sm"
                         variant="ghost"
-                        className="h-6 w-6 p-0 hover:bg-accent/20"
+                        className="h-5 w-5 sm:h-6 sm:w-6 p-0 hover:bg-accent/20 flex-shrink-0"
                         onClick={() => setIsHUDOpen(!isHUDOpen)}
                       >
                         {isHUDOpen ? (
-                          <ChevronUp className="w-4 h-4 text-accent" />
+                          <ChevronUp className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent" />
                         ) : (
-                          <ChevronDown className="w-4 h-4 text-accent" />
+                          <ChevronDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent" />
                         )}
                       </Button>
                     </div>
@@ -143,37 +143,43 @@ const Map = () => {
 
                   {/* Contenu pliable */}
                   {isHUDOpen && (
-                    <div className="relative z-10 p-3 space-y-3">
+                    <div className="relative z-10 p-2 sm:p-3 space-y-2 sm:space-y-3">
                       
                       {/* Top 3 Compact */}
-                      <div>
-                        <div className="flex items-center gap-2 mb-2">
-                          <Trophy className="w-4 h-4 text-accent" />
-                          <h3 className="text-accent font-bold text-sm tracking-wider">TOP 3</h3>
+                      {leaderboard.length > 0 ? (
+                        <div>
+                          <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
+                            <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent flex-shrink-0" />
+                            <h3 className="text-accent font-bold text-xs sm:text-sm tracking-wider">TOP 3</h3>
+                          </div>
+                          <div className="space-y-1">
+                            {leaderboard.slice(0, 3).map((user, index) => (
+                               <div key={user.pseudo + user.rank} className="flex items-center gap-1.5 sm:gap-2 text-xs">
+                                 <span className="text-xs sm:text-sm flex-shrink-0">{index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}</span>
+                                 <User className="w-3 h-3 text-accent flex-shrink-0" />
+                                 <span className="text-primary-foreground font-medium flex-1 truncate min-w-0">{user.pseudo}</span>
+                                 <span className="text-accent font-bold text-xs sm:text-sm flex-shrink-0">{user.points_himpact}</span>
+                               </div>
+                            ))}
+                          </div>
                         </div>
-                        <div className="space-y-1">
-                          {leaderboard.slice(0, 3).map((user, index) => (
-                             <div key={user.pseudo + user.rank} className="flex items-center gap-2 text-xs">
-                               <span className="text-sm">{index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}</span>
-                               <User className="w-3 h-3 text-accent" />
-                               <span className="text-primary-foreground font-medium flex-1 truncate">{user.pseudo}</span>
-                               <span className="text-accent font-bold">{user.points_himpact}</span>
-                             </div>
-                          ))}
+                      ) : (
+                        <div className="text-center py-2">
+                          <p className="text-accent/60 text-xs">Aucun joueur</p>
                         </div>
-                      </div>
+                      )}
 
-                        <div className="flex gap-2">
+                      <div className="flex gap-1.5 sm:gap-2">
                         <Button 
                           size="sm" 
-                          className="flex-1 bg-accent/80 text-accent-foreground hover:bg-accent text-xs py-1 h-7"
+                          className="flex-1 bg-accent/80 text-accent-foreground hover:bg-accent text-xs py-1 h-6 sm:h-7"
                           onClick={() => setShowLeaderboard(true)}
                         >
                           Classement
                         </Button>
                         <Button 
                           size="sm" 
-                          className="flex-1 bg-accent/80 text-accent-foreground hover:bg-accent text-xs py-1 h-7"
+                          className="flex-1 bg-accent/80 text-accent-foreground hover:bg-accent text-xs py-1 h-6 sm:h-7"
                           onClick={() => setShowReports(true)}
                         >
                           Signalements
