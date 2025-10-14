@@ -674,7 +674,18 @@ export type Database = {
       }
       get_and_delete_pending_report: {
         Args: Record<PropertyKey, never> | { p_telegram_id: string }
-        Returns: undefined
+        Returns: {
+          brand: string | null
+          created_at: string | null
+          disposal_instructions: string | null
+          file_id: string
+          id: string
+          image_hash: string | null
+          photo_url: string | null
+          telegram_id: string
+          waste_category: string | null
+          waste_type: string | null
+        }
       }
       get_and_delete_pending_report_with_url: {
         Args: { p_telegram_id: string }
