@@ -85,36 +85,20 @@ const ReportsDashboard = () => {
         </div>
 
         {/* Métriques principales */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 max-w-4xl mx-auto">
           <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white">
-            <CardContent className="p-6 text-center">
-              <MapPin className="w-8 h-8 mx-auto mb-3" />
-              <div className="text-3xl font-bold mb-1">{stats.totalReports}</div>
-              <div className="text-green-100 text-sm">Signalements Total</div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
-            <CardContent className="p-6 text-center">
-              <CheckCircle className="w-8 h-8 mx-auto mb-3" />
-              <div className="text-3xl font-bold mb-1">{stats.validatedReports}</div>
-              <div className="text-blue-100 text-sm">Problèmes Résolus</div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white">
-            <CardContent className="p-6 text-center">
-              <Clock className="w-8 h-8 mx-auto mb-3" />
-              <div className="text-3xl font-bold mb-1">{stats.pendingReports}</div>
-              <div className="text-yellow-100 text-sm">En Cours</div>
+            <CardContent className="p-8 text-center">
+              <MapPin className="w-12 h-12 mx-auto mb-4" />
+              <div className="text-5xl font-bold mb-2">{stats.totalReports}</div>
+              <div className="text-green-100 text-base">Signalements Total</div>
             </CardContent>
           </Card>
 
           <Card className="bg-gradient-to-r from-purple-500 to-purple-600 text-white">
-            <CardContent className="p-6 text-center">
-              <Users className="w-8 h-8 mx-auto mb-3" />
-              <div className="text-3xl font-bold mb-1">{stats.uniqueUsers}</div>
-              <div className="text-purple-100 text-sm">Citoyens Actifs</div>
+            <CardContent className="p-8 text-center">
+              <Users className="w-12 h-12 mx-auto mb-4" />
+              <div className="text-5xl font-bold mb-2">{stats.uniqueUsers}</div>
+              <div className="text-purple-100 text-base">Citoyens Actifs</div>
             </CardContent>
           </Card>
         </div>

@@ -80,10 +80,12 @@ export class LocationHandler {
       const needsManualReview = !finalPendingReport.waste_category
 
       // Système de points :
-      // - 10 points de base pour tout signalement validé
+      // - 10 points de base pour tout signalement validé automatiquement par l'IA
       // - 30 points bonus si l'utilisateur fournit une photo de nettoyage (cleanup_photo_url)
-      // Les points seront calculés lors de la validation par l'admin
       const basePoints = 10
+
+      // Déterminer le statut : validé si l'IA a détecté des déchets, en attente sinon
+      const reportStatus = needsManualReview ? 'en attente' : 'validé'
 
       // Créer le signalement avec toutes les données d'analyse IA
       const { data: report, error: reportError } = await this.supabaseClient
@@ -96,7 +98,7 @@ export class LocationHandler {
             : `Signalement via Telegram`,
           location_lat: latitude,
           location_lng: longitude,
-          status: 'en attente',
+          status: reportStatus,
           image_hash: finalPendingReport.image_hash || null,
           waste_category: finalPendingReport.waste_category || 'GENERAL',
           waste_type: finalPendingReport.waste_type || null,
@@ -116,8 +118,22 @@ export class LocationHandler {
 
       console.log(`📊 Points configurés: ${basePoints} points de base`)
 
-      // Ne pas attribuer de points immédiatement - ils seront attribués lors de la validation par l'admin
+      // Attribuer les points immédiatement si validé par l'IA
+      if (!needsManualReview) {
+        const { error: pointsError } = await this.supabaseClient.rpc('add_points_to_user', {
+          p_telegram_id: telegramId,
+          p_points: basePoints
+        })
+        
+        if (pointsError) {
+          console.error('Error adding points:', pointsError)
+        } else {
+          console.log(`✅ ${basePoints} points awarded to user ${telegramId}`)
+        }
+      }
+
       const currentPoints = user?.points_himpact || 0
+      const newPoints = needsManualReview ? currentPoints : currentPoints + basePoints
       const userPseudo = user?.pseudo || firstName || `User ${telegramId.slice(-4)}`
 
       // Message clair indiquant le système de points
@@ -127,10 +143,14 @@ export class LocationHandler {
 
 📍 <b>Localisation :</b> ${latitude.toFixed(6)}, ${longitude.toFixed(6)}
 
-⏳ <b>Statut :</b> En attente de validation
+${needsManualReview 
+  ? `⏳ <b>Statut :</b> En attente de validation
 💰 <b>Vos points actuels :</b> ${currentPoints} points Himpact
 
-<i>💡 Vous gagnerez ${basePoints} points après validation de votre signalement.</i>`
+<i>💡 Vous gagnerez ${basePoints} points après validation de votre signalement.</i>` 
+  : `✅ <b>Statut :</b> Validé automatiquement par l'IA
+💰 <b>Points gagnés :</b> +${basePoints} points ! 
+🏆 <b>Total :</b> ${newPoints} points Himpact`}`
 
       if (hasAIInstructions) {
         successText += `
