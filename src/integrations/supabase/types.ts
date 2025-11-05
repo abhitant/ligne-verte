@@ -532,6 +532,12 @@ export type Database = {
           telegram_id: string
           telegram_username: string | null
         }
+        SetofOptions: {
+          from: "*"
+          to: "users"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       add_to_waitlist: {
         Args: {
@@ -550,6 +556,12 @@ export type Database = {
           phone: string
           status: string | null
           zone: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "waitlist_users"
+          isOneToOne: true
+          isSetofReturn: false
         }
       }
       admin_update_report: {
@@ -577,23 +589,20 @@ export type Database = {
           waste_category: string | null
           waste_type: string | null
         }
+        SetofOptions: {
+          from: "*"
+          to: "reports"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       authenticate_admin: {
         Args: { p_email: string; p_password: string }
         Returns: Json
       }
-      calculate_user_level: {
-        Args: { exp_points: number }
-        Returns: number
-      }
-      cleanup_old_pending_reports: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
-      cleanup_old_processed_updates: {
-        Args: Record<PropertyKey, never>
-        Returns: number
-      }
+      calculate_user_level: { Args: { exp_points: number }; Returns: number }
+      cleanup_old_pending_reports: { Args: never; Returns: number }
+      cleanup_old_processed_updates: { Args: never; Returns: number }
       create_admin: {
         Args: { p_email: string; p_full_name?: string; p_password: string }
         Returns: Json
@@ -633,6 +642,12 @@ export type Database = {
           waste_category: string | null
           waste_type: string | null
         }
+        SetofOptions: {
+          from: "*"
+          to: "reports"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       create_suggestion: {
         Args: {
@@ -648,6 +663,12 @@ export type Database = {
           suggestion_type: string
           telegram_id: string
           updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "suggestions"
+          isOneToOne: true
+          isSetofReturn: false
         }
       }
       create_user_if_not_exists: {
@@ -671,22 +692,36 @@ export type Database = {
           telegram_id: string
           telegram_username: string | null
         }
-      }
-      get_and_delete_pending_report: {
-        Args: Record<PropertyKey, never> | { p_telegram_id: string }
-        Returns: {
-          brand: string | null
-          created_at: string | null
-          disposal_instructions: string | null
-          file_id: string
-          id: string
-          image_hash: string | null
-          photo_url: string | null
-          telegram_id: string
-          waste_category: string | null
-          waste_type: string | null
+        SetofOptions: {
+          from: "*"
+          to: "users"
+          isOneToOne: true
+          isSetofReturn: false
         }
       }
+      get_and_delete_pending_report:
+        | {
+            Args: { p_telegram_id: string }
+            Returns: {
+              brand: string | null
+              created_at: string | null
+              disposal_instructions: string | null
+              file_id: string
+              id: string
+              image_hash: string | null
+              photo_url: string | null
+              telegram_id: string
+              waste_category: string | null
+              waste_type: string | null
+            }
+            SetofOptions: {
+              from: "*"
+              to: "pending_reports"
+              isOneToOne: true
+              isSetofReturn: false
+            }
+          }
+        | { Args: never; Returns: undefined }
       get_and_delete_pending_report_with_url: {
         Args: { p_telegram_id: string }
         Returns: {
@@ -701,11 +736,16 @@ export type Database = {
           waste_category: string | null
           waste_type: string | null
         }
+        SetofOptions: {
+          from: "*"
+          to: "pending_reports"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       get_public_reports: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
-          brand: string
           created_at: string
           description: string
           id: string
@@ -713,14 +753,14 @@ export type Database = {
           location_lng: number
           photo_url: string
           points_awarded: number
-          reporter_hash: string
           reporter_pseudo: string
           status: string
+          user_telegram_id: string
           waste_type: string
         }[]
       }
       get_report_locations: {
-        Args: Record<PropertyKey, never>
+        Args: never
         Returns: {
           id: string
           location_lat: number
@@ -744,6 +784,12 @@ export type Database = {
           telegram_id: string
           telegram_username: string | null
         }
+        SetofOptions: {
+          from: "*"
+          to: "users"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       get_user_by_telegram_id: {
         Args: { p_telegram_id: string }
@@ -761,6 +807,12 @@ export type Database = {
           streak_days: number | null
           telegram_id: string
           telegram_username: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "users"
+          isOneToOne: true
+          isSetofReturn: false
         }
       }
       has_role: {
@@ -800,6 +852,12 @@ export type Database = {
           waste_category: string | null
           waste_type: string | null
         }
+        SetofOptions: {
+          from: "*"
+          to: "reports"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       upsert_pending_report: {
         Args: { p_file_id: string; p_telegram_id: string }
@@ -814,6 +872,12 @@ export type Database = {
           telegram_id: string
           waste_category: string | null
           waste_type: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "pending_reports"
+          isOneToOne: true
+          isSetofReturn: false
         }
       }
       upsert_pending_report_with_ai_data: {
@@ -835,6 +899,12 @@ export type Database = {
           waste_category: string | null
           waste_type: string | null
         }
+        SetofOptions: {
+          from: "*"
+          to: "pending_reports"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       upsert_pending_report_with_url: {
         Args: { p_photo_url: string; p_telegram_id: string }
@@ -850,10 +920,44 @@ export type Database = {
           waste_category: string | null
           waste_type: string | null
         }
+        SetofOptions: {
+          from: "*"
+          to: "pending_reports"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
-      upsert_pending_report_with_waste_data: {
-        Args:
-          | {
+      upsert_pending_report_with_waste_data:
+        | {
+            Args: {
+              p_ai_validated?: boolean
+              p_disposal_instructions?: string
+              p_image_hash: string
+              p_photo_url: string
+              p_telegram_id: string
+              p_waste_category?: string
+            }
+            Returns: {
+              brand: string | null
+              created_at: string | null
+              disposal_instructions: string | null
+              file_id: string
+              id: string
+              image_hash: string | null
+              photo_url: string | null
+              telegram_id: string
+              waste_category: string | null
+              waste_type: string | null
+            }
+            SetofOptions: {
+              from: "*"
+              to: "pending_reports"
+              isOneToOne: true
+              isSetofReturn: false
+            }
+          }
+        | {
+            Args: {
               p_ai_validated?: boolean
               p_brand?: string
               p_disposal_instructions?: string
@@ -863,27 +967,25 @@ export type Database = {
               p_waste_category?: string
               p_waste_type?: string
             }
-          | {
-              p_ai_validated?: boolean
-              p_disposal_instructions?: string
-              p_image_hash: string
-              p_photo_url: string
-              p_telegram_id: string
-              p_waste_category?: string
+            Returns: {
+              brand: string | null
+              created_at: string | null
+              disposal_instructions: string | null
+              file_id: string
+              id: string
+              image_hash: string | null
+              photo_url: string | null
+              telegram_id: string
+              waste_category: string | null
+              waste_type: string | null
             }
-        Returns: {
-          brand: string | null
-          created_at: string | null
-          disposal_instructions: string | null
-          file_id: string
-          id: string
-          image_hash: string | null
-          photo_url: string | null
-          telegram_id: string
-          waste_category: string | null
-          waste_type: string | null
-        }
-      }
+            SetofOptions: {
+              from: "*"
+              to: "pending_reports"
+              isOneToOne: true
+              isSetofReturn: false
+            }
+          }
       validate_report_and_award_points: {
         Args: { p_report_id: string; p_status: string }
         Returns: {
@@ -904,6 +1006,12 @@ export type Database = {
           user_telegram_id: string
           waste_category: string | null
           waste_type: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "reports"
+          isOneToOne: true
+          isSetofReturn: false
         }
       }
     }
