@@ -700,6 +700,7 @@ export type Database = {
         }
       }
       get_and_delete_pending_report:
+        | { Args: never; Returns: undefined }
         | {
             Args: { p_telegram_id: string }
             Returns: {
@@ -721,7 +722,6 @@ export type Database = {
               isSetofReturn: false
             }
           }
-        | { Args: never; Returns: undefined }
       get_and_delete_pending_report_with_url: {
         Args: { p_telegram_id: string }
         Returns: {
