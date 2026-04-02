@@ -103,11 +103,9 @@ serve(async (req) => {
           console.log(`🖼️ Image received: ${imageId}`)
 
           if (imageId && WHATSAPP_ACCESS_TOKEN) {
-            // Download image from WhatsApp
             const imageUrl = await downloadWhatsAppMedia(imageId, WHATSAPP_ACCESS_TOKEN)
             
             if (imageUrl) {
-              // Upload to Supabase Storage
               const mediaResponse = await fetch(imageUrl, {
                 headers: { 'Authorization': `Bearer ${WHATSAPP_ACCESS_TOKEN}` }
               })
@@ -123,15 +121,75 @@ serve(async (req) => {
                   .from('report-photos')
                   .getPublicUrl(fileName)
 
-                // Save pending report
-                await supabase.rpc('upsert_pending_report_with_url', {
+                const photoUrl = publicUrl.publicUrl
+
+                await sendWhatsAppMessage(from, '📸 Photo reçue ! 🔍 Analyse en cours...')
+
+                // 🤖 AI Analysis with Gemini via analyze-waste-image edge function
+                let wasteCategory = null
+                let wasteType = null
+                let brand = null
+                let disposalInstructions = null
+                let aiDescription = null
+
+                try {
+                  const analysisResponse = await fetch(
+                    `${SUPABASE_URL}/functions/v1/analyze-waste-image`,
+                    {
+                      method: 'POST',
+                      headers: {
+                        'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({ imageUrl: photoUrl })
+                    }
+                  )
+
+                  const analysisData = await analysisResponse.json()
+                  console.log('🤖 AI analysis result:', JSON.stringify(analysisData))
+
+                  if (analysisData?.success && analysisData?.analysis) {
+                    const analysis = analysisData.analysis
+
+                    if (analysis.isWaste) {
+                      wasteCategory = analysis.category
+                      wasteType = analysis.wasteType
+                      brand = analysis.brand
+                      disposalInstructions = analysis.disposalInstructions
+                      aiDescription = analysis.description
+
+                      await sendWhatsAppMessage(from, 
+                        `✅ *Déchet identifié !*\n\n🗑️ *Type:* ${wasteType}\n📦 *Catégorie:* ${wasteCategory}${brand ? `\n🏷️ *Marque:* ${brand}` : ''}\n\n📝 ${aiDescription}\n\n♻️ *Instructions:* ${disposalInstructions}\n\n📍 Envoyez maintenant votre *localisation* pour finaliser le signalement !\n_Appuyez sur 📎 → Localisation → Position actuelle_`)
+                    } else {
+                      await sendWhatsAppMessage(from,
+                        `🔍 L'analyse ne détecte pas clairement de déchet sur cette photo.\n\nVotre signalement sera tout de même pris en compte pour vérification manuelle.\n\n📍 Envoyez votre *localisation* pour continuer.\n_Appuyez sur 📎 → Localisation → Position actuelle_`)
+                    }
+                  } else {
+                    await sendWhatsAppMessage(from,
+                      `📸 Photo enregistrée !\n\n📍 Envoyez votre *localisation* pour finaliser.\n_Appuyez sur 📎 → Localisation → Position actuelle_`)
+                  }
+                } catch (aiError) {
+                  console.error('❌ AI analysis error:', aiError)
+                  await sendWhatsAppMessage(from,
+                    `📸 Photo enregistrée !\n\n📍 Envoyez votre *localisation* pour finaliser.\n_Appuyez sur 📎 → Localisation → Position actuelle_`)
+                }
+
+                // Calculate image hash
+                const hashBuffer = await crypto.subtle.digest('SHA-256', imageBuffer)
+                const hashArray = Array.from(new Uint8Array(hashBuffer))
+                const imageHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 32)
+
+                // Save pending report with AI data
+                await supabase.rpc('upsert_pending_report_with_waste_data', {
                   p_telegram_id: `wa_${from}`,
-                  p_photo_url: publicUrl.publicUrl
+                  p_photo_url: photoUrl,
+                  p_image_hash: imageHash,
+                  p_waste_category: wasteCategory,
+                  p_waste_type: wasteType,
+                  p_brand: brand,
+                  p_disposal_instructions: disposalInstructions
                 })
 
-                await sendWhatsAppMessage(from,
-                  `✅ Photo reçue ! Maintenant, envoyez-moi votre *localisation* 📍 pour finaliser le signalement.\n\n_Appuyez sur le trombone (📎) → Localisation → Envoyer la position actuelle_`
-                )
               } else {
                 console.error('Upload error:', uploadError)
                 await sendWhatsAppMessage(from, '❌ Erreur lors du traitement de la photo. Réessayez.')
