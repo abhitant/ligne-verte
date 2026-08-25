@@ -1,114 +1,103 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, Trophy } from "lucide-react";
+import { MapPin, Trophy, Radar } from "lucide-react";
 import { Link } from "react-router-dom";
 import OpenStreetMap from "@/components/OpenStreetMap";
-import Leaderboard from "@/components/gamification/Leaderboard";
 import { useLeaderboard } from "@/hooks/useGamification";
 
 const CommunitySection = () => {
   const { data: users = [] } = useLeaderboard(10);
 
   return (
-    <div className="py-20 bg-background">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-            Nous sommes en guerre
-          </h2>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-            Guerre contre les déchets: chaque action compte. Rejoins le mouvement et transforme ton quartier en gagnant des points Himpact.
+    <section className="relative py-24 bg-background overflow-hidden">
+      <div className="absolute inset-0 hud-grid opacity-25 pointer-events-none" />
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div>
+            <p className="hud-label mb-4">Centre de commandement</p>
+            <h2 className="font-display text-3xl md:text-5xl font-bold uppercase leading-tight">
+              Théâtre d'<span className="text-accent">opérations</span>
+            </h2>
+          </div>
+          <p className="text-muted-foreground max-w-md">
+            Chaque signalement validé apparaît en direct. La cité devient une carte vivante que
+            la communauté surveille ensemble.
           </p>
         </div>
 
-        {/* Éléments visuels - Style Gaming */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-          {/* Carte - Style Gaming */}
-          <Card className="bg-primary text-primary-foreground border-2 border-accent/50 shadow-2xl relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-transparent"></div>
-            <CardHeader className="relative z-10 pb-2">
-              <CardTitle className="flex items-center gap-2 text-accent font-bold text-lg tracking-wider">
-                <MapPin className="w-5 h-5 text-accent animate-pulse" />
-                ZONE D'OPÉRATION
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-0 relative z-10">
-              <div className="h-96 rounded-b-lg overflow-hidden border-t-2 border-accent/30">
-                <OpenStreetMap 
-                  reports={[]}
-                  selectedReport={null}
-                  onReportSelect={() => {}}
-                  filter="all"
-                />
-              </div>
-            </CardContent>
-          </Card>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Carte tactique */}
+          <div className="lg:col-span-2 hud-panel p-4">
+            <div className="flex items-center justify-between mb-3">
+              <span className="hud-label flex items-center gap-2">
+                <Radar className="w-4 h-4" />
+                Carte tactique · live
+              </span>
+              <span className="hud-meta">SECTEUR ABJ</span>
+            </div>
+            <div className="h-[420px] overflow-hidden border border-border/70">
+              <OpenStreetMap
+                reports={[]}
+                selectedReport={null}
+                onReportSelect={() => {}}
+                filter="all"
+              />
+            </div>
+            <Link to="/carte" className="block mt-4">
+              <Button className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-display uppercase tracking-widest">
+                <MapPin className="w-5 h-5 mr-2" />
+                Accéder à la carte
+              </Button>
+            </Link>
+          </div>
 
-          {/* Leaderboard - Style Gaming */}
-          <Card className="bg-primary text-primary-foreground border-2 border-accent/50 shadow-2xl relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-transparent"></div>
-            <CardHeader className="relative z-10 pb-2">
-              <CardTitle className="flex items-center gap-2 text-accent font-bold text-lg tracking-wider">
-                <Trophy className="w-5 h-5 text-accent animate-pulse" />
-                🏆 LES PLUS HIMPACTANTS
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-4 relative z-10 border-t-2 border-accent/30">
-              <div className="h-80 overflow-y-auto">
-                <div className="space-y-3">
-                  {users.slice(0, 3).map((user, index) => (
-                    <div 
-                      key={user.pseudo + index} 
-                      className="flex items-center gap-3 p-3 rounded-lg bg-accent/20 border border-accent/40 hover:bg-accent/30 transition-all"
-                    >
-                      <div className="flex items-center justify-center w-10 h-10 rounded-full bg-accent text-accent-foreground font-bold text-lg border-2 border-accent-foreground shadow-lg">
-                        {index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'}
-                      </div>
-                      <div className="flex-1">
-                        <p className="font-bold text-primary-foreground text-sm tracking-wide">{user.pseudo}</p>
-                        <p className="text-xs text-accent font-bold">{user.points_himpact} PTS</p>
-                      </div>
-                    </div>
-                  ))}
-                  {users.length === 0 && (
-                    <div className="text-center py-8 text-primary-foreground/80">
-                      <div className="w-12 h-12 mx-auto mb-2 bg-accent/20 rounded-full flex items-center justify-center border-2 border-accent/40">
-                        <Trophy className="w-6 h-6 text-accent" />
-                      </div>
-                      <p className="font-bold text-sm tracking-wider">AUCUN HÉROS</p>
-                      <p className="text-xs text-accent">En attente de recrues...</p>
-                    </div>
-                  )}
-                  
-                  {/* Bouton Voir Plus */}
-                  <div className="pt-4">
-                    <Link to="/classement">
-                      <Button 
-                        size="sm" 
-                        className="w-full bg-accent text-accent-foreground hover:bg-accent/80 border-2 border-accent-foreground/20 font-bold text-sm tracking-wider hover:scale-105 transition-transform"
-                      >
-                        ⚡ VOIR PLUS ⚡
-                      </Button>
-                    </Link>
+          {/* Classement opérateurs */}
+          <div className="hud-panel p-4 flex flex-col">
+            <div className="flex items-center justify-between mb-3">
+              <span className="hud-label flex items-center gap-2">
+                <Trophy className="w-4 h-4" />
+                Top opérateurs
+              </span>
+              <span className="hud-meta">HIMPACT</span>
+            </div>
+
+            <div className="flex-1 space-y-px bg-border/60 border border-border/60">
+              {users.slice(0, 5).map((user, index) => (
+                <div
+                  key={`${user.pseudo}-${index}`}
+                  className="flex items-center gap-3 bg-card p-4 hover:bg-surface transition-colors"
+                >
+                  <span className="font-mono text-xs text-accent w-6">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-display uppercase tracking-wide truncate">{user.pseudo}</p>
+                    <p className="hud-meta">{user.reports_count || 0} missions</p>
                   </div>
+                  <span className="font-mono text-accent text-sm">{user.points_himpact}</span>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+              ))}
 
-        {/* CTA - Style Gaming */}
-        <div className="text-center">
-          <Link to="/map">
-            <Button className="bg-accent hover:bg-accent/80 text-accent-foreground px-12 py-6 text-xl font-bold rounded-xl shadow-xl transform hover:scale-105 transition-all border-2 border-accent-foreground/20 tracking-wider">
-              <MapPin className="w-6 h-6 mr-3" />
-              ACCÉDER À LA CARTE
-            </Button>
-          </Link>
+              {users.length === 0 && (
+                <div className="bg-card p-8 text-center">
+                  <Trophy className="w-8 h-8 mx-auto mb-3 text-accent/60" />
+                  <p className="font-display uppercase tracking-wide text-sm">Aucun opérateur</p>
+                  <p className="hud-meta mt-1">En attente de recrues…</p>
+                </div>
+              )}
+            </div>
+
+            <Link to="/classement" className="block mt-4">
+              <Button
+                variant="outline"
+                className="w-full border-accent/50 text-accent hover:bg-accent hover:text-accent-foreground font-mono text-xs uppercase tracking-[0.2em] bg-transparent"
+              >
+                Voir le classement complet
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
