@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Eye, Users, LineChart, ArrowRight } from "lucide-react";
-import deboraPoint from "@/assets/debora-point.png";
+import DeboraSay from "@/components/landing/DeboraSay";
+
 
 const reasons = [
   {
