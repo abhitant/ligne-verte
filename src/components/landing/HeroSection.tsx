@@ -1,23 +1,12 @@
-import { ChevronDown, CheckCircle2, Clock, Users } from "lucide-react";
+import { ChevronDown, MessageCircle, MessageSquare } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useReports } from "@/hooks/useReports";
-import { useLeaderboard } from "@/hooks/useGamification";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { TELEGRAM_BOT_URL, WHATSAPP_INVITE_URL } from "@/config/links";
 import deboraHero from "@/assets/debora-hero-torso.png";
 
 
 const HeroSection = () => {
   const [currentImage, setCurrentImage] = useState(0);
-  const { data: reports = [] } = useReports();
-  const { data: operators = [] } = useLeaderboard(100);
-
-  const validated = reports.filter((r) => r.status === "validated").length;
-  const pending = reports.filter((r) => r.status === "pending").length;
-
-  const stats = [
-    { icon: CheckCircle2, label: "Missions validées", value: validated },
-    { icon: Clock, label: "En cours de vérification", value: pending },
-    { icon: Users, label: "Agents sur le terrain", value: operators.length },
-  ];
 
   const images = [
     "/lovable-uploads/41b3a1b4-03ed-4912-95dd-05f5880046d0.png",
@@ -74,7 +63,7 @@ const HeroSection = () => {
               <div className="absolute top-1/2 -right-2 h-4 w-4 -translate-y-1/2 rotate-45 border-r border-t border-accent/30 bg-card" />
             </div>
 
-            <div className="mt-10">
+            <div className="mt-10 flex flex-wrap items-center gap-4">
               <button
                 onClick={scrollToNext}
                 className="group relative inline-flex items-center gap-4 overflow-hidden border border-accent/50 bg-accent/10 px-8 py-4 font-display text-sm uppercase tracking-[0.25em] text-accent transition-all duration-300 hover:bg-accent hover:text-accent-foreground hover:shadow-[0_0_40px_hsl(var(--accent)/0.45)]"
@@ -87,6 +76,37 @@ const HeroSection = () => {
                   <ChevronDown className="h-4 w-4 animate-bounce" />
                 </span>
               </button>
+
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button className="group relative inline-flex items-center gap-3 overflow-hidden border border-border bg-card px-6 py-4 font-display text-sm uppercase tracking-[0.2em] text-foreground transition-all duration-300 hover:border-accent/50 hover:text-accent hover:shadow-[0_0_30px_hsl(var(--accent)/0.2)]">
+                    <span className="absolute inset-y-0 left-0 w-0 bg-accent/10 transition-all duration-300 group-hover:w-full" />
+                    <span className="relative z-10">Contacter Déborah directement</span>
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent className="w-64 border-accent/30 bg-card/95 backdrop-blur-md p-0">
+                  <div className="p-1">
+                    <a
+                      href={WHATSAPP_INVITE_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 rounded px-3 py-3 text-sm font-mono uppercase tracking-widest text-foreground transition-colors hover:bg-accent/10 hover:text-accent"
+                    >
+                      <MessageCircle className="h-4 w-4 text-accent" />
+                      WhatsApp
+                    </a>
+                    <a
+                      href={TELEGRAM_BOT_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 rounded px-3 py-3 text-sm font-mono uppercase tracking-widest text-foreground transition-colors hover:bg-accent/10 hover:text-accent"
+                    >
+                      <MessageSquare className="h-4 w-4 text-accent" />
+                      Telegram
+                    </a>
+                  </div>
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
 
@@ -128,29 +148,6 @@ const HeroSection = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Stats alignées en bas du Hero */}
-      <div className="absolute inset-x-0 bottom-0 z-30 border-t border-border/70 bg-background/80 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-3 divide-x divide-border/70">
-            {stats.map((s) => {
-              const Icon = s.icon;
-              return (
-                <div key={s.label} className="p-4 sm:p-6 text-center">
-                  <div className="flex items-center justify-center gap-2 mb-2">
-                    <Icon className="w-4 h-4 text-accent" />
-                    <span className="hud-meta hidden sm:inline">{s.label}</span>
-                  </div>
-                  <p className="font-display text-2xl sm:text-3xl lg:text-4xl text-foreground tabular-nums">
-                    {String(s.value).padStart(2, "0")}
-                  </p>
-                  <p className="hud-meta sm:hidden mt-1">{s.label}</p>
-                </div>
-              );
-            })}
           </div>
         </div>
       </div>
