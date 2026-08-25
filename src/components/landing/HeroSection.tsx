@@ -144,12 +144,12 @@ const HeroSection = () => {
           <div className="lg:col-span-6 xl:col-span-6 relative flex items-end justify-center lg:justify-end">
             <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-xl">
               {/* Bulle de dialogue */}
-              <div className="absolute top-4 left-0 lg:-left-8 z-20 max-w-[260px] hud-panel p-4 shadow-[0_0_40px_hsl(var(--accent)/0.15)]">
+              <div className="absolute top-6 right-0 lg:-right-4 z-20 max-w-[260px] hud-panel p-4 shadow-[0_0_40px_hsl(var(--accent)/0.15)]">
                 <p className="hud-label mb-2">Débora // standardiste</p>
                 <p className="text-sm text-foreground leading-relaxed">
                   « Hello, moi c'est Déborah et j'ai une mission pour toi. »
                 </p>
-                <div className="absolute -bottom-2 right-8 w-4 h-4 bg-card border-r border-b border-accent/30 rotate-45" />
+                <div className="absolute -bottom-2 right-10 w-4 h-4 bg-card border-r border-b border-accent/30 rotate-45" />
               </div>
 
               <img
