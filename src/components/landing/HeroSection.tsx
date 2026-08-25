@@ -3,7 +3,7 @@ import WaitlistModal from "@/components/WaitlistModal";
 import { WHATSAPP_INVITE_URL, TELEGRAM_BOT_URL } from "@/config/links";
 import { Radio, MessageCircle, Activity } from "lucide-react";
 import { useEffect, useState } from "react";
-import deboraPoint from "@/assets/debora-point.png";
+import deboraHero from "@/assets/debora-hero-present.png";
 
 const HeroSection = () => {
   const [currentImage, setCurrentImage] = useState(0);
@@ -90,16 +90,16 @@ const HeroSection = () => {
               <span className="hud-meta">Abidjan · Côte d'Ivoire</span>
             </div>
 
-            <h1 className="font-display text-4xl sm:text-5xl lg:text-7xl font-bold leading-[0.95] uppercase">
-              Aide-moi à rendre
-              <span className="block text-accent text-glow">ton quartier zo</span>
-            </h1>
-
-            <p className="mt-6 max-w-2xl text-lg md:text-xl text-muted-foreground leading-relaxed">
-              Aide-moi à rendre ton quartier zo et prends tes points. Déchets, éclairage cassé,
-              caniveau bouché, route abîmée : tu me l'envoies en photo, je vérifie, je place le point
-              sur la carte et je te crédite en points Himpact.
-            </p>
+            <div className="hud-panel relative max-w-2xl px-5 py-6 sm:px-7 sm:py-8 shadow-[0_0_40px_hsl(var(--accent)/0.15)]">
+              <p className="hud-label mb-4">Débora // standardiste</p>
+              <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.05] uppercase">
+                Hello, j'ai une mission pour toi.
+                <span className="mt-2 block text-accent text-glow">
+                  Aide-moi à rendre ton quartier zo.
+                </span>
+              </h1>
+              <div className="absolute top-1/2 -right-2 h-4 w-4 -translate-y-1/2 rotate-45 border-r border-t border-accent/30 bg-card" />
+            </div>
 
             <div className="mt-8 hud-panel px-4 py-3 max-w-xl">
               <div className="flex items-center gap-3">
@@ -140,25 +140,16 @@ const HeroSection = () => {
             </div>
           </div>
 
-          {/* La même Débora que dans les autres sections, ancrée à droite et tournée vers le texte. */}
+          {/* Pose Hero dédiée : Débora entière, tournée vers le message. */}
           <div className="min-[900px]:col-span-5 lg:col-span-6 relative flex items-end justify-center min-[900px]:justify-end self-stretch min-h-[420px] min-[900px]:min-h-[540px] lg:min-h-[min(660px,calc(100svh-9rem))]">
             <div className="relative w-full h-full max-w-md lg:max-w-xl flex items-end justify-center min-[900px]:justify-end">
-              {/* Bulle de dialogue */}
-              <div className="absolute top-0 left-0 min-[900px]:-left-10 lg:-left-8 z-20 max-w-[250px] lg:max-w-[280px] hud-panel p-4 shadow-[0_0_40px_hsl(var(--accent)/0.15)]">
-                <p className="hud-label mb-2">Débora // standardiste</p>
-                <p className="text-sm text-foreground leading-relaxed">
-                  « Hello, moi c'est Déborah et j'ai une mission pour toi. »
-                </p>
-                <div className="absolute -bottom-2 right-10 w-4 h-4 bg-card border-l border-b border-accent/30 rotate-45" />
-              </div>
-
               <img
-                src={deboraPoint}
-                alt="Déborah, la standardiste de La Ligne Verte, te donne une mission"
-                width={768}
-                height={1024}
+                src={deboraHero}
+                alt="Déborah, la standardiste de La Ligne Verte, présente ta mission"
+                width={1024}
+                height={1536}
                 loading="eager"
-                className="relative z-10 w-auto h-full max-h-[560px] min-[900px]:max-h-[540px] lg:max-h-[min(680px,calc(100svh-9rem))] object-contain object-bottom -scale-x-100 drop-shadow-[0_0_40px_hsl(var(--accent)/0.2)] animate-rise"
+                className="relative z-10 h-auto w-full max-w-[330px] min-[900px]:max-w-[390px] lg:max-w-[460px] object-contain object-bottom drop-shadow-[0_0_40px_hsl(var(--accent)/0.2)] animate-rise"
               />
             </div>
           </div>
