@@ -46,7 +46,7 @@ const Navigation = () => {
               <span className="font-display text-base sm:text-lg uppercase tracking-widest text-foreground">
                 Ligne Verte
               </span>
-              <span className="hud-meta hidden sm:block mt-1">Command center · CIV</span>
+              
             </div>
           </Link>
 
