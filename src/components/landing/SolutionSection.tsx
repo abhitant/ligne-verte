@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Camera, MapPin, Trophy, MessageSquare } from "lucide-react";
 import { TELEGRAM_BOT_URL } from "@/config/links";
+import deboraWave from "@/assets/debora-wave.png";
+
 
 const steps = [
   {
@@ -41,15 +43,18 @@ const SolutionSection = () => {
               <span className="hud-label">Fiche agent // Débora</span>
               <span className="hud-meta">NIV. ∞</span>
             </div>
-            <div className="relative overflow-hidden border border-border/70">
+            <div className="relative overflow-hidden border border-border/70 bg-surface/60 flex items-end justify-center">
               <img
-                src="/lovable-uploads/79ecd174-464d-4573-a561-22942396adf3.png"
-                alt="Débora, agent d'accueil de La Ligne Verte"
-                className="w-full h-auto"
+                src={deboraWave}
+                alt="Débora, standardiste de La Ligne Verte, en gilet jaune"
+                width={768}
+                height={1024}
+                className="w-full h-auto max-h-[420px] object-contain"
                 loading="lazy"
               />
               <div className="absolute inset-0 hud-scanlines opacity-30 pointer-events-none" />
             </div>
+
             <p className="mt-5 text-muted-foreground italic leading-relaxed">
               « Hello mon, c'est moi Débora, la standardiste de la Ligne Verte. J'ai une mission
               pour toi : aide-moi à rendre ton quartier zo. Envoie-moi ce qui ne va pas, je

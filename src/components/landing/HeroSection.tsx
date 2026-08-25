@@ -92,7 +92,7 @@ const HeroSection = () => {
             </div>
 
             <p className="font-mono text-sm md:text-base text-accent mb-5">
-              « Monsieur Prime, c'est moi la standardiste — toi, tu es mon agent terrain. »
+              « Hello ! C'est moi Débora, la standardiste. Aide-moi à rendre ton quartier zo. »
             </p>
 
             <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold leading-[0.95] uppercase">
@@ -148,8 +148,9 @@ const HeroSection = () => {
                 alt="Débora, la standardiste de La Ligne Verte, fait signe"
                 width={768}
                 height={1024}
-                className="hidden lg:block absolute -top-52 right-2 h-56 w-auto animate-rise drop-shadow-[0_0_30px_hsl(var(--accent)/0.25)]"
+                className="hidden lg:block absolute -top-72 right-0 h-72 w-auto animate-rise drop-shadow-[0_0_30px_hsl(var(--accent)/0.25)]"
               />
+
               <div className="flex items-center justify-between">
                 <span className="hud-label">Unité 001 · Débora</span>
                 <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
