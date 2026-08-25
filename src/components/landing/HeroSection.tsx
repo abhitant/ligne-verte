@@ -3,7 +3,7 @@ import WaitlistModal from "@/components/WaitlistModal";
 import { WHATSAPP_INVITE_URL, TELEGRAM_BOT_URL } from "@/config/links";
 import { Radio, MessageCircle, Activity } from "lucide-react";
 import { useEffect, useState } from "react";
-import deboraHero from "@/assets/debora-hero.png";
+import deboraPoint from "@/assets/debora-point.png";
 
 const HeroSection = () => {
   const [currentImage, setCurrentImage] = useState(0);
@@ -56,7 +56,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section id="mission" className="relative min-h-screen flex items-center overflow-hidden">
+    <section id="mission" className="relative min-h-[calc(100svh-4rem)] flex items-center overflow-hidden">
       {/* Fond photo */}
       {images.map((image, index) => (
         <div
@@ -78,8 +78,8 @@ const HeroSection = () => {
       <div className="absolute inset-0 hud-scanlines opacity-40 pointer-events-none" />
       <div className="absolute inset-x-0 top-0 h-px bg-accent/40 animate-scan-line pointer-events-none" />
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-28">
-        <div className="grid lg:grid-cols-12 gap-8 lg:gap-6 items-end">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-center">
           {/* Texte à gauche */}
           <div className="lg:col-span-6 xl:col-span-6">
             <div className="flex flex-wrap items-center gap-3 mb-6">
@@ -140,25 +140,25 @@ const HeroSection = () => {
             </div>
           </div>
 
-          {/* Débora à droite, grande, regardant à gauche */}
-          <div className="lg:col-span-6 xl:col-span-6 relative flex items-end justify-center lg:justify-end">
-            <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-xl">
+          {/* La même Débora que dans les autres sections, ancrée à droite et tournée vers le texte. */}
+          <div className="lg:col-span-6 xl:col-span-6 relative flex items-end justify-center lg:justify-end self-stretch min-h-[420px] lg:min-h-[min(660px,calc(100svh-9rem))]">
+            <div className="relative w-full h-full max-w-md lg:max-w-xl flex items-end justify-end">
               {/* Bulle de dialogue */}
-              <div className="absolute top-6 right-0 lg:-right-4 z-20 max-w-[260px] hud-panel p-4 shadow-[0_0_40px_hsl(var(--accent)/0.15)]">
+              <div className="absolute top-2 left-0 lg:-left-8 z-20 max-w-[280px] hud-panel p-4 shadow-[0_0_40px_hsl(var(--accent)/0.15)]">
                 <p className="hud-label mb-2">Débora // standardiste</p>
                 <p className="text-sm text-foreground leading-relaxed">
                   « Hello, moi c'est Déborah et j'ai une mission pour toi. »
                 </p>
-                <div className="absolute -bottom-2 left-10 w-4 h-4 bg-card border-l border-b border-accent/30 rotate-45" />
+                <div className="absolute -bottom-2 right-10 w-4 h-4 bg-card border-l border-b border-accent/30 rotate-45" />
               </div>
 
               <img
-                src={deboraHero}
+                src={deboraPoint}
                 alt="Déborah, la standardiste de La Ligne Verte, te donne une mission"
-                width={1024}
+                width={768}
                 height={1024}
                 loading="eager"
-                className="relative z-10 w-full h-auto max-h-[60vh] lg:max-h-[78vh] object-contain drop-shadow-[0_0_40px_hsl(var(--accent)/0.2)] animate-rise"
+                className="relative z-10 w-auto h-full max-h-[560px] lg:max-h-[min(680px,calc(100svh-9rem))] object-contain object-bottom -scale-x-100 drop-shadow-[0_0_40px_hsl(var(--accent)/0.2)] animate-rise"
               />
             </div>
           </div>
