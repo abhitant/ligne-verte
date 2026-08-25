@@ -152,26 +152,20 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
     return () => clearTimeout(timer);
   }, [mapLoaded, mapError]);
 
-  // Créer des icônes personnalisées selon le statut
+  // Marqueurs HUD selon le statut
   const createCustomIcon = (status: string) => {
-    let color = 'red';
-    if (status === 'validé') {
-      color = 'green';
-    } else if (status === 'en attente') {
-      color = 'orange';
-    } else if (status === 'rejeté') {
-      color = 'red';
-    }
-    
-    return new Icon({
-      iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41]
+    const validated = status === 'validated' || status === 'validé';
+    const color = validated ? 'hsl(78 100% 60%)' : 'hsl(38 96% 56%)';
+
+    return divIcon({
+      className: '',
+      html: `<span style="display:block;width:16px;height:16px;border-radius:9999px;background:${color};box-shadow:0 0 0 3px ${color}33, 0 0 14px ${color};border:2px solid hsl(158 45% 5%);"></span>`,
+      iconSize: [16, 16],
+      iconAnchor: [8, 8],
+      popupAnchor: [0, -10],
     });
   };
+
 
   // Si il y a une erreur ou timeout, afficher le fallback
   if (mapError || loadingTimeout) {
