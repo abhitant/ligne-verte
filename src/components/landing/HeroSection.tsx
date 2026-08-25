@@ -53,17 +53,18 @@ const HeroSection = () => {
         <div className="grid min-[900px]:grid-cols-12 gap-6 min-[900px]:gap-4 lg:gap-8 items-center">
           {/* Texte à gauche */}
           <div className="min-[900px]:col-span-6 lg:col-span-6 relative z-20">
-            <div className="hud-panel relative max-w-2xl px-5 py-6 sm:px-7 sm:py-8 shadow-[0_0_40px_hsl(var(--accent)/0.15)]">
-              <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.05] uppercase">
+            <div className="hud-panel relative max-w-2xl px-4 py-5 sm:px-7 sm:py-8 shadow-[0_0_40px_hsl(var(--accent)/0.15)]">
+              <h1 className="font-display text-2xl sm:text-4xl lg:text-5xl font-bold leading-[1.08] uppercase">
                 Hello, j'ai une mission pour toi.
                 <span className="mt-2 block text-accent text-glow">
                   Aide-moi à rendre ton quartier zo.
                 </span>
               </h1>
-              <div className="absolute top-1/2 -right-2 h-4 w-4 -translate-y-1/2 rotate-45 border-r border-t border-accent/30 bg-card" />
+              <div className="hidden min-[900px]:block absolute top-1/2 -right-2 h-4 w-4 -translate-y-1/2 rotate-45 border-r border-t border-accent/30 bg-card" />
             </div>
 
-            <div className="mt-10 grid max-w-2xl grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="mt-5 min-[900px]:mt-10 grid max-w-2xl grid-cols-1 sm:grid-cols-2 gap-3">
+
               <button
                 onClick={scrollToNext}
                 className="group relative inline-flex h-14 w-full items-center justify-center gap-3 overflow-hidden border border-accent/50 bg-accent/10 px-4 font-display text-xs sm:text-sm uppercase tracking-[0.18em] text-accent transition-all duration-300 hover:bg-accent hover:text-accent-foreground hover:shadow-[0_0_40px_hsl(var(--accent)/0.45)]"
