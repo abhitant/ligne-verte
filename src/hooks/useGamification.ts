@@ -129,23 +129,21 @@ export const useUserStats = (telegramId?: string) => {
       if (!telegramId) return null;
 
       const { data, error } = await supabase
-        .from('users')
+        .from('user_public_profiles')
         .select(`
           telegram_id,
           pseudo,
           experience_points,
           level_current,
           reports_count,
-          cleanups_count,
-          streak_days,
-          badges,
-          last_activity_date
+          badges
         `)
         .eq('telegram_id', telegramId)
         .single();
 
       if (error) throw error;
-      return data;
+      return { ...data, cleanups_count: 0, streak_days: 0, last_activity_date: null };
+
     },
     enabled: !!telegramId,
   });
