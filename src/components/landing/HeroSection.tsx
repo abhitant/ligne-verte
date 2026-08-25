@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
-import deboraHero from "@/assets/debora-hero-natural.png";
+import deboraHero from "@/assets/debora-hero-torso.png";
 
 
 const HeroSection = () => {
