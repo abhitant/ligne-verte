@@ -41,9 +41,9 @@ const ReportDetails = () => {
       try {
         setLoading(true);
         
-        // Récupérer les détails du signalement
+        // Récupérer les détails du signalement (vue publique assainie)
         const { data: reportData, error: reportError } = await supabase
-          .from('reports')
+          .from('reports_public')
           .select('*')
           .eq('id', id)
           .single();
@@ -54,20 +54,17 @@ const ReportDetails = () => {
           return;
         }
 
-        // Récupérer les informations de l'utilisateur
-        const { data: userData, error: userError } = await supabase
-          .from('users')
+        // Récupérer le profil public du contributeur (pseudo visible sur la carte)
+        const { data: userData } = await supabase
+          .from('user_public_profiles')
           .select('pseudo, points_himpact')
-          .eq('telegram_id', reportData.user_telegram_id)
-          .single();
-
-        if (userError) {
-          console.error('Error fetching user:', userError);
-        }
+          .eq('pseudo', reportData.reporter_pseudo ?? '')
+          .maybeSingle();
 
         setReport({
-          ...reportData,
-          user: userData || { pseudo: null, points_himpact: null }
+          ...(reportData as unknown as ReportDetails),
+          user_telegram_id: reportData.reporter_ref ?? '',
+          user: userData ?? { pseudo: reportData.reporter_pseudo ?? null, points_himpact: null }
         });
 
       } catch (err) {
