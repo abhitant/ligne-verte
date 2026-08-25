@@ -210,24 +210,23 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
         </div>
       )}
       {/* Légende et zones d'opération */}
-      <Card className="absolute top-4 left-4 z-[1000] shadow-xl">
-        <CardContent className="p-6">
-          <h3 className="text-lg font-bold text-gray-900 mb-4">Signalements</h3>
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <span className="w-3 h-3 rounded-full bg-green-500 inline-block"></span> 
-              <span className="font-medium text-sm">Validés</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="w-3 h-3 rounded-full bg-orange-500 inline-block"></span> 
-              <span className="font-medium text-sm">En attente</span>
-            </div>
-            <div className="pt-3 border-t border-gray-200">
-              <span className="text-gray-700 font-semibold text-sm">{filteredReports.length} rapports</span>
-            </div>
+      <div className="hud-panel absolute top-4 left-4 z-[1000] p-5 bg-card/95">
+        <p className="hud-label mb-4">Signalements</p>
+        <div className="space-y-3">
+          <div className="flex items-center gap-3">
+            <span className="w-2.5 h-2.5 rounded-full bg-signal inline-block"></span>
+            <span className="text-sm text-card-foreground">Validés</span>
           </div>
-        </CardContent>
-      </Card>
+          <div className="flex items-center gap-3">
+            <span className="w-2.5 h-2.5 rounded-full bg-alert inline-block"></span>
+            <span className="text-sm text-card-foreground">En attente</span>
+          </div>
+          <div className="pt-3 border-t border-border">
+            <span className="font-mono text-sm text-accent">{filteredReports.length} rapports</span>
+          </div>
+        </div>
+      </div>
+
       
       <div style={{ height: '100%', width: '100%' }}>
         <MapContainer 
