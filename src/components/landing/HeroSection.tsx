@@ -1,6 +1,8 @@
-import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
+import { CheckCircle2, Clock, Users } from "lucide-react";
+import { useReports } from "@/hooks/useReports";
+import { useLeaderboard } from "@/hooks/useGamification";
 import deboraHero from "@/assets/debora-hero-torso.png";
 
 
