@@ -1,14 +1,14 @@
 export const WHATSAPP_PHONE_NUMBER = "2250506280094";
 
 export const WHATSAPP_INVITE_URL =
-  "https://wa.me/" +
+  "https://web.whatsapp.com/send?phone=" +
   WHATSAPP_PHONE_NUMBER +
-  "?text=" +
+  "&text=" +
   encodeURIComponent("Bonjour Débora, je veux signaler un problème dans mon quartier.");
 
-// Secours vers l'interface web WhatsApp si le lien universel ne s'ouvre pas.
+// Lien universel à utiliser hors de l'aperçu intégré.
 export const WHATSAPP_INVITE_URL_FALLBACK =
-  "https://web.whatsapp.com/send?phone=" + WHATSAPP_PHONE_NUMBER;
+  "https://wa.me/" + WHATSAPP_PHONE_NUMBER;
 
 export const TELEGRAM_BOT_URL = "https://t.me/LigneverteBot";
 
