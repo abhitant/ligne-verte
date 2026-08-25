@@ -8,7 +8,7 @@ const CommunitySection = () => {
   const { data: users = [] } = useLeaderboard(10);
 
   return (
-    <section className="relative py-24 bg-background overflow-hidden">
+    <section id="carte-live" className="relative py-24 bg-surface/30 overflow-hidden">
       <div className="absolute inset-0 hud-grid opacity-25 pointer-events-none" />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">

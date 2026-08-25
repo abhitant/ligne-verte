@@ -32,7 +32,7 @@ const steps = [
 
 const SolutionSection = () => {
   return (
-    <section className="relative py-24 bg-surface/40">
+    <section id="comment" className="relative py-24 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-14 items-center">
           {/* Débora — fiche personnage */}
