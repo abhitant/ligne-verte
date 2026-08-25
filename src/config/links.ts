@@ -1,7 +1,7 @@
 export const WHATSAPP_PHONE_NUMBER = "2250506280094";
 
 export const WHATSAPP_INVITE_URL =
-  "https://web.whatsapp.com/send?phone=" +
+  "whatsapp://send?phone=" +
   WHATSAPP_PHONE_NUMBER +
   "&text=" +
   encodeURIComponent("Bonjour Débora, je veux signaler un problème dans mon quartier.");
