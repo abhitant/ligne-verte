@@ -49,9 +49,6 @@ const WasteProblemSection = () => {
       <div className="absolute inset-0 hud-grid opacity-30 pointer-events-none" />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Carrousel des signalements reçus */}
-          <ReportsCarousel />
-
           {/* Texte + Débora */}
           <div>
 
@@ -68,6 +65,9 @@ const WasteProblemSection = () => {
               cta={{ label: "Les signalements", to: "/signalements" }}
             />
           </div>
+
+          {/* Carrousel des signalements reçus */}
+          <ReportsCarousel />
         </div>
 
         <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border/60 border border-border/60">
