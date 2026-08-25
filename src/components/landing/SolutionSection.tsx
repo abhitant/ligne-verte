@@ -6,28 +6,29 @@ const steps = [
   {
     icon: Camera,
     step: "01",
-    title: "Capture l'incident",
-    desc: "Une photo du problème, où qu'il soit dans la cité.",
+    title: "Prends la photo",
+    desc: "« Montre-moi le problème, où qu'il soit dans ton quartier. »",
   },
   {
     icon: MessageSquare,
     step: "02",
-    title: "Transmets à Débora",
-    desc: "Sur WhatsApp ou Telegram, elle prend le relais et vérifie par IA.",
+    title: "Envoie-la-moi",
+    desc: "« Sur WhatsApp ou Telegram. Je vérifie avec mon IA en moins d'une minute. »",
   },
   {
     icon: MapPin,
     step: "03",
-    title: "La carte s'actualise",
-    desc: "L'incident est géolocalisé et visible publiquement en temps réel.",
+    title: "Je place le point",
+    desc: "« Ton signalement apparaît sur la carte publique, visible par tout le monde. »",
   },
   {
     icon: Trophy,
     step: "04",
-    title: "Encaisse tes Himpact",
-    desc: "Chaque mission validée te fait grimper dans le classement des opérateurs.",
+    title: "Prends tes points",
+    desc: "« Chaque mission validée te rapporte des Himpact et te fait monter au classement. »",
   },
 ];
+
 
 const SolutionSection = () => {
   return (
@@ -50,9 +51,11 @@ const SolutionSection = () => {
               <div className="absolute inset-0 hud-scanlines opacity-30 pointer-events-none" />
             </div>
             <p className="mt-5 text-muted-foreground italic leading-relaxed">
-              « Je suis Débora, standardiste de la Ligne Verte. Envoie-moi ce qui ne va pas dans
-              ton quartier : je l'analyse, je le place sur la carte et je te paie en Himpact. »
+              « Hello mon, c'est moi Débora, la standardiste de la Ligne Verte. J'ai une mission
+              pour toi : aide-moi à rendre ton quartier zo. Envoie-moi ce qui ne va pas, je
+              m'occupe du reste et je te paie en Himpact. »
             </p>
+
             <div className="mt-5 grid grid-cols-3 gap-3">
               {[
                 { k: "Analyse IA", v: "Auto" },
@@ -69,11 +72,12 @@ const SolutionSection = () => {
 
           {/* Déroulé mission */}
           <div>
-            <p className="hud-label mb-4">Protocole de mission</p>
+            <p className="hud-label mb-4">Débora // ta mission</p>
             <h2 className="font-display text-3xl md:text-5xl font-bold uppercase leading-tight mb-10">
               Quatre étapes,
-              <span className="block text-accent">zéro paperasse</span>
+              <span className="block text-accent">et ton quartier devient zo</span>
             </h2>
+
 
             <ol className="space-y-px bg-border/60 border border-border/60">
               {steps.map((s) => {

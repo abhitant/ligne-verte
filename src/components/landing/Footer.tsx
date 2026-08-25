@@ -14,8 +14,10 @@ const Footer = () => {
               Centre de commandement civique
             </p>
             <p className="mt-3 text-sm text-muted-foreground max-w-xs">
-              Un projet open source de GreenPill Côte d'Ivoire. Rends ta cité zo, prends tes points.
+              « C'est Débora. Écris-moi, rends ton quartier zo et prends tes points. » Un projet
+              open source de GreenPill Côte d'Ivoire.
             </p>
+
           </div>
 
           <div>

@@ -45,18 +45,19 @@ const WasteProblemSection = () => {
       <div className="absolute inset-0 hud-grid opacity-30 pointer-events-none" />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl">
-          <p className="hud-label mb-4">Base de données incidents</p>
+          <p className="hud-label mb-4">Débora // ce que je peux recevoir</p>
           <h2 className="font-display text-3xl md:text-5xl font-bold uppercase leading-tight">
-            La cité génère des <span className="text-accent">alertes</span>.
+            Tout ce qui gâte le <span className="text-accent">quartier</span>,
             <br />
-            Toi, tu les captures.
+            envoie-le-moi.
           </h2>
           <p className="mt-5 text-lg text-muted-foreground">
-            La Ligne Verte n'est plus seulement une plateforme déchets. C'est un outil de gestion
-            civique : chaque problème repéré dans ton quartier devient une donnée ouverte,
-            localisée et exploitable par la communauté et les institutions.
+            Je ne m'occupe plus seulement des ordures. Si un truc dérange la vie de la cité, ça
+            m'intéresse : je le transforme en donnée ouverte, localisée, que la communauté et les
+            autorités peuvent utiliser. Toi tu photographies, moi je classe.
           </p>
         </div>
+
 
         <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border/60 border border-border/60">
           {categories.map((cat) => {

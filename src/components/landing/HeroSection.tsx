@@ -84,26 +84,30 @@ const HeroSection = () => {
             <div className="flex flex-wrap items-center gap-3 mb-8">
               <span className="hud-label flex items-center gap-2 border border-accent/40 px-3 py-1">
                 <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
-                Système en ligne
+                Débora est en ligne
               </span>
               <span className="hud-meta">Abidjan · Côte d'Ivoire</span>
             </div>
 
+            <p className="font-mono text-sm md:text-base text-accent mb-5">
+              « Hello mon ! C'est Débora, j'ai une mission pour toi… »
+            </p>
+
             <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold leading-[0.95] uppercase">
-              Protège ta cité
-              <span className="block text-accent text-glow">comme un jeu</span>
+              Rends ton quartier
+              <span className="block text-accent text-glow">zo, prends tes points</span>
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg md:text-xl text-muted-foreground leading-relaxed">
-              La Ligne Verte est le centre de commandement citoyen d'Abidjan. Déchets,
-              éclairage, voirie, eau stagnante&nbsp;: tout désagrément de la cité devient une
-              mission géolocalisée. Tu signales, Débora analyse, la ville se répare.
+              Aide-moi à garder la cité propre et vivable. Déchets, éclairage cassé, caniveau
+              bouché, route abîmée&nbsp;: tu me l'envoies en photo, je m'occupe du reste et je te
+              paie en points Himpact. C'est moi ta standardiste, tu es mon agent sur le terrain.
             </p>
 
             <div className="mt-8 hud-panel px-4 py-3 max-w-xl">
               <div className="flex items-center gap-3">
                 <Activity className="w-4 h-4 text-accent shrink-0" />
-                <span className="hud-meta">Flux live //</span>
+                <span className="hud-meta">Débora reçoit //</span>
                 <span className="font-mono text-sm text-foreground truncate">
                   {line}
                   <span className="ml-0.5 text-accent animate-pulse">█</span>
@@ -111,11 +115,13 @@ const HeroSection = () => {
               </div>
             </div>
 
+
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
               <a href={TELEGRAM_BOT_URL} target="_blank" rel="noopener noreferrer" aria-label="Lancer une mission avec Débora sur Telegram">
                 <Button size="lg" className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground font-display uppercase tracking-widest px-10 py-6 text-base">
                   <Radio className="w-5 h-5 mr-3" />
-                  Lancer une mission
+                  Écris à Débora
+
                 </Button>
               </a>
 
@@ -140,9 +146,10 @@ const HeroSection = () => {
               </div>
               <div className="hud-divider" />
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Agent d'accueil de la Ligne Verte. Elle reçoit ta photo, vérifie l'incident par IA,
-                le place sur la carte et te crédite en points Himpact.
+                « Je reçois ta photo, je vérifie tout de suite avec mon IA, je pose le point sur la
+                carte et je te crédite en points Himpact. Tu n'as rien d'autre à faire. »
               </p>
+
               <div className="grid grid-cols-2 gap-3">
                 <div className="border border-border/70 p-3">
                   <p className="hud-meta">Canaux</p>
