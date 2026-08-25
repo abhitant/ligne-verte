@@ -80,7 +80,7 @@ const HeroSection = () => {
 
           {/* Débora se prolonge sous le Hero : aucune fin d'image visible. */}
           <div className="min-[900px]:col-span-6 lg:col-span-6 relative flex items-end justify-center min-[900px]:justify-end self-stretch min-h-[420px] min-[900px]:min-h-[520px] lg:min-h-[min(680px,calc(100svh-9rem))]">
-            <div className="absolute inset-x-0 -bottom-24 min-[900px]:-bottom-40 flex items-end justify-center min-[900px]:justify-end">
+            <div className="absolute inset-x-0 -bottom-16 min-[900px]:-bottom-28 flex items-end justify-center min-[900px]:justify-end">
               <div className="relative">
                 <img
                   src={deboraHero}
@@ -90,12 +90,29 @@ const HeroSection = () => {
                   loading="eager"
                   className="relative z-10 h-auto w-full max-w-[390px] min-[900px]:max-w-[500px] lg:max-w-[570px] object-contain object-bottom drop-shadow-[0_0_50px_hsl(var(--accent)/0.22)] animate-rise"
                 />
-                {/* Badge agent épinglé sur le gilet */}
-                <div className="absolute z-20 left-[33%] top-[57%] -rotate-6 w-[26%] min-w-[96px] rounded-sm border border-accent/60 bg-card/95 px-2 py-1.5 shadow-[0_0_24px_hsl(var(--accent)/0.35)] backdrop-blur-sm">
-                  <p className="font-mono text-[7px] sm:text-[8px] uppercase tracking-[0.2em] text-accent">La Ligne Verte</p>
-                  <p className="font-display text-[10px] sm:text-xs font-bold uppercase leading-tight text-foreground">Débora</p>
-                  <p className="font-mono text-[7px] sm:text-[8px] uppercase tracking-widest text-muted-foreground">Standardiste · ID-001</p>
-                  <div className="mt-1 h-0.5 w-full bg-gradient-to-r from-accent via-accent/40 to-transparent" />
+                {/* Badge agent accroché sous le torse */}
+                <div className="absolute z-20 left-[30%] top-[62%] -rotate-3 w-[28%] min-w-[100px] overflow-hidden rounded border border-accent/50 bg-card/90 shadow-[0_0_30px_hsl(var(--accent)/0.35)] backdrop-blur-sm">
+                  {/* Lanyard */}
+                  <div className="absolute -top-5 left-1/2 h-5 w-0.5 -translate-x-1/2 bg-accent/60" />
+                  <div className="absolute -top-6 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full border border-accent/60 bg-card" />
+                  {/* Header */}
+                  <div className="flex items-center justify-between bg-accent/10 px-2 py-1">
+                    <p className="font-mono text-[6px] sm:text-[7px] uppercase tracking-[0.15em] text-accent">Agent terrain</p>
+                    <div className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
+                  </div>
+                  {/* Body */}
+                  <div className="px-2 py-1.5">
+                    <p className="font-display text-[11px] sm:text-xs font-bold uppercase leading-tight text-foreground">Débora</p>
+                    <p className="mt-0.5 font-mono text-[7px] sm:text-[8px] uppercase tracking-widest text-muted-foreground">Standardiste</p>
+                    <div className="mt-1.5 flex items-center gap-1.5">
+                      <div className="h-4 w-4 rounded-sm bg-accent/20 flex items-center justify-center">
+                        <span className="font-mono text-[6px] text-accent">#</span>
+                      </div>
+                      <p className="font-mono text-[9px] sm:text-[10px] font-bold tracking-wider text-accent">habitant#00X</p>
+                    </div>
+                  </div>
+                  {/* Footer bar */}
+                  <div className="h-0.5 w-full bg-gradient-to-r from-accent via-accent/40 to-transparent" />
                 </div>
               </div>
             </div>
