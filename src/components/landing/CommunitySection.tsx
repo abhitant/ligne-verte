@@ -13,15 +13,16 @@ const CommunitySection = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
-            <p className="hud-label mb-4">Centre de commandement</p>
+            <p className="hud-label mb-4">Débora // mon tableau de bord</p>
             <h2 className="font-display text-3xl md:text-5xl font-bold uppercase leading-tight">
-              Théâtre d'<span className="text-accent">opérations</span>
+              Regarde ce que <span className="text-accent">la cité</span> m'envoie
             </h2>
           </div>
           <p className="text-muted-foreground max-w-md">
-            Chaque signalement validé apparaît en direct. La cité devient une carte vivante que
-            la communauté surveille ensemble.
+            « Chaque signalement que je valide s'affiche ici en direct. Plus vous êtes nombreux à
+            m'écrire, plus la carte devient précise — et plus vos points montent. »
           </p>
+
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

@@ -72,11 +72,12 @@ const SolutionSection = () => {
 
           {/* Déroulé mission */}
           <div>
-            <p className="hud-label mb-4">Protocole de mission</p>
+            <p className="hud-label mb-4">Débora // ta mission</p>
             <h2 className="font-display text-3xl md:text-5xl font-bold uppercase leading-tight mb-10">
               Quatre étapes,
-              <span className="block text-accent">zéro paperasse</span>
+              <span className="block text-accent">et ton quartier devient zo</span>
             </h2>
+
 
             <ol className="space-y-px bg-border/60 border border-border/60">
               {steps.map((s) => {
