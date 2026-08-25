@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Filter, ArrowLeft, MapPin, Eye } from "lucide-react";
 import { useReports } from "@/hooks/useReports";
 import { Link } from "react-router-dom";
@@ -10,17 +8,9 @@ const ReportsPage = () => {
   const [filter, setFilter] = useState<'all' | 'pending' | 'validated'>('all');
   const { data: reports = [], isLoading } = useReports();
 
-  const filteredReports = reports.filter(report => 
+  const filteredReports = reports.filter(report =>
     filter === 'all' || report.status === filter
   );
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'validated': return 'bg-green-500';
-      case 'rejected': return 'bg-red-500';
-      default: return 'bg-yellow-500';
-    }
-  };
 
   const getTypeIcon = (type: string) => {
     switch (type) {
@@ -30,146 +20,126 @@ const ReportsPage = () => {
     }
   };
 
+  const filters: { key: typeof filter; label: string; count: number }[] = [
+    { key: 'all', label: 'Tous', count: reports.length },
+    { key: 'pending', label: 'En attente', count: reports.filter(r => r.status === 'pending').length },
+    { key: 'validated', label: 'Validés', count: reports.filter(r => r.status === 'validated').length },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="bg-primary shadow-lg p-4 border-b border-primary/20">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center gap-4 mb-4">
-            <Link to="/map">
-              <Button variant="ghost" size="sm" className="text-primary-foreground hover:bg-primary/20">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Retour à la carte
-              </Button>
-            </Link>
-          </div>
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      {/* En-tête */}
+      <div className="border-b border-border bg-surface/40">
+        <div className="max-w-5xl mx-auto px-4 py-8">
+          <Link to="/carte">
+            <Button variant="ghost" size="sm" className="mb-5 font-mono text-xs uppercase tracking-[0.2em] text-accent hover:bg-accent/10">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Retour à la carte
+            </Button>
+          </Link>
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-primary-foreground mb-1">📋 Tous les Signalements</h1>
-              <p className="text-primary-foreground/90">Explorez tous les signalements de la communauté</p>
+              <p className="hud-label mb-3">Journal des opérations</p>
+              <h1 className="font-display text-3xl md:text-4xl uppercase tracking-tight">
+                Tous les <span className="text-accent">signalements</span>
+              </h1>
+              <p className="text-sm text-muted-foreground mt-2">
+                Chaque incident capté par la communauté, en accès libre.
+              </p>
             </div>
-            <div className="bg-accent rounded-lg p-3 text-center">
-              <div className="text-xl font-bold text-accent-foreground">{filteredReports.length}</div>
-              <div className="text-xs text-accent-foreground/80">Signalements</div>
+            <div className="hud-panel px-6 py-4 text-center">
+              <p className="font-display text-3xl text-accent tabular-nums">{filteredReports.length}</p>
+              <p className="hud-meta mt-1">Incidents</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto p-4">
-        <Card className="bg-primary text-primary-foreground border-0 shadow-lg">
-          <CardHeader>
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
-                <CardTitle className="flex items-center gap-2 text-primary-foreground text-xl">
-                  <Filter className="w-6 h-6 text-accent" />
-                  Liste des Signalements
-                </CardTitle>
-                <CardDescription className="text-primary-foreground/80">
-                  Filtrez et explorez tous les signalements
-                </CardDescription>
-              </div>
-              
-              {/* Filtres */}
-              <div className="flex flex-wrap gap-2">
-                <Button
-                  size="sm"
-                  onClick={() => setFilter('all')}
-                  className={`text-sm bg-accent text-accent-foreground hover:bg-accent/80 ${filter === 'all' ? 'ring-2 ring-accent-foreground' : ''}`}
+      <div className="max-w-5xl mx-auto px-4 py-8">
+        <div className="hud-panel p-5">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            <span className="hud-label flex items-center gap-2">
+              <Filter className="w-4 h-4" /> Filtres
+            </span>
+            <div className="flex flex-wrap gap-2">
+              {filters.map((f) => (
+                <button
+                  key={f.key}
+                  onClick={() => setFilter(f.key)}
+                  className={`px-4 py-2 border font-mono text-xs uppercase tracking-[0.18em] transition-colors ${
+                    filter === f.key
+                      ? 'border-accent text-accent bg-accent/10'
+                      : 'border-border text-muted-foreground hover:text-accent hover:border-accent/40'
+                  }`}
                 >
-                  Tous ({reports.length})
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={() => setFilter('pending')}
-                  className={`text-sm bg-accent text-accent-foreground hover:bg-accent/80 ${filter === 'pending' ? 'ring-2 ring-accent-foreground' : ''}`}
-                >
-                  En attente ({reports.filter(r => r.status === 'pending').length})
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={() => setFilter('validated')}
-                  className={`text-sm bg-accent text-accent-foreground hover:bg-accent/80 ${filter === 'validated' ? 'ring-2 ring-accent-foreground' : ''}`}
-                >
-                  Validés ({reports.filter(r => r.status === 'validated').length})
-                </Button>
-              </div>
+                  {f.label} ({f.count})
+                </button>
+              ))}
             </div>
-          </CardHeader>
-          
-          <CardContent className="space-y-4">
-            {isLoading ? (
-              <div className="text-center py-8">
-                <p className="text-primary-foreground/80">Chargement des signalements...</p>
-              </div>
-            ) : filteredReports.length === 0 ? (
-              <div className="text-center py-8">
-                <MapPin className="w-16 h-16 mx-auto mb-4 text-accent" />
-                <p className="text-primary-foreground font-medium">Aucun signalement trouvé</p>
-                <p className="text-primary-foreground/80 mt-2">
-                  {filter !== 'all' ? 'Essayez de changer le filtre.' : 'En attente des premiers signalements...'}
-                </p>
-                {reports.length > 0 && filter !== 'all' && (
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="mt-4 bg-accent text-accent-foreground hover:bg-accent/80"
-                    onClick={() => setFilter('all')}
-                  >
-                    Voir tous les signalements
-                  </Button>
-                )}
-              </div>
-            ) : (
-              <div className="grid gap-4">
-                {filteredReports.map((report) => (
-                  <div 
-                    key={report.id}
-                    className="p-4 rounded-lg transition-all hover:shadow-md bg-accent text-accent-foreground hover:bg-accent/80"
-                  >
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center gap-3">
-                        <span className="text-2xl">{getTypeIcon(report.type)}</span>
-                        <div>
-                          <p className="font-semibold text-accent-foreground text-lg">{report.user}</p>
-                          <p className="text-sm text-accent-foreground/80 flex items-center gap-1">
-                            <MapPin className="w-4 h-4" />
-                            {report.location}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className={`w-4 h-4 rounded-full ${getStatusColor(report.status)}`}></div>
-                        <Badge variant="secondary" className="bg-accent-foreground text-accent">
-                          {report.status === 'validated' ? 'Validé' : 
-                           report.status === 'rejected' ? 'Rejeté' : 'En attente'}
-                        </Badge>
+          </div>
+
+          {isLoading ? (
+            <p className="hud-meta py-12 text-center">Chargement des données…</p>
+          ) : filteredReports.length === 0 ? (
+            <div className="py-14 text-center">
+              <MapPin className="w-10 h-10 mx-auto mb-4 text-accent/60" />
+              <p className="font-display uppercase tracking-wide">Aucun signalement</p>
+              <p className="hud-meta mt-1">
+                {filter !== 'all' ? 'Change de filtre pour élargir la recherche.' : 'En attente des premiers incidents…'}
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-px bg-border/60 border border-border/60">
+              {filteredReports.map((report) => (
+                <article key={report.id} className="bg-card p-5 hover:bg-surface transition-colors">
+                  <div className="flex items-start justify-between gap-4 mb-3">
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl">{getTypeIcon(report.type)}</span>
+                      <div>
+                        <p className="font-display uppercase tracking-wide text-lg">{report.user}</p>
+                        <p className="hud-meta flex items-center gap-1">
+                          <MapPin className="w-3 h-3" />
+                          {report.location}
+                        </p>
                       </div>
                     </div>
-                    
-                    <p className="text-accent-foreground/80 mb-4 leading-relaxed">{report.description}</p>
-                    
-                    <div className="flex items-center justify-between pt-3 border-t border-accent-foreground/20">
-                      <span className="text-sm text-accent-foreground/80">
-                        Signalé le {new Date(report.date).toLocaleDateString('fr-FR', { 
-                          day: '2-digit', 
-                          month: 'long',
-                          year: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })}
-                      </span>
-                      <Button size="sm" variant="ghost" className="bg-accent-foreground text-accent hover:bg-accent-foreground/80">
+                    <span
+                      className={`shrink-0 px-3 py-1 border font-mono text-[0.65rem] uppercase tracking-[0.18em] ${
+                        report.status === 'validated'
+                          ? 'border-signal/60 text-signal'
+                          : report.status === 'rejected'
+                          ? 'border-critical/60 text-critical'
+                          : 'border-alert/60 text-alert'
+                      }`}
+                    >
+                      {report.status === 'validated' ? 'Validé' : report.status === 'rejected' ? 'Rejeté' : 'En attente'}
+                    </span>
+                  </div>
+
+                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{report.description}</p>
+
+                  <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-border">
+                    <span className="hud-meta">
+                      {new Date(report.date).toLocaleDateString('fr-FR', {
+                        day: '2-digit',
+                        month: 'long',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </span>
+                    <Link to="/carte">
+                      <Button size="sm" variant="ghost" className="font-mono text-xs uppercase tracking-[0.18em] text-accent hover:bg-accent/10">
                         <Eye className="w-4 h-4 mr-2" />
                         Voir sur la carte
                       </Button>
-                    </div>
+                    </Link>
                   </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+                </article>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
