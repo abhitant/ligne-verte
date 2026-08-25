@@ -51,9 +51,11 @@ const SolutionSection = () => {
               <div className="absolute inset-0 hud-scanlines opacity-30 pointer-events-none" />
             </div>
             <p className="mt-5 text-muted-foreground italic leading-relaxed">
-              « Je suis Débora, standardiste de la Ligne Verte. Envoie-moi ce qui ne va pas dans
-              ton quartier : je l'analyse, je le place sur la carte et je te paie en Himpact. »
+              « Hello mon, c'est moi Débora, la standardiste de la Ligne Verte. J'ai une mission
+              pour toi : aide-moi à rendre ton quartier zo. Envoie-moi ce qui ne va pas, je
+              m'occupe du reste et je te paie en Himpact. »
             </p>
+
             <div className="mt-5 grid grid-cols-3 gap-3">
               {[
                 { k: "Analyse IA", v: "Auto" },
