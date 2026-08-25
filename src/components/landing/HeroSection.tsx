@@ -1,11 +1,9 @@
 import { Button } from "@/components/ui/button";
 import WaitlistModal from "@/components/WaitlistModal";
 import { WHATSAPP_INVITE_URL, TELEGRAM_BOT_URL } from "@/config/links";
-import { Radio, MessageCircle, MapPin, Activity } from "lucide-react";
+import { Radio, MessageCircle, Activity } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import deboraWave from "@/assets/debora-wave.png";
-
+import deboraHero from "@/assets/debora-hero.png";
 
 const HeroSection = () => {
   const [currentImage, setCurrentImage] = useState(0);
@@ -80,10 +78,11 @@ const HeroSection = () => {
       <div className="absolute inset-0 hud-scanlines opacity-40 pointer-events-none" />
       <div className="absolute inset-x-0 top-0 h-px bg-accent/40 animate-scan-line pointer-events-none" />
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28">
-        <div className="grid lg:grid-cols-12 gap-10 items-end">
-          <div className="lg:col-span-8">
-            <div className="flex flex-wrap items-center gap-3 mb-8">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-28">
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-6 items-end">
+          {/* Texte à gauche */}
+          <div className="lg:col-span-6 xl:col-span-6">
+            <div className="flex flex-wrap items-center gap-3 mb-6">
               <span className="hud-label flex items-center gap-2 border border-accent/40 px-3 py-1">
                 <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
                 Débora est en ligne
@@ -91,21 +90,16 @@ const HeroSection = () => {
               <span className="hud-meta">Abidjan · Côte d'Ivoire</span>
             </div>
 
-            <p className="font-mono text-sm md:text-base text-accent mb-5">
-              « Hello ! C'est moi Débora, la standardiste. Aide-moi à rendre ton quartier zo. »
-            </p>
-
             <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold leading-[0.95] uppercase">
               Aide-moi à rendre
               <span className="block text-accent text-glow">ton quartier zo</span>
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg md:text-xl text-muted-foreground leading-relaxed">
-              « J'ai une mission pour toi. Déchets, éclairage cassé, caniveau bouché, route
-              abîmée : tu me l'envoies en photo, je vérifie, je place le point sur la carte et je
-              te paie en points Himpact. Rends ton quartier zo, prends tes points. »
+              Aide-moi à rendre ton quartier zo et prends tes points. Déchets, éclairage cassé,
+              caniveau bouché, route abîmée : tu me l'envoies en photo, je vérifie, je place le point
+              sur la carte et je te crédite en points Himpact.
             </p>
-
 
             <div className="mt-8 hud-panel px-4 py-3 max-w-xl">
               <div className="flex items-center gap-3">
@@ -118,13 +112,19 @@ const HeroSection = () => {
               </div>
             </div>
 
-
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
-              <a href={TELEGRAM_BOT_URL} target="_blank" rel="noopener noreferrer" aria-label="Lancer une mission avec Débora sur Telegram">
-                <Button size="lg" className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground font-display uppercase tracking-widest px-10 py-6 text-base">
+              <a
+                href={TELEGRAM_BOT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Lancer une mission avec Débora sur Telegram"
+              >
+                <Button
+                  size="lg"
+                  className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground font-display uppercase tracking-widest px-10 py-6 text-base"
+                >
                   <Radio className="w-5 h-5 mr-3" />
                   Écris à Débora
-
                 </Button>
               </a>
 
@@ -140,44 +140,26 @@ const HeroSection = () => {
             </div>
           </div>
 
-          {/* Panneau statut */}
-          <div className="lg:col-span-4">
-            <div className="hud-panel p-5 space-y-5 relative">
+          {/* Débora à droite, grande, regardant à gauche */}
+          <div className="lg:col-span-6 xl:col-span-6 relative flex items-end justify-center lg:justify-end">
+            <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-xl">
+              {/* Bulle de dialogue */}
+              <div className="absolute top-4 left-0 lg:-left-8 z-20 max-w-[260px] hud-panel p-4 shadow-[0_0_40px_hsl(var(--accent)/0.15)]">
+                <p className="hud-label mb-2">Débora // standardiste</p>
+                <p className="text-sm text-foreground leading-relaxed">
+                  « Hello, moi c'est Déborah et j'ai une mission pour toi. »
+                </p>
+                <div className="absolute -bottom-2 right-8 w-4 h-4 bg-card border-r border-b border-accent/30 rotate-45" />
+              </div>
+
               <img
-                src={deboraWave}
-                alt="Débora, la standardiste de La Ligne Verte, fait signe"
-                width={768}
+                src={deboraHero}
+                alt="Déborah, la standardiste de La Ligne Verte, te donne une mission"
+                width={1024}
                 height={1024}
-                className="hidden lg:block absolute -top-72 right-0 h-72 w-auto animate-rise drop-shadow-[0_0_30px_hsl(var(--accent)/0.25)]"
+                loading="eager"
+                className="relative z-10 w-full h-auto max-h-[60vh] lg:max-h-[78vh] object-contain drop-shadow-[0_0_40px_hsl(var(--accent)/0.2)] animate-rise"
               />
-
-              <div className="flex items-center justify-between">
-                <span className="hud-label">Unité 001 · Débora</span>
-                <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-              </div>
-              <div className="hud-divider" />
-
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                « Je reçois ta photo, je vérifie tout de suite avec mon IA, je pose le point sur la
-                carte et je te crédite en points Himpact. Tu n'as rien d'autre à faire. »
-              </p>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div className="border border-border/70 p-3">
-                  <p className="hud-meta">Canaux</p>
-                  <p className="font-display text-lg">WhatsApp · Telegram</p>
-                </div>
-                <div className="border border-border/70 p-3">
-                  <p className="hud-meta">Délai analyse</p>
-                  <p className="font-display text-lg text-accent">&lt; 60 s</p>
-                </div>
-              </div>
-              <Link to="/carte" className="block">
-                <Button variant="ghost" className="w-full justify-between font-mono text-xs uppercase tracking-[0.2em] text-accent hover:bg-accent/10">
-                  Ouvrir la carte tactique
-                  <MapPin className="w-4 h-4" />
-                </Button>
-              </Link>
             </div>
           </div>
         </div>
