@@ -1,5 +1,7 @@
 import { Trash2, Lightbulb, Droplets, Construction, Volume2, ShieldAlert } from "lucide-react";
 import DeboraSay from "@/components/landing/DeboraSay";
+import ReportsCarousel from "@/components/landing/ReportsCarousel";
+
 
 
 const categories = [
