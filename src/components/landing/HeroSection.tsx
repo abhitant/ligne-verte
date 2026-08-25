@@ -6,21 +6,11 @@ import deboraHero from "@/assets/debora-hero-bust.png";
 
 const HeroSection = () => {
   const [currentImage, setCurrentImage] = useState(0);
-  const [line, setLine] = useState("");
-  const [isWaitlistOpen, setIsWaitlistOpen] = useState(false);
 
   const images = [
     "/lovable-uploads/41b3a1b4-03ed-4912-95dd-05f5880046d0.png",
     "/lovable-uploads/90ed2c8b-791c-42e2-9957-d9b64eea6202.png",
     "/lovable-uploads/d2fefb4c-11b8-457a-a4ac-a09010c75de3.png",
-  ];
-
-  const missions = [
-    "dépôt sauvage détecté",
-    "lampadaire hors service",
-    "caniveau bouché",
-    "route dégradée",
-    "eau stagnante signalée",
   ];
 
   useEffect(() => {
@@ -30,29 +20,10 @@ const HeroSection = () => {
     return () => clearInterval(timer);
   }, [images.length]);
 
-  useEffect(() => {
-    let mission = 0;
-    let index = 0;
-    let timer: ReturnType<typeof setTimeout>;
+  const scrollToNext = () => {
+    document.getElementById("pourquoi")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
-    const type = () => {
-      const target = missions[mission];
-      if (index <= target.length) {
-        setLine(target.slice(0, index));
-        index++;
-        timer = setTimeout(type, 60);
-      } else {
-        timer = setTimeout(() => {
-          mission = (mission + 1) % missions.length;
-          index = 0;
-          type();
-        }, 2200);
-      }
-    };
-
-    type();
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <section id="mission" className="relative min-h-[calc(100svh-4rem)] flex items-center overflow-hidden">
