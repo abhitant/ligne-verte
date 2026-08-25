@@ -84,32 +84,37 @@ const HeroSection = () => {
             <div className="flex flex-wrap items-center gap-3 mb-8">
               <span className="hud-label flex items-center gap-2 border border-accent/40 px-3 py-1">
                 <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
-                Système en ligne
+                Débora est en ligne
               </span>
               <span className="hud-meta">Abidjan · Côte d'Ivoire</span>
             </div>
 
+            <p className="font-mono text-sm md:text-base text-accent mb-5">
+              « Hello mon ! C'est Débora, j'ai une mission pour toi… »
+            </p>
+
             <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold leading-[0.95] uppercase">
-              Protège ta cité
-              <span className="block text-accent text-glow">comme un jeu</span>
+              Rends ton quartier
+              <span className="block text-accent text-glow">zo, prends tes points</span>
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg md:text-xl text-muted-foreground leading-relaxed">
-              La Ligne Verte est le centre de commandement citoyen d'Abidjan. Déchets,
-              éclairage, voirie, eau stagnante&nbsp;: tout désagrément de la cité devient une
-              mission géolocalisée. Tu signales, Débora analyse, la ville se répare.
+              Aide-moi à garder la cité propre et vivable. Déchets, éclairage cassé, caniveau
+              bouché, route abîmée&nbsp;: tu me l'envoies en photo, je m'occupe du reste et je te
+              paie en points Himpact. C'est moi ta standardiste, tu es mon agent sur le terrain.
             </p>
 
             <div className="mt-8 hud-panel px-4 py-3 max-w-xl">
               <div className="flex items-center gap-3">
                 <Activity className="w-4 h-4 text-accent shrink-0" />
-                <span className="hud-meta">Flux live //</span>
+                <span className="hud-meta">Débora reçoit //</span>
                 <span className="font-mono text-sm text-foreground truncate">
                   {line}
                   <span className="ml-0.5 text-accent animate-pulse">█</span>
                 </span>
               </div>
             </div>
+
 
             <div className="mt-10 flex flex-col sm:flex-row gap-4">
               <a href={TELEGRAM_BOT_URL} target="_blank" rel="noopener noreferrer" aria-label="Lancer une mission avec Débora sur Telegram">
