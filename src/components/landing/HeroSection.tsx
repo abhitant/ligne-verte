@@ -78,10 +78,10 @@ const HeroSection = () => {
       <div className="absolute inset-0 hud-scanlines opacity-40 pointer-events-none" />
       <div className="absolute inset-x-0 top-0 h-px bg-accent/40 animate-scan-line pointer-events-none" />
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
-        <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
+        <div className="grid min-[900px]:grid-cols-12 gap-8 min-[900px]:gap-5 lg:gap-10 items-center">
           {/* Texte à gauche */}
-          <div className="lg:col-span-6 xl:col-span-6">
+          <div className="min-[900px]:col-span-7 lg:col-span-6 relative z-20">
             <div className="flex flex-wrap items-center gap-3 mb-6">
               <span className="hud-label flex items-center gap-2 border border-accent/40 px-3 py-1">
                 <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
@@ -90,7 +90,7 @@ const HeroSection = () => {
               <span className="hud-meta">Abidjan · Côte d'Ivoire</span>
             </div>
 
-            <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold leading-[0.95] uppercase">
+            <h1 className="font-display text-4xl sm:text-5xl lg:text-7xl font-bold leading-[0.95] uppercase">
               Aide-moi à rendre
               <span className="block text-accent text-glow">ton quartier zo</span>
             </h1>
@@ -141,10 +141,10 @@ const HeroSection = () => {
           </div>
 
           {/* La même Débora que dans les autres sections, ancrée à droite et tournée vers le texte. */}
-          <div className="lg:col-span-6 xl:col-span-6 relative flex items-end justify-center lg:justify-end self-stretch min-h-[420px] lg:min-h-[min(660px,calc(100svh-9rem))]">
-            <div className="relative w-full h-full max-w-md lg:max-w-xl flex items-end justify-end">
+          <div className="min-[900px]:col-span-5 lg:col-span-6 relative flex items-end justify-center min-[900px]:justify-end self-stretch min-h-[420px] min-[900px]:min-h-[540px] lg:min-h-[min(660px,calc(100svh-9rem))]">
+            <div className="relative w-full h-full max-w-md lg:max-w-xl flex items-end justify-center min-[900px]:justify-end">
               {/* Bulle de dialogue */}
-              <div className="absolute top-2 left-0 lg:-left-8 z-20 max-w-[280px] hud-panel p-4 shadow-[0_0_40px_hsl(var(--accent)/0.15)]">
+              <div className="absolute top-0 left-0 min-[900px]:-left-10 lg:-left-8 z-20 max-w-[250px] lg:max-w-[280px] hud-panel p-4 shadow-[0_0_40px_hsl(var(--accent)/0.15)]">
                 <p className="hud-label mb-2">Débora // standardiste</p>
                 <p className="text-sm text-foreground leading-relaxed">
                   « Hello, moi c'est Déborah et j'ai une mission pour toi. »
@@ -158,7 +158,7 @@ const HeroSection = () => {
                 width={768}
                 height={1024}
                 loading="eager"
-                className="relative z-10 w-auto h-full max-h-[560px] lg:max-h-[min(680px,calc(100svh-9rem))] object-contain object-bottom -scale-x-100 drop-shadow-[0_0_40px_hsl(var(--accent)/0.2)] animate-rise"
+                className="relative z-10 w-auto h-full max-h-[560px] min-[900px]:max-h-[540px] lg:max-h-[min(680px,calc(100svh-9rem))] object-contain object-bottom -scale-x-100 drop-shadow-[0_0_40px_hsl(var(--accent)/0.2)] animate-rise"
               />
             </div>
           </div>
