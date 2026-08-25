@@ -33,14 +33,16 @@ const WhySection = () => {
           <div className="lg:col-span-5">
             <p className="hud-label mb-4">Débora // pourquoi c'est important</p>
             <h2 className="font-display text-3xl md:text-5xl font-bold uppercase leading-tight">
-              Monsieur Prime,
-              <span className="block text-accent">tu es mon agent terrain</span>
+              Ce qu'on ne voit pas,
+              <span className="block text-accent">personne ne le règle</span>
             </h2>
-            <p className="mt-5 text-lg text-muted-foreground leading-relaxed">
-              « Moi je suis à la standardiste, je reçois, je vérifie, je place le point. Mais sans
-              toi sur le terrain, ma carte reste vide. Chaque photo que tu m'envoies, c'est un
-              morceau de la cité qui devient visible. »
-            </p>
+
+            <DeboraSay
+              className="mt-8"
+              pose="point"
+              line="« Moi je suis à la standardiste : je reçois, je vérifie, je place le point. Mais sans toi sur le terrain, ma carte reste vide. »"
+              cta={{ label: "Voir la carte", to: "/carte" }}
+            />
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
               <Link to="/carte">
@@ -59,14 +61,6 @@ const WhySection = () => {
               </Link>
             </div>
 
-            <img
-              src={deboraPoint}
-              alt="Débora montre la carte des signalements"
-              width={768}
-              height={1024}
-              loading="lazy"
-              className="lg:hidden mt-10 h-56 w-auto mx-auto"
-            />
           </div>
 
           <div className="lg:col-span-7 space-y-px bg-border/60 border border-border/60">
