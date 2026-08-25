@@ -158,7 +158,7 @@ const HeroSection = () => {
                 width={768}
                 height={1024}
                 loading="eager"
-                className="relative z-10 w-auto h-full max-h-[560px] lg:max-h-[min(680px,calc(100svh-9rem))] object-contain object-bottom scale-x-[-1] drop-shadow-[0_0_40px_hsl(var(--accent)/0.2)] animate-rise"
+                className="relative z-10 w-auto h-full max-h-[560px] lg:max-h-[min(680px,calc(100svh-9rem))] object-contain object-bottom -scale-x-100 drop-shadow-[0_0_40px_hsl(var(--accent)/0.2)] animate-rise"
               />
             </div>
           </div>
