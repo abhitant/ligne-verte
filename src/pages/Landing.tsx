@@ -5,17 +5,30 @@ import WasteProblemSection from "@/components/landing/WasteProblemSection";
 import SolutionSection from "@/components/landing/SolutionSection";
 import CommunitySection from "@/components/landing/CommunitySection";
 import Footer from "@/components/landing/Footer";
+import Reveal from "@/components/landing/Reveal";
 
 const Landing = () => {
   return (
     <div className="min-h-screen bg-background">
       <HeroSection />
-      <OpsStatsBand />
-      <WhySection />
-      <WasteProblemSection />
-      <SolutionSection />
-      <CommunitySection />
-      <Footer />
+      <Reveal>
+        <OpsStatsBand />
+      </Reveal>
+      <Reveal>
+        <WhySection />
+      </Reveal>
+      <Reveal>
+        <WasteProblemSection />
+      </Reveal>
+      <Reveal>
+        <SolutionSection />
+      </Reveal>
+      <Reveal>
+        <CommunitySection />
+      </Reveal>
+      <Reveal>
+        <Footer />
+      </Reveal>
     </div>
   );
 };
