@@ -1,6 +1,4 @@
 import HeroSection from "@/components/landing/HeroSection";
-import OpsStatsBand from "@/components/landing/OpsStatsBand";
-import WhySection from "@/components/landing/WhySection";
 import WasteProblemSection from "@/components/landing/WasteProblemSection";
 import SolutionSection from "@/components/landing/SolutionSection";
 import CommunitySection from "@/components/landing/CommunitySection";
@@ -11,12 +9,6 @@ const Landing = () => {
   return (
     <div className="min-h-screen bg-background">
       <HeroSection />
-      <Reveal>
-        <OpsStatsBand />
-      </Reveal>
-      <Reveal>
-        <WhySection />
-      </Reveal>
       <Reveal>
         <WasteProblemSection />
       </Reveal>
