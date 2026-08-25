@@ -25,7 +25,7 @@ const ReportsCarousel = () => {
     let active = true;
     const load = async () => {
       const { data } = await supabase
-        .from("reports")
+        .from("reports_public")
         .select("id, photo_url, waste_type, waste_category, created_at")
         .not("photo_url", "is", null)
         .neq("status", "rejected")
