@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
-import deboraHero from "@/assets/debora-hero-bust.png";
+import deboraHero from "@/assets/debora-hero-medium.png";
 
 
 const HeroSection = () => {
@@ -75,7 +75,7 @@ const HeroSection = () => {
             </div>
           </div>
 
-          {/* Pose Hero : buste de Débora, face au public. */}
+          {/* Pose Hero : cadrage naturel jusqu'aux cuisses, face au public. */}
           <div className="min-[900px]:col-span-5 lg:col-span-6 relative flex items-end justify-center min-[900px]:justify-end self-stretch min-h-[380px] min-[900px]:min-h-[480px] lg:min-h-[min(620px,calc(100svh-9rem))]">
             <div className="relative w-full h-full max-w-md lg:max-w-xl flex items-end justify-center min-[900px]:justify-end">
               <img
@@ -84,7 +84,7 @@ const HeroSection = () => {
                 width={1024}
                 height={1024}
                 loading="eager"
-                className="relative z-10 h-auto w-full max-w-[320px] min-[900px]:max-w-[400px] lg:max-w-[480px] object-contain object-bottom drop-shadow-[0_0_40px_hsl(var(--accent)/0.2)] animate-rise"
+                className="relative z-10 h-auto w-full max-w-[350px] min-[900px]:max-w-[440px] lg:max-w-[540px] object-contain object-bottom drop-shadow-[0_0_40px_hsl(var(--accent)/0.2)] animate-rise"
               />
             </div>
           </div>
