@@ -3,6 +3,8 @@ import { MapPin, Trophy, Radar } from "lucide-react";
 import { Link } from "react-router-dom";
 import OpenStreetMap from "@/components/OpenStreetMap";
 import { useLeaderboard } from "@/hooks/useGamification";
+import DeboraSay from "@/components/landing/DeboraSay";
+
 
 const CommunitySection = () => {
   const { data: users = [] } = useLeaderboard(10);
@@ -18,12 +20,14 @@ const CommunitySection = () => {
               Regarde ce que <span className="text-accent">la cité</span> m'envoie
             </h2>
           </div>
-          <p className="text-muted-foreground max-w-md">
-            « Chaque signalement que je valide s'affiche ici en direct. Plus vous êtes nombreux à
-            m'écrire, plus la carte devient précise — et plus vos points montent. »
-          </p>
-
+          <DeboraSay
+            side="right"
+            pose="point"
+            line="« Chaque signalement que je valide s'affiche ici en direct. Plus vous m'écrivez, plus la carte devient précise — et plus vos points montent. »"
+            cta={{ label: "Le classement", to: "/classement" }}
+          />
         </div>
+
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Carte tactique */}
