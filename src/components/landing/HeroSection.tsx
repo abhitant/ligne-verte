@@ -53,17 +53,18 @@ const HeroSection = () => {
         <div className="grid min-[900px]:grid-cols-12 gap-6 min-[900px]:gap-4 lg:gap-8 items-center">
           {/* Texte à gauche */}
           <div className="min-[900px]:col-span-6 lg:col-span-6 relative z-20">
-            <div className="hud-panel relative max-w-2xl px-5 py-6 sm:px-7 sm:py-8 shadow-[0_0_40px_hsl(var(--accent)/0.15)]">
-              <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.05] uppercase">
+            <div className="hud-panel relative max-w-2xl px-4 py-5 sm:px-7 sm:py-8 shadow-[0_0_40px_hsl(var(--accent)/0.15)]">
+              <h1 className="font-display text-2xl sm:text-4xl lg:text-5xl font-bold leading-[1.08] uppercase">
                 Hello, j'ai une mission pour toi.
                 <span className="mt-2 block text-accent text-glow">
                   Aide-moi à rendre ton quartier zo.
                 </span>
               </h1>
-              <div className="absolute top-1/2 -right-2 h-4 w-4 -translate-y-1/2 rotate-45 border-r border-t border-accent/30 bg-card" />
+              <div className="hidden min-[900px]:block absolute top-1/2 -right-2 h-4 w-4 -translate-y-1/2 rotate-45 border-r border-t border-accent/30 bg-card" />
             </div>
 
-            <div className="mt-10 grid max-w-2xl grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="mt-5 min-[900px]:mt-10 grid max-w-2xl grid-cols-1 sm:grid-cols-2 gap-3">
+
               <button
                 onClick={scrollToNext}
                 className="group relative inline-flex h-14 w-full items-center justify-center gap-3 overflow-hidden border border-accent/50 bg-accent/10 px-4 font-display text-xs sm:text-sm uppercase tracking-[0.18em] text-accent transition-all duration-300 hover:bg-accent hover:text-accent-foreground hover:shadow-[0_0_40px_hsl(var(--accent)/0.45)]"
@@ -116,8 +117,8 @@ const HeroSection = () => {
           </div>
 
           {/* Débora se prolonge sous le Hero : aucune fin d'image visible. */}
-          <div className="min-[900px]:col-span-6 lg:col-span-6 relative flex items-end justify-center min-[900px]:justify-end self-stretch min-h-[420px] min-[900px]:min-h-[520px] lg:min-h-[min(680px,calc(100svh-9rem))]">
-            <div className="absolute inset-x-0 -bottom-16 min-[900px]:-bottom-28 flex items-end justify-center min-[900px]:justify-end">
+          <div className="min-[900px]:col-span-6 lg:col-span-6 relative flex items-end justify-center min-[900px]:justify-end self-stretch min-h-[240px] min-[900px]:min-h-[520px] lg:min-h-[min(680px,calc(100svh-9rem))]">
+            <div className="absolute inset-x-0 -bottom-10 min-[900px]:-bottom-28 flex items-end justify-center min-[900px]:justify-end">
               <div className="relative">
                 <img
                   src={deboraHero}
@@ -125,10 +126,11 @@ const HeroSection = () => {
                   width={1024}
                   height={1536}
                   loading="eager"
-                  className="relative z-10 h-auto w-full max-w-[390px] min-[900px]:max-w-[500px] lg:max-w-[570px] object-contain object-bottom drop-shadow-[0_0_50px_hsl(var(--accent)/0.22)] animate-rise"
+                  className="relative z-10 h-auto w-full max-w-[260px] sm:max-w-[340px] min-[900px]:max-w-[500px] lg:max-w-[570px] object-contain object-bottom drop-shadow-[0_0_50px_hsl(var(--accent)/0.22)] animate-rise"
                 />
                 {/* Badge LIGNE VERTE en haut à droite de la tête */}
-                <div className="absolute z-20 right-0 top-[14%] translate-x-1/4 w-[28%] min-w-[104px] overflow-hidden rounded border border-accent/50 bg-card/95 shadow-[0_0_30px_hsl(var(--accent)/0.35)] backdrop-blur-sm">
+                <div className="absolute z-20 right-0 top-[12%] translate-x-0 min-[900px]:translate-x-1/4 w-[34%] min-w-[92px] min-[900px]:w-[28%] min-[900px]:min-w-[104px] overflow-hidden rounded border border-accent/50 bg-card/95 shadow-[0_0_30px_hsl(var(--accent)/0.35)] backdrop-blur-sm">
+
                   {/* Lanyard droit */}
                   <div className="absolute -bottom-5 left-1/2 h-5 w-0.5 -translate-x-1/2 bg-accent/70" />
                   <div className="absolute -bottom-6 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full border border-accent/70 bg-card" />
