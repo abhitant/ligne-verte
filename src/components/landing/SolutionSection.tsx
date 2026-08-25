@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { Camera, MapPin, Trophy, MessageSquare } from "lucide-react";
+import { Camera, MapPin, Trophy, MessageSquare, Eye, Users, LineChart } from "lucide-react";
 import { TELEGRAM_BOT_URL } from "@/config/links";
-import deboraWave from "@/assets/debora-wave.png";
 
 
 const steps = [
@@ -31,35 +30,59 @@ const steps = [
   },
 ];
 
+const reasons = [
+  {
+    icon: Eye,
+    code: "RAI-01",
+    title: "Ce qu'on ne voit pas ne se règle pas",
+    desc: "« Tant que le problème reste dans ta rue seulement, personne ne bouge. Dès que tu me l'envoies, il devient visible sur la carte, avec la photo, l'heure et le lieu. »",
+  },
+  {
+    icon: Users,
+    code: "RAI-02",
+    title: "La cité parle d'une seule voix",
+    desc: "« Un signalement tout seul, c'est une plainte. Cent signalements au même endroit, c'est une preuve. C'est comme ça qu'on fait bouger les choses. »",
+  },
+  {
+    icon: LineChart,
+    code: "RAI-03",
+    title: "Des données ouvertes, pas des rumeurs",
+    desc: "« Chaque mission validée par mon IA devient une donnée publique que les habitants, les mairies et les ONG peuvent utiliser. »",
+  },
+];
+
 
 const SolutionSection = () => {
   return (
     <section id="comment" className="relative py-24 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-14 items-center">
-          {/* Débora — fiche personnage */}
+        <div className="grid lg:grid-cols-2 gap-14 items-start">
+          {/* Résumé des points importants */}
           <div className="hud-panel p-6">
             <div className="flex items-center justify-between mb-4">
-              <span className="hud-label">Fiche agent // Débora</span>
-              <span className="hud-meta">NIV. ∞</span>
-            </div>
-            <div className="relative overflow-hidden border border-border/70 bg-surface/60 flex items-end justify-center">
-              <img
-                src={deboraWave}
-                alt="Débora, standardiste de La Ligne Verte, en gilet jaune"
-                width={768}
-                height={1024}
-                className="w-full h-auto max-h-[420px] object-contain"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 hud-scanlines opacity-30 pointer-events-none" />
+              <span className="hud-label">Pourquoi ça compte</span>
+              <span className="hud-meta">BRIEFING</span>
             </div>
 
-            <p className="mt-5 text-muted-foreground italic leading-relaxed">
-              « Hello mon, c'est moi Débora, la standardiste de la Ligne Verte. J'ai une mission
-              pour toi : aide-moi à rendre ton quartier zo. Envoie-moi ce qui ne va pas, je
-              m'occupe du reste et je te paie en Himpact. »
-            </p>
+            <div className="space-y-4">
+              {reasons.map((r) => {
+                const Icon = r.icon;
+                return (
+                  <article key={r.code} className="flex gap-4 bg-surface/60 border border-border/70 p-4">
+                    <div className="shrink-0 w-10 h-10 border border-accent/30 bg-accent/10 flex items-center justify-center">
+                      <Icon className="w-5 h-5 text-accent" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="font-display text-lg uppercase tracking-wide">{r.title}</h3>
+                        <span className="hud-meta">{r.code}</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{r.desc}</p>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
 
             <div className="mt-5 grid grid-cols-3 gap-3">
               {[
