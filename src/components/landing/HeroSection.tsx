@@ -149,7 +149,7 @@ const HeroSection = () => {
                 <p className="text-sm text-foreground leading-relaxed">
                   « Hello, moi c'est Déborah et j'ai une mission pour toi. »
                 </p>
-                <div className="absolute -bottom-2 right-10 w-4 h-4 bg-card border-r border-b border-accent/30 rotate-45" />
+                <div className="absolute -bottom-2 left-10 w-4 h-4 bg-card border-l border-b border-accent/30 rotate-45" />
               </div>
 
               <img
