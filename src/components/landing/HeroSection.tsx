@@ -120,7 +120,8 @@ const HeroSection = () => {
               <a href={TELEGRAM_BOT_URL} target="_blank" rel="noopener noreferrer" aria-label="Lancer une mission avec Débora sur Telegram">
                 <Button size="lg" className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground font-display uppercase tracking-widest px-10 py-6 text-base">
                   <Radio className="w-5 h-5 mr-3" />
-                  Lancer une mission
+                  Écris à Débora
+
                 </Button>
               </a>
 
@@ -145,9 +146,10 @@ const HeroSection = () => {
               </div>
               <div className="hud-divider" />
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Agent d'accueil de la Ligne Verte. Elle reçoit ta photo, vérifie l'incident par IA,
-                le place sur la carte et te crédite en points Himpact.
+                « Je reçois ta photo, je vérifie tout de suite avec mon IA, je pose le point sur la
+                carte et je te crédite en points Himpact. Tu n'as rien d'autre à faire. »
               </p>
+
               <div className="grid grid-cols-2 gap-3">
                 <div className="border border-border/70 p-3">
                   <p className="hud-meta">Canaux</p>
