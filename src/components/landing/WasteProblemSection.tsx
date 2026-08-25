@@ -1,4 +1,6 @@
 import { Trash2, Lightbulb, Droplets, Construction, Volume2, ShieldAlert } from "lucide-react";
+import DeboraSay from "@/components/landing/DeboraSay";
+
 
 const categories = [
   {
@@ -57,6 +59,14 @@ const WasteProblemSection = () => {
             autorités peuvent utiliser. Toi tu photographies, moi je classe.
           </p>
         </div>
+
+        <DeboraSay
+          className="mt-10"
+          pose="point"
+          line="« Regarde mes six catégories : si ça gâte le quartier, envoie-le-moi, je le range au bon endroit. »"
+          cta={{ label: "Les signalements", to: "/signalements" }}
+        />
+
 
 
         <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border/60 border border-border/60">
