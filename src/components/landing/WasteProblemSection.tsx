@@ -1,5 +1,7 @@
 import { Trash2, Lightbulb, Droplets, Construction, Volume2, ShieldAlert } from "lucide-react";
 import DeboraSay from "@/components/landing/DeboraSay";
+import ReportsCarousel from "@/components/landing/ReportsCarousel";
+
 
 
 const categories = [
@@ -41,48 +43,18 @@ const categories = [
   },
 ];
 
-const challengePhotos = [
-  "/lovable-uploads/41b3a1b4-03ed-4912-95dd-05f5880046d0.png",
-  "/lovable-uploads/90ed2c8b-791c-42e2-9957-d9b64eea6202.png",
-  "/lovable-uploads/d2fefb4c-11b8-457a-a4ac-a09010c75de3.png",
-];
-
 const WasteProblemSection = () => {
   return (
     <section id="categories" className="relative py-24 bg-background overflow-hidden">
       <div className="absolute inset-0 hud-grid opacity-30 pointer-events-none" />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Photos de défi */}
-          <div className="hud-panel p-4 sm:p-5">
-            <div className="flex items-center justify-between mb-4">
-              <span className="hud-label">Débora // défis reçus</span>
-              <span className="hud-meta">GALERIE</span>
-            </div>
-            <div className="grid grid-cols-3 gap-3">
-              {challengePhotos.map((photo, index) => (
-                <div key={photo} className="relative aspect-square overflow-hidden border border-border/70 bg-surface/60 group">
-                  <img
-                    src={photo}
-                    alt={`Défi citoyen ${index + 1}`}
-                    className="w-full h-full object-cover grayscale-[25%] group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-accent/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className="absolute bottom-2 left-2 font-mono text-[10px] uppercase tracking-wider text-accent bg-card/80 px-1.5 py-0.5 border border-accent/30">
-                    DEF-{String(index + 1).padStart(2, "0")}
-                  </div>
-                </div>
-              ))}
-            </div>
-            <p className="mt-4 text-sm text-muted-foreground italic">
-              « Tout ce qui gâte le quartier, envoie-le-moi. Je le transforme en donnée ouverte et localisée. »
-            </p>
-          </div>
+          {/* Carrousel des signalements reçus */}
+          <ReportsCarousel />
 
-          {/* Texte + catégories */}
+          {/* Texte + Débora */}
           <div>
-            <p className="hud-label mb-4">Débora // ce que je peux recevoir</p>
+
             <h2 className="font-display text-3xl md:text-5xl font-bold uppercase leading-tight">
               Tout ce qui gâte le <span className="text-accent">quartier</span>,
               <br />
