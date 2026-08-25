@@ -6,28 +6,29 @@ const steps = [
   {
     icon: Camera,
     step: "01",
-    title: "Capture l'incident",
-    desc: "Une photo du problème, où qu'il soit dans la cité.",
+    title: "Prends la photo",
+    desc: "« Montre-moi le problème, où qu'il soit dans ton quartier. »",
   },
   {
     icon: MessageSquare,
     step: "02",
-    title: "Transmets à Débora",
-    desc: "Sur WhatsApp ou Telegram, elle prend le relais et vérifie par IA.",
+    title: "Envoie-la-moi",
+    desc: "« Sur WhatsApp ou Telegram. Je vérifie avec mon IA en moins d'une minute. »",
   },
   {
     icon: MapPin,
     step: "03",
-    title: "La carte s'actualise",
-    desc: "L'incident est géolocalisé et visible publiquement en temps réel.",
+    title: "Je place le point",
+    desc: "« Ton signalement apparaît sur la carte publique, visible par tout le monde. »",
   },
   {
     icon: Trophy,
     step: "04",
-    title: "Encaisse tes Himpact",
-    desc: "Chaque mission validée te fait grimper dans le classement des opérateurs.",
+    title: "Prends tes points",
+    desc: "« Chaque mission validée te rapporte des Himpact et te fait monter au classement. »",
   },
 ];
+
 
 const SolutionSection = () => {
   return (
