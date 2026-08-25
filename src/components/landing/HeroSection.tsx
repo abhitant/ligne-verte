@@ -91,7 +91,7 @@ const HeroSection = () => {
                   className="relative z-10 h-auto w-full max-w-[390px] min-[900px]:max-w-[500px] lg:max-w-[570px] object-contain object-bottom drop-shadow-[0_0_50px_hsl(var(--accent)/0.22)] animate-rise"
                 />
                 {/* Badge agent épinglé sur le gilet */}
-                <div className="absolute z-20 left-[26%] top-[62%] -rotate-6 w-[30%] min-w-[104px] rounded-sm border border-accent/60 bg-card/95 px-2 py-1.5 shadow-[0_0_24px_hsl(var(--accent)/0.35)] backdrop-blur-sm">
+                <div className="absolute z-20 left-[33%] top-[57%] -rotate-6 w-[26%] min-w-[96px] rounded-sm border border-accent/60 bg-card/95 px-2 py-1.5 shadow-[0_0_24px_hsl(var(--accent)/0.35)] backdrop-blur-sm">
                   <p className="font-mono text-[7px] sm:text-[8px] uppercase tracking-[0.2em] text-accent">La Ligne Verte</p>
                   <p className="font-display text-[10px] sm:text-xs font-bold uppercase leading-tight text-foreground">Débora</p>
                   <p className="font-mono text-[7px] sm:text-[8px] uppercase tracking-widest text-muted-foreground">Standardiste · ID-001</p>
