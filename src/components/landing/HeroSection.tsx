@@ -75,16 +75,16 @@ const HeroSection = () => {
             </div>
           </div>
 
-          {/* Pose Hero complète : aucune découpe intégrée à l'image. */}
-          <div className="min-[900px]:col-span-5 lg:col-span-6 relative flex items-end justify-center min-[900px]:justify-end self-stretch min-h-[380px] min-[900px]:min-h-[480px] lg:min-h-[min(620px,calc(100svh-9rem))]">
-            <div className="relative w-full h-full max-w-md lg:max-w-xl flex items-end justify-center min-[900px]:justify-end">
+          {/* Pose Hero : grand portrait buste/torse de Débora, naturel, sans jambes. */}
+          <div className="min-[900px]:col-span-6 lg:col-span-6 relative flex items-end justify-center min-[900px]:justify-end self-stretch min-h-[420px] min-[900px]:min-h-[520px] lg:min-h-[min(680px,calc(100svh-9rem))]">
+            <div className="relative w-full h-full flex items-end justify-center min-[900px]:justify-end">
               <img
                 src={deboraHero}
                 alt="Débora, la standardiste de La Ligne Verte"
                 width={1024}
-                height={1024}
+                height={1280}
                 loading="eager"
-                className="relative z-10 h-auto w-full max-w-[280px] min-[900px]:max-w-[340px] lg:max-w-[390px] object-contain object-bottom drop-shadow-[0_0_40px_hsl(var(--accent)/0.2)] animate-rise"
+                className="relative z-10 h-auto w-full max-w-[360px] min-[900px]:max-w-[480px] lg:max-w-[580px] object-contain object-bottom drop-shadow-[0_0_50px_hsl(var(--accent)/0.22)] animate-rise"
               />
             </div>
           </div>
