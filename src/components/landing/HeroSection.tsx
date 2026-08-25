@@ -63,23 +63,23 @@ const HeroSection = () => {
               <div className="absolute top-1/2 -right-2 h-4 w-4 -translate-y-1/2 rotate-45 border-r border-t border-accent/30 bg-card" />
             </div>
 
-            <div className="mt-10 flex flex-wrap items-center gap-4">
+            <div className="mt-10 flex flex-nowrap items-center gap-3">
               <button
                 onClick={scrollToNext}
-                className="group relative inline-flex items-center gap-4 overflow-hidden border border-accent/50 bg-accent/10 px-8 py-4 font-display text-sm uppercase tracking-[0.25em] text-accent transition-all duration-300 hover:bg-accent hover:text-accent-foreground hover:shadow-[0_0_40px_hsl(var(--accent)/0.45)]"
+                className="group relative inline-flex shrink-0 items-center gap-3 overflow-hidden border border-accent/50 bg-accent/10 px-5 py-3.5 font-display text-sm uppercase tracking-[0.2em] text-accent transition-all duration-300 hover:bg-accent hover:text-accent-foreground hover:shadow-[0_0_40px_hsl(var(--accent)/0.45)]"
               >
                 <span className="absolute inset-y-0 left-0 w-1 bg-accent transition-all duration-300 group-hover:w-full group-hover:opacity-10" />
                 <span className="absolute left-0 top-0 h-2 w-2 border-l border-t border-accent" />
                 <span className="absolute right-0 bottom-0 h-2 w-2 border-r border-b border-accent" />
                 <span className="relative z-10">En savoir plus</span>
-                <span className="relative z-10 flex h-7 w-7 items-center justify-center rounded-full border border-current">
-                  <ChevronDown className="h-4 w-4 animate-bounce" />
+                <span className="relative z-10 flex h-6 w-6 items-center justify-center rounded-full border border-current">
+                  <ChevronDown className="h-3.5 w-3.5 animate-bounce" />
                 </span>
               </button>
 
               <Popover>
                 <PopoverTrigger asChild>
-                  <button className="group relative inline-flex items-center gap-3 overflow-hidden border border-border bg-card px-6 py-4 font-display text-sm uppercase tracking-[0.2em] text-foreground transition-all duration-300 hover:border-accent/50 hover:text-accent hover:shadow-[0_0_30px_hsl(var(--accent)/0.2)]">
+                  <button className="group relative inline-flex shrink-0 items-center gap-3 overflow-hidden border border-border bg-card px-5 py-3.5 font-display text-sm uppercase tracking-[0.15em] text-foreground transition-all duration-300 hover:border-accent/50 hover:text-accent hover:shadow-[0_0_30px_hsl(var(--accent)/0.2)]">
                     <span className="absolute inset-y-0 left-0 w-0 bg-accent/10 transition-all duration-300 group-hover:w-full" />
                     <span className="relative z-10">Contacter Déborah directement</span>
                   </button>
