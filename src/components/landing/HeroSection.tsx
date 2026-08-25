@@ -1,11 +1,23 @@
-import { Button } from "@/components/ui/button";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, CheckCircle2, Clock, Users } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useReports } from "@/hooks/useReports";
+import { useLeaderboard } from "@/hooks/useGamification";
 import deboraHero from "@/assets/debora-hero-torso.png";
 
 
 const HeroSection = () => {
   const [currentImage, setCurrentImage] = useState(0);
+  const { data: reports = [] } = useReports();
+  const { data: operators = [] } = useLeaderboard(100);
+
+  const validated = reports.filter((r) => r.status === "validated").length;
+  const pending = reports.filter((r) => r.status === "pending").length;
+
+  const stats = [
+    { icon: CheckCircle2, label: "Missions validées", value: validated },
+    { icon: Clock, label: "En cours de vérification", value: pending },
+    { icon: Users, label: "Agents sur le terrain", value: operators.length },
+  ];
 
   const images = [
     "/lovable-uploads/41b3a1b4-03ed-4912-95dd-05f5880046d0.png",
@@ -21,7 +33,7 @@ const HeroSection = () => {
   }, [images.length]);
 
   const scrollToNext = () => {
-    document.getElementById("pourquoi")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.getElementById("categories")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
 
@@ -120,6 +132,28 @@ const HeroSection = () => {
         </div>
       </div>
 
+      {/* Stats alignées en bas du Hero */}
+      <div className="absolute inset-x-0 bottom-0 z-30 border-t border-border/70 bg-background/80 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-3 divide-x divide-border/70">
+            {stats.map((s) => {
+              const Icon = s.icon;
+              return (
+                <div key={s.label} className="p-4 sm:p-6 text-center">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <Icon className="w-4 h-4 text-accent" />
+                    <span className="hud-meta hidden sm:inline">{s.label}</span>
+                  </div>
+                  <p className="font-display text-2xl sm:text-3xl lg:text-4xl text-foreground tabular-nums">
+                    {String(s.value).padStart(2, "0")}
+                  </p>
+                  <p className="hud-meta sm:hidden mt-1">{s.label}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
     </section>
   );
 };
