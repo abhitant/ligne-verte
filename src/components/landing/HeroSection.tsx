@@ -1,9 +1,8 @@
 import { Button } from "@/components/ui/button";
-import WaitlistModal from "@/components/WaitlistModal";
-import { WHATSAPP_INVITE_URL, TELEGRAM_BOT_URL } from "@/config/links";
-import { Radio, MessageCircle, Activity } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
-import deboraHero from "@/assets/debora-hero-present.png";
+import deboraHero from "@/assets/debora-hero-bust.png";
+
 
 const HeroSection = () => {
   const [currentImage, setCurrentImage] = useState(0);
