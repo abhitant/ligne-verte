@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
-import deboraHero from "@/assets/debora-hero-torso.png";
+import deboraHero from "@/assets/debora-hero-natural.png";
 
 
 const HeroSection = () => {
@@ -75,16 +75,16 @@ const HeroSection = () => {
             </div>
           </div>
 
-          {/* Pose Hero : grand portrait buste/torse de Débora, naturel, sans jambes. */}
+          {/* Débora se prolonge sous le Hero : aucune fin d'image visible. */}
           <div className="min-[900px]:col-span-6 lg:col-span-6 relative flex items-end justify-center min-[900px]:justify-end self-stretch min-h-[420px] min-[900px]:min-h-[520px] lg:min-h-[min(680px,calc(100svh-9rem))]">
-            <div className="relative w-full h-full flex items-end justify-center min-[900px]:justify-end">
+            <div className="absolute inset-x-0 -bottom-24 min-[900px]:-bottom-40 flex items-end justify-center min-[900px]:justify-end">
               <img
                 src={deboraHero}
                 alt="Débora, la standardiste de La Ligne Verte"
                 width={1024}
-                height={1280}
+                height={1536}
                 loading="eager"
-                className="relative z-10 h-auto w-full max-w-[360px] min-[900px]:max-w-[480px] lg:max-w-[580px] object-contain object-bottom drop-shadow-[0_0_50px_hsl(var(--accent)/0.22)] animate-rise"
+                className="relative z-10 h-auto w-full max-w-[390px] min-[900px]:max-w-[500px] lg:max-w-[570px] object-contain object-bottom drop-shadow-[0_0_50px_hsl(var(--accent)/0.22)] animate-rise"
               />
             </div>
           </div>
