@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { Icon } from 'leaflet';
+import { Icon, divIcon } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Card, CardContent } from '@/components/ui/card';
 
 // Fix pour les markers par défaut dans react-leaflet
 delete (Icon.Default.prototype as any)._getIconUrl;
@@ -43,24 +42,24 @@ const MapFallback = ({ reports, selectedReport, onReportSelect, filter }: OpenSt
     <div className="h-full w-full bg-gradient-to-br from-green-50 to-blue-50 flex flex-col items-center justify-start p-4 rounded-lg border-2 border-green-200 overflow-y-auto">
       <div className="text-center mb-4 w-full">
         <h3 className="text-lg font-bold text-red-600 mb-2">⚠️ Carte non disponible</h3>
-        <div className="bg-white rounded-lg p-3 shadow-sm border border-red-200 mb-4">
+        <div className="bg-card rounded-lg p-3 shadow-sm border border-red-200 mb-4">
           <p className="text-red-600 text-sm">La carte interactive ne peut pas se charger.</p>
-          <p className="text-gray-600 text-sm">Voici la liste des signalements :</p>
+          <p className="text-muted-foreground text-sm">Voici la liste des signalements :</p>
           <p className="text-green-500 text-lg font-bold mt-2">{filteredReports.length} signalement(s)</p>
         </div>
       </div>
       
       <div className="w-full max-w-2xl space-y-3">
         {filteredReports.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg shadow-sm">
-            <p className="text-gray-500">Aucun signalement trouvé</p>
+          <div className="text-center py-12 bg-card rounded-lg shadow-sm">
+            <p className="text-muted-foreground">Aucun signalement trouvé</p>
           </div>
         ) : (
           filteredReports.map((report, index) => (
             <div
               key={report.id}
-              className={`p-4 bg-white rounded-lg shadow-sm border cursor-pointer transition-all hover:shadow-md ${
-                selectedReport?.id === report.id ? 'ring-2 ring-green-500 border-green-500' : 'border-gray-200'
+              className={`p-4 bg-card rounded-lg shadow-sm border cursor-pointer transition-all hover:shadow-md ${
+                selectedReport?.id === report.id ? 'ring-2 ring-green-500 border-green-500' : 'border-border'
               }`}
               onClick={() => {
                 onReportSelect(report);
@@ -72,8 +71,8 @@ const MapFallback = ({ reports, selectedReport, onReportSelect, filter }: OpenSt
                     {report.type === 'waste' ? '🗑️' : report.type === 'drain' ? '🚰' : '⚠️'}
                   </span>
                   <div>
-                    <span className="font-semibold text-gray-800">{report.user}</span>
-                    <p className="text-sm text-gray-500">{report.location}</p>
+                    <span className="font-semibold text-foreground">{report.user}</span>
+                    <p className="text-sm text-muted-foreground">{report.location}</p>
                   </div>
                 </div>
                 <div className={`w-4 h-4 rounded-full ${
@@ -81,8 +80,8 @@ const MapFallback = ({ reports, selectedReport, onReportSelect, filter }: OpenSt
                   report.status === 'rejected' ? 'bg-red-500' : 'bg-yellow-500'
                 }`}></div>
               </div>
-              <p className="text-gray-700 text-sm mb-2">{report.description}</p>
-              <div className="text-xs text-blue-600 bg-blue-50 p-2 rounded">
+              <p className="text-foreground text-sm mb-2">{report.description}</p>
+              <div className="text-xs text-blue-600 bg-surface p-2 rounded">
                 📍 {report.coordinates.lat.toFixed(6)}, {report.coordinates.lng.toFixed(6)}
               </div>
             </div>
@@ -152,26 +151,20 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
     return () => clearTimeout(timer);
   }, [mapLoaded, mapError]);
 
-  // Créer des icônes personnalisées selon le statut
+  // Marqueurs HUD selon le statut
   const createCustomIcon = (status: string) => {
-    let color = 'red';
-    if (status === 'validé') {
-      color = 'green';
-    } else if (status === 'en attente') {
-      color = 'orange';
-    } else if (status === 'rejeté') {
-      color = 'red';
-    }
-    
-    return new Icon({
-      iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
-      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41]
+    const validated = status === 'validated' || status === 'validé';
+    const color = validated ? 'hsl(78 100% 60%)' : 'hsl(38 96% 56%)';
+
+    return divIcon({
+      className: '',
+      html: `<span style="display:block;width:16px;height:16px;border-radius:9999px;background:${color};box-shadow:0 0 0 3px ${color}33, 0 0 14px ${color};border:2px solid hsl(158 45% 5%);"></span>`,
+      iconSize: [16, 16],
+      iconAnchor: [8, 8],
+      popupAnchor: [0, -10],
     });
   };
+
 
   // Si il y a une erreur ou timeout, afficher le fallback
   if (mapError || loadingTimeout) {
@@ -182,7 +175,7 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
     <div className="relative h-full w-full">
       {/* Indicateur de chargement amélioré */}
       {!mapLoaded && (
-        <div className="absolute inset-0 bg-green-50 flex items-center justify-center z-10">
+        <div className="absolute inset-0 bg-surface flex items-center justify-center z-10">
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto mb-2"></div>
             <p className="text-green-600 text-sm">Chargement de la carte...</p>
@@ -192,7 +185,7 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
                   console.log('User requested fallback mode');
                   setMapError(true);
                 }}
-                className="block mx-auto text-xs text-blue-600 underline hover:text-blue-800 bg-white px-3 py-1 rounded"
+                className="block mx-auto text-xs text-blue-600 underline hover:text-blue-800 bg-card px-3 py-1 rounded"
               >
                 Problème ? Cliquez ici pour la version alternative
               </button>
@@ -201,7 +194,7 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
                   console.log('User requested page reload');
                   window.location.reload();
                 }}
-                className="block mx-auto text-xs text-gray-600 underline hover:text-gray-800"
+                className="block mx-auto text-xs text-muted-foreground underline hover:text-foreground"
               >
                 Ou recharger la page
               </button>
@@ -210,24 +203,23 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
         </div>
       )}
       {/* Légende et zones d'opération */}
-      <Card className="absolute top-4 left-4 z-[1000] shadow-xl">
-        <CardContent className="p-6">
-          <h3 className="text-lg font-bold text-gray-900 mb-4">Signalements</h3>
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <span className="w-3 h-3 rounded-full bg-green-500 inline-block"></span> 
-              <span className="font-medium text-sm">Validés</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="w-3 h-3 rounded-full bg-orange-500 inline-block"></span> 
-              <span className="font-medium text-sm">En attente</span>
-            </div>
-            <div className="pt-3 border-t border-gray-200">
-              <span className="text-gray-700 font-semibold text-sm">{filteredReports.length} rapports</span>
-            </div>
+      <div className="hud-panel absolute top-4 left-4 z-[1000] p-5 bg-card/95">
+        <p className="hud-label mb-4">Signalements</p>
+        <div className="space-y-3">
+          <div className="flex items-center gap-3">
+            <span className="w-2.5 h-2.5 rounded-full bg-signal inline-block"></span>
+            <span className="text-sm text-card-foreground">Validés</span>
           </div>
-        </CardContent>
-      </Card>
+          <div className="flex items-center gap-3">
+            <span className="w-2.5 h-2.5 rounded-full bg-alert inline-block"></span>
+            <span className="text-sm text-card-foreground">En attente</span>
+          </div>
+          <div className="pt-3 border-t border-border">
+            <span className="font-mono text-sm text-accent">{filteredReports.length} rapports</span>
+          </div>
+        </div>
+      </div>
+
       
       <div style={{ height: '100%', width: '100%' }}>
         <MapContainer 
@@ -269,7 +261,7 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
               <Popup>
                 <div className="p-2 max-w-xs">
                   <h3 className="font-bold text-sm mb-1">{report.user}</h3>
-                  <p className="text-xs text-gray-600 mb-1 font-medium">
+                  <p className="text-xs text-muted-foreground mb-1 font-medium">
                     {locationNames[report.id] || 'Chargement...'}
                   </p>
                   {report.description && 
@@ -279,14 +271,14 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
                   )}
                   <div className="flex items-center justify-between">
                     <span className={`text-xs px-2 py-1 rounded ${
-                      report.status === 'validated' ? 'bg-green-100 text-green-800' :
-                      report.status === 'rejected' ? 'bg-red-100 text-red-800' :
-                      'bg-yellow-100 text-yellow-800'
+                      report.status === 'validated' ? 'bg-surface text-green-800' :
+                      report.status === 'rejected' ? 'bg-surface text-red-800' :
+                      'bg-surface text-yellow-800'
                     }`}>
                       {report.status === 'validated' ? 'Validé' : 
                        report.status === 'rejected' ? 'Rejeté' : 'En attente'}
                     </span>
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-muted-foreground">
                       {new Date(report.date).toLocaleDateString('fr-FR')}
                     </span>
                   </div>

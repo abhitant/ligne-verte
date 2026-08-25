@@ -89,7 +89,7 @@ const ImpactOverview = () => {
             <div className="space-y-6 mb-10">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-lime-400 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <Target className="w-6 h-6 text-gray-900" />
+                  <Target className="w-6 h-6 text-foreground" />
                 </div>
                 <div>
                   <div className="font-bold text-white text-lg mb-1">1. Prends une photo</div>
@@ -99,7 +99,7 @@ const ImpactOverview = () => {
               
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-lime-400 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <MapPin className="w-6 h-6 text-gray-900" />
+                  <MapPin className="w-6 h-6 text-foreground" />
                 </div>
                 <div>
                   <div className="font-bold text-white text-lg mb-1">2. Localisation automatique</div>
@@ -109,7 +109,7 @@ const ImpactOverview = () => {
               
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-lime-400 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <TrendingUp className="w-6 h-6 text-gray-900" />
+                  <TrendingUp className="w-6 h-6 text-foreground" />
                 </div>
                 <div>
                   <div className="font-bold text-white text-lg mb-1">3. Gagne des points</div>
@@ -119,14 +119,14 @@ const ImpactOverview = () => {
             </div>
 
             <a href={TELEGRAM_BOT_URL} target="_blank" rel="noopener noreferrer" className="block">
-              <Button size="lg" className="w-full bg-lime-400 hover:bg-lime-500 text-gray-900 text-lg py-6 rounded-xl shadow-2xl font-bold border-2 border-lime-300 hover:border-lime-400 transition-all">
+              <Button size="lg" className="w-full bg-lime-400 hover:bg-lime-500 text-foreground text-lg py-6 rounded-xl shadow-2xl font-bold border-2 border-lime-300 hover:border-lime-400 transition-all">
                 <Target className="w-6 h-6 mr-3" />
                 Commencer maintenant
               </Button>
             </a>
             
             <div className="mt-6 text-center">
-              <div className="text-gray-400 text-sm mb-2">Contact</div>
+              <div className="text-muted-foreground text-sm mb-2">Contact</div>
               <div className="text-lime-400 font-medium">greenpillciv@gmail.com</div>
               <div className="text-lime-400 font-medium">www.greenpill.network</div>
             </div>

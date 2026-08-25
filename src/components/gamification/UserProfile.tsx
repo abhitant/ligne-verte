@@ -67,7 +67,7 @@ const UserProfile = ({ userStats, className }: UserProfileProps) => {
             {userStats.level_current}
           </div>
           <div>
-            <h3 className="text-xl font-bold text-gray-900">{userStats.pseudo}</h3>
+            <h3 className="text-xl font-bold text-foreground">{userStats.pseudo}</h3>
             <p className="text-sm text-green-600 font-medium">{levelInfo.name}</p>
           </div>
           {userStats.rank && (
@@ -82,7 +82,7 @@ const UserProfile = ({ userStats, className }: UserProfileProps) => {
         {/* Experience Progress */}
         <div className="space-y-2">
           <div className="flex justify-between text-sm">
-            <span className="text-gray-600">Expérience</span>
+            <span className="text-muted-foreground">Expérience</span>
             <span className="font-medium">
               {userStats.experience_points} XP
               {userStats.level_current < 10 && ` / ${progressInfo.next} XP`}
@@ -90,7 +90,7 @@ const UserProfile = ({ userStats, className }: UserProfileProps) => {
           </div>
           <Progress value={progressInfo.progress} className="h-2" />
           {userStats.level_current < 10 && (
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-muted-foreground">
               {progressInfo.remaining} XP pour le niveau suivant
             </p>
           )}
@@ -103,7 +103,7 @@ const UserProfile = ({ userStats, className }: UserProfileProps) => {
               <Target className="w-4 h-4 text-blue-500 mr-1" />
               <span className="text-2xl font-bold text-blue-600">{userStats.reports_count}</span>
             </div>
-            <p className="text-xs text-gray-600">Signalements</p>
+            <p className="text-xs text-muted-foreground">Signalements</p>
           </div>
           
           <div className="bg-card rounded-lg p-3 text-center">
@@ -111,7 +111,7 @@ const UserProfile = ({ userStats, className }: UserProfileProps) => {
               <Trophy className="w-4 h-4 text-green-500 mr-1" />
               <span className="text-2xl font-bold text-green-600">{userStats.cleanups_count}</span>
             </div>
-            <p className="text-xs text-gray-600">Nettoyages</p>
+            <p className="text-xs text-muted-foreground">Nettoyages</p>
           </div>
           
           <div className="bg-card rounded-lg p-3 text-center">
@@ -119,7 +119,7 @@ const UserProfile = ({ userStats, className }: UserProfileProps) => {
               <Zap className="w-4 h-4 text-orange-500 mr-1" />
               <span className="text-2xl font-bold text-orange-600">{userStats.streak_days}</span>
             </div>
-            <p className="text-xs text-gray-600">Série (jours)</p>
+            <p className="text-xs text-muted-foreground">Série (jours)</p>
           </div>
           
           <div className="bg-card rounded-lg p-3 text-center">
@@ -127,14 +127,14 @@ const UserProfile = ({ userStats, className }: UserProfileProps) => {
               <Star className="w-4 h-4 text-purple-500 mr-1" />
               <span className="text-2xl font-bold text-purple-600">{userStats.experience_points}</span>
             </div>
-            <p className="text-xs text-gray-600">Points XP</p>
+            <p className="text-xs text-muted-foreground">Points XP</p>
           </div>
         </div>
 
         {/* Badges */}
         {userStats.badges && userStats.badges.length > 0 && (
           <div>
-            <p className="text-sm font-medium text-gray-700 mb-2">Badges obtenus</p>
+            <p className="text-sm font-medium text-foreground mb-2">Badges obtenus</p>
             <div className="flex flex-wrap gap-1">
               {userStats.badges.map((badge, index) => (
                 <Badge key={index} variant="outline" className="text-xs">

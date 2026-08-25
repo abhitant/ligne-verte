@@ -143,11 +143,11 @@ const Dashboard = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'validated':
-        return <Badge className="bg-green-100 text-green-800">Validé</Badge>;
+        return <Badge className="bg-surface text-green-800">Validé</Badge>;
       case 'rejected':
-        return <Badge className="bg-red-100 text-red-800">Rejeté</Badge>;
+        return <Badge className="bg-surface text-red-800">Rejeté</Badge>;
       default:
-        return <Badge className="bg-yellow-100 text-yellow-800">En attente</Badge>;
+        return <Badge className="bg-surface text-yellow-800">En attente</Badge>;
     }
   };
 
@@ -360,18 +360,18 @@ const Dashboard = () => {
                           <div className="flex items-center gap-2 mb-2">
                             <span className="font-medium">User {suggestion.telegram_id}</span>
                             <Badge className={
-                              suggestion.suggestion_type === 'bug' ? 'bg-red-100 text-red-800' :
-                              suggestion.suggestion_type === 'feature' ? 'bg-blue-100 text-blue-800' :
-                              'bg-yellow-100 text-yellow-800'
+                              suggestion.suggestion_type === 'bug' ? 'bg-surface text-red-800' :
+                              suggestion.suggestion_type === 'feature' ? 'bg-surface text-blue-800' :
+                              'bg-surface text-yellow-800'
                             }>
                               {suggestion.suggestion_type === 'bug' ? '🐛 Bug' :
                                suggestion.suggestion_type === 'feature' ? '🔧 Amélioration' :
                                '💡 Suggestion'}
                             </Badge>
                             <Badge className={
-                              suggestion.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                              suggestion.status === 'resolved' ? 'bg-green-100 text-green-800' :
-                              'bg-gray-100 text-gray-800'
+                              suggestion.status === 'pending' ? 'bg-surface text-yellow-800' :
+                              suggestion.status === 'resolved' ? 'bg-surface text-green-800' :
+                              'bg-surface text-foreground'
                             }>
                               {suggestion.status === 'pending' ? 'En attente' :
                                suggestion.status === 'resolved' ? 'Traité' : suggestion.status}

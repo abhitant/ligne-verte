@@ -1,4 +1,3 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Trophy, ArrowLeft } from "lucide-react";
 import { useLeaderboard } from "@/hooks/useGamification";
@@ -11,7 +10,7 @@ const LeaderboardPage = () => {
 
   return (
     <div className="relative min-h-screen">
-      {/* Background Map preview with green tint */}
+      {/* Carte tactique en fond */}
       <div className="fixed inset-0 z-0">
         <MapContainer
           center={[5.3478, -4.0267]}
@@ -24,84 +23,77 @@ const LeaderboardPage = () => {
           boxZoom={false}
           keyboard={false}
           style={{ height: '100%', width: '100%' }}
-          className="pointer-events-none"
+          className="pointer-events-none grayscale"
         >
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         </MapContainer>
-        <div className="absolute inset-0 bg-accent/70 mix-blend-multiply" />
-        <div className="absolute inset-0 bg-background/40" />
+        <div className="absolute inset-0 bg-background/90" />
+        <div className="absolute inset-0 hud-grid opacity-40" />
       </div>
 
-      {/* Header */}
-      <div className="relative z-10">
-        <div className="max-w-4xl mx-auto p-4">
-          <div className="flex items-center gap-4 mb-4">
-            <Link to="/carte">
-              <Button variant="ghost" size="sm" className="text-foreground hover:bg-primary/10">
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Retour à la carte
-              </Button>
-            </Link>
+      <div className="relative z-10 max-w-4xl mx-auto px-4 py-8">
+        <Link to="/carte">
+          <Button variant="ghost" size="sm" className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-accent hover:bg-accent/10">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Retour à la carte
+          </Button>
+        </Link>
+
+        <div className="hud-panel p-6">
+          <div className="flex items-center justify-between mb-2">
+            <span className="hud-label flex items-center gap-2">
+              <Trophy className="w-4 h-4" /> Classement des opérateurs
+            </span>
+            <span className="hud-meta">{leaderboard.length} actifs</span>
           </div>
-        </div>
-      </div>
+          <h1 className="font-display text-3xl md:text-4xl uppercase tracking-tight mb-1">
+            Tableau d'<span className="text-accent">honneur</span>
+          </h1>
+          <p className="text-sm text-muted-foreground mb-6">
+            Classement par points Himpact accumulés sur les missions validées.
+          </p>
 
-      <div className="relative z-10 max-w-4xl mx-auto p-4">
-        <Card className="bg-background border border-border shadow-xl">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-foreground text-xl">
-              <Trophy className="w-6 h-6 text-accent" />
-              Classement Général
-            </CardTitle>
-            <CardDescription className="text-muted-foreground">
-              Les utilisateurs classés en fonction de leur Himpact
-            </CardDescription>
-          </CardHeader>
-          
-          <CardContent className="space-y-3">
-            {isLoading ? (
-              <div className="text-center py-8">
-                <p className="text-muted-foreground">Chargement du classement...</p>
-              </div>
-            ) : leaderboard.length === 0 ? (
-              <div className="text-center py-8">
-                <Trophy className="w-16 h-16 mx-auto mb-4 text-accent" />
-                <p className="text-foreground font-medium">Aucun utilisateur dans le classement</p>
-                <p className="text-muted-foreground">Soyez le premier à signaler !</p>
-              </div>
-            ) : (
-              leaderboard.map((user, index) => (
-                <div 
-                  key={user.pseudo + user.rank} 
-                  className={`flex items-center gap-3 p-4 rounded-xl transition-all hover:shadow-lg border ${
-                    index < 3 
-                      ? 'bg-accent/10 border-accent/30' 
-                      : 'bg-background/30 backdrop-blur-md border-border/50'
+          {isLoading ? (
+            <p className="hud-meta py-10 text-center">Chargement des données…</p>
+          ) : leaderboard.length === 0 ? (
+            <div className="py-14 text-center">
+              <Trophy className="w-10 h-10 mx-auto mb-4 text-accent/60" />
+              <p className="font-display uppercase tracking-wide">Aucun opérateur enregistré</p>
+              <p className="hud-meta mt-1">Sois le premier à lancer une mission.</p>
+            </div>
+          ) : (
+            <ol className="space-y-px bg-border/60 border border-border/60">
+              {leaderboard.map((user, index) => (
+                <li
+                  key={`${user.pseudo}-${user.rank}`}
+                  className={`flex items-center gap-4 p-4 transition-colors hover:bg-surface ${
+                    index < 3 ? 'bg-accent/10' : 'bg-card'
                   }`}
                 >
-                  <div className={`flex items-center justify-center w-12 h-12 rounded-full font-bold text-lg border ${
-                    index < 3 ? 'bg-accent text-accent-foreground border-accent/30' : 'bg-primary/60 text-primary-foreground border-primary/30'
-                  }`}>
-                    {index < 3 ? (index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉') : index + 1}
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-semibold text-foreground text-lg">{user.pseudo}</p>
-                    <p className="text-sm text-muted-foreground">{user.reports_count || 0} signalements effectués</p>
+                  <span
+                    className={`font-mono text-sm w-10 h-10 flex items-center justify-center border ${
+                      index < 3
+                        ? 'border-accent text-accent'
+                        : 'border-border text-muted-foreground'
+                    }`}
+                  >
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-display uppercase tracking-wide text-lg truncate">{user.pseudo}</p>
+                    <p className="hud-meta">{user.reports_count || 0} missions</p>
                   </div>
                   <div className="text-right">
-                    <p className={`font-bold text-2xl ${index < 3 ? 'text-accent' : 'text-foreground'}`}>{user.points_himpact}</p>
-                    <p className="text-sm text-muted-foreground">points Himpact</p>
+                    <p className={`font-display text-2xl tabular-nums ${index < 3 ? 'text-accent' : 'text-foreground'}`}>
+                      {user.points_himpact}
+                    </p>
+                    <p className="hud-meta">Himpact</p>
                   </div>
-                  {index < 3 && (
-                    <div className="text-accent text-2xl">
-                      ⭐
-                    </div>
-                  )}
-                </div>
-              ))
-            )}
-          </CardContent>
-        </Card>
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
       </div>
     </div>
   );

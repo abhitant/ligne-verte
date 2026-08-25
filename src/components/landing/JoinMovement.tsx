@@ -124,10 +124,10 @@ const JoinMovement = () => {
         {/* CTA */}
         <Card className="bg-gradient-to-r from-yellow-400 to-orange-500 shadow-2xl">
           <CardContent className="p-12 text-center">
-            <h3 className="text-3xl font-bold text-gray-900 mb-4">
+            <h3 className="text-3xl font-bold text-foreground mb-4">
               Prêt à faire la différence ?
             </h3>
-            <p className="text-lg text-gray-800 mb-8 opacity-90">
+            <p className="text-lg text-foreground mb-8 opacity-90">
               Commence dès maintenant et gagne tes premiers points Himpact
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -135,7 +135,7 @@ const JoinMovement = () => {
                 <Target className="w-5 h-5 mr-2" />
                 Faire mon premier signalement
               </Button>
-              <Button variant="outline" size="lg" className="border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white px-8 py-4 text-lg rounded-xl">
+              <Button variant="outline" size="lg" className="border-2 border-gray-900 text-foreground hover:bg-gray-900 hover:text-white px-8 py-4 text-lg rounded-xl">
                 <Users className="w-5 h-5 mr-2" />
                 Rejoindre la communauté
               </Button>

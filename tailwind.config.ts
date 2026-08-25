@@ -18,12 +18,25 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				sans: ['"Chivo"', 'system-ui', 'sans-serif'],
+				display: ['"Chakra Petch"', '"Chivo"', 'sans-serif'],
+				mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
+				surface: {
+					DEFAULT: 'hsl(var(--surface))',
+					foreground: 'hsl(var(--surface-foreground))'
+				},
+				signal: 'hsl(var(--signal))',
+				alert: 'hsl(var(--alert))',
+				critical: 'hsl(var(--critical))',
+				info: 'hsl(var(--info))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))'
@@ -70,25 +83,43 @@ export default {
 			},
 			keyframes: {
 				'accordion-down': {
-					from: {
-						height: '0'
-					},
-					to: {
-						height: 'var(--radix-accordion-content-height)'
-					}
+					from: { height: '0' },
+					to: { height: 'var(--radix-accordion-content-height)' }
 				},
 				'accordion-up': {
-					from: {
-						height: 'var(--radix-accordion-content-height)'
-					},
-					to: {
-						height: '0'
-					}
+					from: { height: 'var(--radix-accordion-content-height)' },
+					to: { height: '0' }
+				},
+				'radar-sweep': {
+					'0%': { transform: 'rotate(0deg)' },
+					'100%': { transform: 'rotate(360deg)' }
+				},
+				'hud-ping': {
+					'0%': { transform: 'scale(0.6)', opacity: '0.9' },
+					'100%': { transform: 'scale(2.4)', opacity: '0' }
+				},
+				'scan-line': {
+					'0%': { transform: 'translateY(-100%)' },
+					'100%': { transform: 'translateY(1000%)' }
+				},
+				'flicker': {
+					'0%, 100%': { opacity: '1' },
+					'45%': { opacity: '0.65' },
+					'50%': { opacity: '1' }
+				},
+				'rise': {
+					from: { opacity: '0', transform: 'translateY(16px)' },
+					to: { opacity: '1', transform: 'translateY(0)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'radar-sweep': 'radar-sweep 4s linear infinite',
+				'hud-ping': 'hud-ping 2.4s ease-out infinite',
+				'scan-line': 'scan-line 6s linear infinite',
+				'flicker': 'flicker 6s ease-in-out infinite',
+				'rise': 'rise 0.6s ease-out both'
 			}
 		}
 	},

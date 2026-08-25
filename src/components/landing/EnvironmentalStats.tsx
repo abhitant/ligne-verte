@@ -25,14 +25,14 @@ const EnvironmentalStats = () => {
     <div className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
+          <div className="inline-flex items-center bg-surface text-red-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
             <AlertTriangle className="w-4 h-4 mr-2" />
             ÉTAT D'URGENCE ENVIRONNEMENTAL
           </div>
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl font-bold text-foreground mb-4">
             Abidjan face au défi des déchets
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Les chiffres parlent d'eux-mêmes : notre ville étouffe sous les déchets plastiques
           </p>
         </div>
@@ -41,7 +41,7 @@ const EnvironmentalStats = () => {
           {/* Pie Chart - Waste Distribution */}
           <Card className="shadow-xl">
             <CardContent className="p-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+              <h3 className="text-2xl font-bold text-foreground mb-6 text-center">
                 Répartition des 400 000 tonnes de plastique
               </h3>
               <ChartContainer
@@ -77,7 +77,7 @@ const EnvironmentalStats = () => {
           {/* Bar Chart - District Comparison */}
           <Card className="shadow-xl">
             <CardContent className="p-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+              <h3 className="text-2xl font-bold text-foreground mb-6 text-center">
                 Déchets par commune (en tonnes)
               </h3>
               <ChartContainer

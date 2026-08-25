@@ -93,11 +93,11 @@ const Marketplace = () => {
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'telecom': return 'bg-blue-100 text-blue-800';
-      case 'shopping': return 'bg-purple-100 text-purple-800';
-      case 'eco': return 'bg-green-100 text-green-800';
-      case 'premium': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'telecom': return 'bg-surface text-blue-800';
+      case 'shopping': return 'bg-surface text-purple-800';
+      case 'eco': return 'bg-surface text-green-800';
+      case 'premium': return 'bg-surface text-yellow-800';
+      default: return 'bg-surface text-foreground';
     }
   };
 
@@ -153,7 +153,7 @@ const Marketplace = () => {
                   <div className="text-4xl mb-2">{reward.image}</div>
                   <div className="flex flex-col items-end gap-2">
                     {reward.popular && (
-                      <Badge className="bg-red-100 text-red-800">
+                      <Badge className="bg-surface text-red-800">
                         <Star className="w-3 h-3 mr-1" />
                         Populaire
                       </Badge>
@@ -171,7 +171,7 @@ const Marketplace = () => {
                   <div className="text-2xl font-bold text-green-600">
                     {reward.points} pts
                   </div>
-                  <div className="text-sm text-gray-500 flex items-center gap-1">
+                  <div className="text-sm text-muted-foreground flex items-center gap-1">
                     <Users className="w-4 h-4" />
                     {reward.available} disponibles
                   </div>
@@ -191,7 +191,7 @@ const Marketplace = () => {
         </div>
 
         {/* Info Section */}
-        <Card className="bg-blue-50 border-blue-200 mt-12">
+        <Card className="bg-surface border-blue-200 mt-12">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-blue-800">
               <Gift className="w-6 h-6" />
@@ -201,19 +201,19 @@ const Marketplace = () => {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-surface rounded-full flex items-center justify-center">
                   <span className="text-green-600 font-bold">+50</span>
                 </div>
                 <span>Signalement validé</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-surface rounded-full flex items-center justify-center">
                   <span className="text-blue-600 font-bold">+100</span>
                 </div>
                 <span>Photo de qualité</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-surface rounded-full flex items-center justify-center">
                   <span className="text-purple-600 font-bold">+200</span>
                 </div>
                 <span>Zone critique nettoyée</span>

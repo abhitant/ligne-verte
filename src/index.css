@@ -2,94 +2,89 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
+/* =========================================================
+   LA LIGNE VERTE — Design system "Mission Control / HUD"
+   Toutes les couleurs sont en HSL et sémantiques.
+   ========================================================= */
 
 @layer base {
   :root {
-    /* Couleurs La Ligne Verte - style urbain Gen Z */
-    --background: 141 40% 16%; /* Fond vert foncé #1B3925 */
-    --foreground: 0 0% 95%; /* Texte blanc pour contraster */
+    /* Surfaces — nuit tactique */
+    --background: 158 45% 5%;
+    --foreground: 90 25% 94%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 141 40% 11%;
+    --card: 158 38% 8%;
+    --card-foreground: 90 20% 94%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 141 40% 11%;
+    --popover: 158 38% 8%;
+    --popover-foreground: 90 20% 94%;
 
-    /* Vert foncé principal #1B3925 */
-    --primary: 141 40% 11%;
-    --primary-foreground: 0 0% 98%;
+    /* Panneaux HUD */
+    --surface: 158 34% 10%;
+    --surface-foreground: 90 20% 94%;
 
-    /* Vert clair accent #C3FF5D */
-    --secondary: 75 100% 68%;
-    --secondary-foreground: 141 40% 11%;
+    /* Vert profond de commandement */
+    --primary: 158 40% 12%;
+    --primary-foreground: 90 30% 96%;
 
-    --muted: 0 0% 96%;
-    --muted-foreground: 141 40% 25%;
+    --secondary: 172 85% 45%;
+    --secondary-foreground: 158 45% 6%;
 
-    /* Vert clair vif #A3FF3F pour les éléments accentués */
-    --accent: 75 100% 62%;
-    --accent-foreground: 141 40% 11%;
+    --muted: 158 25% 14%;
+    --muted-foreground: 150 12% 66%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
+    /* Lime signal */
+    --accent: 78 100% 60%;
+    --accent-foreground: 158 45% 6%;
 
-    --border: 0 0% 89.8%;
-    --input: 0 0% 100%; /* Fond blanc pour les inputs */
-    --ring: 141 40% 11%; /* Bordure verte foncée pour le focus */
+    /* Statuts opérationnels */
+    --signal: 78 100% 60%;      /* validé / résolu */
+    --alert: 38 96% 56%;        /* en attente */
+    --critical: 4 86% 60%;      /* urgence */
+    --info: 192 90% 58%;        /* données */
 
-    --radius: 0.5rem;
+    --destructive: 4 86% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    /* Couleurs sidebar avec thème vert */
-    --sidebar-background: 150 55% 22%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 85 85% 70%;
-    --sidebar-primary-foreground: 120 15% 15%;
-    --sidebar-accent: 150 45% 30%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 150 40% 35%;
-    --sidebar-ring: 85 85% 70%;
+    --border: 158 30% 18%;
+    --input: 158 30% 12%;
+    --ring: 78 100% 60%;
+
+    --radius: 0.25rem;
+
+    --sidebar-background: 158 40% 7%;
+    --sidebar-foreground: 90 20% 92%;
+    --sidebar-primary: 78 100% 60%;
+    --sidebar-primary-foreground: 158 45% 6%;
+    --sidebar-accent: 158 30% 14%;
+    --sidebar-accent-foreground: 90 20% 92%;
+    --sidebar-border: 158 30% 18%;
+    --sidebar-ring: 78 100% 60%;
   }
 
+  /* Le HUD est nativement sombre : le thème dark reprend les mêmes tokens */
   .dark {
-    /* Mode sombre avec un vert foncé pour l'arrière-plan */
-    --background: 141 40% 11%;
-    --foreground: 0 0% 95%;
-
-    --card: 141 30% 15%;
-    --card-foreground: 0 0% 95%;
-
-    --popover: 141 30% 15%;
-    --popover-foreground: 0 0% 95%;
-
-    --primary: 75 100% 68%;
-    --primary-foreground: 141 40% 11%;
-
-    --secondary: 141 20% 20%;
-    --secondary-foreground: 0 0% 95%;
-
-    --muted: 141 20% 20%;
-    --muted-foreground: 0 0% 70%;
-
-    --accent: 75 100% 62%;
-    --accent-foreground: 141 40% 11%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 95%;
-
-    --border: 141 30% 25%;
-    --input: 141 30% 18%;
-    --ring: 75 100% 68%;
-
-    /* Mode sombre sidebar */
-    --sidebar-background: 150 80% 6%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 85 85% 70%;
-    --sidebar-primary-foreground: 120 15% 15%;
-    --sidebar-accent: 150 50% 15%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 150 45% 18%;
-    --sidebar-ring: 85 85% 70%;
+    --background: 158 45% 5%;
+    --foreground: 90 25% 94%;
+    --card: 158 38% 8%;
+    --card-foreground: 90 20% 94%;
+    --popover: 158 38% 8%;
+    --popover-foreground: 90 20% 94%;
+    --surface: 158 34% 10%;
+    --surface-foreground: 90 20% 94%;
+    --primary: 158 40% 12%;
+    --primary-foreground: 90 30% 96%;
+    --secondary: 172 85% 45%;
+    --secondary-foreground: 158 45% 6%;
+    --muted: 158 25% 14%;
+    --muted-foreground: 150 12% 66%;
+    --accent: 78 100% 60%;
+    --accent-foreground: 158 45% 6%;
+    --destructive: 4 86% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 158 30% 18%;
+    --input: 158 30% 12%;
+    --ring: 78 100% 60%;
   }
 }
 
@@ -100,5 +95,77 @@
 
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "ss01", "cv01";
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display tracking-tight;
+  }
+}
+
+@layer components {
+  /* Panneau HUD : cadre technique, coins marqués */
+  .hud-panel {
+    @apply relative border border-border/80 bg-card/80 backdrop-blur-sm;
+    box-shadow: inset 0 0 0 1px hsl(var(--accent) / 0.04), 0 20px 60px -30px hsl(0 0% 0% / 0.9);
+  }
+
+  .hud-panel::before,
+  .hud-panel::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-color: hsl(var(--accent) / 0.7);
+    pointer-events: none;
+  }
+
+  .hud-panel::before {
+    top: -1px;
+    left: -1px;
+    border-top: 2px solid;
+    border-left: 2px solid;
+  }
+
+  .hud-panel::after {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 2px solid;
+    border-right: 2px solid;
+  }
+
+  /* Étiquette technique monospace */
+  .hud-label {
+    @apply font-mono text-[0.65rem] uppercase tracking-[0.25em] text-accent/80;
+  }
+
+  .hud-meta {
+    @apply font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground;
+  }
+
+  /* Grille tactique de fond */
+  .hud-grid {
+    background-image:
+      linear-gradient(hsl(var(--accent) / 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--accent) / 0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .hud-scanlines {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      hsl(var(--accent) / 0.05) 0px,
+      hsl(var(--accent) / 0.05) 1px,
+      transparent 1px,
+      transparent 4px
+    );
+  }
+
+  .hud-divider {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-accent/40 to-transparent;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 24px hsl(var(--accent) / 0.55);
   }
 }
