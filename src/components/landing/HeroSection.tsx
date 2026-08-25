@@ -51,7 +51,7 @@ const HeroSection = () => {
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
         <div className="grid min-[900px]:grid-cols-12 gap-6 min-[900px]:gap-4 lg:gap-8 items-center">
           {/* Texte à gauche */}
-          <div className="min-[900px]:col-span-7 lg:col-span-6 relative z-20">
+          <div className="min-[900px]:col-span-6 lg:col-span-6 relative z-20">
             <div className="hud-panel relative max-w-2xl px-5 py-6 sm:px-7 sm:py-8 shadow-[0_0_40px_hsl(var(--accent)/0.15)]">
               <p className="hud-label mb-4">Débora // standardiste</p>
               <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.05] uppercase">
