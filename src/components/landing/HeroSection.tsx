@@ -90,19 +90,20 @@ const HeroSection = () => {
             </div>
 
             <p className="font-mono text-sm md:text-base text-accent mb-5">
-              « Hello mon ! C'est Débora, j'ai une mission pour toi… »
+              « Monsieur Prime, c'est moi la standardiste — toi, tu es mon agent terrain. »
             </p>
 
             <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold leading-[0.95] uppercase">
-              Rends ton quartier
-              <span className="block text-accent text-glow">zo, prends tes points</span>
+              Aide-moi à rendre
+              <span className="block text-accent text-glow">ton quartier zo</span>
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg md:text-xl text-muted-foreground leading-relaxed">
-              Aide-moi à garder la cité propre et vivable. Déchets, éclairage cassé, caniveau
-              bouché, route abîmée&nbsp;: tu me l'envoies en photo, je m'occupe du reste et je te
-              paie en points Himpact. C'est moi ta standardiste, tu es mon agent sur le terrain.
+              « J'ai une mission pour toi. Déchets, éclairage cassé, caniveau bouché, route
+              abîmée : tu me l'envoies en photo, je vérifie, je place le point sur la carte et je
+              te paie en points Himpact. Rends ton quartier zo, prends tes points. »
             </p>
+
 
             <div className="mt-8 hud-panel px-4 py-3 max-w-xl">
               <div className="flex items-center gap-3">
