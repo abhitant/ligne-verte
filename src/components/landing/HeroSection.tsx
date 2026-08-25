@@ -52,14 +52,6 @@ const HeroSection = () => {
         <div className="grid min-[900px]:grid-cols-12 gap-8 min-[900px]:gap-5 lg:gap-10 items-center">
           {/* Texte à gauche */}
           <div className="min-[900px]:col-span-7 lg:col-span-6 relative z-20">
-            <div className="flex flex-wrap items-center gap-3 mb-6">
-              <span className="hud-label flex items-center gap-2 border border-accent/40 px-3 py-1">
-                <span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
-                Débora est en ligne
-              </span>
-              <span className="hud-meta">Abidjan · Côte d'Ivoire</span>
-            </div>
-
             <div className="hud-panel relative max-w-2xl px-5 py-6 sm:px-7 sm:py-8 shadow-[0_0_40px_hsl(var(--accent)/0.15)]">
               <p className="hud-label mb-4">Débora // standardiste</p>
               <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.05] uppercase">
@@ -71,67 +63,34 @@ const HeroSection = () => {
               <div className="absolute top-1/2 -right-2 h-4 w-4 -translate-y-1/2 rotate-45 border-r border-t border-accent/30 bg-card" />
             </div>
 
-            <div className="mt-8 hud-panel px-4 py-3 max-w-xl">
-              <div className="flex items-center gap-3">
-                <Activity className="w-4 h-4 text-accent shrink-0" />
-                <span className="hud-meta">Débora reçoit //</span>
-                <span className="font-mono text-sm text-foreground truncate">
-                  {line}
-                  <span className="ml-0.5 text-accent animate-pulse">█</span>
-                </span>
-              </div>
-            </div>
-
-            <div className="mt-10 flex flex-col sm:flex-row gap-4">
-              <a
-                href={TELEGRAM_BOT_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Lancer une mission avec Débora sur Telegram"
-              >
-                <Button
-                  size="lg"
-                  className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground font-display uppercase tracking-widest px-10 py-6 text-base"
-                >
-                  <Radio className="w-5 h-5 mr-3" />
-                  Écris à Débora
-                </Button>
-              </a>
-
+            <div className="mt-10">
               <Button
-                variant="outline"
                 size="lg"
-                onClick={() => setIsWaitlistOpen(true)}
-                className="w-full sm:w-auto border-accent/50 text-accent hover:bg-accent hover:text-accent-foreground font-display uppercase tracking-widest px-10 py-6 text-base bg-transparent"
+                onClick={scrollToNext}
+                className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground font-display uppercase tracking-widest px-10 py-6 text-base"
               >
-                <MessageCircle className="w-5 h-5 mr-3" />
-                Rejoindre WhatsApp
+                En savoir plus
+                <ChevronDown className="w-5 h-5 ml-3" />
               </Button>
             </div>
           </div>
 
-          {/* Pose Hero dédiée : Débora entière, tournée vers le message. */}
-          <div className="min-[900px]:col-span-5 lg:col-span-6 relative flex items-end justify-center min-[900px]:justify-end self-stretch min-h-[420px] min-[900px]:min-h-[540px] lg:min-h-[min(660px,calc(100svh-9rem))]">
+          {/* Pose Hero : buste de Débora, face au public. */}
+          <div className="min-[900px]:col-span-5 lg:col-span-6 relative flex items-end justify-center min-[900px]:justify-end self-stretch min-h-[380px] min-[900px]:min-h-[480px] lg:min-h-[min(620px,calc(100svh-9rem))]">
             <div className="relative w-full h-full max-w-md lg:max-w-xl flex items-end justify-center min-[900px]:justify-end">
               <img
                 src={deboraHero}
-                alt="Déborah, la standardiste de La Ligne Verte, présente ta mission"
+                alt="Débora, la standardiste de La Ligne Verte"
                 width={1024}
-                height={1536}
+                height={1024}
                 loading="eager"
-                className="relative z-10 h-auto w-full max-w-[330px] min-[900px]:max-w-[390px] lg:max-w-[460px] object-contain object-bottom drop-shadow-[0_0_40px_hsl(var(--accent)/0.2)] animate-rise"
+                className="relative z-10 h-auto w-full max-w-[320px] min-[900px]:max-w-[400px] lg:max-w-[480px] object-contain object-bottom drop-shadow-[0_0_40px_hsl(var(--accent)/0.2)] animate-rise"
               />
             </div>
           </div>
         </div>
       </div>
 
-      <WaitlistModal
-        isOpen={isWaitlistOpen}
-        onClose={() => setIsWaitlistOpen(false)}
-        redirectAfterSubmit
-        whatsappUrl={WHATSAPP_INVITE_URL}
-      />
     </section>
   );
 };
