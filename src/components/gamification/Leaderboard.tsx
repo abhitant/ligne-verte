@@ -20,11 +20,11 @@ const getRankIcon = (rank: number) => {
     case 1:
       return <Trophy className="w-5 h-5 text-yellow-500" />;
     case 2:
-      return <Medal className="w-5 h-5 text-gray-400" />;
+      return <Medal className="w-5 h-5 text-muted-foreground" />;
     case 3:
       return <Award className="w-5 h-5 text-amber-600" />;
     default:
-      return <span className="w-5 h-5 flex items-center justify-center text-sm font-bold text-gray-500">#{rank}</span>;
+      return <span className="w-5 h-5 flex items-center justify-center text-sm font-bold text-muted-foreground">#{rank}</span>;
   }
 };
 
@@ -37,7 +37,7 @@ const getRankColor = (rank: number) => {
     case 3:
       return "bg-gradient-to-r from-amber-400 to-amber-600 text-white";
     default:
-      return "bg-white border";
+      return "bg-card border";
   }
 };
 
@@ -65,7 +65,7 @@ const Leaderboard = ({ users, limit = 10 }: LeaderboardProps) => {
       </CardHeader>
       <CardContent className="space-y-3">
         {topUsers.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
+          <div className="text-center py-8 text-muted-foreground">
             <p>Le classement commencera dès les premiers signalements</p>
             <p className="text-sm mt-1">En attente des premières contributions...</p>
           </div>
@@ -82,11 +82,11 @@ const Leaderboard = ({ users, limit = 10 }: LeaderboardProps) => {
                   </div>
                   
                   <div>
-                    <h4 className={`font-semibold ${user.rank <= 3 ? 'text-white' : 'text-gray-900'}`}>
+                    <h4 className={`font-semibold ${user.rank <= 3 ? 'text-white' : 'text-foreground'}`}>
                       {user.pseudo}
                     </h4>
                     <div className="flex items-center gap-2 text-sm">
-                      <span className={user.rank <= 3 ? 'text-white/90' : 'text-gray-600'}>
+                      <span className={user.rank <= 3 ? 'text-white/90' : 'text-muted-foreground'}>
                         {user.reports_count} signalements
                       </span>
                     </div>
@@ -101,8 +101,8 @@ const Leaderboard = ({ users, limit = 10 }: LeaderboardProps) => {
               </div>
 
               {/* Progression d'XP et badges */}
-              <div className="mt-3 bg-white/70 rounded-lg p-3">
-                <div className="flex items-center justify-between mb-2 text-xs font-medium text-gray-700">
+              <div className="mt-3 bg-card rounded-lg p-3">
+                <div className="flex items-center justify-between mb-2 text-xs font-medium text-foreground">
                   <span>Niveau {getLevel(user.points_himpact)}</span>
                   <span>{getProgress(user.points_himpact)}/100 XP</span>
                 </div>
@@ -124,7 +124,7 @@ const Leaderboard = ({ users, limit = 10 }: LeaderboardProps) => {
         
         {users.length > limit && (
           <div className="text-center pt-2">
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-muted-foreground">
               Et {users.length - limit} autres participants...
             </p>
           </div>

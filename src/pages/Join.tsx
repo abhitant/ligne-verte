@@ -69,7 +69,7 @@ const Join = () => {
             <Leaf className="h-12 w-12 text-green-600" />
             <h1 className="text-4xl font-bold text-green-800">Rejoindre La Ligne Verte</h1>
           </div>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Devenez un acteur du changement environnemental en Côte d'Ivoire
           </p>
         </div>
@@ -117,7 +117,7 @@ const Join = () => {
                     id="zone"
                     value={formData.zone}
                     onChange={(e) => handleInputChange('zone', e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full p-2 border border-border rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     required
                   >
                     <option value="">Choisissez votre commune</option>
@@ -134,7 +134,7 @@ const Join = () => {
                     value={formData.motivation}
                     onChange={(e) => handleInputChange('motivation', e.target.value)}
                     placeholder="Dites-nous ce qui vous motive à agir pour l'environnement..."
-                    className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent h-20 resize-none"
+                    className="w-full p-2 border border-border rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent h-20 resize-none"
                   />
                 </div>
 
@@ -163,12 +163,12 @@ const Join = () => {
                   const Icon = benefit.icon;
                   return (
                     <div key={index} className="flex items-start gap-3">
-                      <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                      <div className="w-10 h-10 bg-surface rounded-full flex items-center justify-center flex-shrink-0">
                         <Icon className="w-5 h-5 text-green-600" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-gray-800">{benefit.title}</h3>
-                        <p className="text-sm text-gray-600">{benefit.description}</p>
+                        <h3 className="font-semibold text-foreground">{benefit.title}</h3>
+                        <p className="text-sm text-muted-foreground">{benefit.description}</p>
                       </div>
                     </div>
                   );
@@ -206,7 +206,7 @@ const Join = () => {
             </Card>
 
             {/* Process */}
-            <Card className="bg-green-50 border-green-200 shadow-lg">
+            <Card className="bg-surface border-green-200 shadow-lg">
               <CardHeader>
                 <CardTitle className="text-green-800 flex items-center gap-2">
                   <CheckCircle className="w-6 h-6" />

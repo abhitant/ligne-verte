@@ -15,18 +15,18 @@ const MapSection = () => {
 
   const getSeverityColor = (type: string) => {
     switch (type) {
-      case 'waste': return 'bg-red-100 text-red-800';
-      case 'drain': return 'bg-orange-100 text-orange-800';
-      default: return 'bg-green-100 text-green-800';
+      case 'waste': return 'bg-surface text-red-800';
+      case 'drain': return 'bg-surface text-orange-800';
+      default: return 'bg-surface text-green-800';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'validated': return 'bg-blue-100 text-blue-800';
-      case 'rejected': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'pending': return 'bg-surface text-yellow-800';
+      case 'validated': return 'bg-surface text-blue-800';
+      case 'rejected': return 'bg-surface text-red-800';
+      default: return 'bg-surface text-foreground';
     }
   };
 
@@ -51,10 +51,10 @@ const MapSection = () => {
     <div className="py-20 bg-gradient-to-br from-emerald-50 to-teal-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl font-bold text-foreground mb-4">
             Carte interactive des signalements
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Découvre les zones signalées par la communauté et contribue à rendre ton quartier plus propre
           </p>
         </div>
@@ -109,7 +109,7 @@ const MapSection = () => {
             <Card className="shadow-xl">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-bold text-gray-900 flex items-center">
+                  <h3 className="text-xl font-bold text-foreground flex items-center">
                     <AlertCircle className="w-5 h-5 mr-2 text-emerald-600" />
                     Signalements récents
                   </h3>
@@ -130,7 +130,7 @@ const MapSection = () => {
                   {isLoading ? (
                     <div className="text-center py-4">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 mx-auto"></div>
-                      <p className="text-sm text-gray-500 mt-2">Chargement...</p>
+                      <p className="text-sm text-muted-foreground mt-2">Chargement...</p>
                     </div>
                   ) : error ? (
                     <div className="text-center py-8 text-red-500">
@@ -147,21 +147,21 @@ const MapSection = () => {
                       </Button>
                     </div>
                   ) : recentReports.length === 0 ? (
-                    <div className="text-center py-8 text-gray-500">
+                    <div className="text-center py-8 text-muted-foreground">
                       <p>Aucun signalement pour le moment</p>
                       <p className="text-sm mt-2">Sois le premier à signaler !</p>
                     </div>
                   ) : (
                     recentReports.map((report) => (
-                      <div key={report.id} className="border border-gray-200 rounded-lg p-4">
+                      <div key={report.id} className="border border-border rounded-lg p-4">
                         <div className="flex items-start justify-between mb-2">
-                          <div className="font-medium text-gray-900">{report.user}</div>
+                          <div className="font-medium text-foreground">{report.user}</div>
                           <div className={`px-2 py-1 rounded-full text-xs font-medium ${getSeverityColor(report.type)}`}>
                             {getTypeText(report.type)}
                           </div>
                         </div>
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-gray-500">
+                          <span className="text-muted-foreground">
                             {new Date(report.date).toLocaleDateString('fr-FR')}
                           </span>
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(report.status)}`}>
@@ -178,20 +178,20 @@ const MapSection = () => {
             {/* Quick Stats */}
             <Card className="shadow-xl mt-6">
               <CardContent className="p-6">
-                <h4 className="font-bold text-gray-900 mb-4">Statistiques</h4>
+                <h4 className="font-bold text-foreground mb-4">Statistiques</h4>
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Total signalements</span>
+                    <span className="text-muted-foreground">Total signalements</span>
                     <span className="font-bold text-emerald-600">{reports.length}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">En attente</span>
+                    <span className="text-muted-foreground">En attente</span>
                     <span className="font-bold text-yellow-600">
                       {reports.filter(r => r.status === 'pending').length}
                     </span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Validés</span>
+                    <span className="text-muted-foreground">Validés</span>
                     <span className="font-bold text-green-600">
                       {reports.filter(r => r.status === 'validated').length}
                     </span>

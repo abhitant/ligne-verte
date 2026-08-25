@@ -356,7 +356,7 @@ const Map = () => {
                       <Button
                         size="sm"
                         variant="ghost"
-                        className="absolute top-4 right-4 h-10 w-10 p-0 hover:bg-white/20 bg-black/50 rounded-full z-10"
+                        className="absolute top-4 right-4 h-10 w-10 p-0 hover:bg-card bg-black/50 rounded-full z-10"
                         onClick={(e) => {
                           e.stopPropagation();
                           setShowFullscreenImage(false);

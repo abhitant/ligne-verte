@@ -94,7 +94,7 @@ const HeroCarousel = () => {
               Commencer maintenant
             </Button>
             <Link to="/map">
-              <Button variant="outline" size="lg" className="bg-white/10 border-2 border-white text-white hover:bg-white hover:text-gray-900 px-8 py-4 text-lg font-semibold rounded-xl shadow-2xl backdrop-blur-md z-20 relative">
+              <Button variant="outline" size="lg" className="bg-card border-2 border-white text-white hover:bg-card hover:text-foreground px-8 py-4 text-lg font-semibold rounded-xl shadow-2xl backdrop-blur-md z-20 relative">
                 <Info className="w-5 h-5 mr-2" />
                 En apprendre plus
               </Button>

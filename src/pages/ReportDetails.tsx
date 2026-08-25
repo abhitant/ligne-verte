@@ -88,21 +88,21 @@ const ReportDetails = () => {
           color: 'bg-green-500',
           icon: CheckCircle,
           text: 'Validé',
-          className: 'text-green-700 bg-green-100'
+          className: 'text-green-700 bg-surface'
         };
       case 'rejected':
         return {
           color: 'bg-red-500',
           icon: XCircle,
           text: 'Rejeté',
-          className: 'text-red-700 bg-red-100'
+          className: 'text-red-700 bg-surface'
         };
       default:
         return {
           color: 'bg-yellow-500',
           icon: Clock,
           text: 'En attente',
-          className: 'text-yellow-700 bg-yellow-100'
+          className: 'text-yellow-700 bg-surface'
         };
     }
   };
@@ -139,7 +139,7 @@ const ReportDetails = () => {
               <div className="text-red-600">
                 <XCircle className="w-12 h-12 mx-auto mb-4" />
                 <h1 className="text-xl font-bold mb-2">Signalement non trouvé</h1>
-                <p className="text-gray-600">{error || 'Le signalement demandé n\'existe pas.'}</p>
+                <p className="text-muted-foreground">{error || 'Le signalement demandé n\'existe pas.'}</p>
               </div>
             </CardContent>
           </Card>
@@ -193,7 +193,7 @@ const ReportDetails = () => {
                 {/* Photo du signalement */}
                 {report.photo_url && (
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
+                    <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center">
                       <Camera className="w-4 h-4 mr-2" />
                       Photo du signalement
                     </h3>
@@ -210,11 +210,11 @@ const ReportDetails = () => {
                 {/* Description */}
                 {report.description && (
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
+                    <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center">
                       <FileText className="w-4 h-4 mr-2" />
                       Description
                     </h3>
-                    <p className="text-gray-600 bg-gray-50 p-4 rounded-lg">
+                    <p className="text-muted-foreground bg-surface p-4 rounded-lg">
                       {report.description}
                     </p>
                   </div>
@@ -222,11 +222,11 @@ const ReportDetails = () => {
 
                 {/* Localisation */}
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
+                  <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center">
                     <MapPin className="w-4 h-4 mr-2" />
                     Localisation
                   </h3>
-                  <div className="bg-blue-50 p-4 rounded-lg">
+                  <div className="bg-surface p-4 rounded-lg">
                     <p className="text-blue-800 font-mono text-sm">
                       📍 {formatLocation(report.location_lat, report.location_lng)}
                     </p>
@@ -247,7 +247,7 @@ const ReportDetails = () => {
                 {/* Photo de nettoyage si disponible */}
                 {report.cleanup_photo_url && (
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
+                    <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center">
                       <CheckCircle className="w-4 h-4 mr-2 text-green-600" />
                       Photo après nettoyage
                     </h3>
@@ -277,14 +277,14 @@ const ReportDetails = () => {
               <CardContent>
                 <div className="space-y-3">
                   <div>
-                    <p className="text-sm text-gray-600">Pseudo</p>
+                    <p className="text-sm text-muted-foreground">Pseudo</p>
                     <p className="font-semibold">
                       {report.user?.pseudo || `Utilisateur ${report.user_telegram_id.slice(-4)}`}
                     </p>
                   </div>
                   {report.user?.points_himpact !== null && (
                     <div>
-                      <p className="text-sm text-gray-600">Points Himpact</p>
+                      <p className="text-sm text-muted-foreground">Points Himpact</p>
                       <p className="font-semibold text-green-600">
                         {report.user.points_himpact} points
                       </p>
@@ -304,27 +304,27 @@ const ReportDetails = () => {
               <CardContent>
                 <div className="space-y-3 text-sm">
                   <div>
-                    <p className="text-gray-600">ID du signalement</p>
+                    <p className="text-muted-foreground">ID du signalement</p>
                     <p className="font-mono text-xs break-all">{report.id}</p>
                   </div>
                   
                   {report.waste_type && (
                     <div>
-                      <p className="text-gray-600">Type de déchet</p>
+                      <p className="text-muted-foreground">Type de déchet</p>
                       <p className="font-semibold">{report.waste_type}</p>
                     </div>
                   )}
 
                   {report.brand && (
                     <div>
-                      <p className="text-gray-600">Marque identifiée</p>
+                      <p className="text-muted-foreground">Marque identifiée</p>
                       <p className="font-semibold">{report.brand}</p>
                     </div>
                   )}
 
                   {report.severity_level && (
                     <div>
-                      <p className="text-gray-600">Niveau de gravité</p>
+                      <p className="text-muted-foreground">Niveau de gravité</p>
                       <div className="flex items-center">
                         <div className="flex">
                           {[1, 2, 3, 4, 5].map((level) => (
@@ -345,7 +345,7 @@ const ReportDetails = () => {
 
                   {report.points_awarded !== null && report.points_awarded > 0 && (
                     <div>
-                      <p className="text-gray-600">Points attribués</p>
+                      <p className="text-muted-foreground">Points attribués</p>
                       <p className="font-semibold text-green-600">
                         +{report.points_awarded} points
                       </p>
@@ -353,7 +353,7 @@ const ReportDetails = () => {
                   )}
 
                   <div>
-                    <p className="text-gray-600">Statut de nettoyage</p>
+                    <p className="text-muted-foreground">Statut de nettoyage</p>
                     <p className="font-semibold">
                       {report.is_cleaned ? 'Nettoyé ✅' : 'Non nettoyé ❌'}
                     </p>

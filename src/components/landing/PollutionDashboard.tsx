@@ -42,14 +42,14 @@ const PollutionDashboard = () => {
     <div className="py-16 bg-gradient-to-br from-red-50 via-orange-50 to-amber-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
+          <div className="inline-flex items-center bg-surface text-red-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
             <AlertTriangle className="w-4 h-4 mr-2" />
             ÉTAT D'URGENCE ENVIRONNEMENTAL
           </div>
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl font-bold text-foreground mb-4">
             Abidjan face au défi des déchets et pollution
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             Les chiffres parlent d'eux-mêmes : notre ville étouffe sous les déchets plastiques et la pollution
           </p>
         </div>
@@ -57,15 +57,15 @@ const PollutionDashboard = () => {
         {/* Section Déchets - Statistiques alarmantes */}
         <div className="mb-16">
           <div className="text-center mb-8">
-            <h3 className="text-3xl font-bold text-gray-900 mb-4">Crise des Déchets Plastiques</h3>
-            <p className="text-lg text-gray-600">400 000 tonnes de plastique produites chaque année à Abidjan</p>
+            <h3 className="text-3xl font-bold text-foreground mb-4">Crise des Déchets Plastiques</h3>
+            <p className="text-lg text-muted-foreground">400 000 tonnes de plastique produites chaque année à Abidjan</p>
           </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
             {/* Pie Chart - Répartition des déchets */}
             <Card className="shadow-xl">
               <CardContent className="p-8">
-                <h4 className="text-xl font-bold text-gray-900 mb-6 text-center">
+                <h4 className="text-xl font-bold text-foreground mb-6 text-center">
                   Répartition des 400 000 tonnes de plastique
                 </h4>
                 <ChartContainer
@@ -99,7 +99,7 @@ const PollutionDashboard = () => {
             {/* Bar Chart - Déchets par commune */}
             <Card className="shadow-xl">
               <CardContent className="p-8">
-                <h4 className="text-xl font-bold text-gray-900 mb-6 text-center">
+                <h4 className="text-xl font-bold text-foreground mb-6 text-center">
                   Déchets par commune (en tonnes)
                 </h4>
                 <ChartContainer
@@ -256,9 +256,9 @@ const PollutionDashboard = () => {
                     <div className="flex justify-between items-center">
                       <span className="font-medium">{zone.zone}</span>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        zone.pollution === "Critique" ? "bg-red-100 text-red-800" :
-                        zone.pollution === "Élevée" ? "bg-orange-100 text-orange-800" :
-                        "bg-yellow-100 text-yellow-800"
+                        zone.pollution === "Critique" ? "bg-surface text-red-800" :
+                        zone.pollution === "Élevée" ? "bg-surface text-orange-800" :
+                        "bg-surface text-yellow-800"
                       }`}>
                         {zone.pollution}
                       </span>
@@ -273,7 +273,7 @@ const PollutionDashboard = () => {
                         style={{ width: `${zone.quality}%` }}
                       />
                     </div>
-                    <div className="text-sm text-gray-600">
+                    <div className="text-sm text-muted-foreground">
                       Indice de qualité: {zone.quality}/100
                     </div>
                   </div>
@@ -291,10 +291,10 @@ const PollutionDashboard = () => {
               alt="Environnement propre"
               className="w-full h-48 object-cover rounded-lg mb-6"
             />
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">
+            <h3 className="text-2xl font-bold text-foreground mb-4">
               Ensemble, améliorons la qualité de l'air et de l'eau
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-muted-foreground mb-6">
               Chaque signalement compte pour créer un environnement plus sain à Abidjan
             </p>
             <button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-full font-medium transition-colors">

@@ -140,7 +140,7 @@ const UserProfile = () => {
     if (level >= 7) return 'text-yellow-600';
     if (level >= 5) return 'text-blue-600';
     if (level >= 3) return 'text-green-600';
-    return 'text-gray-600';
+    return 'text-muted-foreground';
   };
 
   return (
@@ -149,7 +149,7 @@ const UserProfile = () => {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-green-800 mb-2">👤 Mon Profil Héros</h1>
-          <p className="text-lg text-gray-600">Suis tes contributions et ton impact sur Abidjan</p>
+          <p className="text-lg text-muted-foreground">Suis tes contributions et ton impact sur Abidjan</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -160,7 +160,7 @@ const UserProfile = () => {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center">
+                    <div className="w-20 h-20 bg-card rounded-full flex items-center justify-center">
                       <span className="text-3xl">🦸‍♀️</span>
                     </div>
                     <div>
@@ -180,7 +180,7 @@ const UserProfile = () => {
                   <div className="text-right">
                     <div className="text-4xl font-bold">{userStats.totalPoints}</div>
                     <div className="text-sm opacity-90">Points Himpact</div>
-                    <Badge variant="secondary" className="mt-2 bg-white/20 text-white border-white/30">
+                    <Badge variant="secondary" className="mt-2 bg-card text-white border-white/30">
                       #{userStats.rank} à {userStats.commune}
                     </Badge>
                   </div>
@@ -192,7 +192,7 @@ const UserProfile = () => {
                     <span>Progression vers niveau {userStats.level + 1}</span>
                     <span>{userStats.totalPoints}/{userStats.nextLevelPoints} points</span>
                   </div>
-                  <Progress value={progressToNextLevel} className="h-3 bg-white/20" />
+                  <Progress value={progressToNextLevel} className="h-3 bg-card" />
                   <div className="text-sm opacity-90">
                     Plus que {userStats.nextLevelPoints - userStats.totalPoints} points pour le niveau suivant !
                   </div>
@@ -205,14 +205,14 @@ const UserProfile = () => {
               <Card className="bg-card shadow-lg text-center border-l-4 border-l-accent">
                 <CardContent className="pt-6">
                   <div className="text-3xl font-bold text-green-600 mb-1">{userStats.reportsCount}</div>
-                  <div className="text-sm text-gray-600">Signalements</div>
+                  <div className="text-sm text-muted-foreground">Signalements</div>
                   <div className="text-xs text-green-600 mt-1">Total effectués</div>
                 </CardContent>
               </Card>
               <Card className="bg-card shadow-lg text-center border-l-4 border-l-primary">
                 <CardContent className="pt-6">
                   <div className="text-3xl font-bold text-blue-600 mb-1">{userStats.validatedReports}</div>
-                  <div className="text-sm text-gray-600">Validés</div>
+                  <div className="text-sm text-muted-foreground">Validés</div>
                   <div className="text-xs text-blue-600 mt-1">Impact confirmé</div>
                 </CardContent>
               </Card>
@@ -221,14 +221,14 @@ const UserProfile = () => {
                   <div className="text-3xl font-bold text-purple-600 mb-1">
                     {Math.round((userStats.validatedReports / userStats.reportsCount) * 100)}%
                   </div>
-                  <div className="text-sm text-gray-600">Précision</div>
+                  <div className="text-sm text-muted-foreground">Précision</div>
                   <div className="text-xs text-purple-600 mt-1">Taux de réussite</div>
                 </CardContent>
               </Card>
               <Card className="bg-card shadow-lg text-center border-l-4 border-l-secondary">
                 <CardContent className="pt-6">
                   <div className="text-3xl font-bold text-yellow-600 mb-1">{unlockedAchievements.length}</div>
-                  <div className="text-sm text-gray-600">Badges</div>
+                  <div className="text-sm text-muted-foreground">Badges</div>
                   <div className="text-xs text-yellow-600 mt-1">Débloqués</div>
                 </CardContent>
               </Card>
@@ -248,15 +248,15 @@ const UserProfile = () => {
                   {recentActivities.map((activity) => {
                     const IconComponent = activity.icon;
                     return (
-                      <div key={activity.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
+                      <div key={activity.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-surface">
                         <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                          <div className="w-12 h-12 bg-surface rounded-full flex items-center justify-center">
                             <IconComponent className="w-6 h-6 text-green-600" />
                           </div>
                           <div>
                             <div className="font-medium capitalize">{activity.type}</div>
-                            <div className="text-sm text-gray-600">{activity.location}</div>
-                            <div className="text-xs text-gray-500 flex items-center gap-1">
+                            <div className="text-sm text-muted-foreground">{activity.location}</div>
+                            <div className="text-xs text-muted-foreground flex items-center gap-1">
                               <Calendar className="w-3 h-3" />
                               {new Date(activity.date).toLocaleDateString('fr-FR')}
                             </div>
@@ -264,7 +264,7 @@ const UserProfile = () => {
                         </div>
                         <div className="text-right">
                           <div className="font-bold text-green-600">+{activity.points}</div>
-                          <div className="text-xs text-gray-500">points</div>
+                          <div className="text-xs text-muted-foreground">points</div>
                           <Badge variant="secondary" className="mt-1">
                             {activity.status}
                           </Badge>
@@ -319,17 +319,17 @@ const UserProfile = () => {
                       key={achievement.id} 
                       className={`p-3 border rounded-lg text-center ${
                         achievement.unlocked 
-                          ? 'bg-green-50 border-green-200' 
-                          : 'bg-gray-50 border-gray-200'
+                          ? 'bg-surface border-green-200' 
+                          : 'bg-surface border-border'
                       }`}
                     >
                       <div className={`text-2xl mb-2 ${achievement.unlocked ? '' : 'grayscale opacity-50'}`}>
                         {achievement.icon}
                       </div>
-                      <div className={`font-medium text-sm ${achievement.unlocked ? 'text-green-800' : 'text-gray-500'}`}>
+                      <div className={`font-medium text-sm ${achievement.unlocked ? 'text-green-800' : 'text-muted-foreground'}`}>
                         {achievement.title}
                       </div>
-                      <div className="text-xs text-gray-500 mt-1">
+                      <div className="text-xs text-muted-foreground mt-1">
                         {achievement.unlocked && achievement.unlockedDate && (
                           <span>Débloqué le {new Date(achievement.unlockedDate).toLocaleDateString('fr-FR')}</span>
                         )}
@@ -356,21 +356,21 @@ const UserProfile = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+                  <div className="flex items-center justify-between p-3 bg-surface rounded-lg">
                     <div className="flex items-center gap-2">
                       <span className="text-lg">🥇</span>
                       <span className="font-medium">Kouassi M.</span>
                     </div>
                     <span className="font-bold text-yellow-600">2,150 pts</span>
                   </div>
-                  <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg border-2 border-green-200">
+                  <div className="flex items-center justify-between p-3 bg-surface rounded-lg border-2 border-green-200">
                     <div className="flex items-center gap-2">
                       <span className="text-lg">#{userStats.rank}</span>
                       <span className="font-medium">Toi</span>
                     </div>
                     <span className="font-bold text-green-600">{userStats.totalPoints} pts</span>
                   </div>
-                  <div className="text-center text-sm text-gray-600 mt-4">
+                  <div className="text-center text-sm text-muted-foreground mt-4">
                     <p>Continue comme ça ! Tu progresses bien 🚀</p>
                   </div>
                 </div>
@@ -386,15 +386,15 @@ const UserProfile = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button className="w-full bg-white/20 hover:bg-white/30 text-white border-white/30">
+                <Button className="w-full bg-card hover:bg-card text-white border-white/30">
                   <Camera className="w-4 h-4 mr-2" />
                   Nouveau Signalement
                 </Button>
-                <Button className="w-full bg-white/20 hover:bg-white/30 text-white border-white/30">
+                <Button className="w-full bg-card hover:bg-card text-white border-white/30">
                   <Gift className="w-4 h-4 mr-2" />
                   Voir Récompenses
                 </Button>
-                <Button className="w-full bg-white/20 hover:bg-white/30 text-white border-white/30">
+                <Button className="w-full bg-card hover:bg-card text-white border-white/30">
                   <Users className="w-4 h-4 mr-2" />
                   Défier un Ami
                 </Button>
