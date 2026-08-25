@@ -1,5 +1,5 @@
-export const WHATSAPP_INVITE_URL = "https://chat.whatsapp.com/BZhR0lzK8op850NUscjDwp";
-export const TELEGRAM_BOT_URL = "https://t.me/LigneverteBot";
+export const WHATSAPP_INVITE_URL = "https://wa.me/2250506280094";
+export const TELEGRAM_BOT_URL = "https://t.me/user?id=7965588698";
 
 // URLs centralisées
 export const APP_URLS = {
