@@ -32,7 +32,7 @@ const DeboraSay = ({ line, pose = "point", cta, side = "left", className = "" }:
   return (
     <div
       ref={ref}
-      className={`flex items-end gap-4 ${side === "right" ? "flex-row-reverse text-right" : ""} ${className}`}
+      className={`flex flex-col items-center text-center sm:flex-row sm:items-end sm:text-left gap-4 ${side === "right" ? "sm:flex-row-reverse sm:text-right" : ""} ${className}`}
     >
       <div className="relative shrink-0">
         <div className="absolute -inset-4 bg-accent/10 blur-2xl rounded-full" />
@@ -42,13 +42,14 @@ const DeboraSay = ({ line, pose = "point", cta, side = "left", className = "" }:
           width={768}
           height={1024}
           loading="lazy"
-          className={`relative w-28 sm:w-36 lg:w-44 h-auto object-contain transition-all duration-700 ease-out ${
+          className={`relative w-24 sm:w-36 lg:w-44 h-auto object-contain transition-all duration-700 ease-out ${
             shown
               ? "opacity-100 translate-x-0"
               : `opacity-0 ${side === "right" ? "translate-x-10" : "-translate-x-10"}`
           } ${side === "right" ? "scale-x-[-1]" : ""}`}
         />
       </div>
+
 
       <div
         className={`hud-panel p-4 max-w-sm relative transition-all duration-700 delay-150 ease-out ${
