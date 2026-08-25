@@ -90,14 +90,14 @@ const HeroSection = () => {
                   loading="eager"
                   className="relative z-10 h-auto w-full max-w-[390px] min-[900px]:max-w-[500px] lg:max-w-[570px] object-contain object-bottom drop-shadow-[0_0_50px_hsl(var(--accent)/0.22)] animate-rise"
                 />
-                {/* Badge agent accroché sous le torse */}
-                <div className="absolute z-20 left-[30%] top-[62%] -rotate-3 w-[28%] min-w-[100px] overflow-hidden rounded border border-accent/50 bg-card/90 shadow-[0_0_30px_hsl(var(--accent)/0.35)] backdrop-blur-sm">
-                  {/* Lanyard */}
-                  <div className="absolute -top-5 left-1/2 h-5 w-0.5 -translate-x-1/2 bg-accent/60" />
-                  <div className="absolute -top-6 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full border border-accent/60 bg-card" />
+                {/* Badge civique collé au rebord droit */}
+                <div className="absolute z-20 right-0 top-[58%] translate-x-1/4 w-[28%] min-w-[104px] overflow-hidden rounded border border-accent/50 bg-card/95 shadow-[0_0_30px_hsl(var(--accent)/0.35)] backdrop-blur-sm">
+                  {/* Lanyard droit */}
+                  <div className="absolute -top-5 left-1/2 h-5 w-0.5 -translate-x-1/2 bg-accent/70" />
+                  <div className="absolute -top-6 left-1/2 h-2 w-2 -translate-x-1/2 rounded-full border border-accent/70 bg-card" />
                   {/* Header */}
                   <div className="flex items-center justify-between bg-accent/10 px-2 py-1">
-                    <p className="font-mono text-[6px] sm:text-[7px] uppercase tracking-[0.15em] text-accent">Agent terrain</p>
+                    <p className="font-mono text-[6px] sm:text-[7px] uppercase tracking-[0.15em] text-accent">Carte civique</p>
                     <div className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
                   </div>
                   {/* Body */}
