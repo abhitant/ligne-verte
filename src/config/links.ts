@@ -10,7 +10,7 @@ export const WHATSAPP_INVITE_URL =
 export const WHATSAPP_INVITE_URL_FALLBACK =
   "https://wa.me/" + WHATSAPP_PHONE_NUMBER;
 
-export const TELEGRAM_BOT_URL = "https://t.me/user?id=7965588698";
+export const TELEGRAM_BOT_URL = "https://t.me/LigneverteBot";
 
 // URLs centralisées
 export const APP_URLS = {
