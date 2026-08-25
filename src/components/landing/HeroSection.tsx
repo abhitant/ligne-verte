@@ -4,6 +4,8 @@ import { WHATSAPP_INVITE_URL, TELEGRAM_BOT_URL } from "@/config/links";
 import { Radio, MessageCircle, MapPin, Activity } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import deboraWave from "@/assets/debora-wave.png";
+
 
 const HeroSection = () => {
   const [currentImage, setCurrentImage] = useState(0);
@@ -56,7 +58,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden">
+    <section id="mission" className="relative min-h-screen flex items-center overflow-hidden">
       {/* Fond photo */}
       {images.map((image, index) => (
         <div
@@ -140,12 +142,20 @@ const HeroSection = () => {
 
           {/* Panneau statut */}
           <div className="lg:col-span-4">
-            <div className="hud-panel p-5 space-y-5">
+            <div className="hud-panel p-5 space-y-5 relative">
+              <img
+                src={deboraWave}
+                alt="Débora, la standardiste de La Ligne Verte, fait signe"
+                width={768}
+                height={1024}
+                className="hidden lg:block absolute -top-52 right-2 h-56 w-auto animate-rise drop-shadow-[0_0_30px_hsl(var(--accent)/0.25)]"
+              />
               <div className="flex items-center justify-between">
                 <span className="hud-label">Unité 001 · Débora</span>
                 <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
               </div>
               <div className="hud-divider" />
+
               <p className="text-sm text-muted-foreground leading-relaxed">
                 « Je reçois ta photo, je vérifie tout de suite avec mon IA, je pose le point sur la
                 carte et je te crédite en points Himpact. Tu n'as rien d'autre à faire. »

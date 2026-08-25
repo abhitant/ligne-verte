@@ -41,7 +41,7 @@ const categories = [
 
 const WasteProblemSection = () => {
   return (
-    <section className="relative py-24 bg-background overflow-hidden">
+    <section id="categories" className="relative py-24 bg-background overflow-hidden">
       <div className="absolute inset-0 hud-grid opacity-30 pointer-events-none" />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl">
