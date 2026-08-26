@@ -102,8 +102,8 @@ const SolutionSection = () => {
           <div>
             <p className="hud-label mb-4">Débora // ta mission</p>
             <h2 className="font-display text-3xl md:text-5xl font-bold uppercase leading-tight mb-10">
-              Quatre étapes,
-              <span className="block text-accent">et ton quartier devient zo</span>
+              Comment ça marche ?
+              <span className="block text-accent">Quatre étapes, ton quartier devient zo</span>
             </h2>
 
 

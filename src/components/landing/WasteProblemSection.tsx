@@ -60,15 +60,13 @@ const WasteProblemSection = () => {
           {/* Texte + Débora */}
           <div>
             <h2 className="font-display text-3xl md:text-5xl font-bold uppercase leading-tight">
-              Tout ce qui gâte le <span className="text-accent">quartier</span>,
-              <br />
-              envoie-le-moi.
+              Nos quartiers <span className="text-alert">croulent</span> sous la menace.
             </h2>
 
             <DeboraSay
               className="mt-8"
               pose="point"
-              line="« Regarde mes six catégories : si ça gâte le quartier, envoie-le-moi, je le range au bon endroit. »"
+              line="« Incivisme, salubrité, voirie, éclairage… Chaque jour, des problèmes s'accumulent dans nos rues. Si on ne les voit pas, on ne les règle pas. C'est pour ça que La Ligne Verte existe : pour les repérer, les cartographier et les résoudre ensemble. »"
               cta={{ label: "Les signalements", to: "/signalements" }}
             />
           </div>
@@ -77,8 +75,24 @@ const WasteProblemSection = () => {
           <ReportsCarousel />
         </div>
 
-        {/* Slides des types de signalement */}
-        <div className="mt-16">
+        {/* Présentation de la plateforme avant la carte */}
+        <div className="mt-16 hud-panel p-6 lg:p-8">
+          <div className="flex items-center justify-between mb-5">
+            <span className="hud-label">Briefing</span>
+            <span className="hud-meta hidden sm:inline">PLATEFORME CIVIQUE</span>
+          </div>
+          <p className="text-lg md:text-xl text-foreground leading-relaxed max-w-4xl">
+            <span className="text-accent font-display uppercase tracking-wide">La Ligne Verte</span> est la plateforme de gestion civique des quartiers. Elle permet à chaque habitant de signaler, en direct et sans formulaire compliqué, tout ce qui dégrade la vie de la cité. Les signalements sont analysés par une IA, validés, puis affichés sur une carte publique pour faire bouger les lignes.
+          </p>
+        </div>
+
+        {/* Carte tactique + informations live */}
+        <div className="mt-8">
+          <TacticalMap />
+        </div>
+
+        {/* Slides des types de signalement — en bas de la carte */}
+        <div className="mt-8">
           <div className="mb-4 flex items-center justify-between">
             <span className="hud-label">Types de signalement</span>
             <span className="hud-meta hidden sm:inline">06 CATÉGORIES</span>
@@ -110,11 +124,6 @@ const WasteProblemSection = () => {
             <CarouselPrevious className="-left-3 border-accent/50 bg-card text-accent hover:bg-accent hover:text-accent-foreground" />
             <CarouselNext className="-right-3 border-accent/50 bg-card text-accent hover:bg-accent hover:text-accent-foreground" />
           </Carousel>
-        </div>
-
-        {/* Carte tactique + informations live */}
-        <div className="mt-16">
-          <TacticalMap />
         </div>
       </div>
     </section>

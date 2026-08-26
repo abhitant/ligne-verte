@@ -56,7 +56,6 @@ const DeboraSay = ({ line, pose = "point", cta, side = "left", className = "" }:
           shown ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
         }`}
       >
-        <p className="hud-label mb-2">Débora // standardiste</p>
         <p className="text-sm text-foreground leading-relaxed">{line}</p>
         {cta &&
           (cta.external ? (
