@@ -19,12 +19,7 @@ const TacticalMap = () => {
     return { total: visible.length, validated, pending, agents };
   }, [reports]);
 
-  const items = [
-    { icon: Activity, label: "Signalements sur la carte", value: stats.total, tone: "text-accent" },
-    { icon: ShieldCheck, label: "Missions validées", value: stats.validated, tone: "text-signal" },
-    { icon: Clock, label: "En vérification", value: stats.pending, tone: "text-alert" },
-    { icon: Users, label: "Habitants mobilisés", value: stats.agents, tone: "text-info" },
-  ];
+  const progress = Math.min(100, Math.round((stats.validated / 1000) * 100));
 
   return (
     <div className="hud-panel overflow-hidden">
