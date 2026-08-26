@@ -9,7 +9,7 @@ import { useLeaderboard } from "@/hooks/useGamification";
 
 const TacticalMap = () => {
   const { data: reports = [] } = useReports();
-  const { data: leaders = [] } = useLeaderboard(3);
+  const { data: leaders = [] } = useLeaderboard(100);
 
   const stats = useMemo(() => {
     const visible = reports.filter((r) => r.status !== "rejected");
@@ -19,7 +19,13 @@ const TacticalMap = () => {
     return { total: visible.length, validated, pending, agents };
   }, [reports]);
 
-  const progress = Math.min(100, Math.round((stats.validated / 1000) * 100));
+  const pointsDistributed = useMemo(
+    () => leaders.reduce((sum, l) => sum + (l.points_himpact ?? 0), 0),
+    [leaders]
+  );
+
+  const progress = Math.min(100, Math.round((pointsDistributed / 10000) * 100));
+
 
   return (
     <div className="hud-panel overflow-hidden">
