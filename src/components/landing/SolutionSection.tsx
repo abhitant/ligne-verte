@@ -95,7 +95,7 @@ const SolutionSection = () => {
           <a href={TELEGRAM_BOT_URL} target="_blank" rel="noopener noreferrer" className="shrink-0">
             <Button size="lg" className="bg-accent px-8 font-display uppercase tracking-widest text-accent-foreground hover:bg-accent/90">
               <MessageSquare className="mr-3 h-5 w-5" />
-              Contacter Débora
+              Me contacter
             </Button>
           </a>
         </div>
