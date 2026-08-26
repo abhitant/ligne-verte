@@ -14,6 +14,7 @@ interface ReportPhoto {
   photo_url: string;
   waste_type: string | null;
   waste_category: string | null;
+  type: string | null;
   created_at: string | null;
 }
 
@@ -26,13 +27,30 @@ const ReportsCarousel = () => {
     const load = async () => {
       const { data } = await supabase
         .from("reports_public")
-        .select("id, photo_url, waste_type, waste_category, created_at")
+        .select("id, photo_url, waste_type, waste_category, type, created_at")
         .not("photo_url", "is", null)
         .neq("status", "rejected")
         .order("created_at", { ascending: false })
-        .limit(12);
+        .limit(24);
       if (!active) return;
-      setReports((data ?? []).filter((r) => !!r.photo_url) as ReportPhoto[]);
+      const wasteOnly = (data ?? [])
+        .filter((r) => !!r.photo_url)
+        .filter((r) => {
+          const t = (r.type ?? "").toLowerCase();
+          const wt = (r.waste_type ?? "").toLowerCase();
+          const wc = (r.waste_category ?? "").toLowerCase();
+          return (
+            t === "waste" ||
+            wt.includes("déchet") ||
+            wt.includes("waste") ||
+            wt.includes("ordure") ||
+            wc.includes("déchet") ||
+            wc.includes("waste") ||
+            wc.includes("ordure")
+          );
+        })
+        .slice(0, 12) as ReportPhoto[];
+      setReports(wasteOnly);
       setLoading(false);
     };
     load();
