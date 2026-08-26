@@ -206,7 +206,7 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter, showLe
       )}
       {/* Légende et zones d'opération */}
       {showLegend && (
-      <div className="hud-panel absolute top-4 left-4 z-[1000] p-5 bg-card/95">
+      <div className="hud-panel absolute top-4 left-16 z-[1000] p-5 bg-card/95">
         <p className="hud-label mb-4">Signalements</p>
         <div className="space-y-3">
           <div className="flex items-center gap-3">
