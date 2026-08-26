@@ -41,7 +41,7 @@ const CommunitySection = () => {
                 <Trophy className="w-4 h-4" />
                 Top opérateurs
               </span>
-              <span className="hud-meta">HIMPACT</span>
+              <span className="hud-meta">SCORE</span>
             </div>
 
             <div className="flex-1 space-y-px bg-border/60 border border-border/60">
