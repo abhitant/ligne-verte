@@ -12,7 +12,9 @@ const WasteProblemSection = () => {
           {/* Texte + Déborah */}
           <div>
             <h2 className="font-display text-3xl md:text-5xl font-bold uppercase leading-tight">
-              Nos quartiers croulent sous la menace.
+              Nos quartiers{" "}
+              <span className="text-accent">croulent</span>{" "}
+              sous la menace.
             </h2>
 
             <DeboraSay
