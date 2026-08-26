@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { MapPin, Trophy, Radar } from "lucide-react";
+import { Trophy } from "lucide-react";
 import { Link } from "react-router-dom";
-import OpenStreetMap from "@/components/OpenStreetMap";
 import { useLeaderboard } from "@/hooks/useGamification";
 import DeboraSay from "@/components/landing/DeboraSay";
 
@@ -29,32 +28,7 @@ const CommunitySection = () => {
         </div>
 
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Carte tactique */}
-          <div className="lg:col-span-2 hud-panel p-4">
-            <div className="flex items-center justify-between mb-3">
-              <span className="hud-label flex items-center gap-2">
-                <Radar className="w-4 h-4" />
-                Carte tactique · live
-              </span>
-              <span className="hud-meta">SECTEUR ABJ</span>
-            </div>
-            <div className="h-[420px] overflow-hidden border border-border/70">
-              <OpenStreetMap
-                reports={[]}
-                selectedReport={null}
-                onReportSelect={() => {}}
-                filter="all"
-              />
-            </div>
-            <Link to="/carte" className="block mt-4">
-              <Button className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-display uppercase tracking-widest">
-                <MapPin className="w-5 h-5 mr-2" />
-                Accéder à la carte
-              </Button>
-            </Link>
-          </div>
-
+        <div className="grid grid-cols-1">
           {/* Classement opérateurs */}
           <div className="hud-panel p-4 flex flex-col">
             <div className="flex items-center justify-between mb-3">

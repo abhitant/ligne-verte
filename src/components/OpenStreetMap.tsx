@@ -29,6 +29,8 @@ interface OpenStreetMapProps {
   selectedReport: MapReport | null;
   onReportSelect: (report: MapReport) => void;
   filter: 'all' | 'pending' | 'validated';
+  showLegend?: boolean;
+  zoom?: number;
 }
 
 // Composant de fallback avec vraie liste si la carte ne charge pas
@@ -92,7 +94,7 @@ const MapFallback = ({ reports, selectedReport, onReportSelect, filter }: OpenSt
   );
 };
 
-const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: OpenStreetMapProps) => {
+const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter, showLegend = true, zoom = 12 }: OpenStreetMapProps) => {
   const navigate = useNavigate();
   const [mapError, setMapError] = useState(false);
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -203,7 +205,8 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
         </div>
       )}
       {/* Légende et zones d'opération */}
-      <div className="hud-panel absolute top-4 left-4 z-[1000] p-5 bg-card/95">
+      {showLegend && (
+      <div className="hud-panel absolute top-4 left-16 z-[1000] p-5 bg-card/95">
         <p className="hud-label mb-4">Signalements</p>
         <div className="space-y-3">
           <div className="flex items-center gap-3">
@@ -219,12 +222,16 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
           </div>
         </div>
       </div>
+      )}
 
-      
+      {/* Voile tactique HUD */}
+      <div className="pointer-events-none absolute inset-0 z-[900] hud-scanlines opacity-30" />
+      <div className="pointer-events-none absolute inset-0 z-[900] bg-[radial-gradient(ellipse_at_center,transparent_45%,hsl(var(--background)/0.85)_100%)]" />
+
       <div style={{ height: '100%', width: '100%' }}>
         <MapContainer 
           center={center} 
-          zoom={12} 
+          zoom={zoom} 
           style={{ height: '100%', width: '100%' }}
           className="rounded-lg"
           ref={mapRef}
@@ -234,8 +241,8 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter }: Open
           }}
         >
           <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
             eventHandlers={{
               loading: () => console.log('Tiles loading...'),
               load: () => console.log('Tiles loaded successfully'),
