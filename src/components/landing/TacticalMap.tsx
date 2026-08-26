@@ -11,13 +11,8 @@ const TacticalMap = () => {
   const { data: reports = [] } = useReports();
   const { data: leaders = [] } = useLeaderboard(100);
 
-  const stats = useMemo(() => {
-    const visible = reports.filter((r) => r.status !== "rejected");
-    const validated = visible.filter((r) => r.status === "validated").length;
-    const pending = visible.filter((r) => r.status === "pending").length;
-    const agents = new Set(visible.map((r) => r.user)).size;
-    return { total: visible.length, validated, pending, agents };
-  }, [reports]);
+
+
 
   const pointsDistributed = useMemo(
     () => leaders.reduce((sum, l) => sum + (l.points_himpact ?? 0), 0),
