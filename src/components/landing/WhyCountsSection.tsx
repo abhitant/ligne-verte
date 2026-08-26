@@ -1,5 +1,4 @@
-import { useMemo } from "react";
-import { Eye, Users, LineChart, Target } from "lucide-react";
+import { Eye, Users, LineChart } from "lucide-react";
 import { useReports } from "@/hooks/useReports";
 
 const reasons = [
