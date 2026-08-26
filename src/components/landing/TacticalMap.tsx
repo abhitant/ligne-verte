@@ -5,7 +5,6 @@ import { MapPin, Radar } from "lucide-react";
 import OpenStreetMap from "@/components/OpenStreetMap";
 import DeboraTypesTicker from "@/components/landing/DeboraTypesTicker";
 import { useReports } from "@/hooks/useReports";
-import { useLeaderboard } from "@/hooks/useGamification";
 
 const OBJECTIF_HIMPACT = 5000;
 
