@@ -14,16 +14,14 @@ const CommunitySection = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-10 grid gap-8 lg:grid-cols-2 lg:items-end">
           <div>
-            <span className="hud-label">Points Himpact</span>
+            <span className="hud-label">Reconnaissance</span>
             <h2 className="mt-4 font-display text-3xl font-bold uppercase leading-tight md:text-5xl">
-              Contribue et reçois <span className="text-accent">des points Himpact</span>
+              Contribue et sois <span className="text-accent">reconnu</span>
             </h2>
             <p className="mt-4 text-base leading-relaxed text-muted-foreground md:text-lg">
-              Chaque signalement validé te rapporte des points Himpact : 10 points par mission,
-              et un bonus de 30 quand tu nettoies et que tu m'envoies la preuve. Ces points
-              mesurent ta contribution réelle au quartier — ils donnent accès aux avantages de la
-              communauté, à la reconnaissance sur le classement public et aux opérations spéciales
-              de La Ligne Verte.
+              Chaque signalement validé compte : une mission repérée, un quartier un peu plus
+              propre, une action visible par tout le monde. Ta régularité te place sur le
+              classement public et ouvre les opérations spéciales de La Ligne Verte.
             </p>
           </div>
 
