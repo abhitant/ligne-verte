@@ -61,9 +61,9 @@ const DeboraTypesTicker = () => {
         width={768}
         height={1024}
         loading="lazy"
-        className="pointer-events-none -mr-5 hidden h-auto w-28 shrink-0 object-contain drop-shadow-2xl sm:block sm:w-36"
+        className="pointer-events-none -mr-4 h-auto w-20 shrink-0 object-contain drop-shadow-2xl sm:-mr-5 sm:w-36"
       />
-      <div className="pointer-events-auto w-[16rem] border-2 border-accent/70 bg-card/95 p-3 shadow-[0_0_0_1px_hsl(var(--background)),0_16px_40px_-16px_hsl(0_0%_0%_/_0.9)] backdrop-blur-sm sm:w-[22rem] sm:p-4">
+      <div className="pointer-events-auto w-[13.5rem] border-2 border-accent/70 bg-card/95 p-3 shadow-[0_0_0_1px_hsl(var(--background)),0_16px_40px_-16px_hsl(0_0%_0%_/_0.9)] backdrop-blur-sm sm:w-[22rem] sm:p-4">
         <div className="mb-2 flex items-center justify-between gap-2">
           <Icon className="h-4 w-4 text-accent" />
           <span className="hud-meta text-[0.6rem]">{item.code} / 06</span>

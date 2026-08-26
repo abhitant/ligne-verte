@@ -5,9 +5,11 @@ import { MapPin, Radar, Activity, ShieldCheck, Clock, Users } from "lucide-react
 import OpenStreetMap from "@/components/OpenStreetMap";
 import DeboraTypesTicker from "@/components/landing/DeboraTypesTicker";
 import { useReports } from "@/hooks/useReports";
+import { useLeaderboard } from "@/hooks/useGamification";
 
 const TacticalMap = () => {
   const { data: reports = [] } = useReports();
+  const { data: leaders = [] } = useLeaderboard(3);
 
   const stats = useMemo(() => {
     const visible = reports.filter((r) => r.status !== "rejected");
@@ -35,6 +37,31 @@ const TacticalMap = () => {
         <span className="hud-meta hidden sm:inline">FLUX LIVE // WHATSAPP + TELEGRAM</span>
       </div>
 
+      {/* Architectes du quartier */}
+      <div className="border-b border-border/70 bg-card px-4 py-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <span className="font-display text-sm uppercase text-accent sm:text-base">
+            Architectes du quartier ZO
+          </span>
+          <div className="flex min-w-0 gap-2 overflow-x-auto pb-1 sm:justify-end sm:pb-0">
+            {leaders.map((leader, index) => (
+              <div
+                key={`${leader.pseudo}-${index}`}
+                className="flex shrink-0 items-center gap-2 border border-border/70 bg-surface px-3 py-2"
+              >
+                <span className="font-mono text-[0.65rem] text-accent">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="max-w-28 truncate font-display text-xs uppercase text-foreground">
+                  {leader.pseudo}
+                </span>
+              </div>
+            ))}
+            {leaders.length === 0 && <span className="hud-meta py-2">Positions en attente</span>}
+          </div>
+        </div>
+      </div>
+
       {/* Carte */}
       <div className="relative h-[340px] sm:h-[440px] lg:h-[520px] border-y border-border/60">
         <OpenStreetMap
@@ -58,7 +85,7 @@ const TacticalMap = () => {
         </div>
 
         {/* Débora intervient directement sur la carte */}
-        <div className="pointer-events-none absolute bottom-3 left-3 z-[1000] sm:bottom-5 sm:left-5">
+        <div className="pointer-events-none absolute bottom-2 left-1 z-[1000] sm:bottom-5 sm:left-5">
           <DeboraTypesTicker />
         </div>
 
