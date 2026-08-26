@@ -1,5 +1,6 @@
 import HeroSection from "@/components/landing/HeroSection";
 import WasteProblemSection from "@/components/landing/WasteProblemSection";
+import CivicMapSection from "@/components/landing/CivicMapSection";
 import SolutionSection from "@/components/landing/SolutionSection";
 import WhyCountsSection from "@/components/landing/WhyCountsSection";
 import CommunitySection from "@/components/landing/CommunitySection";
@@ -14,13 +15,16 @@ const Landing = () => {
         <WasteProblemSection />
       </Reveal>
       <Reveal>
+        <CivicMapSection />
+      </Reveal>
+      <Reveal>
         <SolutionSection />
       </Reveal>
       <Reveal>
-        <WhyCountsSection />
+        <CommunitySection />
       </Reveal>
       <Reveal>
-        <CommunitySection />
+        <WhyCountsSection />
       </Reveal>
       <Reveal>
         <Footer />

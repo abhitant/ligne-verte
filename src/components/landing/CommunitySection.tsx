@@ -9,10 +9,16 @@ const CommunitySection = () => {
   const { data: users = [] } = useLeaderboard(10);
 
   return (
-    <section id="carte-live" className="relative py-24 bg-surface/30 overflow-hidden">
+    <section id="reconnaissance" className="relative py-24 bg-surface/30 overflow-hidden">
       <div className="absolute inset-0 hud-grid opacity-25 pointer-events-none" />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-10 grid gap-8 lg:grid-cols-2 lg:items-end">
+        <div className="mb-12 grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+          <DeboraSay
+            pose="wave"
+            line="Contribue et sois reconnu."
+            className="lg:justify-self-start"
+          />
+
           <div>
             <span className="hud-label">Reconnaissance</span>
             <h2 className="mt-4 font-display text-3xl font-bold uppercase leading-tight md:text-5xl">
@@ -21,16 +27,13 @@ const CommunitySection = () => {
             <p className="mt-4 text-base leading-relaxed text-muted-foreground md:text-lg">
               Chaque signalement validé compte : une mission repérée, un quartier un peu plus
               propre, une action visible par tout le monde. Ta régularité te place sur le
-              classement public et ouvre les opérations spéciales de La Ligne Verte.
+              classement public. Tes contributions deviennent une preuve concrète de ton engagement
+              pour le quartier et peuvent donner accès aux avantages proposés par La Ligne Verte.
             </p>
+            <Link to="/classement" className="mt-5 inline-block font-mono text-xs uppercase tracking-[0.2em] text-accent hover:underline">
+              Découvrir le classement →
+            </Link>
           </div>
-
-          <DeboraSay
-            side="right"
-            pose="point"
-            line="« Plus tu m'envoies de signalements validés, plus tes points montent. Et voici le classement : regarde où tu te places. »"
-            cta={{ label: "Le classement", to: "/classement" }}
-          />
         </div>
 
         <div className="grid grid-cols-1">
@@ -39,7 +42,7 @@ const CommunitySection = () => {
             <div className="flex items-center justify-between mb-3">
               <span className="hud-label flex items-center gap-2">
                 <Trophy className="w-4 h-4" />
-                Top opérateurs
+                Classement en direct
               </span>
               <span className="hud-meta">SCORE</span>
             </div>
@@ -64,8 +67,8 @@ const CommunitySection = () => {
               {users.length === 0 && (
                 <div className="bg-card p-8 text-center">
                   <Trophy className="w-8 h-8 mx-auto mb-3 text-accent/60" />
-                  <p className="font-display uppercase tracking-wide text-sm">Aucun opérateur</p>
-                  <p className="hud-meta mt-1">En attente de recrues…</p>
+                  <p className="font-display uppercase tracking-wide text-sm">Le classement se prépare</p>
+                  <p className="hud-meta mt-1">En attente de contributions…</p>
                 </div>
               )}
             </div>

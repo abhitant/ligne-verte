@@ -50,13 +50,11 @@ const SolutionSection = () => {
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-start gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-            <span className="hud-label">Protocole // 4 étapes</span>
-            <h2 className="mt-4 font-display text-3xl font-bold uppercase leading-tight md:text-5xl">
+            <h2 className="font-display text-3xl font-bold uppercase leading-tight md:text-5xl">
               Comment ça marche ?
               <span className="block text-accent">Ton quartier devient zo</span>
             </h2>
           </div>
-          <span className="hud-meta hidden md:inline">TEMPS MOYEN // &lt; 60 SEC</span>
         </div>
 
         <ol className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -93,10 +91,7 @@ const SolutionSection = () => {
           })}
         </ol>
 
-        <div className="mt-12 flex flex-col items-start gap-4 border border-border/70 bg-card/60 p-5 backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            « Pas d'appli à installer, pas de formulaire. Tu m'écris, je fais le reste. »
-          </p>
+        <div className="mt-12 flex justify-center">
           <a href={TELEGRAM_BOT_URL} target="_blank" rel="noopener noreferrer" className="shrink-0">
             <Button size="lg" className="bg-accent px-8 font-display uppercase tracking-widest text-accent-foreground hover:bg-accent/90">
               <MessageSquare className="mr-3 h-5 w-5" />
