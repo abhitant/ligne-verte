@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Trash2, Lightbulb, Droplets, Construction, Volume2, ShieldAlert } from "lucide-react";
-import deboraWave from "@/assets/debora-wave.png";
 
 export const reportTypes = [
   {
