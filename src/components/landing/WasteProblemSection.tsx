@@ -1,7 +1,6 @@
 import DeboraSay from "@/components/landing/DeboraSay";
 import ReportsCarousel from "@/components/landing/ReportsCarousel";
 import TacticalMap from "@/components/landing/TacticalMap";
-import DeboraTypesTicker from "@/components/landing/DeboraTypesTicker";
 
 
 
@@ -38,11 +37,6 @@ const WasteProblemSection = () => {
           <p className="text-lg md:text-xl text-foreground leading-relaxed max-w-4xl">
             <span className="text-accent font-display uppercase tracking-wide">La Ligne Verte</span> est la plateforme de gestion civique des quartiers. Elle permet à chaque habitant de signaler, en direct et sans formulaire compliqué, tout ce qui dégrade la vie de la cité. Les signalements sont analysés par une IA, validés, puis affichés sur une carte publique pour faire bouger les lignes.
           </p>
-        </div>
-
-        {/* Débora présente les types de signalement au-dessus de la carte */}
-        <div className="mt-12">
-          <DeboraTypesTicker />
         </div>
 
         {/* Carte tactique + informations live */}
