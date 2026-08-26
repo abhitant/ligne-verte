@@ -12,6 +12,7 @@ import Autoplay from "embla-carousel-autoplay";
 interface ReportPhoto {
   id: string;
   photo_url: string;
+  reporter_pseudo: string | null;
   waste_type: string | null;
   waste_category: string | null;
   created_at: string | null;
@@ -26,7 +27,7 @@ const ReportsCarousel = () => {
     const load = async () => {
       const { data } = await supabase
         .from("reports_public")
-        .select("id, photo_url, waste_type, waste_category, created_at")
+        .select("id, photo_url, reporter_pseudo, waste_type, waste_category, created_at")
         .not("photo_url", "is", null)
         .neq("status", "rejected")
         .order("created_at", { ascending: false })
@@ -93,10 +94,10 @@ const ReportsCarousel = () => {
                     loading="lazy"
                   />
                   <div className="absolute inset-x-0 bottom-0 bg-card/85 border-t border-border/60 px-3 py-2 flex items-center justify-between gap-3">
-                    <span className="font-mono text-[10px] uppercase tracking-wider text-accent">
-                      SIG-{String(index + 1).padStart(3, "0")}
+                    <span className="text-[10px] uppercase tracking-wider text-accent truncate max-w-[45%]">
+                      reçu de {report.reporter_pseudo || "habitant"}
                     </span>
-                    <span className="text-xs text-muted-foreground truncate">
+                    <span className="text-xs text-muted-foreground truncate text-right">
                       {report.waste_type || report.waste_category || "Signalement citoyen"}
                     </span>
                   </div>
