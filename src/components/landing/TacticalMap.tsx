@@ -141,11 +141,11 @@ const TacticalMap = () => {
         </div>
 
         {/* Déborah intervient directement sur la carte */}
-        <div className="pointer-events-none absolute bottom-2 left-1 z-[1000] sm:bottom-5 sm:left-5">
+        <div className="pointer-events-none absolute bottom-6 left-1 z-[1000] sm:bottom-5 sm:left-5">
           <DeboraTypesTicker />
         </div>
 
-        <span className="pointer-events-none absolute right-3 top-3 z-[1000] font-mono text-[0.65rem] uppercase tracking-[0.2em] text-accent/80">
+        <span className="pointer-events-none absolute right-3 top-3 z-[1000] hidden sm:block font-mono text-[0.65rem] uppercase tracking-[0.2em] text-accent/80">
           LIVE ●
         </span>
       </div>
