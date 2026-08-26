@@ -181,3 +181,32 @@
     text-shadow: 0 0 24px hsl(var(--accent) / 0.55);
   }
 }
+
+@layer components {
+  /* Leaflet en mode HUD */
+  .leaflet-container {
+    background: hsl(var(--background));
+  }
+  .leaflet-popup-content-wrapper,
+  .leaflet-popup-tip {
+    background: hsl(var(--card));
+    color: hsl(var(--card-foreground));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    box-shadow: 0 20px 60px -30px hsl(0 0% 0% / 0.9);
+  }
+  .leaflet-container a.leaflet-popup-close-button {
+    color: hsl(var(--muted-foreground));
+  }
+  .leaflet-control-zoom a {
+    background: hsl(var(--card));
+    color: hsl(var(--accent));
+    border-color: hsl(var(--border));
+  }
+  .leaflet-control-attribution {
+    background: hsl(var(--card) / 0.8) !important;
+    color: hsl(var(--muted-foreground)) !important;
+    font-family: ui-monospace, monospace;
+    font-size: 0.6rem;
+  }
+}
