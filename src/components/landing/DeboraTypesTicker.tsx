@@ -76,7 +76,7 @@ const DeboraTypesTicker = () => {
           <span className="hud-meta">{item.code} / 06</span>
         </div>
 
-        <div key={item.code} className="animate-fade-in">
+        <div key={item.code} className="animate-in fade-in duration-500">
           <h3 className="font-display text-lg uppercase tracking-wide text-accent sm:text-xl">
             {item.title}
           </h3>
