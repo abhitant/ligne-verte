@@ -22,6 +22,14 @@ const OBJECTIF_HIMPACT = 5000;
 
 const TacticalMap = () => {
   const { data: reports = [] } = useReports();
+  const { data: leaderboard = [] } = useLeaderboard(3);
+  const { data: challenges = [] } = useChallenges();
+  const [openRanking, setOpenRanking] = useState(false);
+
+  const activeChallenges = useMemo(
+    () => challenges.filter(isChallengeActive),
+    [challenges]
+  );
 
   const { himpact, progress, metrics } = useMemo(() => {
     const visible = reports.filter((r) => r.status !== "rejected");
