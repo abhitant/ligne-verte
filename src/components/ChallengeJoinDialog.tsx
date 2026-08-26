@@ -11,10 +11,10 @@ import { WHATSAPP_INVITE_URL, WHATSAPP_INVITE_URL_FALLBACK, TELEGRAM_BOT_URL } f
 import type { Challenge } from "@/hooks/useChallenges";
 
 const steps = [
-  "Ouvre la conversation avec Débora sur WhatsApp ou Telegram.",
+  "Ouvre la conversation avec Déborah sur WhatsApp ou Telegram.",
   "Prends la photo du problème sur la zone du défi.",
   "Envoie la photo, puis partage ta position.",
-  "Débora analyse et valide : tu prends tes points habituels + le bonus du défi.",
+  "Déborah analyse et valide : tu prends tes points habituels + le bonus du défi.",
 ];
 
 interface Props {

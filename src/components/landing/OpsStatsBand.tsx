@@ -10,7 +10,7 @@ const OpsStatsBand = () => {
   const pending = reports.filter((r) => r.status === "pending").length;
 
   const stats = [
-    { icon: Activity, label: "Photos reçues par Débora", value: reports.length },
+    { icon: Activity, label: "Photos reçues par Déborah", value: reports.length },
     { icon: CheckCircle2, label: "Missions validées", value: validated },
     { icon: Clock, label: "En cours de vérification", value: pending },
     { icon: Users, label: "Agents sur le terrain", value: operators.length },

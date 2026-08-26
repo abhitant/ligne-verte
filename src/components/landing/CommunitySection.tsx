@@ -12,7 +12,7 @@ const CommunitySection = () => {
             <div className="absolute -inset-6 bg-accent/10 blur-3xl rounded-full" />
             <img
               src={deboraTrophy}
-              alt="Débora tend un trophée aux contributeurs"
+              alt="Déborah tend un trophée aux contributeurs"
               width={1024}
               height={1024}
               loading="lazy"

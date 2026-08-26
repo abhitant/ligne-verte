@@ -58,7 +58,7 @@ const DeboraTypesTicker = () => {
     <div className="flex items-end gap-0">
       <img
         src={deboraMapFull}
-        alt="Déborah présente les types de signalements"
+        alt="Déborahh présente les types de signalements"
         width={1024}
         height={1024}
         loading="lazy"

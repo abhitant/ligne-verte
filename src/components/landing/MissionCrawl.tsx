@@ -6,7 +6,7 @@ const items = [
   { text: "Signale ce qui gâte la cité", color: "text-accent" },
   { text: "WhatsApp + Telegram", color: "text-alert" },
   { text: "Carte publique en temps réel", color: "text-accent" },
-  { text: "Validation IA par Débora", color: "text-alert" },
+  { text: "Validation IA par Déborah", color: "text-alert" },
   { text: "Classement des agents terrain", color: "text-accent" },
   { text: "Objectif quartier zo", color: "text-alert" },
 ];

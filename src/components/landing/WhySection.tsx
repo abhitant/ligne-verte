@@ -32,7 +32,7 @@ const WhySection = () => {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-5">
-            <p className="hud-label mb-4">Débora // pourquoi c'est important</p>
+            <p className="hud-label mb-4">Déborah // pourquoi c'est important</p>
             <h2 className="font-display text-3xl md:text-5xl font-bold uppercase leading-tight">
               Ce qu'on ne voit pas,
               <span className="block text-accent">personne ne le règle</span>

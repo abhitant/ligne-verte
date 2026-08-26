@@ -140,7 +140,7 @@ const TacticalMap = () => {
           </div>
         </div>
 
-        {/* Débora intervient directement sur la carte */}
+        {/* Déborah intervient directement sur la carte */}
         <div className="pointer-events-none absolute bottom-2 left-1 z-[1000] sm:bottom-5 sm:left-5">
           <DeboraTypesTicker />
         </div>

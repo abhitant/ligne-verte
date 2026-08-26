@@ -87,7 +87,7 @@ const Navigation = () => {
               <Popover>
                 <PopoverTrigger asChild>
                   <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-mono text-xs uppercase tracking-[0.18em]">
-                    En savoir plus sur Déborah
+                    En savoir plus sur Déborahh
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent align="end" className="w-56 p-2">
@@ -169,7 +169,7 @@ const Navigation = () => {
                   className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-mono text-xs uppercase tracking-[0.18em]"
                   onClick={() => setIsOpen(false)}
                 >
-                  <a href={WHATSAPP_INVITE_URL}>En savoir plus sur Déborah</a>
+                  <a href={WHATSAPP_INVITE_URL}>En savoir plus sur Déborahh</a>
                 </Button>
               )}
             </div>
