@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { MapPin, Radar } from "lucide-react";
+import { MapPin, Radar, Users, CheckCircle, Clock, Percent } from "lucide-react";
 import OpenStreetMap from "@/components/OpenStreetMap";
 import DeboraTypesTicker from "@/components/landing/DeboraTypesTicker";
 import { useReports } from "@/hooks/useReports";
@@ -11,11 +11,23 @@ const OBJECTIF_HIMPACT = 5000;
 const TacticalMap = () => {
   const { data: reports = [] } = useReports();
 
-  const { himpact, progress } = useMemo(() => {
+  const { himpact, progress, metrics } = useMemo(() => {
     const visible = reports.filter((r) => r.status !== "rejected");
-    const validated = visible.filter((r) => r.status === "validated").length;
-    const value = validated * 10;
-    return { himpact: value, progress: Math.min(100, Math.round((value / OBJECTIF_HIMPACT) * 100)) };
+    const validated = visible.filter((r) => r.status === "validated");
+    const pending = visible.filter((r) => r.status === "pending");
+    const mobilized = new Set(visible.map((r) => r.user).filter(Boolean));
+    const validationRate = visible.length ? Math.round((validated.length / visible.length) * 100) : 0;
+
+    return {
+      himpact: validated.length * 10,
+      progress: Math.min(100, Math.round(((validated.length * 10) / OBJECTIF_HIMPACT) * 100)),
+      metrics: {
+        mobilized: mobilized.size,
+        validated: validated.length,
+        pending: pending.length,
+        validationRate,
+      },
+    };
   }, [reports]);
 
 
@@ -82,6 +94,30 @@ const TacticalMap = () => {
             className="h-full bg-accent transition-all duration-1000"
             style={{ width: `${progress}%` }}
           />
+        </div>
+
+        {/* Métriques tactiques */}
+        <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="border border-border/60 bg-surface/60 px-3 py-3">
+            <Users className="mb-2 h-4 w-4 text-accent" />
+            <p className="font-display text-xl text-foreground sm:text-2xl">{metrics.mobilized}</p>
+            <p className="hud-meta mt-1">Habitants mobilisés</p>
+          </div>
+          <div className="border border-border/60 bg-surface/60 px-3 py-3">
+            <Percent className="mb-2 h-4 w-4 text-accent" />
+            <p className="font-display text-xl text-foreground sm:text-2xl">{metrics.validationRate}%</p>
+            <p className="hud-meta mt-1">Taux de validation</p>
+          </div>
+          <div className="border border-border/60 bg-surface/60 px-3 py-3">
+            <CheckCircle className="mb-2 h-4 w-4 text-accent" />
+            <p className="font-display text-xl text-foreground sm:text-2xl">{metrics.validated}</p>
+            <p className="hud-meta mt-1">Missions validées</p>
+          </div>
+          <div className="border border-border/60 bg-surface/60 px-3 py-3">
+            <Clock className="mb-2 h-4 w-4 text-alert" />
+            <p className="font-display text-xl text-foreground sm:text-2xl">{metrics.pending}</p>
+            <p className="hud-meta mt-1">En attente</p>
+          </div>
         </div>
       </div>
 
