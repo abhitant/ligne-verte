@@ -1,6 +1,14 @@
 import { Trash2, Lightbulb, Droplets, Construction, Volume2, ShieldAlert } from "lucide-react";
 import DeboraSay from "@/components/landing/DeboraSay";
 import ReportsCarousel from "@/components/landing/ReportsCarousel";
+import TacticalMap from "@/components/landing/TacticalMap";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 
 
@@ -51,7 +59,6 @@ const WasteProblemSection = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Texte + Débora */}
           <div>
-
             <h2 className="font-display text-3xl md:text-5xl font-bold uppercase leading-tight">
               Tout ce qui gâte le <span className="text-accent">quartier</span>,
               <br />
@@ -70,25 +77,44 @@ const WasteProblemSection = () => {
           <ReportsCarousel />
         </div>
 
-        <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-border/60 border border-border/60">
-          {categories.map((cat) => {
-            const Icon = cat.icon;
-            return (
-              <article
-                key={cat.code}
-                className="group bg-card p-7 transition-colors hover:bg-surface"
-              >
-                <div className="flex items-center justify-between mb-6">
-                  <Icon className="w-7 h-7 text-accent" />
-                  <span className="hud-meta">{cat.code}</span>
-                </div>
-                <h3 className="font-display text-xl uppercase tracking-wide mb-2 group-hover:text-accent transition-colors">
-                  {cat.title}
-                </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{cat.desc}</p>
-              </article>
-            );
-          })}
+        {/* Slides des types de signalement */}
+        <div className="mt-16">
+          <div className="mb-4 flex items-center justify-between">
+            <span className="hud-label">Types de signalement</span>
+            <span className="hud-meta hidden sm:inline">06 CATÉGORIES</span>
+          </div>
+
+          <Carousel opts={{ align: "start", loop: true }} className="w-full">
+            <CarouselContent className="-ml-px">
+              {categories.map((cat) => {
+                const Icon = cat.icon;
+                return (
+                  <CarouselItem
+                    key={cat.code}
+                    className="pl-px basis-[85%] sm:basis-1/2 lg:basis-1/3"
+                  >
+                    <article className="group h-full border border-border/60 bg-card p-7 transition-colors hover:bg-surface">
+                      <div className="mb-6 flex items-center justify-between">
+                        <Icon className="h-7 w-7 text-accent" />
+                        <span className="hud-meta">{cat.code}</span>
+                      </div>
+                      <h3 className="mb-2 font-display text-xl uppercase tracking-wide transition-colors group-hover:text-accent">
+                        {cat.title}
+                      </h3>
+                      <p className="text-sm leading-relaxed text-muted-foreground">{cat.desc}</p>
+                    </article>
+                  </CarouselItem>
+                );
+              })}
+            </CarouselContent>
+            <CarouselPrevious className="-left-3 border-accent/50 bg-card text-accent hover:bg-accent hover:text-accent-foreground" />
+            <CarouselNext className="-right-3 border-accent/50 bg-card text-accent hover:bg-accent hover:text-accent-foreground" />
+          </Carousel>
+        </div>
+
+        {/* Carte tactique + informations live */}
+        <div className="mt-16">
+          <TacticalMap />
         </div>
       </div>
     </section>
