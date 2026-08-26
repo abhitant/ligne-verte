@@ -87,16 +87,16 @@ const Map = () => {
     <div className="h-screen bg-background overflow-hidden">
       <div className="h-full flex flex-col">
         {/* Card wrapper gaming style */}
-        <Card className="bg-primary text-primary-foreground border-2 border-accent/50 shadow-2xl h-full w-full rounded-none flex flex-col">
-          <CardHeader className="pb-2">
+        <Card className="bg-background text-foreground border-0 border-b border-border shadow-2xl h-full w-full rounded-none flex flex-col">
+          <CardHeader className="pb-2 border-b border-border/70 bg-card/60 backdrop-blur-sm">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <CardTitle className="flex items-center gap-2 text-primary-foreground text-base sm:text-lg flex-shrink-0">
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg flex-shrink-0">
                 <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-accent animate-pulse" />
-                <span className="text-accent font-bold tracking-wider text-sm sm:text-base">ZONES D'INTERVENTION</span>
+                <span className="font-display uppercase tracking-[0.2em] text-sm sm:text-base">Zones d'intervention</span>
               </CardTitle>
               <div className="flex flex-wrap gap-2">
-                <div className="text-xs sm:text-sm bg-accent/20 text-accent-foreground px-3 py-1 border border-accent-foreground/30 font-bold tracking-wide rounded">
-                  CARTE INTERACTIVE
+                <div className="hud-meta border border-border/70 px-3 py-1 text-accent">
+                  CARTE TACTIQUE · LIVE
                 </div>
               </div>
             </div>
