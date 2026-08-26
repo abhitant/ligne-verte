@@ -15,7 +15,7 @@ const TacticalMap = () => {
     const visible = reports.filter((r) => r.status !== "rejected");
     const validated = visible.filter((r) => r.status === "validated");
     const pending = visible.filter((r) => r.status === "pending");
-    const mobilized = new Set(visible.map((r) => r.user_id).filter(Boolean));
+    const mobilized = new Set(visible.map((r) => r.user).filter(Boolean));
     const validationRate = visible.length ? Math.round((validated.length / visible.length) * 100) : 0;
 
     return {
