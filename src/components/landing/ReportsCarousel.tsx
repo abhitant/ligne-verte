@@ -30,9 +30,31 @@ const ReportsCarousel = () => {
         .not("photo_url", "is", null)
         .neq("status", "rejected")
         .order("created_at", { ascending: false })
-        .limit(12);
+        .limit(24);
       if (!active) return;
-      setReports((data ?? []).filter((r) => !!r.photo_url) as ReportPhoto[]);
+      const isWaste = (s: string) => {
+        const t = s.toLowerCase();
+        return (
+          t.includes("déchet") ||
+          t.includes("dépôt") ||
+          t.includes("décharge") ||
+          t.includes("waste") ||
+          t.includes("ordure") ||
+          t.includes("plastique") ||
+          t.includes("canette") ||
+          t.includes("verre") ||
+          t.includes("ferraille") ||
+          t.includes("construction")
+        );
+      };
+      const wasteOnly = (data ?? [])
+        .filter((r) => !!r.photo_url)
+        .filter(
+          (r) =>
+            isWaste(r.waste_type ?? "") || isWaste(r.waste_category ?? "")
+        )
+        .slice(0, 12) as ReportPhoto[];
+      setReports(wasteOnly);
       setLoading(false);
     };
     load();
