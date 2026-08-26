@@ -86,6 +86,63 @@ export type Database = {
         }
         Relationships: []
       }
+      challenges: {
+        Row: {
+          bonus_points: number
+          category: string | null
+          created_at: string
+          cta_url: string | null
+          description: string
+          ends_at: string | null
+          id: string
+          image_url: string | null
+          is_published: boolean
+          organization_logo_url: string | null
+          organization_name: string
+          starts_at: string
+          target_reports: number | null
+          title: string
+          updated_at: string
+          zone: string | null
+        }
+        Insert: {
+          bonus_points?: number
+          category?: string | null
+          created_at?: string
+          cta_url?: string | null
+          description: string
+          ends_at?: string | null
+          id?: string
+          image_url?: string | null
+          is_published?: boolean
+          organization_logo_url?: string | null
+          organization_name: string
+          starts_at?: string
+          target_reports?: number | null
+          title: string
+          updated_at?: string
+          zone?: string | null
+        }
+        Update: {
+          bonus_points?: number
+          category?: string | null
+          created_at?: string
+          cta_url?: string | null
+          description?: string
+          ends_at?: string | null
+          id?: string
+          image_url?: string | null
+          is_published?: boolean
+          organization_logo_url?: string | null
+          organization_name?: string
+          starts_at?: string
+          target_reports?: number | null
+          title?: string
+          updated_at?: string
+          zone?: string | null
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           created_at: string | null

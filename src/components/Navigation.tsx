@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { MapPin, Home, Menu, X, Info, Settings, LogOut, Trophy } from "lucide-react";
+import { MapPin, Home, Swords, Menu, X, Info, Settings, LogOut, Trophy } from "lucide-react";
 import { WHATSAPP_INVITE_URL } from "@/config/links";
 import { useAuth } from "@/hooks/useAuth";
 import WaitlistModal from "./WaitlistModal";
@@ -15,6 +15,7 @@ const Navigation = () => {
   const navigation = [
     { name: 'Base', href: '/', icon: Home },
     { name: 'Carte', href: '/carte', icon: MapPin },
+    { name: 'Défis', href: '/defis', icon: Swords },
     { name: 'Classement', href: '/classement', icon: Trophy },
     { name: 'Intel', href: '/a-propos', icon: Info },
   ];

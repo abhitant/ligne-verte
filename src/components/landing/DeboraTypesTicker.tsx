@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Trash2, Lightbulb, Droplets, Construction, Volume2, ShieldAlert } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Trash2, Lightbulb, Droplets, Construction, Volume2, ShieldAlert, Swords } from "lucide-react";
 import deboraMapFull from "@/assets/debora-map-full.png";
 
 export const reportTypes = [
@@ -87,9 +88,21 @@ const DeboraTypesTicker = () => {
             />
           ))}
         </div>
+
+        <Link
+          to="/defis"
+          className="mt-3 flex items-center justify-between gap-2 border border-accent/60 bg-accent/10 px-2.5 py-2 font-mono text-[0.6rem] uppercase tracking-[0.18em] text-accent transition-colors hover:bg-accent hover:text-accent-foreground sm:text-[0.65rem]"
+        >
+          <span className="flex items-center gap-1.5">
+            <Swords className="h-3.5 w-3.5" />
+            Participer à un défi
+          </span>
+          <span aria-hidden>→</span>
+        </Link>
       </div>
     </div>
   );
 };
+
 
 export default DeboraTypesTicker;
