@@ -130,23 +130,38 @@ const HeroSection = () => {
                 />
                 {/* Connector line from badge to Débora's face */}
                 <svg
-                  className="pointer-events-none absolute inset-0 z-30 hidden min-[900px]:block"
+                  className="pointer-events-none absolute inset-0 z-30 hidden min-[900px]:block overflow-visible"
                   viewBox="0 0 100 100"
                   preserveAspectRatio="none"
                   aria-hidden="true"
                 >
-                  <line
-                    x1="78"
-                    y1="18"
-                    x2="54"
-                    y2="20"
+                  <defs>
+                    <filter id="connector-glow" x="-50%" y="-50%" width="200%" height="200%">
+                      <feGaussianBlur stdDeviation="1.2" result="blur" />
+                      <feMerge>
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="SourceGraphic" />
+                      </feMerge>
+                    </filter>
+                  </defs>
+                  {/* Bracket: horizontal from badge, then down to cheek */}
+                  <path
+                    d="M 78 18 L 62 18 Q 58 18 58 22 L 58 26"
+                    fill="none"
                     stroke="hsl(var(--accent))"
-                    strokeWidth="0.35"
-                    strokeDasharray="1.2 0.6"
-                    opacity="0.85"
+                    strokeWidth="0.4"
+                    strokeDasharray="1 0.55"
+                    filter="url(#connector-glow)"
+                    opacity="0.9"
                   />
-                  <circle cx="54" cy="20" r="0.9" fill="hsl(var(--accent))" />
-                  <circle cx="78" cy="18" r="0.7" fill="hsl(var(--accent))" opacity="0.6" />
+                  {/* Arrowhead pointing at cheek */}
+                  <polygon
+                    points="58,26 56.5,23.5 59.5,23.5"
+                    fill="hsl(var(--accent))"
+                    filter="url(#connector-glow)"
+                  />
+                  {/* Origin dot on badge */}
+                  <circle cx="78" cy="18" r="0.8" fill="hsl(var(--accent))" />
                 </svg>
 
                 {/* Badge LIGNE VERTE en haut à droite de la tête */}
