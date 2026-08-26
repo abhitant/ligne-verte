@@ -1,15 +1,35 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { MapPin, Radar, Users, CheckCircle, Clock, Percent } from "lucide-react";
+import {
+  MapPin,
+  Radar,
+  Users,
+  CheckCircle,
+  Clock,
+  Percent,
+  ChevronDown,
+  Trophy,
+  Swords,
+} from "lucide-react";
 import OpenStreetMap from "@/components/OpenStreetMap";
 import DeboraTypesTicker from "@/components/landing/DeboraTypesTicker";
 import { useReports } from "@/hooks/useReports";
+import { useLeaderboard } from "@/hooks/useGamification";
+import { useChallenges, isChallengeActive } from "@/hooks/useChallenges";
 
 const OBJECTIF_HIMPACT = 5000;
 
 const TacticalMap = () => {
   const { data: reports = [] } = useReports();
+  const { data: leaderboard = [] } = useLeaderboard(3);
+  const { data: challenges = [] } = useChallenges();
+  const [openRanking, setOpenRanking] = useState(false);
+
+  const activeChallenges = useMemo(
+    () => challenges.filter(isChallengeActive),
+    [challenges]
+  );
 
   const { himpact, progress, metrics } = useMemo(() => {
     const visible = reports.filter((r) => r.status !== "rejected");
@@ -56,14 +76,67 @@ const TacticalMap = () => {
           zoom={11}
         />
 
-        {/* Légende stylisée */}
-        <div className="pointer-events-none absolute left-3 top-3 z-[1000] border border-border/70 bg-card/85 px-3 py-2 backdrop-blur-sm">
-          <p className="hud-label mb-2">Légende</p>
-          <div className="flex items-center gap-2 text-xs text-card-foreground">
-            <span className="inline-block h-2 w-2 rounded-full bg-signal" /> Validé
+        {/* Légende : Défi en cours + Classement pliable */}
+        <div className="absolute left-3 top-3 z-[1000] flex flex-col gap-2 sm:flex-row">
+          {/* Défi en cours */}
+          <div className="border border-border/70 bg-card/90 px-3 py-2 backdrop-blur-sm">
+            <div className="flex items-center gap-2 text-xs text-card-foreground">
+              <Swords className="h-3.5 w-3.5 text-accent" />
+              <span className="font-medium">Défi en cours</span>
+              <span className="ml-1 inline-flex h-4 min-w-[1rem] items-center justify-center bg-accent px-1 font-mono text-[0.65rem] text-accent-foreground">
+                {activeChallenges.length}
+              </span>
+            </div>
           </div>
-          <div className="mt-1 flex items-center gap-2 text-xs text-card-foreground">
-            <span className="inline-block h-2 w-2 rounded-full bg-alert" /> En attente
+
+          {/* Classement pliable */}
+          <div className="border border-border/70 bg-card/90 backdrop-blur-sm">
+            <button
+              type="button"
+              onClick={() => setOpenRanking((v) => !v)}
+              className="flex w-full items-center gap-2 px-3 py-2 text-left"
+            >
+              <Trophy className="h-3.5 w-3.5 text-accent" />
+              <span className="text-xs font-medium text-card-foreground">Classement</span>
+              <ChevronDown
+                className={`ml-auto h-3.5 w-3.5 text-muted-foreground transition-transform ${
+                  openRanking ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+            {openRanking && (
+              <div className="border-t border-border/60 px-3 py-2">
+                {leaderboard.length === 0 ? (
+                  <p className="hud-meta text-[0.65rem]">Aucun classement</p>
+                ) : (
+                  <ol className="space-y-1.5">
+                    {leaderboard.map((user, index) => (
+                      <li key={user.telegram_id} className="flex items-center gap-2 text-xs">
+                        <span
+                          className={`font-mono text-[0.65rem] ${
+                            index < 3 ? "text-accent" : "text-muted-foreground"
+                          }`}
+                        >
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <span className="max-w-[110px] truncate font-medium text-card-foreground">
+                          {user.pseudo}
+                        </span>
+                        <span className="ml-auto font-mono text-[0.65rem] text-muted-foreground">
+                          {user.points_himpact}
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                )}
+                <Link
+                  to="/classement"
+                  className="mt-2 block border-t border-border/60 pt-1.5 text-center text-[0.65rem] font-mono uppercase tracking-wider text-accent hover:text-accent/80"
+                >
+                  Voir tout
+                </Link>
+              </div>
+            )}
           </div>
         </div>
 
