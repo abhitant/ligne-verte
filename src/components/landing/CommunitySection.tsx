@@ -12,21 +12,28 @@ const CommunitySection = () => {
     <section id="carte-live" className="relative py-24 bg-surface/30 overflow-hidden">
       <div className="absolute inset-0 hud-grid opacity-25 pointer-events-none" />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div className="mb-10 grid gap-8 lg:grid-cols-2 lg:items-end">
           <div>
-            <p className="hud-label mb-4">Débora // mon tableau de bord</p>
-            <h2 className="font-display text-3xl md:text-5xl font-bold uppercase leading-tight">
-              Regarde ce que <span className="text-accent">la cité</span> m'envoie
+            <span className="hud-label">Points Himpact</span>
+            <h2 className="mt-4 font-display text-3xl font-bold uppercase leading-tight md:text-5xl">
+              Contribue et reçois <span className="text-accent">des points Himpact</span>
             </h2>
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground md:text-lg">
+              Chaque signalement validé te rapporte des points Himpact : 10 points par mission,
+              et un bonus de 30 quand tu nettoies et que tu m'envoies la preuve. Ces points
+              mesurent ta contribution réelle au quartier — ils donnent accès aux avantages de la
+              communauté, à la reconnaissance sur le classement public et aux opérations spéciales
+              de La Ligne Verte.
+            </p>
           </div>
+
           <DeboraSay
             side="right"
             pose="point"
-            line="« Chaque signalement que je valide s'affiche ici en direct. Plus vous m'écrivez, plus la carte devient précise — et plus vos points montent. »"
+            line="« Plus tu m'envoies de signalements validés, plus tes points montent. Et voici le classement : regarde où tu te places. »"
             cta={{ label: "Le classement", to: "/classement" }}
           />
         </div>
-
 
         <div className="grid grid-cols-1">
           {/* Classement opérateurs */}
