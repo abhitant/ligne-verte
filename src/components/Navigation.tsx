@@ -53,7 +53,7 @@ const Navigation = () => {
           </Link>
 
           {/* Desktop */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-1">
             {allNavigation.map((item) => {
               const Icon = item.icon;
               return (
@@ -73,7 +73,7 @@ const Navigation = () => {
             })}
           </div>
 
-          <div className="hidden md:flex items-center flex-shrink-0 ml-2">
+          <div className="hidden lg:flex items-center flex-shrink-0 ml-2">
             {user ? (
               <Button
                 variant="outline"
@@ -119,7 +119,7 @@ const Navigation = () => {
           </div>
 
           {/* Mobile toggle */}
-          <div className="md:hidden flex items-center">
+          <div className="lg:hidden flex items-center">
             <Button
               variant="ghost"
               size="sm"
@@ -134,7 +134,7 @@ const Navigation = () => {
 
         {/* Mobile menu */}
         {isOpen && (
-          <div className="md:hidden pb-4 border-t border-border pt-3 space-y-1">
+          <div className="lg:hidden pb-4 border-t border-border pt-3 space-y-1">
             {allNavigation.map((item) => {
               const Icon = item.icon;
               return (
