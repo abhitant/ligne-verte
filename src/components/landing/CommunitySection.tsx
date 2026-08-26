@@ -1,13 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { Trophy } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useLeaderboard } from "@/hooks/useGamification";
 import deboraTrophy from "@/assets/debora-trophy.png";
 
 
 const CommunitySection = () => {
-  const { data: users = [] } = useLeaderboard(10);
-
   return (
     <section id="reconnaissance" className="relative py-24 bg-surface/30 overflow-hidden">
       <div className="absolute inset-0 hud-grid opacity-25 pointer-events-none" />
