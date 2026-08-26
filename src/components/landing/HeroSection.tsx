@@ -84,7 +84,7 @@ const HeroSection = () => {
                     <span className="absolute inset-y-0 left-0 w-1 bg-accent transition-all duration-300 group-hover:w-full group-hover:opacity-10" />
                     <span className="absolute left-0 top-0 h-2 w-2 border-l border-t border-accent" />
                     <span className="absolute right-0 bottom-0 h-2 w-2 border-r border-b border-accent" />
-                    <span className="relative z-10">Contacter Débora</span>
+                    <span className="relative z-10">Me contacter</span>
                     <span className="relative z-10 flex h-6 w-6 items-center justify-center rounded-full border border-current">
                       <MessageCircle className="h-3.5 w-3.5" />
                     </span>
