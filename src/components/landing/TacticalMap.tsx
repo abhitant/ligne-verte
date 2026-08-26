@@ -1,10 +1,22 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { MapPin, Radar, Users, CheckCircle, Clock, Percent } from "lucide-react";
+import {
+  MapPin,
+  Radar,
+  Users,
+  CheckCircle,
+  Clock,
+  Percent,
+  ChevronDown,
+  Trophy,
+  Swords,
+} from "lucide-react";
 import OpenStreetMap from "@/components/OpenStreetMap";
 import DeboraTypesTicker from "@/components/landing/DeboraTypesTicker";
 import { useReports } from "@/hooks/useReports";
+import { useLeaderboard } from "@/hooks/useGamification";
+import { useChallenges, isChallengeActive } from "@/hooks/useChallenges";
 
 const OBJECTIF_HIMPACT = 5000;
 
