@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft, Swords, Building2, Timer, Zap, MapPin, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Navigation from "@/components/Navigation";
 import { useChallenges, isChallengeActive, daysLeft } from "@/hooks/useChallenges";
 import { WHATSAPP_INVITE_URL, TELEGRAM_BOT_URL } from "@/config/links";
 
@@ -12,8 +11,6 @@ const ChallengesPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
-
       <main className="relative">
         <div className="pointer-events-none absolute inset-0 hud-grid opacity-30" />
 

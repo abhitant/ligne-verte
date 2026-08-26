@@ -14,6 +14,7 @@ import Dashboard from "./pages/Dashboard";
 import LeaderboardPage from "./pages/Leaderboard";
 import ReportsPage from "./pages/Reports";
 import ReportDetails from "./pages/ReportDetails";
+import ChallengesPage from "./pages/Challenges";
 import About from "./pages/About";
 import Suggestions from "./pages/Suggestions";
 import Auth from "./pages/Auth";
@@ -45,6 +46,7 @@ const App = () => {
               <Route path="/signalement/:id" element={<ReportDetails />} />
               <Route path="/marketplace" element={<Marketplace />} />
               
+              <Route path="/defis" element={<ChallengesPage />} />
               <Route path="/a-propos" element={<About />} />
               <Route path="/suggestions" element={<Suggestions />} />
               <Route path="/profile" element={<UserProfile />} />
