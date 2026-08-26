@@ -128,6 +128,27 @@ const HeroSection = () => {
                   loading="eager"
                   className="relative z-10 h-auto w-full max-w-[260px] sm:max-w-[340px] min-[900px]:max-w-[500px] lg:max-w-[570px] object-contain object-bottom drop-shadow-[0_0_50px_hsl(var(--accent)/0.22)] animate-rise"
                 />
+                {/* Connector line from badge to Débora's face */}
+                <svg
+                  className="pointer-events-none absolute inset-0 z-30 hidden min-[900px]:block"
+                  viewBox="0 0 100 100"
+                  preserveAspectRatio="none"
+                  aria-hidden="true"
+                >
+                  <line
+                    x1="68"
+                    y1="16"
+                    x2="52"
+                    y2="12"
+                    stroke="hsl(var(--accent))"
+                    strokeWidth="0.35"
+                    strokeDasharray="1.2 0.6"
+                    opacity="0.85"
+                  />
+                  <circle cx="52" cy="12" r="0.9" fill="hsl(var(--accent))" />
+                  <circle cx="68" cy="16" r="0.7" fill="hsl(var(--accent))" opacity="0.6" />
+                </svg>
+
                 {/* Badge LIGNE VERTE en haut à droite de la tête */}
                 <div className="absolute z-20 right-0 top-[12%] translate-x-0 min-[900px]:translate-x-1/4 w-[34%] min-w-[92px] min-[900px]:w-[28%] min-[900px]:min-w-[104px] overflow-hidden rounded border border-accent/50 bg-card/95 shadow-[0_0_30px_hsl(var(--accent)/0.35)] backdrop-blur-sm">
 
