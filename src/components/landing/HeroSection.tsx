@@ -144,9 +144,9 @@ const HeroSection = () => {
                       </feMerge>
                     </filter>
                   </defs>
-                  {/* Bracket: horizontal from badge, then down to cheek */}
+                  {/* Bracket: horizontal from badge, then down toward face without touching */}
                   <path
-                    d="M 78 18 L 62 18 Q 58 18 58 22 L 58 26"
+                    d="M 78 18 L 62 18 Q 58 18 58 21 L 58 23"
                     fill="none"
                     stroke="hsl(var(--accent))"
                     strokeWidth="0.4"
@@ -154,9 +154,9 @@ const HeroSection = () => {
                     filter="url(#connector-glow)"
                     opacity="0.9"
                   />
-                  {/* Arrowhead pointing at cheek */}
+                  {/* Small arrowhead, pointing at face but not touching */}
                   <polygon
-                    points="58,26 56.5,23.5 59.5,23.5"
+                    points="58,23 56.8,21 59.2,21"
                     fill="hsl(var(--accent))"
                     filter="url(#connector-glow)"
                   />
