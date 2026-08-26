@@ -5,21 +5,18 @@ import { MapPin, Radar } from "lucide-react";
 import OpenStreetMap from "@/components/OpenStreetMap";
 import DeboraTypesTicker from "@/components/landing/DeboraTypesTicker";
 import { useReports } from "@/hooks/useReports";
-import { useLeaderboard } from "@/hooks/useGamification";
+
+const OBJECTIF_HIMPACT = 5000;
 
 const TacticalMap = () => {
   const { data: reports = [] } = useReports();
-  const { data: leaders = [] } = useLeaderboard(100);
 
-
-
-
-  const pointsDistributed = useMemo(
-    () => leaders.reduce((sum, l) => sum + (l.points_himpact ?? 0), 0),
-    [leaders]
-  );
-
-  const progress = Math.min(100, Math.round((pointsDistributed / 10000) * 100));
+  const { himpact, progress } = useMemo(() => {
+    const visible = reports.filter((r) => r.status !== "rejected");
+    const validated = visible.filter((r) => r.status === "validated").length;
+    const value = validated * 10;
+    return { himpact: value, progress: Math.min(100, Math.round((value / OBJECTIF_HIMPACT) * 100)) };
+  }, [reports]);
 
 
   return (
@@ -68,13 +65,13 @@ const TacticalMap = () => {
         </span>
       </div>
 
-      {/* Objectif Impact */}
+      {/* Objectif Quartier ZO */}
       <div className="border-t border-border/60 bg-card px-4 py-5 sm:px-6 sm:py-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="hud-label mb-1 text-accent">Objectif Impact</p>
+            <p className="hud-label mb-1 text-accent">Objectif quartier zo</p>
             <p className="font-display text-xl uppercase tracking-wide text-foreground sm:text-2xl">
-              {pointsDistributed.toLocaleString()} / 10 000 points distribués
+              {himpact.toLocaleString()} / {OBJECTIF_HIMPACT.toLocaleString()} HIMPACT
             </p>
           </div>
           <p className="font-mono text-3xl text-accent sm:text-4xl">{progress}%</p>
