@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Trash2, Lightbulb, Droplets, Construction, Volume2, ShieldAlert } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Trash2, Lightbulb, Droplets, Construction, Volume2, ShieldAlert, Swords } from "lucide-react";
 import deboraMapFull from "@/assets/debora-map-full.png";
 
 export const reportTypes = [
