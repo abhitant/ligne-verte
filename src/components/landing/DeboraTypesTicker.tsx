@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Trash2, Lightbulb, Droplets, Construction, Volume2, ShieldAlert } from "lucide-react";
-import deboraPoint from "@/assets/debora-point.png";
+import deboraMapFull from "@/assets/debora-map-full.png";
 
 export const reportTypes = [
   {
@@ -56,12 +56,12 @@ const DeboraTypesTicker = () => {
   return (
     <div className="flex items-end gap-0">
       <img
-        src={deboraPoint}
+        src={deboraMapFull}
         alt="Déborah présente les types de signalements"
-        width={768}
+        width={1024}
         height={1024}
         loading="lazy"
-        className="pointer-events-none -mr-4 h-auto w-20 shrink-0 object-contain drop-shadow-2xl sm:-mr-5 sm:w-36"
+        className="pointer-events-none -mr-8 h-auto w-32 shrink-0 object-contain drop-shadow-2xl sm:-mr-12 sm:w-48 lg:w-56"
       />
       <div className="pointer-events-auto w-[13.5rem] border-2 border-accent/70 bg-card/95 p-3 shadow-[0_0_0_1px_hsl(var(--background)),0_16px_40px_-16px_hsl(0_0%_0%_/_0.9)] backdrop-blur-sm sm:w-[22rem] sm:p-4">
         <div className="mb-2 flex items-center justify-between gap-2">

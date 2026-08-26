@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { MapPin, Radar, Activity, ShieldCheck, Clock, Users } from "lucide-react";
+import { MapPin, Radar } from "lucide-react";
 import OpenStreetMap from "@/components/OpenStreetMap";
 import DeboraTypesTicker from "@/components/landing/DeboraTypesTicker";
 import { useReports } from "@/hooks/useReports";
@@ -19,12 +19,7 @@ const TacticalMap = () => {
     return { total: visible.length, validated, pending, agents };
   }, [reports]);
 
-  const items = [
-    { icon: Activity, label: "Signalements sur la carte", value: stats.total, tone: "text-accent" },
-    { icon: ShieldCheck, label: "Missions validées", value: stats.validated, tone: "text-signal" },
-    { icon: Clock, label: "En vérification", value: stats.pending, tone: "text-alert" },
-    { icon: Users, label: "Habitants mobilisés", value: stats.agents, tone: "text-info" },
-  ];
+  const progress = Math.min(100, Math.round((stats.validated / 1000) * 100));
 
   return (
     <div className="hud-panel overflow-hidden">
@@ -94,15 +89,23 @@ const TacticalMap = () => {
         </span>
       </div>
 
-      {/* Bandeau d'informations */}
-      <div className="grid grid-cols-2 gap-px bg-border/60 lg:grid-cols-4">
-        {items.map(({ icon: Icon, label, value, tone }) => (
-          <div key={label} className="bg-card px-4 py-5">
-            <Icon className={`mb-3 h-4 w-4 ${tone}`} />
-            <p className={`font-mono text-2xl ${tone}`}>{String(value).padStart(2, "0")}</p>
-            <p className="hud-meta mt-1 leading-tight">{label}</p>
+      {/* Objectif Quartier ZOU */}
+      <div className="border-t border-border/60 bg-card px-4 py-5 sm:px-6 sm:py-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="hud-label mb-1 text-accent">Objectif Quartier ZOU</p>
+            <p className="font-display text-xl uppercase tracking-wide text-foreground sm:text-2xl">
+              {stats.validated.toLocaleString()} / 1 000 quartiers signalés
+            </p>
           </div>
-        ))}
+          <p className="font-mono text-3xl text-accent sm:text-4xl">{progress}%</p>
+        </div>
+        <div className="mt-4 h-3 w-full overflow-hidden bg-surface">
+          <div
+            className="h-full bg-accent transition-all duration-1000"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
       </div>
 
       <div className="p-4">
