@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Trash2, Lightbulb, Droplets, Construction, Volume2, ShieldAlert } from "lucide-react";
+import deboraPoint from "@/assets/debora-point.png";
 
 export const reportTypes = [
   {
@@ -53,32 +54,39 @@ const DeboraTypesTicker = () => {
   const Icon = item.icon;
 
   return (
-    <div className="pointer-events-auto w-[16rem] border-2 border-accent/70 bg-card/95 p-3 shadow-[0_0_0_1px_hsl(var(--background)),0_16px_40px_-16px_hsl(0_0%_0%_/_0.9)] backdrop-blur-sm sm:w-[22rem] sm:p-4">
-      <div className="mb-2 flex items-center justify-between gap-2">
-        <span className="hud-label flex items-center gap-1.5 text-[0.6rem]">
-          <Icon className="h-3.5 w-3.5 text-accent" />
-          Débora
-        </span>
-        <span className="hud-meta text-[0.6rem]">{item.code} / 06</span>
-      </div>
+    <div className="flex items-end gap-0">
+      <img
+        src={deboraPoint}
+        alt="Déborah présente les types de signalements"
+        width={768}
+        height={1024}
+        loading="lazy"
+        className="pointer-events-none -mr-5 hidden h-auto w-28 shrink-0 object-contain drop-shadow-2xl sm:block sm:w-36"
+      />
+      <div className="pointer-events-auto w-[16rem] border-2 border-accent/70 bg-card/95 p-3 shadow-[0_0_0_1px_hsl(var(--background)),0_16px_40px_-16px_hsl(0_0%_0%_/_0.9)] backdrop-blur-sm sm:w-[22rem] sm:p-4">
+        <div className="mb-2 flex items-center justify-between gap-2">
+          <Icon className="h-4 w-4 text-accent" />
+          <span className="hud-meta text-[0.6rem]">{item.code} / 06</span>
+        </div>
 
-      <div key={item.code} className="animate-in fade-in slide-in-from-bottom-1 duration-500">
-        <h3 className="font-display text-sm uppercase leading-tight tracking-wide text-accent sm:text-base">
-          {item.title}
-        </h3>
-        <p className="mt-1 text-[0.72rem] leading-snug text-foreground sm:text-xs">{item.line}</p>
-      </div>
+        <div key={item.code} className="animate-in fade-in slide-in-from-bottom-1 duration-500">
+          <h3 className="font-display text-sm uppercase leading-tight tracking-wide text-accent sm:text-base">
+            {item.title}
+          </h3>
+          <p className="mt-1 text-[0.72rem] leading-snug text-foreground sm:text-xs">{item.line}</p>
+        </div>
 
-      <div className="mt-3 flex items-center gap-1">
-        {reportTypes.map((t, idx) => (
-          <button
-            key={t.code}
-            type="button"
-            aria-label={t.title}
-            onClick={() => setI(idx)}
-            className={`h-1 flex-1 transition-colors ${idx === i ? "bg-accent" : "bg-border"}`}
-          />
-        ))}
+        <div className="mt-3 flex items-center gap-1">
+          {reportTypes.map((t, idx) => (
+            <button
+              key={t.code}
+              type="button"
+              aria-label={t.title}
+              onClick={() => setI(idx)}
+              className={`h-1 flex-1 transition-colors ${idx === i ? "bg-accent" : "bg-border"}`}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

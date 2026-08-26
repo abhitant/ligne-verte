@@ -44,8 +44,7 @@ const WhyCountsSection = () => {
     <section id="pourquoi" className="relative overflow-hidden bg-background py-24">
       <div className="hud-grid pointer-events-none absolute inset-0 opacity-25" />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <span className="hud-label">Indice civique</span>
-        <h2 className="mt-4 font-display text-3xl font-bold uppercase leading-tight md:text-5xl">
+        <h2 className="font-display text-3xl font-bold uppercase leading-tight md:text-5xl">
           Pourquoi ça compte
         </h2>
         <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted-foreground md:text-lg">
