@@ -123,7 +123,8 @@ export default {
 				'hud-ping': 'hud-ping 2.4s ease-out infinite',
 				'scan-line': 'scan-line 6s linear infinite',
 				'flicker': 'flicker 6s ease-in-out infinite',
-				'rise': 'rise 0.6s ease-out both'
+				'rise': 'rise 0.6s ease-out both',
+				'crawl': 'crawl 24s linear infinite'
 			}
 		}
 	},
