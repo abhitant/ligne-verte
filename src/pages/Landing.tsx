@@ -6,6 +6,7 @@ import WhyCountsSection from "@/components/landing/WhyCountsSection";
 import CommunitySection from "@/components/landing/CommunitySection";
 import Footer from "@/components/landing/Footer";
 import Reveal from "@/components/landing/Reveal";
+import ScrollCue from "@/components/landing/ScrollCue";
 
 const Landing = () => {
   return (
@@ -14,13 +15,17 @@ const Landing = () => {
       <Reveal>
         <WasteProblemSection />
       </Reveal>
+      <ScrollCue targetId="carte-live" label="La carte" />
       <CivicMapSection />
+      <ScrollCue targetId="comment" label="Comment ça marche" />
       <Reveal>
         <SolutionSection />
       </Reveal>
+      <ScrollCue targetId="reconnaissance" label="Reconnaissance" />
       <Reveal>
         <CommunitySection />
       </Reveal>
+      <ScrollCue targetId="pourquoi" label="Pourquoi ça compte" />
       <Reveal>
         <WhyCountsSection />
       </Reveal>
