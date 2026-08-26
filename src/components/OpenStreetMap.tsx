@@ -224,9 +224,9 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter, showLe
       </div>
       )}
 
-      {/* Voile tactique HUD */}
-      <div className="pointer-events-none absolute inset-0 z-[900] hud-scanlines opacity-30" />
-      <div className="pointer-events-none absolute inset-0 z-[900] bg-[radial-gradient(ellipse_at_center,transparent_45%,hsl(var(--background)/0.85)_100%)]" />
+      {/* Voile tactique HUD léger pour garder la carte grise lisible */}
+      <div className="pointer-events-none absolute inset-0 z-[900] hud-scanlines opacity-15" />
+      <div className="pointer-events-none absolute inset-0 z-[900] bg-[radial-gradient(ellipse_at_center,transparent_60%,hsl(var(--background)/0.35)_100%)]" />
 
       <div style={{ height: '100%', width: '100%' }}>
         <MapContainer 
@@ -242,7 +242,7 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter, showLe
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
-            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
             eventHandlers={{
               loading: () => console.log('Tiles loading...'),
               load: () => console.log('Tiles loaded successfully'),
