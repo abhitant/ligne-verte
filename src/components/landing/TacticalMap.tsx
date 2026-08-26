@@ -66,7 +66,7 @@ const TacticalMap = () => {
 
 
       {/* Carte */}
-      <div className="relative h-[340px] sm:h-[440px] lg:h-[520px] border-y border-border/60">
+      <div className="relative h-[420px] sm:h-[460px] lg:h-[520px] border-y border-border/60">
         <OpenStreetMap
           reports={reports}
           selectedReport={null}
@@ -77,7 +77,7 @@ const TacticalMap = () => {
         />
 
         {/* Légende : Défi en cours + Classement pliable */}
-        <div className="absolute left-3 top-3 z-[1000] flex flex-col gap-2 sm:flex-row">
+        <div className="absolute left-2 top-2 z-[1000] flex flex-row flex-wrap gap-2 sm:left-3 sm:top-3">
           {/* Défi en cours */}
           <div className="border border-border/70 bg-card/90 px-3 py-2 backdrop-blur-sm">
             <div className="flex items-center gap-2 text-xs text-card-foreground">
@@ -141,11 +141,11 @@ const TacticalMap = () => {
         </div>
 
         {/* Déborah intervient directement sur la carte */}
-        <div className="pointer-events-none absolute bottom-2 left-1 z-[1000] sm:bottom-5 sm:left-5">
+        <div className="pointer-events-none absolute bottom-6 left-1 z-[1000] sm:bottom-5 sm:left-5">
           <DeboraTypesTicker />
         </div>
 
-        <span className="pointer-events-none absolute right-3 top-3 z-[1000] font-mono text-[0.65rem] uppercase tracking-[0.2em] text-accent/80">
+        <span className="pointer-events-none absolute right-3 top-3 z-[1000] hidden sm:block font-mono text-[0.65rem] uppercase tracking-[0.2em] text-accent/80">
           LIVE ●
         </span>
       </div>

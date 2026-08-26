@@ -27,7 +27,7 @@ const HeroSection = () => {
 
 
   return (
-    <section id="mission" className="relative h-[calc(100svh-4rem)] min-h-[560px] flex items-center overflow-hidden">
+    <section id="mission" className="relative min-h-[calc(100svh-4rem)] flex items-start min-[900px]:items-center min-[900px]:h-[calc(100svh-4rem)] overflow-hidden">
       {/* Fond photo */}
       {images.map((image, index) => (
         <div
@@ -49,8 +49,9 @@ const HeroSection = () => {
       <div className="absolute inset-0 hud-scanlines opacity-40 pointer-events-none" />
       <div className="absolute inset-x-0 top-0 h-px bg-accent/40 animate-scan-line pointer-events-none" />
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
-        <div className="grid min-[900px]:grid-cols-12 gap-6 min-[900px]:gap-4 lg:gap-8 items-center">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-0 min-[900px]:py-10 lg:py-16">
+        <div className="grid min-[900px]:grid-cols-12 gap-4 min-[900px]:gap-4 lg:gap-8 items-center">
+
           {/* Texte à gauche */}
           <div className="min-[900px]:col-span-6 lg:col-span-6 relative z-20">
             <div className="hud-panel relative max-w-2xl px-4 py-5 sm:px-7 sm:py-8 shadow-[0_0_40px_hsl(var(--accent)/0.15)]">
@@ -117,8 +118,8 @@ const HeroSection = () => {
           </div>
 
           {/* Déborah se prolonge sous le Hero : aucune fin d'image visible. */}
-          <div className="min-[900px]:col-span-6 lg:col-span-6 relative flex items-end justify-center min-[900px]:justify-end self-stretch min-h-[240px] min-[900px]:min-h-[520px] lg:min-h-[min(680px,calc(100svh-9rem))]">
-            <div className="absolute inset-x-0 -bottom-10 min-[900px]:-bottom-28 flex items-end justify-center min-[900px]:justify-end">
+          <div className="min-[900px]:col-span-6 lg:col-span-6 relative flex items-end justify-center min-[900px]:justify-end self-stretch min-[900px]:min-h-[520px] lg:min-h-[min(680px,calc(100svh-9rem))]">
+            <div className="relative w-full flex items-end justify-center min-[900px]:absolute min-[900px]:inset-x-0 min-[900px]:-bottom-28 min-[900px]:justify-end">
               <div className="relative">
                 <img
                   src={deboraHero}
@@ -126,8 +127,9 @@ const HeroSection = () => {
                   width={1024}
                   height={1536}
                   loading="eager"
-                  className="relative z-10 h-auto w-full max-w-[260px] sm:max-w-[340px] min-[900px]:max-w-[500px] lg:max-w-[570px] object-contain object-bottom drop-shadow-[0_0_50px_hsl(var(--accent)/0.22)] animate-rise"
+                  className="relative z-10 h-auto w-full max-w-[210px] sm:max-w-[280px] min-[900px]:max-w-[500px] lg:max-w-[570px] object-contain object-bottom drop-shadow-[0_0_50px_hsl(var(--accent)/0.22)] animate-rise"
                 />
+
                 {/* Connector line from badge to Déborah's face */}
                 <svg
                   className="pointer-events-none absolute inset-0 z-30 hidden min-[900px]:block overflow-visible"
@@ -163,7 +165,7 @@ const HeroSection = () => {
                 </svg>
 
                 {/* Badge LIGNE VERTE en haut à droite de la tête */}
-                <div className="absolute z-20 right-0 top-[12%] translate-x-0 min-[900px]:translate-x-1/4 w-[34%] min-w-[92px] min-[900px]:w-[28%] min-[900px]:min-w-[104px] overflow-hidden rounded border border-accent/50 bg-card/95 shadow-[0_0_30px_hsl(var(--accent)/0.35)] backdrop-blur-sm">
+                <div className="absolute z-20 right-0 top-[10%] translate-x-2 min-[900px]:translate-x-1/4 w-[42%] min-w-[84px] min-[900px]:w-[28%] min-[900px]:min-w-[104px] overflow-hidden rounded border border-accent/50 bg-card/95 shadow-[0_0_30px_hsl(var(--accent)/0.35)] backdrop-blur-sm">
 
                   {/* Lanyard droit */}
                   <div className="absolute -bottom-5 left-1/2 h-5 w-0.5 -translate-x-1/2 bg-accent/70" />
