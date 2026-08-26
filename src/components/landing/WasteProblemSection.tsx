@@ -9,7 +9,7 @@ const WasteProblemSection = () => {
       <div className="absolute inset-0 hud-grid opacity-30 pointer-events-none" />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
-          {/* Texte + Débora */}
+          {/* Texte + Déborah */}
           <div>
             <h2 className="font-display text-3xl md:text-5xl font-bold uppercase leading-tight">
               Nos quartiers <span className="text-alert">croulent</span> sous la menace.

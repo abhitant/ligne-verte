@@ -320,7 +320,7 @@ const Dashboard = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Bot className="w-5 h-5 text-blue-600" />
-              Contrôle du Bot Telegram Débora
+              Contrôle du Bot Telegram Déborah
             </CardTitle>
             <CardDescription>
               Gérez et configurez votre assistant Telegram

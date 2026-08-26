@@ -72,7 +72,7 @@ const ChallengeRequestDialog = ({ trigger }: Props) => {
       return;
     }
 
-    toast.success("Proposition envoyée ! Débora revient vers toi par e-mail.");
+    toast.success("Proposition envoyée ! Déborah revient vers toi par e-mail.");
     setOpen(false);
   };
 

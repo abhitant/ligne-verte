@@ -4,7 +4,7 @@ export const WHATSAPP_INVITE_URL =
   "whatsapp://send?phone=" +
   WHATSAPP_PHONE_NUMBER +
   "&text=" +
-  encodeURIComponent("Bonjour Débora, je veux signaler un problème dans mon quartier.");
+  encodeURIComponent("Bonjour Déborah, je veux signaler un problème dans mon quartier.");
 
 // Lien universel à utiliser hors de l'aperçu intégré.
 export const WHATSAPP_INVITE_URL_FALLBACK =

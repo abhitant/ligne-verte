@@ -4,7 +4,7 @@ import { Target, Zap, Trophy, ShieldCheck, Cpu, Users } from "lucide-react";
 const About = () => {
   useEffect(() => {
     document.title = "Intel | La Ligne Verte — Gestion civique des cités";
-    const desc = "La Ligne Verte : centre de commandement citoyen. Signale tout désagrément de ta cité via Débora, suis la carte tactique et gagne des points Himpact.";
+    const desc = "La Ligne Verte : centre de commandement citoyen. Signale tout désagrément de ta cité via Déborah, suis la carte tactique et gagne des points Himpact.";
     let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
     if (!meta) {
       meta = document.createElement('meta');
@@ -16,7 +16,7 @@ const About = () => {
 
   const steps = [
     { icon: Target, title: "01 · Repère", desc: "Un problème dans ta cité : déchets, caniveau, éclairage, voirie, nuisance." },
-    { icon: Zap, title: "02 · Signale", desc: "Photo + localisation envoyées à Débora sur WhatsApp ou Telegram." },
+    { icon: Zap, title: "02 · Signale", desc: "Photo + localisation envoyées à Déborah sur WhatsApp ou Telegram." },
     { icon: Trophy, title: "03 · Gagne", desc: "Signalement validé = points Himpact cumulables et montée au classement." },
   ];
 
@@ -109,7 +109,7 @@ const About = () => {
               <Cpu className="w-6 h-6 text-accent mb-4" />
               <h3 className="font-display uppercase tracking-wide text-lg mb-3">Analyse par IA</h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Débora vérifie automatiquement chaque photo, catégorise l'incident et déclenche la
+                Déborah vérifie automatiquement chaque photo, catégorise l'incident et déclenche la
                 validation ainsi que l'attribution des points.
               </p>
             </div>

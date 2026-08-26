@@ -54,7 +54,7 @@ export const BotControlPanel = () => {
   // Test de message
   const [testMessage, setTestMessage] = useState({
     chatId: '',
-    message: 'Hello from Débora! 🌱 This is a test message.'
+    message: 'Hello from Déborah! 🌱 This is a test message.'
   });
   
   const [webhookUrl, setWebhookUrl] = useState('');
@@ -253,7 +253,7 @@ export const BotControlPanel = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Bot className="h-5 w-5" />
-            Statut de Débora
+            Statut de Déborah
           </CardTitle>
           <CardDescription>
             Informations en temps réel sur le bot Telegram
@@ -390,7 +390,7 @@ export const BotControlPanel = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Settings className="h-5 w-5" />
-            Profil de Débora
+            Profil de Déborah
           </CardTitle>
           <CardDescription>
             Modifiez les informations du bot visibles par les utilisateurs
@@ -401,7 +401,7 @@ export const BotControlPanel = () => {
             <Label htmlFor="bot-name">Nom du bot</Label>
             <Input
               id="bot-name"
-              placeholder="Débora - La Ligne Verte"
+              placeholder="Déborah - La Ligne Verte"
               value={profileConfig.name}
               onChange={(e) => setProfileConfig(prev => ({ ...prev, name: e.target.value }))}
             />

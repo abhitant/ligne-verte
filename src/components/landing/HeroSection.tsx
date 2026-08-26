@@ -116,19 +116,19 @@ const HeroSection = () => {
             </div>
           </div>
 
-          {/* Débora se prolonge sous le Hero : aucune fin d'image visible. */}
+          {/* Déborah se prolonge sous le Hero : aucune fin d'image visible. */}
           <div className="min-[900px]:col-span-6 lg:col-span-6 relative flex items-end justify-center min-[900px]:justify-end self-stretch min-h-[240px] min-[900px]:min-h-[520px] lg:min-h-[min(680px,calc(100svh-9rem))]">
             <div className="absolute inset-x-0 -bottom-10 min-[900px]:-bottom-28 flex items-end justify-center min-[900px]:justify-end">
               <div className="relative">
                 <img
                   src={deboraHero}
-                  alt="Débora, la standardiste de La Ligne Verte"
+                  alt="Déborah, la standardiste de La Ligne Verte"
                   width={1024}
                   height={1536}
                   loading="eager"
                   className="relative z-10 h-auto w-full max-w-[260px] sm:max-w-[340px] min-[900px]:max-w-[500px] lg:max-w-[570px] object-contain object-bottom drop-shadow-[0_0_50px_hsl(var(--accent)/0.22)] animate-rise"
                 />
-                {/* Connector line from badge to Débora's face */}
+                {/* Connector line from badge to Déborah's face */}
                 <svg
                   className="pointer-events-none absolute inset-0 z-30 hidden min-[900px]:block overflow-visible"
                   viewBox="0 0 100 100"
@@ -144,7 +144,7 @@ const HeroSection = () => {
                       </feMerge>
                     </filter>
                   </defs>
-                  {/* Petite flèche autonome : elle indique Débora sans atteindre son visage. */}
+                  {/* Petite flèche autonome : elle indique Déborah sans atteindre son visage. */}
                   <path
                     d="M 76 18.5 L 68 18.5"
                     fill="none"
@@ -175,7 +175,7 @@ const HeroSection = () => {
                   </div>
                   {/* Body */}
                   <div className="px-2 py-1.5">
-                    <p className="font-display text-[11px] sm:text-xs font-bold uppercase leading-tight text-foreground">Débora</p>
+                    <p className="font-display text-[11px] sm:text-xs font-bold uppercase leading-tight text-foreground">Déborah</p>
                     <p className="mt-0.5 font-mono text-[7px] sm:text-[8px] uppercase tracking-widest text-muted-foreground">Standardiste</p>
                     <div className="mt-1.5 flex items-center gap-1.5">
                       <div className="h-4 w-4 rounded-sm bg-accent/20 flex items-center justify-center">

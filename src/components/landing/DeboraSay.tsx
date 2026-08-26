@@ -13,7 +13,7 @@ type Props = {
   className?: string;
 };
 
-/** Débora qui explique une section : sa tête arrive à côté du contenu au scroll. */
+/** Déborah qui explique une section : sa tête arrive à côté du contenu au scroll. */
 const DeboraSay = ({ line, pose = "point", cta, side = "left", className = "" }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
@@ -38,7 +38,7 @@ const DeboraSay = ({ line, pose = "point", cta, side = "left", className = "" }:
         <div className="absolute -inset-4 bg-accent/10 blur-2xl rounded-full" />
         <img
           src={poses[pose]}
-          alt="Débora, la standardiste de La Ligne Verte"
+          alt="Déborah, la standardiste de La Ligne Verte"
           width={768}
           height={1024}
           loading="lazy"
