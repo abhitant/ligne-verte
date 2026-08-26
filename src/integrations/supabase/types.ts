@@ -86,6 +86,42 @@ export type Database = {
         }
         Relationships: []
       }
+      challenge_requests: {
+        Row: {
+          contact_name: string
+          created_at: string
+          description: string
+          email: string
+          id: string
+          organization_name: string
+          phone: string | null
+          status: string
+          zone: string | null
+        }
+        Insert: {
+          contact_name: string
+          created_at?: string
+          description: string
+          email: string
+          id?: string
+          organization_name: string
+          phone?: string | null
+          status?: string
+          zone?: string | null
+        }
+        Update: {
+          contact_name?: string
+          created_at?: string
+          description?: string
+          email?: string
+          id?: string
+          organization_name?: string
+          phone?: string | null
+          status?: string
+          zone?: string | null
+        }
+        Relationships: []
+      }
       challenges: {
         Row: {
           bonus_points: number

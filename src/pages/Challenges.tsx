@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, Swords, Building2, Timer, Zap, MapPin, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useChallenges, isChallengeActive, daysLeft } from "@/hooks/useChallenges";
-import { WHATSAPP_INVITE_URL, TELEGRAM_BOT_URL } from "@/config/links";
+import ChallengeJoinDialog from "@/components/ChallengeJoinDialog";
+import ChallengeRequestDialog from "@/components/ChallengeRequestDialog";
 
 const ChallengesPage = () => {
   const { data: challenges = [], isLoading } = useChallenges();
@@ -101,22 +102,15 @@ const ChallengesPage = () => {
                         </p>
                       ) : null}
 
-                      <div className="mt-4 flex gap-2">
-                        <Button
-                          asChild
-                          className="flex-1 bg-accent font-mono text-xs uppercase tracking-[0.18em] text-accent-foreground hover:bg-accent/90"
-                        >
-                          <a href={WHATSAPP_INVITE_URL}>Participer</a>
-                        </Button>
-                        <Button
-                          asChild
-                          variant="outline"
-                          className="border-accent/50 bg-transparent font-mono text-xs uppercase tracking-[0.18em] text-accent"
-                        >
-                          <a href={TELEGRAM_BOT_URL} target="_blank" rel="noreferrer">
-                            Telegram
-                          </a>
-                        </Button>
+                      <div className="mt-4">
+                        <ChallengeJoinDialog
+                          challenge={c}
+                          trigger={
+                            <Button className="w-full bg-accent font-mono text-xs uppercase tracking-[0.18em] text-accent-foreground hover:bg-accent/90">
+                              Participer
+                            </Button>
+                          }
+                        />
                       </div>
                     </article>
                   );
@@ -135,12 +129,13 @@ const ChallengesPage = () => {
               objectif et des points Himpact bonus pour les habitants qui y participent. Écris-nous et on le
               met en ligne.
             </p>
-            <Button
-              asChild
-              className="mt-4 bg-accent font-mono text-xs uppercase tracking-[0.18em] text-accent-foreground hover:bg-accent/90"
-            >
-              <a href={WHATSAPP_INVITE_URL}>Proposer un défi</a>
-            </Button>
+            <ChallengeRequestDialog
+              trigger={
+                <Button className="mt-4 bg-accent font-mono text-xs uppercase tracking-[0.18em] text-accent-foreground hover:bg-accent/90">
+                  Proposer un défi
+                </Button>
+              }
+            />
           </section>
         </div>
       </main>
