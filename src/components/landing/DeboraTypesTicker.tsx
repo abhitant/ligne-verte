@@ -54,36 +54,41 @@ const DeboraTypesTicker = () => {
   const Icon = item.icon;
 
   return (
-    <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-end sm:text-left">
-      <div className="relative shrink-0">
-        <div className="absolute -inset-4 rounded-full bg-accent/10 blur-2xl" />
+    <div className="pointer-events-auto flex items-end gap-0">
+      {/* Personnage superposé à la carte */}
+      <div className="relative shrink-0 -mr-2 sm:-mr-3">
+        <div className="absolute inset-x-2 bottom-0 h-6 rounded-[50%] bg-accent/25 blur-md" />
         <img
           src={deboraWave}
-          alt="Débora présente les types de signalement"
+          alt="Débora t'explique les signalements"
           width={768}
           height={1024}
           loading="lazy"
-          className="relative h-auto w-24 rotate-[-2deg] object-contain sm:w-32 lg:w-40"
+          className="relative h-auto w-20 origin-bottom object-contain drop-shadow-[0_10px_24px_hsl(0_0%_0%_/_0.7)] sm:w-28 lg:w-32"
         />
       </div>
 
-      <div className="hud-panel relative w-full flex-1 overflow-hidden p-4 sm:p-5">
-        <div className="mb-3 flex items-center justify-between gap-3">
-          <span className="hud-label flex items-center gap-2">
-            <Icon className="h-4 w-4 text-accent" />
-            Ce que je reçois
+      {/* Boîte d'instruction style jeu vidéo */}
+      <div className="relative mb-2 w-[15rem] border-2 border-accent/70 bg-card/95 p-3 shadow-[0_0_0_1px_hsl(var(--background)),0_16px_40px_-16px_hsl(0_0%_0%_/_0.9)] backdrop-blur-sm sm:w-[20rem] sm:p-4">
+        {/* Petite flèche vers le personnage */}
+        <span className="absolute -left-[9px] bottom-6 h-3 w-3 rotate-45 border-b-2 border-l-2 border-accent/70 bg-card" />
+
+        <div className="mb-2 flex items-center justify-between gap-2">
+          <span className="hud-label flex items-center gap-1.5 text-[0.6rem]">
+            <Icon className="h-3.5 w-3.5 text-accent" />
+            Débora
           </span>
-          <span className="hud-meta">{item.code} / 06</span>
+          <span className="hud-meta text-[0.6rem]">{item.code} / 06</span>
         </div>
 
-        <div key={item.code} className="animate-in fade-in duration-500">
-          <h3 className="font-display text-lg uppercase tracking-wide text-accent sm:text-xl">
+        <div key={item.code} className="animate-in fade-in slide-in-from-bottom-1 duration-500">
+          <h3 className="font-display text-sm uppercase leading-tight tracking-wide text-accent sm:text-base">
             {item.title}
           </h3>
-          <p className="mt-1 text-sm leading-relaxed text-foreground">{item.line}</p>
+          <p className="mt-1 text-[0.72rem] leading-snug text-foreground sm:text-xs">{item.line}</p>
         </div>
 
-        <div className="mt-4 flex items-center gap-1.5">
+        <div className="mt-3 flex items-center gap-1">
           {reportTypes.map((t, idx) => (
             <button
               key={t.code}

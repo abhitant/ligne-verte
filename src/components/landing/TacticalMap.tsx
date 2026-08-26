@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { MapPin, Radar, Activity, ShieldCheck, Clock, Users } from "lucide-react";
 import OpenStreetMap from "@/components/OpenStreetMap";
+import DeboraTypesTicker from "@/components/landing/DeboraTypesTicker";
 import { useReports } from "@/hooks/useReports";
 
 const TacticalMap = () => {
@@ -54,6 +55,11 @@ const TacticalMap = () => {
           <div className="mt-1 flex items-center gap-2 text-xs text-card-foreground">
             <span className="inline-block h-2 w-2 rounded-full bg-alert" /> En attente
           </div>
+        </div>
+
+        {/* Débora intervient directement sur la carte */}
+        <div className="pointer-events-none absolute bottom-3 left-3 z-[1000] sm:bottom-5 sm:left-5">
+          <DeboraTypesTicker />
         </div>
 
         <span className="pointer-events-none absolute right-3 top-3 z-[1000] font-mono text-[0.65rem] uppercase tracking-[0.2em] text-accent/80">
