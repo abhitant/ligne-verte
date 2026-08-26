@@ -144,24 +144,22 @@ const HeroSection = () => {
                       </feMerge>
                     </filter>
                   </defs>
-                  {/* Bracket: horizontal from badge, then down toward face without touching */}
+                  {/* Petite flèche autonome : elle indique Débora sans atteindre son visage. */}
                   <path
-                    d="M 78 18 L 62 18 Q 58 18 58 21 L 58 23"
+                    d="M 76 18.5 L 68 18.5"
                     fill="none"
                     stroke="hsl(var(--accent))"
-                    strokeWidth="0.4"
-                    strokeDasharray="1 0.55"
+                    strokeWidth="0.55"
                     filter="url(#connector-glow)"
                     opacity="0.9"
                   />
-                  {/* Small arrowhead, pointing at face but not touching */}
+                  {/* Pointe arrêtée à bonne distance du visage. */}
                   <polygon
-                    points="58,23 56.8,21 59.2,21"
+                    points="67,18.5 69.2,17.2 69.2,19.8"
                     fill="hsl(var(--accent))"
                     filter="url(#connector-glow)"
                   />
-                  {/* Origin dot on badge */}
-                  <circle cx="78" cy="18" r="0.8" fill="hsl(var(--accent))" />
+                  <circle cx="76" cy="18.5" r="0.65" fill="hsl(var(--accent))" />
                 </svg>
 
                 {/* Badge LIGNE VERTE en haut à droite de la tête */}
