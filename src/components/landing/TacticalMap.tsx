@@ -7,19 +7,17 @@ import DeboraTypesTicker from "@/components/landing/DeboraTypesTicker";
 import { useReports } from "@/hooks/useReports";
 import { useLeaderboard } from "@/hooks/useGamification";
 
+const OBJECTIF_HIMPACT = 5000;
+
 const TacticalMap = () => {
   const { data: reports = [] } = useReports();
-  const { data: leaders = [] } = useLeaderboard(100);
 
-
-
-
-  const pointsDistributed = useMemo(
-    () => leaders.reduce((sum, l) => sum + (l.points_himpact ?? 0), 0),
-    [leaders]
-  );
-
-  const progress = Math.min(100, Math.round((pointsDistributed / 10000) * 100));
+  const { himpact, progress } = useMemo(() => {
+    const visible = reports.filter((r) => r.status !== "rejected");
+    const validated = visible.filter((r) => r.status === "validated").length;
+    const value = validated * 10;
+    return { himpact: value, progress: Math.min(100, Math.round((value / OBJECTIF_HIMPACT) * 100)) };
+  }, [reports]);
 
 
   return (
