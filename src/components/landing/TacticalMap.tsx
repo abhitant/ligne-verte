@@ -65,13 +65,13 @@ const TacticalMap = () => {
         </span>
       </div>
 
-      {/* Objectif Impact */}
+      {/* Objectif Quartier ZO */}
       <div className="border-t border-border/60 bg-card px-4 py-5 sm:px-6 sm:py-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="hud-label mb-1 text-accent">Objectif Impact</p>
+            <p className="hud-label mb-1 text-accent">Objectif quartier zo</p>
             <p className="font-display text-xl uppercase tracking-wide text-foreground sm:text-2xl">
-              {pointsDistributed.toLocaleString()} / 10 000 points distribués
+              {himpact.toLocaleString()} / {OBJECTIF_HIMPACT.toLocaleString()} HIMPACT
             </p>
           </div>
           <p className="font-mono text-3xl text-accent sm:text-4xl">{progress}%</p>
