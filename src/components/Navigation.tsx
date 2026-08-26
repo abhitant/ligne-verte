@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { MapPin, Home, Swords, Menu, X, Info, Settings, LogOut, Trophy } from "lucide-react";
-import { WHATSAPP_INVITE_URL } from "@/config/links";
+import { WHATSAPP_INVITE_URL, WHATSAPP_INVITE_URL_FALLBACK, TELEGRAM_BOT_URL } from "@/config/links";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useAuth } from "@/hooks/useAuth";
 import WaitlistModal from "./WaitlistModal";
 
@@ -83,12 +84,37 @@ const Navigation = () => {
                 Déconnexion
               </Button>
             ) : (
-              <Button
-                className="bg-accent text-accent-foreground hover:bg-accent/90 font-mono text-xs uppercase tracking-[0.18em]"
-                onClick={() => setIsWaitlistOpen(true)}
-              >
-                S'enrôler
-              </Button>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button className="bg-accent text-accent-foreground hover:bg-accent/90 font-mono text-xs uppercase tracking-[0.18em]">
+                    Contacter Débora
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="end" className="w-56 p-2">
+                  <a
+                    href={WHATSAPP_INVITE_URL}
+                    className="block px-3 py-2 font-mono text-xs uppercase tracking-[0.18em] text-accent hover:bg-accent/10"
+                  >
+                    WhatsApp
+                  </a>
+                  <a
+                    href={TELEGRAM_BOT_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block px-3 py-2 font-mono text-xs uppercase tracking-[0.18em] text-accent hover:bg-accent/10"
+                  >
+                    Telegram
+                  </a>
+                  <a
+                    href={WHATSAPP_INVITE_URL_FALLBACK}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block px-3 py-2 font-mono text-[0.6rem] uppercase tracking-[0.18em] text-muted-foreground hover:text-accent"
+                  >
+                    Lien WhatsApp alternatif
+                  </a>
+                </PopoverContent>
+              </Popover>
             )}
           </div>
 
@@ -139,10 +165,11 @@ const Navigation = () => {
                 </Button>
               ) : (
                 <Button
+                  asChild
                   className="w-full bg-accent text-accent-foreground hover:bg-accent/90 font-mono text-xs uppercase tracking-[0.18em]"
-                  onClick={() => { setIsWaitlistOpen(true); setIsOpen(false); }}
+                  onClick={() => setIsOpen(false)}
                 >
-                  S'enrôler
+                  <a href={WHATSAPP_INVITE_URL}>Contacter Débora</a>
                 </Button>
               )}
             </div>
