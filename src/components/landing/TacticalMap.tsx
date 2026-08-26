@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { MapPin, Radar, Activity, ShieldCheck, Clock, Users } from "lucide-react";
+import { MapPin, Radar } from "lucide-react";
 import OpenStreetMap from "@/components/OpenStreetMap";
 import DeboraTypesTicker from "@/components/landing/DeboraTypesTicker";
 import { useReports } from "@/hooks/useReports";
