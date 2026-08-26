@@ -95,6 +95,30 @@ const TacticalMap = () => {
             style={{ width: `${progress}%` }}
           />
         </div>
+
+        {/* Métriques tactiques */}
+        <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="border border-border/60 bg-surface/60 px-3 py-3">
+            <Users className="mb-2 h-4 w-4 text-accent" />
+            <p className="font-display text-xl text-foreground sm:text-2xl">{metrics.mobilized}</p>
+            <p className="hud-meta mt-1">Habitants mobilisés</p>
+          </div>
+          <div className="border border-border/60 bg-surface/60 px-3 py-3">
+            <Percent className="mb-2 h-4 w-4 text-accent" />
+            <p className="font-display text-xl text-foreground sm:text-2xl">{metrics.validationRate}%</p>
+            <p className="hud-meta mt-1">Taux de validation</p>
+          </div>
+          <div className="border border-border/60 bg-surface/60 px-3 py-3">
+            <CheckCircle className="mb-2 h-4 w-4 text-accent" />
+            <p className="font-display text-xl text-foreground sm:text-2xl">{metrics.validated}</p>
+            <p className="hud-meta mt-1">Missions validées</p>
+          </div>
+          <div className="border border-border/60 bg-surface/60 px-3 py-3">
+            <Clock className="mb-2 h-4 w-4 text-alert" />
+            <p className="font-display text-xl text-foreground sm:text-2xl">{metrics.pending}</p>
+            <p className="hud-meta mt-1">En attente</p>
+          </div>
+        </div>
       </div>
 
       <div className="p-4">
