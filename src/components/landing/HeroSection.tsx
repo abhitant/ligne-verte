@@ -136,17 +136,17 @@ const HeroSection = () => {
                   aria-hidden="true"
                 >
                   <line
-                    x1="68"
-                    y1="16"
-                    x2="52"
-                    y2="12"
+                    x1="78"
+                    y1="18"
+                    x2="54"
+                    y2="20"
                     stroke="hsl(var(--accent))"
                     strokeWidth="0.35"
                     strokeDasharray="1.2 0.6"
                     opacity="0.85"
                   />
-                  <circle cx="52" cy="12" r="0.9" fill="hsl(var(--accent))" />
-                  <circle cx="68" cy="16" r="0.7" fill="hsl(var(--accent))" opacity="0.6" />
+                  <circle cx="54" cy="20" r="0.9" fill="hsl(var(--accent))" />
+                  <circle cx="78" cy="18" r="0.7" fill="hsl(var(--accent))" opacity="0.6" />
                 </svg>
 
                 {/* Badge LIGNE VERTE en haut à droite de la tête */}
