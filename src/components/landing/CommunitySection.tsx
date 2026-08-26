@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { MapPin, Trophy, Radar } from "lucide-react";
+import { Trophy } from "lucide-react";
 import { Link } from "react-router-dom";
-import OpenStreetMap from "@/components/OpenStreetMap";
 import { useLeaderboard } from "@/hooks/useGamification";
 import DeboraSay from "@/components/landing/DeboraSay";
 
