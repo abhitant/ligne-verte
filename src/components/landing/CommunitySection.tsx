@@ -9,7 +9,7 @@ const CommunitySection = () => {
   const { data: users = [] } = useLeaderboard(10);
 
   return (
-    <section id="reconnaissance" className="relative min-h-[85vh] py-24 bg-surface/30 overflow-hidden">
+    <section id="reconnaissance" className="relative py-24 bg-surface/30 overflow-hidden">
       <div className="absolute inset-0 hud-grid opacity-25 pointer-events-none" />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-12 grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">

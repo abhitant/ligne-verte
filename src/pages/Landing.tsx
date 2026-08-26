@@ -21,10 +21,10 @@ const Landing = () => {
         <SolutionSection />
       </Reveal>
       <Reveal>
-        <WhyCountsSection />
+        <CommunitySection />
       </Reveal>
       <Reveal>
-        <CommunitySection />
+        <WhyCountsSection />
       </Reveal>
       <Reveal>
         <Footer />
