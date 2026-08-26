@@ -29,6 +29,8 @@ interface OpenStreetMapProps {
   selectedReport: MapReport | null;
   onReportSelect: (report: MapReport) => void;
   filter: 'all' | 'pending' | 'validated';
+  showLegend?: boolean;
+  zoom?: number;
 }
 
 // Composant de fallback avec vraie liste si la carte ne charge pas
