@@ -34,35 +34,76 @@ const steps = [
 
 const SolutionSection = () => {
   return (
-    <section id="comment" className="relative bg-background py-24">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <h2 className="font-display text-3xl font-bold uppercase leading-tight md:text-5xl">
-          Comment ça marche ?
-          <span className="block text-accent">Quatre étapes, ton quartier devient zo</span>
-        </h2>
+    <section id="comment" className="relative overflow-hidden bg-background py-24">
+      {/* Grille tactique de fond */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.07]"
+        style={{
+          backgroundImage:
+            "linear-gradient(hsl(var(--accent)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--accent)) 1px, transparent 1px)",
+          backgroundSize: "48px 48px",
+        }}
+      />
+      <div className="pointer-events-none absolute -top-24 left-1/2 h-64 w-[36rem] -translate-x-1/2 rounded-full bg-accent/10 blur-3xl" />
 
-        <ol className="mt-10 space-y-px border border-border/60 bg-border/60">
-          {steps.map((s) => {
+      <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col items-start gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <span className="hud-label">Protocole // 4 étapes</span>
+            <h2 className="mt-4 font-display text-3xl font-bold uppercase leading-tight md:text-5xl">
+              Comment ça marche ?
+              <span className="block text-accent">Ton quartier devient zo</span>
+            </h2>
+          </div>
+          <span className="hud-meta hidden md:inline">TEMPS MOYEN // &lt; 60 SEC</span>
+        </div>
+
+        <ol className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {steps.map((s, idx) => {
             const Icon = s.icon;
             return (
-              <li key={s.step} className="flex items-start gap-5 bg-card p-5">
-                <span className="pt-1 font-mono text-sm text-accent">{s.step}</span>
-                <Icon className="mt-0.5 h-6 w-6 shrink-0 text-accent" />
-                <div>
-                  <h3 className="font-display text-lg uppercase tracking-wide">{s.title}</h3>
-                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
+              <li
+                key={s.step}
+                className="group relative flex flex-col overflow-hidden border border-border/70 bg-card/70 p-5 backdrop-blur-sm transition-colors hover:border-accent/70"
+              >
+                {/* coins HUD */}
+                <span className="absolute left-0 top-0 h-3 w-3 border-l-2 border-t-2 border-accent/70" />
+                <span className="absolute bottom-0 right-0 h-3 w-3 border-b-2 border-r-2 border-accent/70" />
+
+                <span className="pointer-events-none absolute -right-2 -top-4 font-display text-6xl font-bold text-accent/10 transition-colors group-hover:text-accent/20">
+                  {s.step}
+                </span>
+
+                <div className="mb-4 flex h-11 w-11 items-center justify-center border border-accent/40 bg-accent/10 text-accent transition-colors group-hover:bg-accent group-hover:text-accent-foreground">
+                  <Icon className="h-5 w-5" />
                 </div>
+
+                <h3 className="font-display text-base uppercase leading-tight tracking-wide">{s.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
+
+                <span className="mt-5 block h-px w-full bg-border">
+                  <span
+                    className="block h-px bg-accent transition-all duration-500"
+                    style={{ width: `${((idx + 1) / steps.length) * 100}%` }}
+                  />
+                </span>
               </li>
             );
           })}
         </ol>
 
-        <a href={TELEGRAM_BOT_URL} target="_blank" rel="noopener noreferrer" className="mt-10 inline-block">
-          <Button size="lg" className="bg-accent px-10 py-6 font-display text-base uppercase tracking-widest text-accent-foreground hover:bg-accent/90">
-            <MessageSquare className="mr-3 h-5 w-5" />
-            Contacter Débora
-          </Button>
-        </a>
+        <div className="mt-12 flex flex-col items-start gap-4 border border-border/70 bg-card/60 p-5 backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            « Pas d'appli à installer, pas de formulaire. Tu m'écris, je fais le reste. »
+          </p>
+          <a href={TELEGRAM_BOT_URL} target="_blank" rel="noopener noreferrer" className="shrink-0">
+            <Button size="lg" className="bg-accent px-8 font-display uppercase tracking-widest text-accent-foreground hover:bg-accent/90">
+              <MessageSquare className="mr-3 h-5 w-5" />
+              Contacter Débora
+            </Button>
+          </a>
+        </div>
       </div>
     </section>
   );
