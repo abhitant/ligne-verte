@@ -224,9 +224,9 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter, showLe
       </div>
       )}
 
-      {/* Voile tactique HUD */}
-      <div className="pointer-events-none absolute inset-0 z-[900] hud-scanlines opacity-30" />
-      <div className="pointer-events-none absolute inset-0 z-[900] bg-[radial-gradient(ellipse_at_center,transparent_45%,hsl(var(--background)/0.85)_100%)]" />
+      {/* Voile tactique HUD léger pour garder la carte grise lisible */}
+      <div className="pointer-events-none absolute inset-0 z-[900] hud-scanlines opacity-15" />
+      <div className="pointer-events-none absolute inset-0 z-[900] bg-[radial-gradient(ellipse_at_center,transparent_60%,hsl(var(--background)/0.35)_100%)]" />
 
       <div style={{ height: '100%', width: '100%' }}>
         <MapContainer 
