@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Trophy } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLeaderboard } from "@/hooks/useGamification";
-import DeboraSay from "@/components/landing/DeboraSay";
+import deboraTrophy from "@/assets/debora-trophy.png";
 
 
 const CommunitySection = () => {
@@ -13,11 +13,17 @@ const CommunitySection = () => {
       <div className="absolute inset-0 hud-grid opacity-25 pointer-events-none" />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-12 grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
-          <DeboraSay
-            pose="wave"
-            line="Contribue et sois reconnu."
-            className="lg:justify-self-start"
-          />
+          <div className="relative flex justify-center lg:justify-start">
+            <div className="absolute -inset-6 bg-accent/10 blur-3xl rounded-full" />
+            <img
+              src={deboraTrophy}
+              alt="Débora tend un trophée aux contributeurs"
+              width={1024}
+              height={1024}
+              loading="lazy"
+              className="relative w-56 sm:w-72 lg:w-80 h-auto object-contain drop-shadow-2xl"
+            />
+          </div>
 
           <div>
             <span className="hud-label">Reconnaissance</span>
