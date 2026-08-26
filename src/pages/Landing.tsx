@@ -3,7 +3,6 @@ import WasteProblemSection from "@/components/landing/WasteProblemSection";
 import CivicMapSection from "@/components/landing/CivicMapSection";
 import SolutionSection from "@/components/landing/SolutionSection";
 import WhyCountsSection from "@/components/landing/WhyCountsSection";
-import MissionCrawl from "@/components/landing/MissionCrawl";
 import Footer from "@/components/landing/Footer";
 import Reveal from "@/components/landing/Reveal";
 import ScrollCue from "@/components/landing/ScrollCue";
@@ -21,7 +20,6 @@ const Landing = () => {
       <Reveal>
         <SolutionSection />
       </Reveal>
-      <MissionCrawl />
       <ScrollCue targetId="pourquoi" label="Pourquoi ça compte" />
       <Reveal>
         <WhyCountsSection />
