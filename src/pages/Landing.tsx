@@ -14,9 +14,7 @@ const Landing = () => {
       <Reveal>
         <WasteProblemSection />
       </Reveal>
-      <Reveal>
-        <CivicMapSection />
-      </Reveal>
+      <CivicMapSection />
       <Reveal>
         <SolutionSection />
       </Reveal>
