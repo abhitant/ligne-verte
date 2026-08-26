@@ -110,6 +110,10 @@ export default {
 				'rise': {
 					from: { opacity: '0', transform: 'translateY(16px)' },
 					to: { opacity: '1', transform: 'translateY(0)' }
+				},
+				'crawl': {
+					'0%': { transform: 'translateX(0)' },
+					'100%': { transform: 'translateX(-33.3333%)' }
 				}
 			},
 			animation: {
