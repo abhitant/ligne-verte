@@ -57,12 +57,21 @@ const ReportsCarousel = () => {
         .slice(0, 12) as ReportPhoto[];
       setReports(wasteOnly);
       setLoading(false);
+      // Préchargement en arrière-plan des slides suivantes
+      wasteOnly.slice(1).forEach((r, i) => {
+        window.setTimeout(() => {
+          const img = new Image();
+          img.decoding = "async";
+          img.src = r.photo_url;
+        }, i * 150);
+      });
     };
     load();
     return () => {
       active = false;
     };
   }, []);
+
 
   return (
     <div className="hud-panel p-4 sm:p-5">
