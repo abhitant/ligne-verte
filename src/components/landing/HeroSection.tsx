@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { TELEGRAM_BOT_URL, WHATSAPP_INVITE_URL } from "@/config/links";
 import deboraHero from "@/assets/debora-hero-torso.png";
-import deboraHeroLegs from "@/assets/debora-hero-legs.png";
 
 
 const HeroSection = () => {
@@ -122,14 +121,14 @@ const HeroSection = () => {
           <div className="min-[900px]:col-span-6 lg:col-span-6 relative flex items-end justify-center min-[900px]:justify-end self-stretch min-[900px]:min-h-[520px] lg:min-h-[min(680px,calc(100svh-9rem))]">
             <div className="relative w-full flex items-end justify-center min-[900px]:absolute min-[900px]:inset-x-0 min-[900px]:-bottom-28 min-[900px]:justify-end">
               <div className="relative">
-                {/* Mobile / tablette : Déborah en pied, jambes visibles */}
+                {/* Mobile / tablette : torse de Déborah, coupe nette, sous les écritures */}
                 <img
-                  src={deboraHeroLegs}
+                  src={deboraHero}
                   alt="Déborah, la standardiste de La Ligne Verte"
-                  width={928}
-                  height={1152}
+                  width={1024}
+                  height={1536}
                   loading="eager"
-                  className="relative z-10 h-auto w-full max-w-[190px] sm:max-w-[250px] object-contain object-bottom drop-shadow-[0_0_50px_hsl(var(--accent)/0.22)] animate-rise min-[900px]:hidden"
+                  className="relative z-10 mt-2 h-auto w-full max-w-[210px] sm:max-w-[260px] object-contain object-top drop-shadow-[0_0_50px_hsl(var(--accent)/0.22)] animate-rise min-[900px]:hidden"
                 />
                 {/* Desktop : buste */}
                 <img
@@ -177,7 +176,7 @@ const HeroSection = () => {
                 </svg>
 
                 {/* Badge LIGNE VERTE en haut à droite de la tête */}
-                <div className="absolute z-20 -right-3 top-[0%] translate-x-1/4 min-[900px]:right-0 min-[900px]:top-[10%] min-[900px]:translate-x-1/4 w-[46%] min-w-[84px] min-[900px]:w-[28%] min-[900px]:min-w-[104px] overflow-hidden rounded border border-accent/50 bg-card/95 shadow-[0_0_30px_hsl(var(--accent)/0.35)] backdrop-blur-sm">
+                <div className="absolute z-20 -right-2 top-[30%] min-[900px]:right-0 min-[900px]:top-[10%] min-[900px]:translate-x-1/4 w-[46%] min-w-[84px] min-[900px]:w-[28%] min-[900px]:min-w-[104px] overflow-hidden rounded border border-accent/50 bg-card/95 shadow-[0_0_30px_hsl(var(--accent)/0.35)] backdrop-blur-sm">
 
                   {/* Lanyard droit */}
                   <div className="absolute -bottom-5 left-1/2 h-5 w-0.5 -translate-x-1/2 bg-accent/70" />

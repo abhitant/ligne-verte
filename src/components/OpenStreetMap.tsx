@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { Icon, divIcon } from 'leaflet';
@@ -100,7 +100,7 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter, showLe
   const [mapLoaded, setMapLoaded] = useState(false);
   const [loadingTimeout, setLoadingTimeout] = useState(false);
   const mapRef = useRef<any>(null);
-  const [locationNames, setLocationNames] = useState<Record<string, string>>({});
+  
   
   // Centre sur Abidjan
   const center: [number, number] = [5.3478, -4.0267];
@@ -113,31 +113,55 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter, showLe
 
   console.log('OpenStreetMap rendered with', filteredReports.length, 'reports');
 
-  // Fonction pour obtenir le nom de la localité via géocodage inverse
-  // BigDataCloud : gratuit, sans clé API, compatible CORS navigateur
-  const fetchLocationName = async (lat: number, lng: number, reportId: string) => {
-    try {
-      const response = await fetch(
-        `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=fr`
-      );
-      const data = await response.json();
+  // Communes d'Abidjan : géocodage inverse local, sans API externe (aucune clé requise).
+  // Centre approximatif + rayon en km pour chaque commune.
+  const ABIDJAN_COMMUNES: Array<{ name: string; lat: number; lng: number; radius: number }> = [
+    { name: 'Abobo', lat: 5.4161, lng: -4.0203, radius: 7 },
+    { name: 'Adjamé', lat: 5.3667, lng: -4.0236, radius: 3 },
+    { name: 'Attécoubé', lat: 5.3400, lng: -4.0433, radius: 3.5 },
+    { name: 'Cocody', lat: 5.3544, lng: -3.9856, radius: 6 },
+    { name: 'Koumassi', lat: 5.2953, lng: -3.9511, radius: 4 },
+    { name: 'Marcory', lat: 5.3067, lng: -3.9836, radius: 3.5 },
+    { name: 'Plateau', lat: 5.3245, lng: -4.0196, radius: 2.5 },
+    { name: 'Port-Bouët', lat: 5.2564, lng: -3.9264, radius: 6 },
+    { name: 'Treichville', lat: 5.2967, lng: -4.0083, radius: 2.5 },
+    { name: 'Yopougon', lat: 5.3364, lng: -4.0867, radius: 8 },
+    { name: 'Bingerville', lat: 5.3558, lng: -3.8853, radius: 5 },
+    { name: 'Anyama', lat: 5.4946, lng: -4.0518, radius: 6 },
+    { name: 'Songon', lat: 5.3200, lng: -4.2400, radius: 6 },
+  ];
 
-      const locality =
-        data.locality || data.city || data.principalSubdivision || 'Abidjan';
-      setLocationNames(prev => ({ ...prev, [reportId]: locality }));
-    } catch (error) {
-      setLocationNames(prev => ({ ...prev, [reportId]: 'Abidjan' }));
-    }
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const distanceKm = (lat1: number, lng1: number, lat2: number, lng2: number) => {
+    const R = 6371;
+    const dLat = toRad(lat2 - lat1);
+    const dLng = toRad(lng2 - lng1);
+    const a =
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(a));
   };
 
-  // Charger les noms de localités pour tous les rapports visibles
-  useEffect(() => {
-    filteredReports.forEach(report => {
-      if (!locationNames[report.id]) {
-        fetchLocationName(report.coordinates.lat, report.coordinates.lng, report.id);
+  // Commune la plus proche dans son rayon, sinon "Abidjan".
+  const getLocationName = (lat: number, lng: number): string => {
+    let best: { name: string; dist: number } | null = null;
+    for (const c of ABIDJAN_COMMUNES) {
+      const dist = distanceKm(lat, lng, c.lat, c.lng);
+      if (dist <= c.radius && (!best || dist < best.dist)) {
+        best = { name: c.name, dist };
       }
+    }
+    return best ? best.name : 'Abidjan';
+  };
+
+  // Résolution synchrone des localités (mémoïsée, pas de state → pas de boucle)
+  const locationNames = useMemo(() => {
+    const next: Record<string, string> = {};
+    filteredReports.forEach(report => {
+      next[report.id] = getLocationName(report.coordinates.lat, report.coordinates.lng);
     });
-  }, [filteredReports]);
+    return next;
+  }, [reports, filter]);
 
   // Timeout pour forcer le fallback si la carte prend trop de temps
   useEffect(() => {
@@ -241,7 +265,7 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter, showLe
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
-            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+            url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
             eventHandlers={{
               loading: () => console.log('Tiles loading...'),
               load: () => console.log('Tiles loaded successfully'),

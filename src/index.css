@@ -187,6 +187,10 @@
   .leaflet-container {
     background: hsl(var(--background));
   }
+  /* Tuiles désaturées pour garder le rendu carte grise HUD */
+  .leaflet-tile-pane {
+    filter: grayscale(1) brightness(0.98) contrast(0.9);
+  }
   .leaflet-popup-content-wrapper,
   .leaflet-popup-tip {
     background: hsl(var(--card));
@@ -209,4 +213,9 @@
     font-family: ui-monospace, monospace;
     font-size: 0.6rem;
   }
+}
+
+/* Tuiles cartographiques désaturées : rendu gris HUD (hors @layer pour éviter le tree-shaking) */
+.leaflet-tile-pane {
+  filter: grayscale(1) brightness(0.98) contrast(0.9);
 }
