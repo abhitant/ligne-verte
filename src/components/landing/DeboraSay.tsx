@@ -2,12 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import deboraWave from "@/assets/debora-wave.png";
 import deboraPoint from "@/assets/debora-hero-legs.png";
+import deboraAlert from "@/assets/debora-alert.png";
 
-const poses = { wave: deboraWave, point: deboraPoint };
+const poses = { wave: deboraWave, point: deboraPoint, alert: deboraAlert };
 
 type Props = {
   line: string;
-  pose?: "wave" | "point";
+  pose?: "wave" | "point" | "alert";
   cta?: { label: string; to: string; external?: boolean };
   side?: "left" | "right";
   className?: string;
