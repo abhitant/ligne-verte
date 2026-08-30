@@ -9,9 +9,9 @@ const CivicMapSection = () => {
           <span className="hud-label">Briefing</span>
           <p className="mt-4 text-lg leading-relaxed text-foreground md:text-xl">
             <span className="font-display uppercase tracking-wide text-accent">La Ligne Verte</span> est
-            la plateforme de gestion civique des quartiers. Chaque habitant peut signaler ce qui
-            dégrade la vie de la cité. Les signalements sont analysés, validés puis affichés sur une
-            carte publique pour faire bouger les lignes.
+            la plateforme de Civic Tech qui rend les citoyens acteurs de la lutte contre les menaces
+            qui guettent leur cité. Chaque signalement arrive chez Déborah, la standardiste, qui le
+            fait remonter sur cette carte publique pour faire bouger les lignes.
           </p>
         </div>
         <TacticalMap />

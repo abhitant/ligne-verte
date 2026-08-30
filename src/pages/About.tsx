@@ -3,8 +3,8 @@ import { Target, Zap, Trophy, ShieldCheck, Cpu, Users } from "lucide-react";
 
 const About = () => {
   useEffect(() => {
-    document.title = "Intel | La Ligne Verte — Gestion civique des cités";
-    const desc = "La Ligne Verte : plateforme de gestion civique des cités. Signale tout désagrément de ta cité via Déborah, suis la carte tactique et gagne des points Himpact.";
+    document.title = "Intel | La Ligne Verte — Plateforme de Civic Tech";
+    const desc = "La Ligne Verte est la plateforme de Civic Tech qui associe les citoyens à la lutte contre les menaces qui guettent leur cité. Signale via Déborah, la standardiste, suis la carte tactique et gagne des points Himpact.";
     let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
     if (!meta) {
       meta = document.createElement('meta');
@@ -31,9 +31,9 @@ const About = () => {
               Rends ta cité <span className="text-accent text-glow">zo</span>
             </h1>
             <p className="mt-6 max-w-2xl text-lg text-muted-foreground leading-relaxed">
-              La Ligne Verte est un projet open source de GreenPill Côte d'Ivoire. Nous transformons
-              la gestion civique des cités en mission collective : chaque désagrément signalé devient
-              une donnée ouverte et localisée, exploitable par les habitants comme par les institutions.
+              La Ligne Verte est une plateforme de Civic Tech, projet open source de GreenPill
+              Côte d'Ivoire. Déborah, la standardiste, transforme chaque désagrément signalé en
+              donnée ouverte et localisée, exploitable par les habitants comme par les institutions.
             </p>
           </div>
         </section>

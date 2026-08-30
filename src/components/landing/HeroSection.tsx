@@ -61,6 +61,11 @@ const HeroSection = () => {
                   Aide-moi à rendre ton quartier zo.
                 </span>
               </h1>
+              <p className="mt-4 text-sm sm:text-base leading-relaxed text-muted-foreground">
+                La Ligne Verte est la plateforme de Civic Tech qui associe les citoyens à la lutte
+                contre les menaces qui guettent leur cité. Moi, c'est Déborah, la standardiste.
+                Je reçois tes signalements et je les fais remonter là où ils comptent.
+              </p>
               <div className="hidden min-[900px]:block absolute top-1/2 -right-2 h-4 w-4 -translate-y-1/2 rotate-45 border-r border-t border-accent/30 bg-card" />
             </div>
 
