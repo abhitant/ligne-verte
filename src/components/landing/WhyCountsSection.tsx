@@ -30,9 +30,9 @@ const WhyCountsSection = () => {
           Pourquoi ça compte
         </h2>
         <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted-foreground md:text-lg">
-          La Ligne Verte ne se contente pas de collecter des plaintes : elle met les habitants en
-          relation avec ceux qui peuvent agir, et suit un indice civique commun. Plus l'indice monte,
-          plus le quartier va mieux.
+          La Ligne Verte ne se contente pas de collecter des plaintes. La plateforme met les
+          habitants en relation avec ceux qui peuvent agir et suit un indice civique commun.
+          Plus l'indice monte, plus le quartier va mieux.
         </p>
 
         <div className="mt-10 grid gap-6 lg:grid-cols-3">
