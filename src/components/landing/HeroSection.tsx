@@ -27,7 +27,7 @@ const HeroSection = () => {
 
 
   return (
-    <section id="mission" className="relative min-h-[calc(100svh-4rem)] flex items-start min-[900px]:items-center min-[900px]:h-[calc(100svh-4rem)] overflow-hidden">
+    <section id="mission" className="relative min-h-[calc(100svh-4rem)] flex items-stretch min-[900px]:items-center min-[900px]:h-[calc(100svh-4rem)] overflow-hidden">
       {/* Fond photo */}
       {images.map((image, index) => (
         <div
