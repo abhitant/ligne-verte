@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { TELEGRAM_BOT_URL, WHATSAPP_INVITE_URL } from "@/config/links";
 import deboraHero from "@/assets/debora-hero-torso.png";
-import deboraHeroLegs from "@/assets/debora-hero-legs.png";
 
 
 const HeroSection = () => {
