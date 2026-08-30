@@ -11,6 +11,8 @@ type Props = {
   pose?: "wave" | "point" | "alert";
   cta?: { label: string; to: string; external?: boolean };
   side?: "left" | "right";
+  /** Direction vers laquelle Déborah regarde. */
+  face?: "left" | "right";
   className?: string;
 };
 
