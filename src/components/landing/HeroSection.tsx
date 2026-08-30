@@ -50,7 +50,7 @@ const HeroSection = () => {
       <div className="absolute inset-x-0 top-0 h-px bg-accent/40 animate-scan-line pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-0 min-[900px]:py-10 lg:py-16">
-        <div className="grid min-[900px]:grid-cols-12 gap-4 min-[900px]:gap-4 lg:gap-8 items-center">
+        <div className="grid min-[900px]:grid-cols-12 gap-4 min-[900px]:gap-4 lg:gap-8 items-center pb-[300px] sm:pb-[340px] min-[900px]:pb-0">
 
           {/* Texte à gauche */}
           <div className="min-[900px]:col-span-6 lg:col-span-6 relative z-20">
@@ -118,7 +118,7 @@ const HeroSection = () => {
           </div>
 
           {/* Déborah se prolonge sous le Hero : aucune fin d'image visible. */}
-          <div className="min-[900px]:col-span-6 lg:col-span-6 relative flex items-end justify-center min-[900px]:justify-end self-stretch min-[900px]:min-h-[520px] lg:min-h-[min(680px,calc(100svh-9rem))]">
+          <div className="absolute inset-x-0 bottom-0 flex items-end justify-center min-[900px]:relative min-[900px]:col-span-6 lg:col-span-6 min-[900px]:justify-end min-[900px]:self-stretch min-[900px]:min-h-[520px] lg:min-h-[min(680px,calc(100svh-9rem))]">
             <div className="relative w-full flex items-end justify-center min-[900px]:absolute min-[900px]:inset-x-0 min-[900px]:-bottom-28 min-[900px]:justify-end">
               <div className="relative">
                 {/* Mobile / tablette : torse de Déborah, coupe nette, sous les écritures */}
