@@ -54,7 +54,7 @@ const HeroSection = () => {
 
           {/* Texte à gauche */}
           <div className="min-[900px]:col-span-6 lg:col-span-6 relative z-20">
-            <div className="hud-panel relative max-w-2xl px-4 py-5 sm:px-7 sm:py-8 shadow-[0_0_40px_hsl(var(--accent)/0.15)] min-[900px]:mx-auto min-[900px]:text-center">
+            <div className="hud-panel relative max-w-2xl px-4 py-5 sm:px-7 sm:py-8 shadow-[0_0_40px_hsl(var(--accent)/0.15)] md:mx-auto md:text-center min-[900px]:mx-auto min-[900px]:text-center">
               <h1 className="font-display text-2xl sm:text-4xl lg:text-5xl font-bold leading-[1.08] uppercase">
                 Hello, j'ai une mission pour toi.
                 <span className="mt-2 block text-accent text-glow">
@@ -64,7 +64,7 @@ const HeroSection = () => {
               <div className="hidden min-[900px]:block absolute top-1/2 -right-2 h-4 w-4 -translate-y-1/2 rotate-45 border-r border-t border-accent/30 bg-card" />
             </div>
 
-            <div className="mt-5 min-[900px]:mt-10 grid max-w-2xl grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="mt-5 min-[900px]:mt-10 grid max-w-2xl grid-cols-1 sm:grid-cols-2 gap-3 md:mx-auto">
 
               <button
                 onClick={scrollToNext}
