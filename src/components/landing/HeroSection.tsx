@@ -122,14 +122,14 @@ const HeroSection = () => {
           <div className="min-[900px]:col-span-6 lg:col-span-6 relative flex items-end justify-center min-[900px]:justify-end self-stretch min-[900px]:min-h-[520px] lg:min-h-[min(680px,calc(100svh-9rem))]">
             <div className="relative w-full flex items-end justify-center min-[900px]:absolute min-[900px]:inset-x-0 min-[900px]:-bottom-28 min-[900px]:justify-end">
               <div className="relative">
-                {/* Mobile / tablette : Déborah en pied, jambes visibles */}
+                {/* Mobile / tablette : torse de Déborah, coupe nette, sous les écritures */}
                 <img
-                  src={deboraHeroLegs}
+                  src={deboraHero}
                   alt="Déborah, la standardiste de La Ligne Verte"
-                  width={928}
-                  height={1152}
+                  width={1024}
+                  height={1536}
                   loading="eager"
-                  className="relative z-10 h-auto w-full max-w-[190px] sm:max-w-[250px] object-contain object-bottom drop-shadow-[0_0_50px_hsl(var(--accent)/0.22)] animate-rise min-[900px]:hidden"
+                  className="relative z-10 mt-2 h-auto w-full max-w-[210px] sm:max-w-[260px] object-contain object-top drop-shadow-[0_0_50px_hsl(var(--accent)/0.22)] animate-rise min-[900px]:hidden"
                 />
                 {/* Desktop : buste */}
                 <img
