@@ -214,3 +214,8 @@
     font-size: 0.6rem;
   }
 }
+
+/* Tuiles cartographiques désaturées : rendu gris HUD (hors @layer pour éviter le tree-shaking) */
+.leaflet-tile-pane {
+  filter: grayscale(1) brightness(0.98) contrast(0.9);
+}
