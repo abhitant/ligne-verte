@@ -26,7 +26,7 @@ const CommunitySection = () => {
               Contribue et sois <span className="text-accent">reconnu</span>
             </h2>
             <p className="mt-4 text-base leading-relaxed text-muted-foreground md:text-lg">
-              Chaque signalement validé compte : une mission repérée, un quartier un peu plus
+              Chaque signalement validé compte. Une mission repérée, un quartier un peu plus
               propre, une action visible par tout le monde. Ta régularité te place sur le
               classement public. Tes contributions deviennent une preuve concrète de ton engagement
               pour le quartier et peuvent donner accès aux avantages proposés par La Ligne Verte.

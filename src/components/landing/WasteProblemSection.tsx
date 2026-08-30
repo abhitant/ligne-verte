@@ -20,7 +20,7 @@ const WasteProblemSection = () => {
             <DeboraSay
               className="mt-8"
               pose="point"
-              line="« Incivisme, salubrité, voirie, éclairage… Chaque jour, des problèmes s'accumulent dans nos rues. Si on ne les voit pas, on ne les règle pas. C'est pour ça que La Ligne Verte existe : pour les repérer, les cartographier et les résoudre ensemble. »"
+              line="« Incivisme, salubrité, voirie, éclairage… Chaque jour, des problèmes s'accumulent dans nos rues. Si on ne les voit pas, on ne les règle pas. C'est pour ça que La Ligne Verte existe, pour les repérer, les cartographier et les résoudre ensemble. »"
               cta={{ label: "Les signalements", to: "/signalements" }}
             />
           </div>

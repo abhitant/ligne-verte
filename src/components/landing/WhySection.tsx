@@ -41,7 +41,7 @@ const WhySection = () => {
             <DeboraSay
               className="mt-8"
               pose="point"
-              line="« Moi je suis à la standardiste : je reçois, je vérifie, je place le point. Mais sans toi sur le terrain, ma carte reste vide. »"
+              line="« Moi je suis à la standardiste. Je reçois, je vérifie, je place le point. Mais sans toi sur le terrain, ma carte reste vide. »"
               cta={{ label: "Voir la carte", to: "/carte" }}
             />
 
