@@ -57,12 +57,21 @@ const ReportsCarousel = () => {
         .slice(0, 12) as ReportPhoto[];
       setReports(wasteOnly);
       setLoading(false);
+      // Préchargement en arrière-plan des slides suivantes
+      wasteOnly.slice(1).forEach((r, i) => {
+        window.setTimeout(() => {
+          const img = new Image();
+          img.decoding = "async";
+          img.src = r.photo_url;
+        }, i * 150);
+      });
     };
     load();
     return () => {
       active = false;
     };
   }, []);
+
 
   return (
     <div className="hud-panel p-4 sm:p-5">
@@ -91,8 +100,13 @@ const ReportsCarousel = () => {
                     src={report.photo_url}
                     alt={`Signalement citoyen ${report.waste_type ?? ""} ${index + 1}`}
                     className="w-full h-full object-cover"
-                    loading="lazy"
+                    loading={index < 2 ? "eager" : "lazy"}
+                    fetchPriority={index === 0 ? "high" : "auto"}
+                    decoding="async"
+                    width={800}
+                    height={600}
                   />
+
                   <div className="absolute inset-x-0 bottom-0 bg-card/85 border-t border-border/60 px-3 py-2 flex items-center justify-between gap-3">
                     <span className="text-[10px] uppercase tracking-wider text-accent truncate max-w-[45%]">
                       reçu de {report.reporter_pseudo || "habitant"}
