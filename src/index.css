@@ -189,7 +189,7 @@
   }
   /* Tuiles désaturées pour garder le rendu carte grise HUD */
   .leaflet-tile-pane {
-    filter: grayscale(0.92) brightness(0.96) contrast(0.92);
+    filter: grayscale(1) brightness(0.98) contrast(0.9);
   }
   .leaflet-popup-content-wrapper,
   .leaflet-popup-tip {
