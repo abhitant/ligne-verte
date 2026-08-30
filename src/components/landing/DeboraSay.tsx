@@ -2,12 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import deboraWave from "@/assets/debora-wave.png";
 import deboraPoint from "@/assets/debora-hero-legs.png";
+import deboraAlert from "@/assets/debora-alert.png";
 
-const poses = { wave: deboraWave, point: deboraPoint };
+const poses = { wave: deboraWave, point: deboraPoint, alert: deboraAlert };
 
 type Props = {
   line: string;
-  pose?: "wave" | "point";
+  pose?: "wave" | "point" | "alert";
   cta?: { label: string; to: string; external?: boolean };
   side?: "left" | "right";
   className?: string;
@@ -36,7 +37,7 @@ const DeboraSay = ({ line, pose = "point", cta, side = "left", className = "" }:
     >
       <div className="relative shrink-0">
         <div className="absolute -inset-4 bg-accent/10 blur-2xl rounded-full" />
-        {pose === "point" ? (
+        {pose === "point" || pose === "alert" ? (
           /* Crop net et cohérent à mi-cuisse : la coupe paraît volontaire. */
           <div className="relative h-[4.5rem] sm:h-28 lg:h-36 overflow-hidden">
             <img
