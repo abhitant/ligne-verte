@@ -4,7 +4,7 @@ import { Target, Zap, Trophy, ShieldCheck, Cpu, Users } from "lucide-react";
 const About = () => {
   useEffect(() => {
     document.title = "Intel | La Ligne Verte — Gestion civique des cités";
-    const desc = "La Ligne Verte : centre de commandement citoyen. Signale tout désagrément de ta cité via Déborah, suis la carte tactique et gagne des points Himpact.";
+    const desc = "La Ligne Verte : plateforme de gestion civique des cités. Signale tout désagrément de ta cité via Déborah, suis la carte tactique et gagne des points Himpact.";
     let meta = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
     if (!meta) {
       meta = document.createElement('meta');

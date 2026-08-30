@@ -54,7 +54,7 @@ const HeroSection = () => {
 
           {/* Texte à gauche */}
           <div className="min-[900px]:col-span-6 lg:col-span-6 relative z-20">
-            <div className="hud-panel relative max-w-2xl px-4 py-5 sm:px-7 sm:py-8 shadow-[0_0_40px_hsl(var(--accent)/0.15)]">
+            <div className="hud-panel relative max-w-2xl px-4 py-5 sm:px-7 sm:py-8 shadow-[0_0_40px_hsl(var(--accent)/0.15)] min-[900px]:mx-auto min-[900px]:text-center">
               <h1 className="font-display text-2xl sm:text-4xl lg:text-5xl font-bold leading-[1.08] uppercase">
                 Hello, j'ai une mission pour toi.
                 <span className="mt-2 block text-accent text-glow">

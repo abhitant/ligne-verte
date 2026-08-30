@@ -11,7 +11,7 @@ const Footer = () => {
           <div>
             <p className="hud-label mb-3">La Ligne Verte</p>
             <p className="font-display text-xl uppercase tracking-wide">
-              Centre de commandement civique
+              Plateforme de gestion civique
             </p>
             <p className="mt-3 text-sm text-muted-foreground max-w-xs">
               « C'est Déborah. Écris-moi, rends ton quartier zo et prends tes points. » Un projet

@@ -14,7 +14,7 @@ export const enCommon: Record<string, string> = {
   "Ligne Verte": "Ligne Verte",
   // Footer
   "La Ligne Verte": "La Ligne Verte",
-  "Centre de commandement civique": "Civic command center",
+  "Plateforme de gestion civique": "Civic management platform",
   "« C'est Déborah. Écris-moi, rends ton quartier zo et prends tes points. » Un projet open source de GreenPill Côte d'Ivoire.":
     "“It's Déborah. Message me, make your neighbourhood clean and take your points.” An open source project by GreenPill Côte d'Ivoire.",
   "Navigation": "Navigation",
