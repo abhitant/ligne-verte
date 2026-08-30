@@ -10,19 +10,24 @@ const CommunitySection = () => {
         <div className="mb-12 grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
           <div className="relative flex justify-center lg:justify-start">
             <div className="absolute -inset-6 bg-accent/10 blur-3xl rounded-full" />
-            <img
-              src={deboraTrophy}
-              alt="Déborah tend un trophée aux contributeurs"
-              width={1024}
-              height={1024}
-              loading="lazy"
-              className="relative w-56 sm:w-72 lg:w-80 h-auto object-contain drop-shadow-2xl"
-            />
+            <div className="relative h-64 sm:h-80 lg:h-96 w-auto overflow-hidden">
+              <img
+                src={deboraTrophy}
+                alt="Déborah tend un trophée aux contributeurs"
+                width={1024}
+                height={1024}
+                loading="lazy"
+                className="relative h-full w-auto object-contain object-top drop-shadow-[0_0_45px_hsl(var(--accent)/0.28)]"
+                style={{
+                  maskImage: 'linear-gradient(to bottom, black 72%, transparent 100%)',
+                  WebkitMaskImage: 'linear-gradient(to bottom, black 72%, transparent 100%)',
+                }}
+              />
+            </div>
           </div>
 
           <div>
-            <span className="hud-label">Reconnaissance</span>
-            <h2 className="mt-4 font-display text-3xl font-bold uppercase leading-tight md:text-5xl">
+            <h2 className="font-display text-3xl font-bold uppercase leading-tight md:text-5xl">
               Contribue et sois <span className="text-accent">reconnu</span>
             </h2>
             <p className="mt-4 text-base leading-relaxed text-muted-foreground md:text-lg">
