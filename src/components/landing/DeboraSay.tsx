@@ -17,7 +17,7 @@ type Props = {
 };
 
 /** Déborah qui explique une section : sa tête arrive à côté du contenu au scroll. */
-const DeboraSay = ({ line, pose = "point", cta, side = "left", className = "" }: Props) => {
+const DeboraSay = ({ line, pose = "point", cta, side = "left", face = "left", className = "" }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
 
