@@ -11,11 +11,13 @@ type Props = {
   pose?: "wave" | "point" | "alert";
   cta?: { label: string; to: string; external?: boolean };
   side?: "left" | "right";
+  /** Direction vers laquelle Déborah regarde. */
+  face?: "left" | "right";
   className?: string;
 };
 
 /** Déborah qui explique une section : sa tête arrive à côté du contenu au scroll. */
-const DeboraSay = ({ line, pose = "point", cta, side = "left", className = "" }: Props) => {
+const DeboraSay = ({ line, pose = "point", cta, side = "left", face = "left", className = "" }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(false);
 
@@ -50,7 +52,7 @@ const DeboraSay = ({ line, pose = "point", cta, side = "left", className = "" }:
                 shown
                   ? "opacity-100 translate-x-0"
                   : `opacity-0 ${side === "right" ? "translate-x-10" : "-translate-x-10"}`
-              } ${side === "right" ? "scale-x-[-1]" : ""}`}
+              } ${face === "right" ? "scale-x-[-1]" : ""}`}
             />
             <div className="absolute inset-x-0 bottom-0 h-px bg-accent/50" />
           </div>
@@ -65,7 +67,7 @@ const DeboraSay = ({ line, pose = "point", cta, side = "left", className = "" }:
               shown
                 ? "opacity-100 translate-x-0"
                 : `opacity-0 ${side === "right" ? "translate-x-10" : "-translate-x-10"}`
-            } ${side === "right" ? "scale-x-[-1]" : ""}`}
+            } ${face === "right" ? "scale-x-[-1]" : ""}`}
           />
         )}
       </div>
