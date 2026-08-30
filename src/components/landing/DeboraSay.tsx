@@ -36,18 +36,37 @@ const DeboraSay = ({ line, pose = "point", cta, side = "left", className = "" }:
     >
       <div className="relative shrink-0">
         <div className="absolute -inset-4 bg-accent/10 blur-2xl rounded-full" />
-        <img
-          src={poses[pose]}
-          alt="Déborah, la standardiste de La Ligne Verte"
-          width={768}
-          height={1024}
-          loading="lazy"
-          className={`relative w-24 sm:w-36 lg:w-44 h-auto object-contain transition-all duration-700 ease-out ${
-            shown
-              ? "opacity-100 translate-x-0"
-              : `opacity-0 ${side === "right" ? "translate-x-10" : "-translate-x-10"}`
-          } ${side === "right" ? "scale-x-[-1]" : ""}`}
-        />
+        {pose === "point" ? (
+          /* Crop net et cohérent à mi-cuisse : la coupe paraît volontaire. */
+          <div className="relative h-24 sm:h-36 lg:h-44 overflow-hidden">
+            <img
+              src={poses[pose]}
+              alt="Déborah, la standardiste de La Ligne Verte"
+              width={928}
+              height={1152}
+              loading="lazy"
+              className={`relative w-20 sm:w-32 lg:w-40 h-auto object-contain object-top transition-all duration-700 ease-out ${
+                shown
+                  ? "opacity-100 translate-x-0"
+                  : `opacity-0 ${side === "right" ? "translate-x-10" : "-translate-x-10"}`
+              } ${side === "right" ? "scale-x-[-1]" : ""}`}
+            />
+            <div className="absolute inset-x-0 bottom-0 h-px bg-accent/50" />
+          </div>
+        ) : (
+          <img
+            src={poses[pose]}
+            alt="Déborah, la standardiste de La Ligne Verte"
+            width={768}
+            height={1024}
+            loading="lazy"
+            className={`relative w-24 sm:w-36 lg:w-44 h-auto object-contain transition-all duration-700 ease-out ${
+              shown
+                ? "opacity-100 translate-x-0"
+                : `opacity-0 ${side === "right" ? "translate-x-10" : "-translate-x-10"}`
+            } ${side === "right" ? "scale-x-[-1]" : ""}`}
+          />
+        )}
       </div>
 
 
