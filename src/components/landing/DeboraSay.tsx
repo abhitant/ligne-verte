@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import deboraWave from "@/assets/debora-wave.png";
-import deboraPoint from "@/assets/debora-point.png";
+import deboraPoint from "@/assets/debora-hero-legs.png";
 
 const poses = { wave: deboraWave, point: deboraPoint };
 

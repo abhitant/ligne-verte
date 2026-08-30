@@ -177,7 +177,7 @@ const HeroSection = () => {
                 </svg>
 
                 {/* Badge LIGNE VERTE en haut à droite de la tête */}
-                <div className="absolute z-20 right-0 top-[3%] translate-x-2 min-[900px]:translate-x-1/4 w-[52%] min-w-[84px] min-[900px]:top-[10%] min-[900px]:w-[28%] min-[900px]:min-w-[104px] overflow-hidden rounded border border-accent/50 bg-card/95 shadow-[0_0_30px_hsl(var(--accent)/0.35)] backdrop-blur-sm">
+                <div className="absolute z-20 -right-3 top-[0%] translate-x-1/4 min-[900px]:right-0 min-[900px]:top-[10%] min-[900px]:translate-x-1/4 w-[46%] min-w-[84px] min-[900px]:w-[28%] min-[900px]:min-w-[104px] overflow-hidden rounded border border-accent/50 bg-card/95 shadow-[0_0_30px_hsl(var(--accent)/0.35)] backdrop-blur-sm">
 
                   {/* Lanyard droit */}
                   <div className="absolute -bottom-5 left-1/2 h-5 w-0.5 -translate-x-1/2 bg-accent/70" />
