@@ -27,7 +27,7 @@ const HeroSection = () => {
 
 
   return (
-    <section id="mission" className="relative min-h-[calc(100svh-4rem)] flex items-start min-[900px]:items-center min-[900px]:h-[calc(100svh-4rem)] overflow-hidden">
+    <section id="mission" className="relative min-h-[calc(100svh-4rem)] flex items-stretch min-[900px]:items-center min-[900px]:h-[calc(100svh-4rem)] overflow-hidden">
       {/* Fond photo */}
       {images.map((image, index) => (
         <div
@@ -50,7 +50,7 @@ const HeroSection = () => {
       <div className="absolute inset-x-0 top-0 h-px bg-accent/40 animate-scan-line pointer-events-none" />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-0 min-[900px]:py-10 lg:py-16">
-        <div className="grid min-[900px]:grid-cols-12 gap-4 min-[900px]:gap-4 lg:gap-8 items-center">
+        <div className="grid min-[900px]:grid-cols-12 gap-4 min-[900px]:gap-4 lg:gap-8 items-center pb-[300px] sm:pb-[340px] min-[900px]:pb-0">
 
           {/* Texte à gauche */}
           <div className="min-[900px]:col-span-6 lg:col-span-6 relative z-20">
@@ -61,11 +61,6 @@ const HeroSection = () => {
                   Aide-moi à rendre ton quartier zo.
                 </span>
               </h1>
-              <p className="mt-4 text-sm sm:text-base leading-relaxed text-muted-foreground">
-                La Ligne Verte est la plateforme de Civic Tech qui associe les citoyens à la lutte
-                contre les menaces qui guettent leur cité. Moi, c'est Déborah, la standardiste.
-                Je reçois tes signalements et je les fais remonter là où ils comptent.
-              </p>
               <div className="hidden min-[900px]:block absolute top-1/2 -right-2 h-4 w-4 -translate-y-1/2 rotate-45 border-r border-t border-accent/30 bg-card" />
             </div>
 
@@ -123,7 +118,7 @@ const HeroSection = () => {
           </div>
 
           {/* Déborah se prolonge sous le Hero : aucune fin d'image visible. */}
-          <div className="min-[900px]:col-span-6 lg:col-span-6 relative flex items-end justify-center min-[900px]:justify-end self-stretch min-[900px]:min-h-[520px] lg:min-h-[min(680px,calc(100svh-9rem))]">
+          <div className="absolute inset-x-0 bottom-0 flex items-end justify-center min-[900px]:relative min-[900px]:col-span-6 lg:col-span-6 min-[900px]:justify-end min-[900px]:self-stretch min-[900px]:min-h-[520px] lg:min-h-[min(680px,calc(100svh-9rem))]">
             <div className="relative w-full flex items-end justify-center min-[900px]:absolute min-[900px]:inset-x-0 min-[900px]:-bottom-28 min-[900px]:justify-end">
               <div className="relative">
                 {/* Mobile / tablette : torse de Déborah, coupe nette, sous les écritures */}
@@ -133,7 +128,7 @@ const HeroSection = () => {
                   width={1024}
                   height={1536}
                   loading="eager"
-                  className="relative z-10 mt-2 h-auto w-full max-w-[210px] sm:max-w-[260px] object-contain object-top drop-shadow-[0_0_50px_hsl(var(--accent)/0.22)] animate-rise min-[900px]:hidden"
+                  className="relative z-10 h-auto w-full max-w-[210px] sm:max-w-[260px] translate-y-4 object-contain object-top drop-shadow-[0_0_50px_hsl(var(--accent)/0.22)] animate-rise min-[900px]:hidden"
                 />
                 {/* Desktop : buste */}
                 <img
@@ -148,7 +143,7 @@ const HeroSection = () => {
 
                 {/* Connector line from badge to Déborah's face */}
                 <svg
-                  className="pointer-events-none absolute inset-0 z-30 hidden min-[900px]:block overflow-visible"
+                  className="pointer-events-none absolute inset-0 z-30 block overflow-visible"
                   viewBox="0 0 100 100"
                   preserveAspectRatio="none"
                   aria-hidden="true"
@@ -181,7 +176,7 @@ const HeroSection = () => {
                 </svg>
 
                 {/* Badge LIGNE VERTE en haut à droite de la tête */}
-                <div className="absolute z-20 -right-2 top-[30%] min-[900px]:right-0 min-[900px]:top-[10%] min-[900px]:translate-x-1/4 w-[46%] min-w-[84px] min-[900px]:w-[28%] min-[900px]:min-w-[104px] overflow-hidden rounded border border-accent/50 bg-card/95 shadow-[0_0_30px_hsl(var(--accent)/0.35)] backdrop-blur-sm">
+                <div className="absolute z-20 right-0 top-[10%] translate-x-1/4 w-[30%] min-w-[96px] min-[900px]:w-[28%] min-[900px]:min-w-[104px] overflow-hidden rounded border border-accent/50 bg-card/95 shadow-[0_0_30px_hsl(var(--accent)/0.35)] backdrop-blur-sm">
 
                   {/* Lanyard droit */}
                   <div className="absolute -bottom-5 left-1/2 h-5 w-0.5 -translate-x-1/2 bg-accent/70" />
