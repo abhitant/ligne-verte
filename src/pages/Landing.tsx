@@ -17,6 +17,9 @@ const Landing = () => {
       </Reveal>
       <ScrollCue targetId="carte-live" label="La carte" />
       <CivicMapSection />
+      <Reveal>
+        <CommunitySection />
+      </Reveal>
       <ScrollCue targetId="comment" label="Comment ça marche" />
       <Reveal>
         <SolutionSection />
@@ -24,10 +27,6 @@ const Landing = () => {
       <ScrollCue targetId="pourquoi" label="Pourquoi ça compte" />
       <Reveal>
         <WhyCountsSection />
-      </Reveal>
-      <ScrollCue targetId="reconnaissance" label="Reconnaissance" />
-      <Reveal>
-        <CommunitySection />
       </Reveal>
       <Reveal>
         <Footer />
