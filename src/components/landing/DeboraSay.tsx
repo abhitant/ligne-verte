@@ -37,7 +37,7 @@ const DeboraSay = ({ line, pose = "point", cta, side = "left", className = "" }:
     >
       <div className="relative shrink-0">
         <div className="absolute -inset-4 bg-accent/10 blur-2xl rounded-full" />
-        {pose === "point" ? (
+        {pose === "point" || pose === "alert" ? (
           /* Crop net et cohérent à mi-cuisse : la coupe paraît volontaire. */
           <div className="relative h-[4.5rem] sm:h-28 lg:h-36 overflow-hidden">
             <img
