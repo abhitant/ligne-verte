@@ -7,19 +7,7 @@ const Footer = () => {
     <footer className="relative bg-background border-t border-border">
       <div className="absolute inset-0 hud-grid opacity-20 pointer-events-none" />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <div className="grid gap-10 md:grid-cols-3">
-          <div>
-            <p className="hud-label mb-3">La Ligne Verte</p>
-            <p className="font-display text-xl uppercase tracking-wide">
-              Plateforme de gestion civique
-            </p>
-            <p className="mt-3 text-sm text-muted-foreground max-w-xs">
-              « C'est Déborah. Écris-moi, rends ton quartier zo et prends tes points. » Un projet
-              open source de GreenPill Côte d'Ivoire.
-            </p>
-
-          </div>
-
+        <div className="grid gap-10 md:grid-cols-2">
           <div>
             <p className="hud-label mb-3">Navigation</p>
             <ul className="space-y-2 text-sm text-muted-foreground">
