@@ -114,20 +114,19 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter, showLe
   console.log('OpenStreetMap rendered with', filteredReports.length, 'reports');
 
   // Fonction pour obtenir le nom de la localité via géocodage inverse
+  // BigDataCloud : gratuit, sans clé API, compatible CORS navigateur
   const fetchLocationName = async (lat: number, lng: number, reportId: string) => {
     try {
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=fr`
+        `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=fr`
       );
       const data = await response.json();
-      
-      if (data.address) {
-        const { suburb, neighbourhood, quarter, city_district, city, town, village } = data.address;
-        const locality = suburb || neighbourhood || quarter || city_district || town || village || city || 'Abidjan';
-        setLocationNames(prev => ({ ...prev, [reportId]: locality }));
-      }
+
+      const locality =
+        data.locality || data.city || data.principalSubdivision || 'Abidjan';
+      setLocationNames(prev => ({ ...prev, [reportId]: locality }));
     } catch (error) {
-      console.error('Error fetching location name:', error);
+      setLocationNames(prev => ({ ...prev, [reportId]: 'Abidjan' }));
     }
   };
 
