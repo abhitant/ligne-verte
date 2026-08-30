@@ -159,7 +159,7 @@ const HeroSection = () => {
                   </defs>
                   {/* Petite flèche autonome : elle indique Déborah sans atteindre son visage. */}
                   <path
-                    d="M 84 14 L 69 18.2"
+                    d="M 84 17 L 70 17"
                     fill="none"
                     stroke="hsl(var(--accent))"
                     strokeWidth="0.8"
@@ -169,11 +169,11 @@ const HeroSection = () => {
                   />
                   {/* Pointe arrêtée à bonne distance du visage. */}
                   <polygon
-                    points="67.6,18.6 70.6,16.8 70.2,19.6"
+                    points="68,17 70.6,15.7 70.6,18.3"
                     fill="hsl(var(--accent))"
                     filter="url(#connector-glow)"
                   />
-                  <circle cx="84" cy="14" r="0.8" fill="hsl(var(--accent))" />
+                  <circle cx="84" cy="17" r="0.8" fill="hsl(var(--accent))" />
                 </svg>
 
                 {/* Badge LIGNE VERTE, nettement décalé de la tête */}
