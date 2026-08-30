@@ -15,7 +15,7 @@ const About = () => {
   }, []);
 
   const steps = [
-    { icon: Target, title: "01 · Repère", desc: "Un problème dans ta cité : déchets, caniveau, éclairage, voirie, nuisance." },
+    { icon: Target, title: "01 · Repère", desc: "Un problème dans ta cité, déchets, caniveau, éclairage, voirie, nuisance." },
     { icon: Zap, title: "02 · Signale", desc: "Photo + localisation envoyées à Déborah sur WhatsApp ou Telegram." },
     { icon: Trophy, title: "03 · Gagne", desc: "Signalement validé = points Himpact cumulables et montée au classement." },
   ];
@@ -47,7 +47,7 @@ const About = () => {
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div className="space-y-5 text-muted-foreground leading-relaxed">
               <p>
-                Toutes les grandes villes africaines mènent la même bataille : déchets, assainissement,
+                Toutes les grandes villes africaines mènent la même bataille, déchets, assainissement,
                 éclairage, voirie. Ces désagréments dégradent le quotidien et restent souvent invisibles
                 dans les données publiques.
               </p>
