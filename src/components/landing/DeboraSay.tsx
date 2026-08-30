@@ -67,7 +67,7 @@ const DeboraSay = ({ line, pose = "point", cta, side = "left", face = "left", cl
               shown
                 ? "opacity-100 translate-x-0"
                 : `opacity-0 ${side === "right" ? "translate-x-10" : "-translate-x-10"}`
-            } ${side === "right" ? "scale-x-[-1]" : ""}`}
+            } ${face === "right" ? "scale-x-[-1]" : ""}`}
           />
         )}
       </div>
