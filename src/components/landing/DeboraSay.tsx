@@ -38,7 +38,7 @@ const DeboraSay = ({ line, pose = "point", cta, side = "left", className = "" }:
         <div className="absolute -inset-4 bg-accent/10 blur-2xl rounded-full" />
         {pose === "point" ? (
           /* Crop net et cohérent à mi-cuisse : la coupe paraît volontaire. */
-          <div className="relative h-24 sm:h-36 lg:h-44 overflow-hidden">
+          <div className="relative h-[4.5rem] sm:h-28 lg:h-36 overflow-hidden">
             <img
               src={poses[pose]}
               alt="Déborah, la standardiste de La Ligne Verte"
