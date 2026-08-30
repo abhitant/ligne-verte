@@ -100,7 +100,7 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter, showLe
   const [mapLoaded, setMapLoaded] = useState(false);
   const [loadingTimeout, setLoadingTimeout] = useState(false);
   const mapRef = useRef<any>(null);
-  const [locationNames, setLocationNames] = useState<Record<string, string>>({});
+  
   
   // Centre sur Abidjan
   const center: [number, number] = [5.3478, -4.0267];
@@ -154,14 +154,14 @@ const OpenStreetMap = ({ reports, selectedReport, onReportSelect, filter, showLe
     return best ? best.name : 'Abidjan';
   };
 
-  // Résolution synchrone des localités pour tous les rapports visibles
-  useEffect(() => {
+  // Résolution synchrone des localités (mémoïsée, pas de state → pas de boucle)
+  const locationNames = useMemo(() => {
     const next: Record<string, string> = {};
     filteredReports.forEach(report => {
       next[report.id] = getLocationName(report.coordinates.lat, report.coordinates.lng);
     });
-    setLocationNames(next);
-  }, [filteredReports]);
+    return next;
+  }, [reports, filter]);
 
   // Timeout pour forcer le fallback si la carte prend trop de temps
   useEffect(() => {
