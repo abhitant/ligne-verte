@@ -159,24 +159,25 @@ const HeroSection = () => {
                   </defs>
                   {/* Petite flèche autonome : elle indique Déborah sans atteindre son visage. */}
                   <path
-                    d="M 76 18.5 L 68 18.5"
+                    d="M 84 14 L 69 18.2"
                     fill="none"
                     stroke="hsl(var(--accent))"
-                    strokeWidth="0.55"
+                    strokeWidth="0.8"
+                    strokeDasharray="2.2 1.2"
                     filter="url(#connector-glow)"
-                    opacity="0.9"
+                    opacity="1"
                   />
                   {/* Pointe arrêtée à bonne distance du visage. */}
                   <polygon
-                    points="67,18.5 69.2,17.2 69.2,19.8"
+                    points="67.6,18.6 70.6,16.8 70.2,19.6"
                     fill="hsl(var(--accent))"
                     filter="url(#connector-glow)"
                   />
-                  <circle cx="76" cy="18.5" r="0.65" fill="hsl(var(--accent))" />
+                  <circle cx="84" cy="14" r="0.8" fill="hsl(var(--accent))" />
                 </svg>
 
-                {/* Badge LIGNE VERTE en haut à droite de la tête */}
-                <div className="absolute z-20 right-0 top-[10%] translate-x-1/4 w-[30%] min-w-[96px] min-[900px]:w-[28%] min-[900px]:min-w-[104px] overflow-hidden rounded border border-accent/50 bg-card/95 shadow-[0_0_30px_hsl(var(--accent)/0.35)] backdrop-blur-sm">
+                {/* Badge LIGNE VERTE, nettement décalé de la tête */}
+                <div className="absolute z-20 -right-[26%] top-[2%] w-[30%] min-w-[96px] min-[900px]:-right-[20%] min-[900px]:top-[0%] min-[900px]:w-[28%] min-[900px]:min-w-[104px] overflow-hidden rounded border border-accent/50 bg-card/95 shadow-[0_0_30px_hsl(var(--accent)/0.35)] backdrop-blur-sm">
 
                   {/* Lanyard droit */}
                   <div className="absolute -bottom-5 left-1/2 h-5 w-0.5 -translate-x-1/2 bg-accent/70" />
